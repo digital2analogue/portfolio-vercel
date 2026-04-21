@@ -1,5 +1,17 @@
-import { T, mono, sans } from "@/lib/tokens";
-import Tag from "@/components/Tag";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Principal Designer with ten years in design systems infrastructure, decision tooling, and compliance-heavy B2B. Based in San Francisco; taking new work.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About · River Romney",
+    description:
+      "Principal Designer with ten years in design systems infrastructure, decision tooling, and compliance-heavy B2B.",
+    url: "/about",
+  },
+};
 
 const SKILLS = [
   "Design Systems",
@@ -13,195 +25,122 @@ const SKILLS = [
 ];
 
 const EXPERIENCE = [
-  { role: "Principal Designer", company: "Capital One", period: "2021 – Present" },
-  { role: "Principal Designer", company: "OpenTable", period: "2019 – 2021" },
-];
-
-const SIDEBAR = [
-  { label: "STATUS", value: "Open to work" },
-  { label: "TYPE", value: "Senior IC / Staff" },
-  { label: "MODE", value: "Remote" },
-  { label: "TIMEZONE", value: "US" },
+  {
+    role: "Principal UI/UX Designer, Design Systems",
+    company: "Capital One",
+    period: "2024 – 2025",
+  },
+  {
+    role: "Lead Product Designer, Design Systems",
+    company: "OpenTable",
+    period: "2019 – 2024",
+  },
+  {
+    role: "Product Designer",
+    company: "EPIC!",
+    period: "2018 – 2019",
+  },
+  {
+    role: "Interaction Designer",
+    company: "ExpertVoice",
+    period: "2015 – 2018",
+  },
 ];
 
 export default function AboutPage() {
   return (
-    <div
-      style={{
-        padding: "clamp(32px,6vh,64px) clamp(20px,5vw,64px)",
-        maxWidth: "800px",
-      }}
-    >
-      <div style={{ marginBottom: "40px" }}>
-        <div
-          style={{
-            fontFamily: mono,
-            fontSize: "11px",
-            letterSpacing: "0.12em",
-            color: T.muted,
-            marginBottom: "8px",
-          }}
-        >
-          $ cat ./about.md
+    <div className="column">
+      <section className="hero">
+        <span className="marginalia" aria-hidden="true">
+          §&nbsp;<span className="accent">01</span>&nbsp;/&nbsp;ABOUT
+        </span>
+
+        <div className="hero__term rise d1">
+          <div>
+            <span className="accent" aria-hidden="true">~</span> $ cat ./about.md
+          </div>
         </div>
-        <h1
-          style={{
-            fontFamily: mono,
-            fontSize: "clamp(24px,4vw,36px)",
-            fontWeight: 700,
-            letterSpacing: "-0.02em",
-            color: T.fg,
-            margin: 0,
-          }}
-        >
-          River
+
+        <h1 className="display rise d2">
+          River <em>Romney</em>
         </h1>
+      </section>
+
+      <div className="dot-rule rise d3" aria-hidden="true">
+        · · · · · · · ·
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 200px", gap: "48px" }}>
-        <div>
-          <p
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: T.secondary,
-              lineHeight: 1.75,
-              marginBottom: "20px",
-              marginTop: 0,
-            }}
-          >
-            I&apos;m a senior product designer specializing in complex B2B systems — decision
-            tooling, compliance surfaces, and the design infrastructure that makes large teams move
-            fast without breaking things.
-          </p>
-          <p
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: T.secondary,
-              lineHeight: 1.75,
-              marginBottom: "20px",
-            }}
-          >
-            My work lives at the intersection of policy, data, and enterprise UX. I care about
-            making the invisible legible — surfacing the rules, states, and edge cases that
-            software usually buries.
-          </p>
-          <p
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: T.secondary,
-              lineHeight: 1.75,
-              marginBottom: "32px",
-            }}
-          >
-            I bring a systems-first mindset to every project: I&apos;m as comfortable in a Figma
-            component library as I am co-authoring a product brief or running a research sprint.
-          </p>
-
-          <div style={{ marginBottom: "32px" }}>
-            <div
-              style={{
-                fontFamily: mono,
-                fontSize: "11px",
-                letterSpacing: "0.12em",
-                color: T.muted,
-                marginBottom: "12px",
-              }}
-            >
-              CURRENTLY STRONG IN //
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-              {SKILLS.map((s) => (
-                <Tag key={s}>{s}</Tag>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              fontFamily: mono,
-              fontSize: "11px",
-              letterSpacing: "0.12em",
-              color: T.muted,
-              marginBottom: "12px",
-            }}
-          >
-            EXPERIENCE //
-          </div>
-          {EXPERIENCE.map((e) => (
-            <div
-              key={e.company + e.period}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                padding: "10px 0",
-                borderBottom: `1px solid ${T.border}`,
-              }}
-            >
-              <div>
-                <div style={{ fontFamily: mono, fontSize: "12px", color: T.fg, fontWeight: 600 }}>
-                  {e.role}
-                </div>
-                <div style={{ fontFamily: mono, fontSize: "10px", color: T.muted }}>
-                  {e.company}
-                </div>
-              </div>
-              <div style={{ fontFamily: mono, fontSize: "10px", color: T.muted }}>{e.period}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Sidebar */}
-        <div>
-          <div
-            style={{
-              width: "100%",
-              aspectRatio: "1",
-              background: T.surface,
-              border: `1px solid ${T.border}`,
-              borderRadius: "2px",
-              marginBottom: "20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flexDirection: "column",
-              gap: "6px",
-            }}
-          >
-            <div style={{ fontFamily: mono, fontSize: "24px", color: T.accent }}>R</div>
-            <div
-              style={{
-                fontFamily: mono,
-                fontSize: "11px",
-                color: T.muted,
-                letterSpacing: "0.08em",
-              }}
-            >
-              PHOTO //
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-            {SIDEBAR.map(({ label, value }) => (
-              <div key={label}>
-                <div
-                  style={{
-                    fontFamily: mono,
-                    fontSize: "11px",
-                    letterSpacing: "0.12em",
-                    color: T.muted,
-                    marginBottom: "2px",
-                  }}
-                >
-                  {label} //
-                </div>
-                <div style={{ fontFamily: mono, fontSize: "11px", color: T.fg }}>{value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="about-prose rise d4">
+        <p>
+          I&apos;m a Principal Designer with ten years specializing in complex
+          B2B systems — <em>design systems infrastructure, decision tooling,</em>{" "}
+          and the compliance-heavy surfaces enterprise teams rely on daily.
+        </p>
+        <p>
+          My work lives at the intersection of <em>policy, data, and enterprise
+          UX</em>. I care about making the invisible legible — surfacing the
+          rules, states, and edge cases that software usually buries. The best
+          design systems work looks quiet on the surface and holds up under
+          real pressure.
+        </p>
+        <p>
+          I bring a systems-first mindset to every project. I&apos;m as fluent
+          architecting a component library as I am co-authoring a product
+          brief, running a research sprint, or negotiating token governance
+          with engineering leads.
+        </p>
       </div>
+
+      <div className="section-head rise d5" style={{ marginTop: "var(--primitive-space-3xl)" }}>
+        <h2 className="eyebrow">
+          <span>
+            Currently strong in <span aria-hidden="true">//</span>
+          </span>
+        </h2>
+      </div>
+
+      <div
+        className="rise d5"
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "var(--primitive-space-xs)",
+        }}
+      >
+        {SKILLS.map((s) => (
+          <span key={s} className="tag">
+            {s}
+          </span>
+        ))}
+      </div>
+
+      <div className="section-head rise d6" style={{ marginTop: "var(--primitive-space-3xl)" }}>
+        <h2 className="eyebrow">
+          <span>
+            Experience <span aria-hidden="true">//</span>
+          </span>
+        </h2>
+      </div>
+
+      <div className="about-experience rise d6">
+        {EXPERIENCE.map((e) => (
+          <div key={e.company + e.period} className="about-experience__row">
+            <div>
+              <div className="about-experience__role">{e.role}</div>
+              <div className="about-experience__company">{e.company}</div>
+            </div>
+            <div className="about-experience__period">{e.period}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="dot-rule rise d7" aria-hidden="true">
+        · · · · · · · ·
+      </div>
+
+      <p className="bio-inline rise d7">
+        Based in San Francisco; <span className="accent">taking new work</span>.
+      </p>
     </div>
   );
 }

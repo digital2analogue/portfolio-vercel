@@ -1,11 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { T, mono } from "@/lib/tokens";
 
 const LINKS = [
   { label: "INDEX", href: "/" },
   { label: "WORK", href: "/work" },
+  { label: "TOKENS", href: "/tokens" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ] as const;
@@ -16,58 +16,21 @@ export default function Nav() {
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        background: T.bg,
-        borderBottom: `1px solid ${T.border}`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 clamp(20px,5vw,64px)",
-        height: "52px",
-      }}
-    >
-      <Link
-        href="/"
-        style={{
-          fontFamily: mono,
-          fontSize: "13px",
-          fontWeight: 700,
-          color: T.fg,
-          textDecoration: "none",
-          letterSpacing: "-0.01em",
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-        }}
-      >
-        <span style={{ color: T.accent }}>›</span> river.
+    <nav className="topbar" aria-label="Primary">
+      <Link className="topbar__brand" href="/">
+        <span className="topbar__brand-glyph" aria-hidden="true">›</span>
+        river.
       </Link>
-
-      <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-        {LINKS.map((l, i) => {
+      <div className="topbar__links">
+        {LINKS.map((l) => {
           const active = isActive(l.href);
           return (
             <Link
               key={l.label}
               href={l.href}
-              style={{
-                fontFamily: mono,
-                fontSize: "11px",
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-                color: active ? T.accent : T.secondary,
-                background: active ? `${T.accent}14` : "none",
-                padding: "6px 12px",
-                borderRadius: "2px",
-                textDecoration: "none",
-                transition: "color 150ms, background 150ms",
-              }}
+              aria-current={active ? "page" : undefined}
             >
-              {i + 1}. {l.label}
+              {l.label}
             </Link>
           );
         })}

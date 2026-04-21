@@ -1,4 +1,5 @@
 export type CaseStudy = {
+  slug: string;
   index: string;
   title: string;
   company: string;
@@ -12,11 +13,12 @@ export type CaseStudy = {
 
 export const CASES: CaseStudy[] = [
   {
+    slug: "c1-decision-engine",
     index: "01",
     title: "Decision Engine",
     company: "Capital One",
-    year: "2023",
-    role: "Principal Designer",
+    year: "2024 – 2025",
+    role: "Principal UI/UX Designer, Design Systems",
     tags: ["Design Systems", "Fintech", "Compliance"],
     summary:
       "Replaced spreadsheet-driven policy workflows with a modular, compliance-ready decision engine — enabling non-technical stakeholders to own complex rule logic without engineering support.",
@@ -24,6 +26,7 @@ export const CASES: CaseStudy[] = [
     status: "COMPLETE",
   },
   {
+    slug: "ot-design-system",
     index: "02",
     title: "Design System",
     company: "OpenTable",
@@ -35,4 +38,25 @@ export const CASES: CaseStudy[] = [
     metrics: ["1 system → web + native", "Cross-platform token adoption", "Reduced design/eng drift"],
     status: "COMPLETE",
   },
+  {
+    slug: "ot-reservations",
+    index: "03",
+    title: "Reservation Redesign",
+    company: "OpenTable",
+    year: "2022",
+    role: "Design Systems Lead & Product Partner",
+    tags: ["Product Design", "Design Systems", "Enterprise UX"],
+    summary:
+      "Improved the restaurant reservation workflow — better hierarchy and scannability without sacrificing the information density power users depend on.",
+    metrics: [
+      "Modular card-based architecture",
+      "Shared components across web + native",
+      "Zero data loss or regressions",
+    ],
+    status: "COMPLETE",
+  },
 ];
+
+export function getCase(slug: string): CaseStudy | undefined {
+  return CASES.find((c) => c.slug === slug);
+}
