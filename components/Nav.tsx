@@ -20,6 +20,7 @@ export default function Nav() {
       <Link className="topbar__brand" href="/">
         <span className="topbar__brand-glyph" aria-hidden="true">›</span>
         river.
+        <span className="cursor cursor--sm" aria-hidden="true" />
       </Link>
       <div className="topbar__links">
         {LINKS.map((l) => {
