@@ -20,7 +20,6 @@ export default function IndexPage() {
           <div>
             <span className="hero__term-slash" aria-hidden="true">// </span>
             Design systems. Complex B2B. Compliance-heavy fintech.
-            <span className="cursor" aria-hidden="true" />
           </div>
         </div>
 
