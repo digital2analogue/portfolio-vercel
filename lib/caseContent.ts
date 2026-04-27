@@ -124,12 +124,27 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The onboarding wizard walked analysts through a three-step setup — choosing an outcome type, naming the model, and selecting the data elements it could evaluate.",
+        text: "The onboarding flow walked analysts through a three-step setup on a single page — choosing an outcome type, naming the model, and selecting the data elements it could evaluate. Each step was scoped to a single decision, reducing cognitive load before reaching the main interface.",
       },
       {
         type: "image",
-        alt: "Three-step onboarding wizard for creating a new decision model",
-        src: "/projects/images/c1-decision-engine-onboarding-flow.png",
+        alt: "Full onboarding flow — all three setup steps visible on a single scrollable page",
+        src: "/projects/images/c1-decision-engine-onboarding-full.png",
+      },
+      {
+        type: "image",
+        alt: "Step 1 — Assign an outcome type for the ruleset: Decline, Assign Credit Limit, Require Action, Award Rewards, and more",
+        src: "/projects/images/c1-decision-engine-onboarding-step1.png",
+      },
+      {
+        type: "image",
+        alt: "Step 2 — Name the model and add a description before building rules",
+        src: "/projects/images/c1-decision-engine-onboarding-step2.png",
+      },
+      {
+        type: "image",
+        alt: "Step 3 — Select data elements from a searchable list; a preview panel shows attribute metadata on the right",
+        src: "/projects/images/c1-decision-engine-onboarding-step3.png",
       },
       { type: "hr" },
       { type: "h2", text: "Component Deep Dive: Rule Cell (Conceptual)" },
@@ -276,6 +291,35 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "We estimated the cost of drift at ~$237K/year in inefficiency and rework.",
       },
       { type: "hr" },
+      { type: "h2", text: "User Research" },
+      {
+        type: "p",
+        text: "We established a research strategy focused on understanding the challenges faced by design, product, and engineering teams. A survey of 37 respondents across OpenTable revealed the depth of the problem:",
+      },
+      { type: "h3", text: "One-off component creation" },
+      {
+        type: "p",
+        text: "**100%** of iOS designers said they were creating new or one-off components often or occasionally, compared to **60%** of web designers across both Restaurant and Diner teams. iOS teams suffered the most — which made sense given we had a much more mature web component library (Buffet) but nothing comparable for native.",
+      },
+      {
+        type: "quote",
+        text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us. — Restaurant iOS engineer",
+      },
+      { type: "h3", text: "Time spent clarifying styling during release" },
+      {
+        type: "p",
+        text: "**75% of Restaurant web designers** reported spending **4–8 rounds** clarifying styling with engineering during each release cycle. Meanwhile, **100% of Diner web designers** reported only **0–3 rounds**. Cross-functional Restaurant teams were spending significantly more time reconciling their style guide with designers and developers.",
+      },
+      { type: "h3", text: "Consolidating research" },
+      {
+        type: "p",
+        text: "We ran 1:1 interviews and remote collaborative brainstorms using FigJam and Dovetail. The main insight was clear: designers and engineers often had the **same problem** — unclear documentation, scattered sources of truth, and no shared language for components. Most folks knew what colors and styles to use, but much of the style guide lived in designers' heads rather than in a system.",
+      },
+      {
+        type: "quote",
+        text: "We have a ton of legacy styles and pages on our iOS apps and it's always a push and pull on when and how to update those. — Cris, designer on Restaurant product",
+      },
+      { type: "hr" },
       { type: "h2", text: "Constraints" },
       { type: "p", text: "The system had to evolve without stopping product delivery." },
       {
@@ -344,6 +388,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Establishing semantic tokens created a single source of truth across platforms and reduced downstream inconsistencies.",
         src: "/projects/images/casestudy-otkit-colormappingtool.png",
       },
+      { type: "h3", text: "System thinking in action: Table Statuses" },
+      {
+        type: "p",
+        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. It was a win-win: the product got what it needed, and the system stayed coherent.",
+      },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
       {
@@ -372,7 +421,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Impact" },
       {
         type: "p",
-        text: "A/B testing showed a **+2.19% increase in diner bookings** on pages using dynamic type.",
+        text: "A/B testing showed a **+2.19% increase in diner bookings** (+600 weekly net bookers) on pages using dynamic type.",
       },
       {
         type: "image",
@@ -509,8 +558,45 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/casestudy-otkit-newsletter.png",
       },
       {
+        type: "quote",
+        text: "I wanted to directly reach out and thank you for your feedback in today's session. All of the links and resources you shared were incredibly helpful. — Stephanie, Restaurant Design Ambassador",
+      },
+      {
+        type: "quote",
+        text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team. — Jordon, Restaurant Design Ambassador",
+      },
+      {
         type: "p",
         text: "Trust was built through follow-through. When teams reported issues, we responded quickly. When we made breaking changes, we migrated them. That responsiveness turned skeptics into advocates.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Learnings" },
+      { type: "h3", text: "Challenge: Lack of native Figma support for design tokens" },
+      {
+        type: "p",
+        text: "We started work on the foundations before Figma released Variables. This meant we initially had to manage tokens through workarounds — naming conventions, separate documentation, and manual syncing. When Variables shipped, we migrated quickly, but the gap cost us early momentum.",
+      },
+      {
+        type: "p",
+        text: "**What I'd do next time:** More upfront communication around the limitations of tooling and clearer expectations about what would change once better tooling arrived. Teams need to understand the 'why' behind interim solutions.",
+      },
+      { type: "h3", text: "Challenge: Communicating with remote teams" },
+      {
+        type: "p",
+        text: "Working in a remote setting with teams distributed across North America, Europe, and Asia created real communication challenges. Updates got lost, context didn't travel well across time zones, and synchronous meetings couldn't cover everyone.",
+      },
+      {
+        type: "p",
+        text: "**What I'd do next time:** Lean harder into async from the start — more recorded video demos, tech talks, dedicated Slack Q&A channels, and newsletters. The newsletter ended up being one of our most effective tools, and I wish we'd started it earlier.",
+      },
+      { type: "h3", text: "Challenge: Scaling myself" },
+      {
+        type: "p",
+        text: "Design systems work often got sidelined into supporting feature work that needed system alignment. The constant pull between system-level thinking and product-level support was real, and without clear boundaries, it was easy to become a bottleneck.",
+      },
+      {
+        type: "p",
+        text: "**What I'd do next time:** Be clearer upfront about the design system team's role and responsibility relative to product work. The Ambassadorship model helped with this, but establishing those boundaries earlier would have preserved more time for foundational work.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
