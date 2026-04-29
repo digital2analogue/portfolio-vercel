@@ -1,13 +1,15 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance when working with code in this repository.
 
 ## Commands
 
 ```bash
-npm run dev      # Start dev server (Next.js 16, http://localhost:3000)
-npm run build    # Production build
-npm run lint     # ESLint via next lint
+npm run dev            # Start dev server (Next.js 16, http://localhost:3000)
+npm run build          # contrast check → next build (contrast gate blocks on failure)
+npm run lint           # ESLint via next lint
+npm run check-contrast # Run WCAG AA check in isolation
+npm run sync-tokens    # Compare globals.css token block against brand-tokens build output
 ```
 
 ## Architecture
@@ -16,13 +18,36 @@ npm run lint     # ESLint via next lint
 
 ### Design Token System
 
-The styling approach is token-based, with a two-layer system:
+This repo consumes tokens from the **brand-tokens** repo (`../../brand-tokens`). The base dark theme tokens are inlined into `app/globals.css` — the comment block at the top of that file marks the section clearly.
 
-1. **CSS custom properties** (`app/globals.css`) — the source of truth for all design tokens (colors, typography, spacing, layout, motion, surface). Dark mode is default; light mode tokens exist under `.theme-light`.
-2. **JS token re-exports** (`lib/tokens.ts`) — `T` object and font variables (`mono`, `sans`) that reference CSS vars via `var(--*)`. Components use these for inline styles: `color: T.accent`, `fontFamily: mono`.
-3. **Tailwind bridge** — `@theme inline` block in `globals.css` re-exposes tokens so Tailwind utilities like `bg-bg`, `text-fg`, `font-mono` also work.
+#### Source of truth hierarchy
 
-Components use inline styles with the `T` object rather than Tailwind classes as the primary styling pattern.
+```
+brand-tokens/tokens/base/           ← edit here first
+  ↓ build (node scripts/build-brands.mjs in brand-tokens)
+brand-tokens/build/css/variables.css  ← built output (base dark theme)
+  ↓ sync-tokens compares against
+app/globals.css                     ← inlined token block, consumed by Tailwind + components
+```
+
+**Never edit color values directly in `globals.css`.** If a token value needs to change, change it in brand-tokens, rebuild, and copy the updated block across. If a token is needed urgently, add it locally with a comment `/* TODO: move to brand-tokens */` and run `sync-tokens` to surface it.
+
+#### Token layers in globals.css
+
+1. **Primitives** (`--primitive-color-*`) — raw hex values. Never reference these in components.
+2. **Semantic** (`--color-*`) — named roles referenced in UI code.
+3. **Portfolio-specific** — layout, bloom effects not yet in brand-tokens; marked with a comment block.
+4. **Tailwind bridge** — `@theme inline` block re-exposes semantic tokens as Tailwind utilities.
+
+### Contrast Gate
+
+`scripts/check-contrast.mjs` runs before every build. It validates every text/background color pairing against WCAG AA (4.5:1 minimum).
+
+**When you add a new color pairing to the UI, add it to the `PAIRINGS` array in `scripts/check-contrast.mjs`.** The build will not catch it otherwise.
+
+### JS Token Re-exports
+
+`lib/tokens.ts` exports a `T` object and font variables (`mono`, `sans`) that reference CSS vars. Components use inline styles with `T` as the primary styling pattern: `color: T.accent`, `fontFamily: mono`.
 
 ### Key Data Files
 
@@ -39,8 +64,8 @@ Components use inline styles with the `T` object rather than Tailwind classes as
 
 ### Fonts
 
-JetBrains Mono (primary/mono) and Instrument Sans (secondary/sans) loaded via `next/font/google` in `app/layout.tsx`. CSS variables `--font-jetbrains-mono` and `--font-instrument-sans` are set on `<html>`.
+Space Grotesk (sans/titles), Spectral (serif/body), JetBrains Mono (code) loaded via `next/font/google` in `app/layout.tsx`.
 
 ### Visual Identity
 
-Terminal/code aesthetic — monospace-first, near-monochrome palette with a single accent color (`#3DDB84`). Borders over shadows. Sharp corners by default. All interactive components are client components (`"use client"`).
+Dark-first, green-phosphor aesthetic. Terminal/code feel — near-monochrome palette with phosphor green (`#4ADE6E`) as the single accent. Borders over shadows. All interactive components are client components (`"use client"`).

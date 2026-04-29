@@ -109,12 +109,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "We replaced spreadsheet-style interfaces with modular workflows that made logic explicit and predictable.",
       },
       {
-        type: "image",
-        alt: "Decision engine rules table — full view with five policy rule rows",
-        src: "/projects/images/c1-decision-engine-hero.png",
-      },
-      { type: "h3", text: "Key decisions" },
-      {
         type: "ul",
         items: [
           "Centralized a shared component library as the single source of truth",
