@@ -11,3 +11,5 @@ export default function Footer() {
         contact@riverromney.com<span aria-hidden="true"> →</span>
       </Link>
     </footer>
+  );
+}

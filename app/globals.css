@@ -969,7 +969,7 @@ h2.eyebrow,
   border-radius: var(--radius-sm);
 }
 .blocks figure figcaption {
-  font: var(--font-body-small);
+  font: var(--font-label-medium);
   font-style: italic;
   color: var(--color-foreground-muted);
   margin-top: var(--spacing-tight);
@@ -1322,4 +1322,22 @@ h2.eyebrow,
     padding: 0 var(--primitive-space-sm);
     border-radius: var(--radius-sm);
   }
-  .sign { ga
+  .sign { gap: var(--primitive-space-xs); }
+  .sign a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--primitive-space-2xs);
+  }
+  .case {
+    grid-template-columns: 32px 1fr auto;
+    gap: var(--spacing-inline);
+  }
+  .work-row__header {
+    grid-template-columns: 32px 1fr auto;
+    gap: var(--spacing-inline);
+  }
+  .work-row__body {
+    padding-left: var(--spacing-component);
+  }
+}
