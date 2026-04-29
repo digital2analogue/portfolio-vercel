@@ -84,8 +84,4 @@ export default function IndexPage() {
               </span>
             </Link>
           </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+       
