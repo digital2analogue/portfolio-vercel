@@ -8,8 +8,6 @@ export default function Footer() {
         <span className="cursor cursor--sm" aria-hidden="true" />
       </span>
       <Link href="/contact">
-        river@email.com<span aria-hidden="true"> →</span>
+        contact@riverromney.com<span aria-hidden="true"> →</span>
       </Link>
     </footer>
-  );
-}

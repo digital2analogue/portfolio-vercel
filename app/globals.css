@@ -387,6 +387,17 @@ button:focus-visible {
 .topbar__links a[aria-current="page"] {
   color: var(--color-foreground-action);
 }
+@media (max-width: 560px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: var(--spacing-tight);
+    padding-top: var(--spacing-component);
+  }
+  .topbar__links {
+    gap: var(--spacing-tight);
+    flex-wrap: wrap;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    Main content column
@@ -398,6 +409,11 @@ button:focus-visible {
 }
 .column--narrow {
   max-width: calc(var(--portfolio-column) - 40px);
+}
+@media (max-width: 560px) {
+  .column {
+    padding-top: var(--primitive-space-2xl);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -542,7 +558,7 @@ h2.eyebrow,
 .case:hover,
 .case:focus-visible {
   padding-left: var(--spacing-inline);
-  background: linear-gradient(to right, rgba(74, 222, 110, 0.03), transparent 50%);
+  background: linear-gradient(to right, color-mix(in srgb, var(--color-foreground-accent) 3%, transparent), transparent 50%);
 }
 .case__idx {
   font: var(--font-code);
@@ -693,7 +709,7 @@ h2.eyebrow,
 }
 
 .work-row__body {
-  padding: 0 0 var(--spacing-component) 60px;
+  padding: 0 0 var(--spacing-component) calc(40px + var(--spacing-element));
   font: var(--font-body-large);
   color: var(--color-foreground-alt);
   max-width: 58ch;
@@ -895,7 +911,7 @@ h2.eyebrow,
   margin: var(--primitive-space-xl) 0;
   background: var(--color-background-alt);
   max-width: 58ch;
-  box-shadow: inset 0 0 40px rgba(74, 222, 110, 0.04);
+  box-shadow: inset 0 0 40px color-mix(in srgb, var(--color-foreground-accent) 4%, transparent);
 }
 .blocks blockquote strong {
   color: var(--color-foreground-default);
@@ -1306,22 +1322,4 @@ h2.eyebrow,
     padding: 0 var(--primitive-space-sm);
     border-radius: var(--radius-sm);
   }
-  .sign { gap: var(--primitive-space-xs); }
-  .sign a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    padding: 0 var(--primitive-space-2xs);
-  }
-  .case {
-    grid-template-columns: 32px 1fr auto;
-    gap: var(--spacing-inline);
-  }
-  .work-row__header {
-    grid-template-columns: 32px 1fr auto;
-    gap: var(--spacing-inline);
-  }
-  .work-row__body {
-    padding-left: var(--spacing-component);
-  }
-}
+  .sign { ga
