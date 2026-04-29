@@ -566,7 +566,7 @@ h2.eyebrow,
   text-shadow: var(--phosphor-bloom-sm);
 }
 .case__title {
-  font: var(--font-title-small);
+  font: var(--font-title-medium);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-foreground-default);
   margin-bottom: var(--primitive-space-2xs);
@@ -574,7 +574,7 @@ h2.eyebrow,
 .case__title em {
   font-family: var(--primitive-font-family-serif);
   font-style: italic;
-  color: var(--color-foreground-alt);
+  color: var(--color-foreground-default);
   font-weight: var(--primitive-font-weight-regular);
 }
 .case__sub {
@@ -859,7 +859,7 @@ h2.eyebrow,
   margin: var(--primitive-space-2xl) 0 var(--spacing-element);
 }
 .blocks h3 {
-  font: var(--font-title-small);
+  font: var(--font-title-medium);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-foreground-default);
   margin: var(--primitive-space-xl) 0 var(--spacing-tight);
@@ -1110,7 +1110,7 @@ h2.eyebrow,
   margin-bottom: var(--primitive-space-2xs);
 }
 .case-detail__pager-title {
-  font: var(--font-title-small);
+  font: var(--font-title-medium);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-foreground-default);
 }

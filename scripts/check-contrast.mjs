@@ -91,6 +91,8 @@ const PAIRINGS = [
   { text: '--color-foreground-alt',     bg: BG_ALT,    label: 'Secondary text on elevated surface' },
   { text: '--color-foreground-muted',   bg: BG_ALT,    label: 'Muted text on elevated surface' },
   { text: '--color-foreground-action',  bg: BG_ALT,    label: 'Action links on elevated surface' },
+  // Marginalia labels (section markers)
+  { text: '--color-foreground-muted',   bg: BG,        label: 'Marginalia labels on page canvas' },
   // Action surface (primary buttons, CTAs)
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
 ]
