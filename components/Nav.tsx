@@ -34,4 +34,8 @@ export default function Nav() {
               {l.label}
             </Link>
           );
-       
+        })}
+      </div>
+    </nav>
+  );
+}
