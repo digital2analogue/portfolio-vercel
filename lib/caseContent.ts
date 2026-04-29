@@ -430,6 +430,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "The contextual type scale reduced 39 font variants to a purposeful, platform-aware system.",
         src: "/projects/images/casestudy-otkit-typescale.png",
       },
+      {
+        type: "image",
+        alt: "System maturity over time — typography evolution from raw sizes to semantic naming to brand-refresh naming",
+        src: "/projects/images/casestudy-otkit-system-maturity.png",
+      },
       { type: "h3", text: "Icon system" },
       {
         type: "ul",
@@ -506,10 +511,20 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "The Mass theme serves OpenTable's core restaurant audience. Editorial in feel, it uses a two-column structure inspired by e-commerce — booking surfaced immediately, decisions guided with minimal visual noise. Every component follows the same token-driven pattern, so new features land consistently without bespoke design decisions at the component level.",
       },
+      {
+        type: "image",
+        alt: "Mass Theme — functional editorial restaurant detail with hero section, two-column layout, and booking flow",
+        src: "/projects/images/casestudy-otkit-mass-theme.png",
+      },
       { type: "h3", text: "Iconic Theme" },
       {
         type: "p",
         text: "For OpenTable's premium Iconic restaurant tier, the system delivered a distinct but coherent experience. Full-bleed photography, dark wine-inspired time slot styling, and sticky booking flows communicated prestige without sacrificing usability. The same underlying tokens and components powered both themes — no fork required, just a different set of token values.",
+      },
+      {
+        type: "image",
+        alt: "Iconic Theme — premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
+        src: "/projects/images/casestudy-otkit-iconic-theme.png",
       },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
