@@ -122,23 +122,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Full onboarding flow — all three setup steps visible on a single scrollable page",
-        src: "/projects/images/c1-decision-engine-onboarding-full.png",
-      },
-      {
-        type: "image",
-        alt: "Step 1 — Assign an outcome type for the ruleset: Decline, Assign Credit Limit, Require Action, Award Rewards, and more",
-        src: "/projects/images/c1-decision-engine-onboarding-step1.png",
-      },
-      {
-        type: "image",
-        alt: "Step 2 — Name the model and add a description before building rules",
-        src: "/projects/images/c1-decision-engine-onboarding-step2.png",
-      },
-      {
-        type: "image",
-        alt: "Step 3 — Select data elements from a searchable list; a preview panel shows attribute metadata on the right",
-        src: "/projects/images/c1-decision-engine-onboarding-step3.png",
+        alt: "Complete onboarding flow — all three setup steps on a single scrollable page: assign an outcome type, name the model, then select data elements from a searchable list with inline metadata preview",
+        src: "/projects/images/c1-decision-engine-onboarding-flow.png",
       },
       { type: "hr" },
       { type: "h2", text: "Component Deep Dive: Rule Cell (Conceptual)" },
