@@ -516,7 +516,6 @@ h2.eyebrow,
   color: var(--color-foreground-muted);
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
-  opacity: 0.6;
   right: calc(100% + var(--spacing-element));
   top: var(--primitive-space-2xs);
   text-align: right;
