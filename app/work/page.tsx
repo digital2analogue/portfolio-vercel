@@ -47,7 +47,7 @@ export default function WorkPage() {
         · · · · · · · ·
       </div>
 
-      <ul className="work-list rise d5">
+      <ul className="work-list rise d3">
         {CASES.map((c) => (
           <li key={c.slug}>
             <Link href={`/work/${c.slug}`} className="work-row">

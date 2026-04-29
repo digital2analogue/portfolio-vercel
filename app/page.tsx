@@ -39,7 +39,7 @@ export default function IndexPage() {
           <span className="single-status__sep" aria-hidden="true">·</span>
           <span>Remote / San Francisco</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
-          <span>Updated 2026-04-18</span>
+          <span>Updated {new Date().toISOString().slice(0, 10)}</span>
         </div>
       </section>
 
@@ -87,3 +87,5 @@ export default function IndexPage() {
         ))}
       </ul>
     </div>
+  );
+}
