@@ -68,9 +68,6 @@ export default function IndexPage() {
               className={`case rise d${6 + i}`}
               href={`/work/${c.slug}`}
             >
-              <span className="case__anchor" aria-hidden="true">
-                case<span className="accent">/{c.index}</span>
-              </span>
               <span className="case__idx" aria-hidden="true">
                 {c.index}
               </span>
