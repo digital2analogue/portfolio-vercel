@@ -1172,7 +1172,7 @@ h2.eyebrow,
   text-shadow: var(--phosphor-bloom-sm);
 }
 .tokens-row__role {
-  font: var(--font-body-medium);
+  font: var(--font-body-large);
   color: var(--color-foreground-alt);
 }
 
