@@ -69,8 +69,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Before and after: spreadsheet workflow versus the decision engine table",
-        src: "/projects/images/c1-decision-engine-before-after.png",
+        alt: "Before: spreadsheet workflow used prior to the decision engine",
+        src: "/projects/images/c1-decision-engine-before.png",
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -79,7 +79,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           "Compliance-sensitive domain with low tolerance for error",
           "Legacy interaction patterns deeply embedded in daily workflows",
-          "Multiple teams extending shared patterns",
+          "Code base was using open-source Ant Design System instead of Capital One's Gravity Design System",
           "Need for incremental migration rather than a full rebuild",
         ],
       },
@@ -88,6 +88,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "Instead of redesigning screens, I focused on **establishing a clear system hierarchy** that could scale across use cases and teams.",
+      },
+      {
+        type: "image",
+        alt: "After: the decision engine table interface",
+        src: "/projects/images/c1-decision-engine-after.png",
       },
       { type: "p", text: "The approach:" },
       {
@@ -111,7 +116,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Centralized a shared component library as the single source of truth",
+          "Centralized a shared component library (Figma and Storybook) as the single source of truth",
           "Defined repeatable interaction patterns for common analyst tasks",
           "Created a migration roadmap aligned to system maturity",
         ],
