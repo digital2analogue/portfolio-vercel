@@ -157,8 +157,9 @@
    Values brand-tokens doesn't cover yet — proposed additions to the system.
    ═══════════════════════════════════════════════════════════════════ */
 :root {
-  /* Content column width — candidate for a layout-width family in the system. */
-  --portfolio-column: 680px;
+  /* Content column widths — candidates for a layout-width family in the system. */
+  --portfolio-column: 960px;
+  --portfolio-column-wide: 1280px;
 
   /* Phosphor bloom effects — atmospheric glow. Proposed: shadow.phosphor-*. */
   --phosphor-bloom-sm: 0 0 8px rgba(74, 222, 110, 0.35);
@@ -436,7 +437,6 @@ button:focus-visible {
   letter-spacing: var(--letter-spacing-display);
   color: var(--color-foreground-default);
   margin: 0 0 var(--spacing-component);
-  max-width: 20ch;
 }
 .display em {
   font-family: var(--primitive-font-family-serif);
@@ -448,7 +448,6 @@ button:focus-visible {
 .lede {
   font: var(--font-body-large);
   color: var(--color-foreground-alt);
-  max-width: 54ch;
   margin: 0 0 var(--spacing-component);
 }
 
@@ -508,7 +507,7 @@ h2.eyebrow,
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   Micro-marginalia — visible only above 1060px
+   Micro-marginalia — visible only above 1380px
    ═══════════════════════════════════════════════════════════════════ */
 .marginalia {
   position: absolute;
@@ -525,7 +524,7 @@ h2.eyebrow,
   color: var(--color-foreground-action);
   text-shadow: var(--phosphor-bloom-sm);
 }
-@media (max-width: 1060px) {
+@media (max-width: 1380px) {
   .marginalia { display: none; }
 }
 
@@ -614,7 +613,7 @@ h2.eyebrow,
     opacity var(--motion-duration-standard) var(--motion-easing-default),
     color   var(--motion-duration-standard) var(--motion-easing-default);
 }
-@media (max-width: 1060px) {
+@media (max-width: 1380px) {
   .case__anchor { display: none; }
 }
 
@@ -868,7 +867,6 @@ h2.eyebrow,
   font: var(--font-body-large);
   color: var(--color-foreground-alt);
   margin: 0 0 var(--spacing-element);
-  max-width: 62ch;
 }
 .blocks p strong {
   color: var(--color-foreground-default);
@@ -880,7 +878,6 @@ h2.eyebrow,
   margin: 0 0 var(--spacing-component);
   padding-left: var(--spacing-component);
   list-style: none;
-  max-width: 62ch;
 }
 .blocks ul li {
   position: relative;
@@ -909,7 +906,6 @@ h2.eyebrow,
   padding: var(--spacing-tight) var(--spacing-component);
   margin: var(--primitive-space-xl) 0;
   background: var(--color-background-alt);
-  max-width: 58ch;
   box-shadow: inset 0 0 40px color-mix(in srgb, var(--color-foreground-accent) 4%, transparent);
 }
 .blocks blockquote strong {
@@ -923,7 +919,6 @@ h2.eyebrow,
   padding: var(--spacing-element) var(--spacing-component);
   margin: var(--spacing-component) 0;
   background: var(--color-background-alt);
-  max-width: 62ch;
 }
 .blocks .block-note strong {
   color: var(--color-foreground-default);
@@ -972,7 +967,6 @@ h2.eyebrow,
   font-style: italic;
   color: var(--color-foreground-muted);
   margin-top: var(--spacing-tight);
-  max-width: 62ch;
 }
 .blocks .block-image__placeholder {
   width: 100%;
