@@ -53,7 +53,6 @@ const TYPE = [
   { token: "--font-body-small",   label: "Body Small",     sample: BODY_SAMPLE,     size: "12px / 1.6 · Spectral 400" },
   { token: "--font-label-large",  label: "Label Large",    sample: "Label Large",   size: "16px / 1.25 · Space Grotesk 400" },
   { token: "--font-label-medium", label: "Label Medium",   sample: "Label Medium",  size: "14px / 1.25 · Space Grotesk 400" },
-  { token: "--font-label-small",  label: "Label Small",    sample: "Label Small",   size: "12px / 1.25 · Space Grotesk 400" },
   { token: "--font-code",         label: "Code",           sample: "Code",          size: "14px / 1.6 · JetBrains Mono 400" },
 ];
 
