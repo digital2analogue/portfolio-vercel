@@ -31,7 +31,7 @@ export const CASES: CaseStudy[] = [
     title: "Design System",
     company: "OpenTable",
     year: "2021",
-    role: "Principal Designer",
+    role: "Lead Designer, Product Owner",
     tags: ["Design Systems", "Tokens", "Multi-platform"],
     summary:
       "Built and scaled OpenTable's design system — establishing shared tokens, component patterns, and contribution workflows across web and native platforms.",
