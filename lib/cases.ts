@@ -30,7 +30,7 @@ export const CASES: CaseStudy[] = [
     index: "02",
     title: "Design System",
     company: "OpenTable",
-    year: "2021",
+    year: "2022 – 2024",
     role: "Lead Designer, Product Owner",
     tags: ["Design Systems", "Tokens", "Multi-platform"],
     summary:
@@ -43,7 +43,7 @@ export const CASES: CaseStudy[] = [
     index: "03",
     title: "Reservation Redesign",
     company: "OpenTable",
-    year: "2022",
+    year: "2019 – 2022",
     role: "Design Systems Lead & Product Partner",
     tags: ["Product Design", "Design Systems", "Enterprise UX"],
     summary:
