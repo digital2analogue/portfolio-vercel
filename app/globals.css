@@ -566,7 +566,7 @@ h2.eyebrow,
   text-shadow: var(--phosphor-bloom-sm);
 }
 .case__title {
-  font: var(--font-title-large);
+  font: var(--font-title-medium);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-foreground-default);
   margin-bottom: var(--primitive-space-2xs);
