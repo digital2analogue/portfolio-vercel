@@ -42,18 +42,19 @@ const COLORS = [
 ];
 
 // Typography scale — semantic shorthand tokens
+const BODY_SAMPLE = "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.";
 const TYPE = [
-  { token: "--font-display",      label: "Display",        sample: "The system behind the surface.",                                                                                size: "40px / 1.1 · Space Grotesk 300" },
-  { token: "--font-title-large",  label: "Title — Large",  sample: "Token architecture",                                                                                           size: "32px / 1.25 · Space Grotesk 300" },
-  { token: "--font-title-medium", label: "Title — Medium", sample: "Design / code contract",                                                                                       size: "24px / 1.25 · Space Grotesk 300" },
-  { token: "--font-title-small",  label: "Title — Small",  sample: "Primitive → semantic → component",                                                                             size: "20px / 1.25 · Space Grotesk 300" },
-  { token: "--font-body-large",   label: "Body — Large",   sample: "Tokens abstract design decisions so components never need to know where a value came from — only what role it plays.", size: "16px / 1.6 · Spectral 400" },
-  { token: "--font-body-medium",  label: "Body — Medium",  sample: "Semantic tokens map intent to value. A button uses --color-background-action, not a raw hex.",                 size: "14px / 1.6 · Spectral 400" },
-  { token: "--font-body-small",   label: "Body — Small",   sample: "Primitives belong to the token layer only. UI code never references them directly.",                           size: "12px / 1.6 · Spectral 400" },
-  { token: "--font-label-large",  label: "Label — Large",  sample: "DESIGN TOKENS //",                                                                                             size: "16px / 1.25 · Space Grotesk 400" },
-  { token: "--font-label-medium", label: "Label — Medium", sample: "BRAND-TOKENS · V0.3",                                                                                          size: "14px / 1.25 · Space Grotesk 400" },
-  { token: "--font-label-small",  label: "Label — Small",  sample: "§ 02 / TYPOGRAPHY",                                                                                            size: "12px / 1.25 · Space Grotesk 400" },
-  { token: "--font-code",         label: "Code",           sample: "$ node scripts/build-brands.mjs",                                                                              size: "14px / 1.6 · JetBrains Mono 400" },
+  { token: "--font-display",      label: "Display",        sample: "Display",       size: "40px / 1.1 · Space Grotesk 300" },
+  { token: "--font-title-large",  label: "Title Large",    sample: "Title Large",   size: "32px / 1.25 · Space Grotesk 300" },
+  { token: "--font-title-medium", label: "Title Medium",   sample: "Title Medium",  size: "24px / 1.25 · Space Grotesk 300" },
+  { token: "--font-title-small",  label: "Title Small",    sample: "Title Small",   size: "20px / 1.25 · Space Grotesk 300" },
+  { token: "--font-body-large",   label: "Body Large",     sample: BODY_SAMPLE,     size: "16px / 1.6 · Spectral 400" },
+  { token: "--font-body-medium",  label: "Body Medium",    sample: BODY_SAMPLE,     size: "14px / 1.6 · Spectral 400" },
+  { token: "--font-body-small",   label: "Body Small",     sample: BODY_SAMPLE,     size: "12px / 1.6 · Spectral 400" },
+  { token: "--font-label-large",  label: "Label Large",    sample: "Label Large",   size: "16px / 1.25 · Space Grotesk 400" },
+  { token: "--font-label-medium", label: "Label Medium",   sample: "Label Medium",  size: "14px / 1.25 · Space Grotesk 400" },
+  { token: "--font-label-small",  label: "Label Small",    sample: "Label Small",   size: "12px / 1.25 · Space Grotesk 400" },
+  { token: "--font-code",         label: "Code",           sample: "Code",          size: "14px / 1.6 · JetBrains Mono 400" },
 ];
 
 // Spacing scale — semantic
