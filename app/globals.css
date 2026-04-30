@@ -325,7 +325,7 @@ footer {
   padding: var(--primitive-space-sm) var(--primitive-space-md);
   background: var(--color-background-action);
   color: var(--color-foreground-on-action);
-  font: var(--font-label-small);
+  font: var(--font-label-medium);
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
   text-decoration: none;
@@ -596,7 +596,7 @@ h2.eyebrow,
 
 .case__anchor {
   position: absolute;
-  font: var(--font-label-small);
+  font: var(--font-label-medium);
   color: var(--color-foreground-muted);
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
@@ -754,7 +754,7 @@ h2.eyebrow,
    ═══════════════════════════════════════════════════════════════════ */
 .tag {
   display: inline-block;
-  font: var(--font-label-small);
+  font: var(--font-label-medium);
   color: var(--color-foreground-muted);
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
