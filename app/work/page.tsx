@@ -56,11 +56,11 @@ export default function WorkPage() {
                   {c.index}
                 </span>
                 <div>
-                  <div className="case__sub">
-                    {c.company} · {c.year} · {c.role}
-                  </div>
                   <div className="case__title">
                     <em>{c.title}</em>
+                  </div>
+                  <div className="case__sub">
+                    {c.company} · {c.year} · {c.role}
                   </div>
                 </div>
                 <span className="work-row__toggle" aria-hidden="true">
