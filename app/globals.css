@@ -146,10 +146,10 @@
   --font-body-large:   var(--primitive-font-weight-regular) var(--primitive-font-size-base)/var(--primitive-font-line-height-normal) var(--primitive-font-family-serif);
   --font-body-medium:  var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-serif);
   --font-body-small:   var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-serif);
-  --font-label-large:  var(--primitive-font-weight-regular) var(--primitive-font-size-base)/var(--primitive-font-line-height-snug)   var(--primitive-font-family-sans);
-  --font-label-medium: var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-sans);
-  --font-label-small:  var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-sans);
-  --font-code:         var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-mono);
+  --font-label-large:  var(--primitive-font-weight-regular) var(--primitive-font-size-base)/var(--primitive-font-line-height-snug)   var(--primitive-font-family-mono);
+  --font-label-medium: var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-mono);
+  --font-label-small:  var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-mono);
+  --font-code:         var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-mono);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
