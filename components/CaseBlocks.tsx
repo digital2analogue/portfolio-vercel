@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
 
 /**
@@ -113,10 +113,27 @@ function CaseImage({
   naturalSize?: boolean;
 }) {
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
+
+  const openLightbox = () => setOpen(true);
+  const closeLightbox = () => {
+    setOpen(false);
+    // Return focus to the trigger on close so keyboard users don't lose their place
+    setTimeout(() => triggerRef.current?.focus(), 0);
+  };
+
   return (
     <figure className={naturalSize ? "block-image--natural-size" : undefined}>
       {src ? (
-        <div className="block-image__wrap" onClick={() => setOpen(true)}>
+        <div
+          ref={triggerRef}
+          className="block-image__wrap"
+          role="button"
+          tabIndex={0}
+          aria-label={`Zoom image: ${alt}`}
+          onClick={openLightbox}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(); } }}
+        >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={src} alt={alt} />
           <div className="block-image__zoom-icon" aria-hidden="true">
@@ -140,12 +157,21 @@ function CaseImage({
       )}
       {caption && <figcaption>{caption}</figcaption>}
       {open && src && (
-        <Lightbox src={src} alt={alt} onClose={() => setOpen(false)} />
+        <Lightbox src={src} alt={alt} onClose={closeLightbox} />
       )}
     </figure>
   );
 }
 
+/**
+ * Lightbox — full-screen image viewer.
+ * WCAG 2.1 AA compliant:
+ *   - role="dialog" + aria-modal so screen readers announce the context change
+ *   - aria-label uses the image alt text as the dialog label
+ *   - Focus moves to close button on open; returns to trigger image on close
+ *   - Escape key closes; focus trap keeps Tab/Shift+Tab inside the dialog
+ *   - Body scroll locked while open
+ */
 function Lightbox({
   src,
   alt,
@@ -155,39 +181,60 @@ function Lightbox({
   alt: string;
   onClose: () => void;
 }) {
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  // On open: focus the close button, lock body scroll
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
+    closeRef.current?.focus();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  // Escape key closes
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
+
+  // Focus trap — keep Tab/Shift+Tab inside the dialog
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "Tab") return;
+    const focusable = overlayRef.current?.querySelectorAll<HTMLElement>(
+      'button, [href], input, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable || focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  };
 
   return (
     <div
+      ref={overlayRef}
+      className="lightbox"
       role="dialog"
       aria-modal="true"
       aria-label={alt}
       onClick={onClose}
-      className="lightbox"
+      onKeyDown={handleKeyDown}
     >
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-        aria-label="Close"
-        className="lightbox__close"
-      >
-        [ Esc ] Close
-      </button>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={src} alt={alt} onClick={(e) => e.stopPropagation()} />
+      <button
+        ref={closeRef}
+        className="lightbox__close"
+        onClick={onClose}
+        aria-label="Close image"
+      >
+        ESC / CLOSE
+      </button>
     </div>
   );
 }

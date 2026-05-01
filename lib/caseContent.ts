@@ -51,12 +51,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-coded-prototype.gif",
         naturalSize: true,
       },
-      {
-        type: "image",
-        alt: "Figma animation demonstrating the Decision Engine interface being built and composed in design tooling",
-        src: "/projects/images/c1-decision-engine-figma-make-animation.gif",
-        naturalSize: true,
-      },
       { type: "h2", text: "The Problem" },
       {
         type: "p",

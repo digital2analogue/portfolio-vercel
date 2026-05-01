@@ -85,7 +85,11 @@ export default function ContactPage() {
               className="contact-row"
               href={l.href}
               {...(l.download !== undefined && { download: l.download })}
-              {...(l.external && { target: "_blank", rel: "noopener noreferrer" })}
+              {...(l.external && {
+                target: "_blank",
+                rel: "noopener noreferrer",
+                "aria-label": `${l.label.charAt(0) + l.label.slice(1).toLowerCase()} — ${l.value} (opens in new tab)`,
+              })}
             >
               <span className="contact-row__label">{l.label}</span>
               <span className="contact-row__value">
