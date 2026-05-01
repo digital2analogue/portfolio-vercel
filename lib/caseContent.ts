@@ -67,7 +67,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The core issue wasn't missing features — it was **structural ambiguity**.",
+        text: "The core issue wasn't missing features. It was **structural ambiguity**.",
       },
       {
         type: "image",
@@ -125,11 +125,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The onboarding flow walked analysts through a three-step setup on a single page — choosing an outcome type, naming the model, and selecting the data elements it could evaluate. Each step was scoped to a single decision, reducing cognitive load before reaching the main interface.",
+        text: "The onboarding flow walked analysts through a three-step setup on a single page: choosing an outcome type, naming the model, and selecting the data elements it could evaluate. Each step was scoped to a single decision, reducing cognitive load before reaching the main interface.",
       },
       {
         type: "image",
-        alt: "Design deliverables for the C1 Decision Engine — component library, interaction patterns, and migration roadmap",
+        alt: "Design deliverables for the C1 Decision Engine: component library, interaction patterns, and migration roadmap",
         src: "/projects/images/c1-decision-engine-deliverables.png",
       },
       { type: "hr" },
@@ -144,7 +144,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model — badge tap to swap attribute, dropdown for operator, direct input for value — eliminated the modal-heavy workflows analysts had been tolerating, cutting the path to a saved rule from eight clicks down to three (a 63% reduction).",
+        text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model (badge tap to swap attribute, dropdown for operator, direct input for value) eliminated the modal-heavy workflows analysts had been tolerating, cutting the path to a saved rule from eight clicks down to three (a 63% reduction).",
       },
       { type: "h3", text: "Impact" },
       {
@@ -155,7 +155,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Live Prototype" },
       {
         type: "p",
-        text: "A public-safe, runnable version of the prototype lives at [decisioning-table.vercel.app](https://decisioning-table.vercel.app/) — an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface.",
+        text: "A public-safe, runnable version of the prototype lives at [decisioning-table.vercel.app](https://decisioning-table.vercel.app/). It's an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface.",
       },
       { type: "h3", text: "Onboarding: three decisions, one page" },
       {
@@ -164,26 +164,26 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Step 1 of the onboarding flow — Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
+        alt: "Step 1 of the onboarding flow: Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
         caption:
-          "Step 1 — outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
+          "Step 1: outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
         src: "/projects/images/decisioning-table-onboarding-step1.png",
       },
       {
         type: "image",
-        alt: "Step 3 of the onboarding flow — Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
+        alt: "Step 3 of the onboarding flow: Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
         caption:
-          "Step 3 — categorized data elements. The right pane previews details for the selected element before you commit to it.",
+          "Step 3: categorized data elements. The right pane previews details for the selected element before you commit to it.",
         src: "/projects/images/decisioning-table-onboarding-step3.png",
       },
       { type: "h3", text: "The rule table" },
       {
         type: "p",
-        text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line — name, data attribute, operator, value, optional companion attributes, and the outcome.",
+        text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line with name, data attribute, operator, value, optional companion attributes, and the outcome.",
       },
       {
         type: "image",
-        alt: "Main rule table — five rules with colored data attribute badges (Income green, Expense red), operator dropdowns (At least, Less than, Greater than, At most), amount values, and segmented Approve/Deny outcome switches per row",
+        alt: "Main rule table: five rules with colored data attribute badges (Income green, Expense red), operator dropdowns (At least, Less than, Greater than, At most), amount values, and segmented Approve/Deny outcome switches per row",
         caption:
           "Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
         src: "/projects/images/decisioning-table-rules.png",
@@ -191,7 +191,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Inline data-attribute picker" },
       {
         type: "p",
-        text: "The data attribute on each row is a button styled as a colored badge. Clicking it opens a small inline dropdown anchored to the badge — Income, Expense, Asset, Liability — so the user can change the attribute without leaving the row, opening a modal, or losing context on the rest of the table.",
+        text: "The data attribute on each row is a button styled as a colored badge. Clicking it opens a small inline dropdown anchored to the badge (Income, Expense, Asset, Liability), so the user can change the attribute without leaving the row, opening a modal, or losing context on the rest of the table.",
       },
       {
         type: "image",
@@ -203,7 +203,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {
         type: "p",
-        text: "Each row's outcome is a segmented two-state control — green Approve on the left, red Deny on the right — with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
+        text: "Each row's outcome is a segmented two-state control: green Approve on the left, red Deny on the right, with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
       },
       {
         type: "image",
@@ -215,7 +215,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Split-button progressive disclosure" },
       {
         type: "p",
-        text: "The primary CTA is a split button: the main face is **+ Add rule** (the common path), and a chevron beside it opens a small menu with the secondary action — Add existing rule. The split keeps the default action one click away while making the alternative discoverable rather than buried in a kebab menu.",
+        text: "The primary CTA is a split button: the main face is **+ Add rule** (the common path), and a chevron beside it opens a small menu with the secondary action, Add existing rule. The split keeps the default action one click away while making the alternative discoverable rather than buried in a kebab menu.",
       },
       {
         type: "image",
@@ -268,7 +268,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "In complex enterprise systems, clarity is a performance feature. This work reinforced that scalable UX isn't about simplifying problems — it's about **making complexity legible**.",
+        text: "In complex enterprise systems, clarity is a performance feature. This work reinforced that scalable UX isn't about simplifying problems. It's about **making complexity legible**.",
       },
     ],
   },
@@ -280,13 +280,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     blocks: [
       {
         type: "image",
-        alt: "OTKit Design System hero — overview of the design system River built at OpenTable spanning iOS, Android, and web",
+        alt: "OTKit Design System hero: overview of the design system River built at OpenTable spanning iOS, Android, and web",
         src: "/projects/images/otkit-ds-hero.png",
       },
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "OTKit is OpenTable's design system supporting Restaurant and Diner products across iOS, Android, and web. When I took ownership, the system existed — but lacked cohesion, governance, and trust. Design drift, fragmented sources of truth, and inconsistent adoption were slowing teams down and introducing costly QA issues.",
+        text: "OTKit is OpenTable's design system supporting Restaurant and Diner products across iOS, Android, and web. When I took ownership, the system existed, but lacked cohesion, governance, and trust. Design drift, fragmented sources of truth, and inconsistent adoption were slowing teams down and introducing costly QA issues.",
       },
       { type: "p", text: "My mandate was not just to redesign components." },
       {
@@ -334,11 +334,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "One-off component creation" },
       {
         type: "p",
-        text: "**100%** of iOS designers said they were creating new or one-off components often or occasionally, compared to **60%** of web designers across both Restaurant and Diner teams. iOS teams suffered the most — which made sense given we had a much more mature web component library (Buffet) but nothing comparable for native.",
+        text: "**100%** of iOS designers said they were creating new or one-off components often or occasionally, compared to **60%** of web designers across both Restaurant and Diner teams. iOS teams suffered the most, which made sense given we had a much more mature web component library (Buffet) but nothing comparable for native.",
       },
       {
         type: "quote",
-        text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us. — Restaurant iOS engineer",
+        text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us. (Restaurant iOS engineer)",
       },
       { type: "h3", text: "Time spent clarifying styling during release" },
       {
@@ -348,11 +348,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Consolidating research" },
       {
         type: "p",
-        text: "We ran 1:1 interviews and remote collaborative brainstorms using FigJam and Dovetail. The main insight was clear: designers and engineers often had the **same problem** — unclear documentation, scattered sources of truth, and no shared language for components. Most folks knew what colors and styles to use, but much of the style guide lived in designers' heads rather than in a system.",
+        text: "We ran 1:1 interviews and remote collaborative brainstorms using FigJam and Dovetail. The main insight was clear: designers and engineers often had the **same problem**, namely unclear documentation, scattered sources of truth, and no shared language for components. Most folks knew what colors and styles to use, but much of the style guide lived in designers' heads rather than in a system.",
       },
       {
         type: "quote",
-        text: "We have a ton of legacy styles and pages on our iOS apps and it's always a push and pull on when and how to update those. — Cris, designer on Restaurant product",
+        text: "We have a ton of legacy styles and pages on our iOS apps and it's always a push and pull on when and how to update those. (Cris, designer on Restaurant product)",
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -407,7 +407,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Figma Variables panel showing OTKit foreground color tokens — semantic roles (default, alt, disabled, action, success, info, warning, danger) mapped across Light and Dark themes with primitive references",
+        alt: "Figma Variables panel showing OTKit foreground color tokens: semantic roles (default, alt, disabled, action, success, info, warning, danger) mapped across Light and Dark themes with primitive references",
         caption: "Primitive → Semantic → Component. The three-tier contract that made OTKit's theming scale without forking.",
         src: "/projects/images/3UxjijGLRDUlHaXt.png",
       },
@@ -426,7 +426,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "System thinking in action: Table Statuses" },
       {
         type: "p",
-        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. It was a win-win: the product got what it needed, and the system stayed coherent.",
+        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states, and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. It was a win-win: the product got what it needed, and the system stayed coherent.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
@@ -473,7 +473,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "System maturity over time — typography evolution from raw sizes to semantic naming to brand-refresh naming",
+        alt: "System maturity over time: typography evolution from raw sizes to semantic naming to brand-refresh naming",
         src: "/projects/images/casestudy-otkit-system-maturity.png",
       },
       { type: "h3", text: "Icon system" },
@@ -552,21 +552,21 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Mass Theme" },
       {
         type: "p",
-        text: "The Mass theme serves OpenTable's core restaurant audience. Editorial in feel, it uses a two-column structure inspired by e-commerce — booking surfaced immediately, decisions guided with minimal visual noise. Every component follows the same token-driven pattern, so new features land consistently without bespoke design decisions at the component level.",
+        text: "The Mass theme serves OpenTable's core restaurant audience. Editorial in feel, it uses a two-column structure inspired by e-commerce: booking surfaced immediately, decisions guided with minimal visual noise. Every component follows the same token-driven pattern, so new features land consistently without bespoke design decisions at the component level.",
       },
       {
         type: "image",
-        alt: "Mass Theme — functional editorial restaurant detail with hero section, two-column layout, and booking flow",
+        alt: "Mass Theme: functional editorial restaurant detail with hero section, two-column layout, and booking flow",
         src: "/projects/images/ot-brand-refresh-mass-theme.png",
       },
       { type: "h3", text: "Iconic Theme" },
       {
         type: "p",
-        text: "For OpenTable's premium Iconic restaurant tier, the system delivered a distinct but coherent experience. Full-bleed photography, dark wine-inspired time slot styling, and sticky booking flows communicated prestige without sacrificing usability. The same underlying tokens and components powered both themes — no fork required, just a different set of token values.",
+        text: "For OpenTable's premium Iconic restaurant tier, the system delivered a distinct but coherent experience. Full-bleed photography, dark wine-inspired time slot styling, and sticky booking flows communicated prestige without sacrificing usability. The same underlying tokens and components powered both themes. No fork required, just a different set of token values.",
       },
       {
         type: "image",
-        alt: "Iconic Theme — premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
+        alt: "Iconic Theme: premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
         src: "/projects/images/ot-brand-refresh-iconic-theme.png",
       },
       { type: "hr" },
@@ -584,7 +584,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Designers and engineers also reported a **27% lift in clarity around Figma component sources** in our follow-up survey — the consolidation work made it easier to find authoritative components without hunting through legacy Storybooks and one-off libraries.",
+        text: "Designers and engineers also reported a **27% lift in clarity around Figma component sources** in our follow-up survey. The consolidation work made it easier to find authoritative components without hunting through legacy Storybooks and one-off libraries.",
       },
       {
         type: "quote",
@@ -594,7 +594,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "What Made This Work" },
       {
         type: "p",
-        text: "OTKit's adoption didn't happen through enforcement. We built a network of **design ambassadors** — designers embedded in product teams who championed the system locally and surfaced friction back to the core team. This created a feedback loop that made the system more useful over time.",
+        text: "OTKit's adoption didn't happen through enforcement. We built a network of **design ambassadors**: designers embedded in product teams who championed the system locally and surfaced friction back to the core team. This created a feedback loop that made the system more useful over time.",
       },
       {
         type: "image",
@@ -614,11 +614,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "quote",
-        text: "I wanted to directly reach out and thank you for your feedback in today's session. All of the links and resources you shared were incredibly helpful. — Stephanie, Restaurant Design Ambassador",
+        text: "I wanted to directly reach out and thank you for your feedback in today's session. All of the links and resources you shared were incredibly helpful. (Stephanie, Restaurant Design Ambassador)",
       },
       {
         type: "quote",
-        text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team. — Jordon, Restaurant Design Ambassador",
+        text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team. (Jordon, Restaurant Design Ambassador)",
       },
       {
         type: "p",
@@ -629,7 +629,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Challenge: Lack of native Figma support for design tokens" },
       {
         type: "p",
-        text: "We started work on the foundations before Figma released Variables. This meant we initially had to manage tokens through workarounds — naming conventions, separate documentation, and manual syncing. When Variables shipped, we migrated quickly, but the gap cost us early momentum.",
+        text: "We started work on the foundations before Figma released Variables. This meant we initially had to manage tokens through workarounds: naming conventions, separate documentation, and manual syncing. When Variables shipped, we migrated quickly, but the gap cost us early momentum.",
       },
       {
         type: "p",
@@ -642,7 +642,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**What I'd do next time:** Lean harder into async from the start — more recorded video demos, tech talks, dedicated Slack Q&A channels, and newsletters. The newsletter ended up being one of our most effective tools, and I wish we'd started it earlier.",
+        text: "**What I'd do next time:** Lean harder into async from the start, with more recorded video demos, tech talks, dedicated Slack Q&A channels, and newsletters. The newsletter ended up being one of our most effective tools, and I wish we'd started it earlier.",
       },
       { type: "h3", text: "Challenge: Scaling myself" },
       {
@@ -657,7 +657,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "The success of OTKit wasn't the components — it was the shift in mindset. The system became something teams relied on, not something they worked around.",
+        text: "The success of OTKit wasn't the components. It was the shift in mindset. The system became something teams relied on, not something they worked around.",
       },
       { type: "p", text: "That's the difference between a library and a platform." },
     ],
@@ -671,7 +671,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "I led the redesign of OpenTable's restaurant reservation details flow — a business-critical interface used daily by restaurant operators. The work modernized a dense, legacy experience while preserving information richness, improving usability, and aligning the product with the evolving OTKit design system.",
+        text: "I led the redesign of OpenTable's restaurant reservation details flow, a business-critical interface used daily by restaurant operators. The work modernized a dense, legacy experience while preserving information richness, improving usability, and aligning the product with the evolving OTKit design system.",
       },
       {
         type: "p",
@@ -679,7 +679,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Reservation Details — before-and-after comparison. Legacy flat layout on the left; the redesigned card-based hierarchy on the right.",
+        alt: "Reservation Details, before-and-after comparison. Legacy flat layout on the left; the redesigned card-based hierarchy on the right.",
         caption: "iPad → iPhone. Reverse-engineering OpenTable's Front of House iPad app to iPhone and Android.",
         src: "/projects/images/ot-reservations-native-ios-android.png",
       },
@@ -711,11 +711,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Despite its importance, it had the **most legacy styling** in the product — making UX improvements slow and risky.",
+        text: "Despite its importance, it had the **most legacy styling** in the product, making UX improvements slow and risky.",
       },
       {
         type: "image",
-        alt: "Before and after comparison of the reservation card — legacy flat layout on the left, redesigned modular card-based hierarchy on the right",
+        alt: "Before and after comparison of the reservation card: legacy flat layout on the left, redesigned modular card-based hierarchy on the right",
         caption: "Before → After. Same information density, restructured for clarity and cross-platform consistency.",
         src: "/projects/images/ot-reservations-reservation-card-before-after.png",
       },
@@ -772,7 +772,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
-        caption: "Making guest and reservation information modular — components designed to scale across multiple contexts.",
+        caption: "Making guest and reservation information modular: components designed to scale across multiple contexts.",
         src: "/projects/images/ot-reservations-modularity.png",
       },
       {
@@ -798,7 +798,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Animation of the updated iOS Restaurant app showing modular layout and design system components",
         caption:
-          "The modular card architecture in action — each zone behaves predictably and scales responsively across screen sizes.",
+          "The modular card architecture in action: each zone behaves predictably and scales responsively across screen sizes.",
         src: "/projects/images/ot-reservations-ios-modular-layout.gif",
         naturalSize: true,
       },
@@ -844,7 +844,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "Designing for restaurant operators reinforced that usability isn't about simplification — it's about **clarity under pressure**.",
+        text: "Designing for restaurant operators reinforced that usability isn't about simplification. It's about **clarity under pressure**.",
       },
       {
         type: "p",
