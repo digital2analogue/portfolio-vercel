@@ -28,7 +28,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "At Capital One, I led design systems strategy for a scalable decision-engine interface supporting analysts in compliance-sensitive, high-stakes environments. The work focused on transforming fragmented, spreadsheet-driven workflows into a modular, system-aligned interface that balanced speed, accuracy, and accessibility.",
+        text: "Policy analysts at Capital One were building complex decision logic in spreadsheets — copy-pasting rules between tabs, manually cross-referencing compliance constraints, hoping nothing broke downstream. I led design systems strategy to replace that fragile workflow with a modular, system-aligned interface for high-stakes, compliance-sensitive environments.",
       },
       {
         type: "note",
@@ -58,7 +58,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Analysts relied on a patchwork of spreadsheets and inconsistent UI patterns to define and manage complex decision logic. This resulted in:",
+        text: "Analysts relied on a patchwork of spreadsheets and inconsistent UI patterns to define and manage complex decision logic. The cost was real:",
       },
       {
         type: "ul",
@@ -111,7 +111,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "This allowed teams to reason about complex logic consistently while retaining flexibility.",
+        text: "Teams could reason about complex logic consistently — without sacrificing flexibility.",
       },
       { type: "hr" },
       { type: "h2", text: "From Fragmentation to Modular Workflows" },
@@ -234,7 +234,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Accessibility improvements were embedded at the system level rather than treated as retrofits.",
       },
-      { type: "p", text: "Outcomes included:" },
+      { type: "p", text: "The results:" },
       {
         type: "ul",
         items: [
@@ -290,7 +290,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "OTKit is OpenTable's design system supporting Restaurant and Diner products across iOS, Android, and web. When I took ownership, the system existed, but lacked cohesion, governance, and trust. Design drift, fragmented sources of truth, and inconsistent adoption were slowing teams down and introducing costly QA issues.",
+        text: "When I took ownership of OTKit — OpenTable's design system spanning iOS, Android, and web — the system existed on paper. In practice, it lacked cohesion, governance, and trust. Design drift, fragmented sources of truth, and inconsistent adoption were slowing teams down and introducing costly QA issues.",
       },
       { type: "p", text: "My mandate was not just to redesign components." },
       {
@@ -333,7 +333,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "User Research" },
       {
         type: "p",
-        text: "We established a research strategy focused on understanding the challenges faced by design, product, and engineering teams. A survey of 37 respondents across OpenTable revealed the depth of the problem:",
+        text: "A survey of 37 respondents across design, product, and engineering revealed the depth of the problem:",
       },
       { type: "h3", text: "One-off component creation" },
       {
@@ -393,7 +393,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Foundations: Tokens, Type, Icons" },
       {
         type: "p",
-        text: "These foundational changes unlocked consistency without forcing large rewrites, making adoption possible across active codebases.",
+        text: "These foundational changes made consistency possible without forcing large rewrites — adoption could happen across active codebases, not instead of them.",
       },
       { type: "h3", text: "Color tokens" },
       {
@@ -430,7 +430,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "System thinking in action: Table Statuses" },
       {
         type: "p",
-        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states, and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. It was a win-win: the product got what it needed, and the system stayed coherent.",
+        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. The product got what it needed. The system stayed coherent.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
@@ -502,7 +502,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "This enabled a **searchable, themeable SVG system** shared across native and web teams, reducing duplication and improving accessibility parity.",
+        text: "The result: a **searchable, themeable SVG system** shared across native and web teams — duplication dropped, accessibility parity improved.",
       },
       {
         type: "image",
@@ -575,7 +575,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
-      { type: "p", text: "Over the course of the engagement, OTKit delivered measurable ROI:" },
+      { type: "p", text: "OTKit delivered measurable ROI:" },
       {
         type: "ul",
         items: [
@@ -675,11 +675,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "I led the redesign of OpenTable's restaurant reservation details flow, a business-critical interface used daily by restaurant operators. The work modernized a dense, legacy experience while preserving information richness, improving usability, and aligning the product with the evolving OTKit design system.",
+        text: "OpenTable's reservation details view had become the most legacy-styled screen in the product — dense, visually fragmented, and expensive to maintain. Restaurant operators used it every shift, but years of accumulated features had buried the information hierarchy. I led the redesign to modernize the experience while preserving the density operators depended on.",
       },
       {
         type: "p",
-        text: "This project demonstrates how design systems can drive **practical product outcomes**, not just visual consistency.",
+        text: "Design systems driving **practical product outcomes** — not just visual consistency.",
       },
       {
         type: "image",
@@ -751,7 +751,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "This allowed us to modernize the experience without disrupting established workflows.",
+        text: "Modernize the experience without disrupting established workflows.",
       },
       { type: "hr" },
       { type: "h2", text: "Solution: Modular, Card-Based Architecture" },
