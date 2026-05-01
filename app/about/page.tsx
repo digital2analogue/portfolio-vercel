@@ -109,7 +109,7 @@ export default function AboutPage() {
         }}
       >
         {SKILLS.map((s) => (
-          <span key={s} className="tag">
+          <span key={s} className="tag tag--skill">
             {s}
           </span>
         ))}

@@ -243,7 +243,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     slug: "ot-design-system",
     title: "Building OTKit: From Drift to Discipline",
     scope: "iOS, Android, Web",
-    timeline: "2022–2023",
+    timeline: "2022–2024",
     blocks: [
       {
         type: "image",

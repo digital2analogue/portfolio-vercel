@@ -803,6 +803,10 @@ h2.eyebrow,
   border-radius: var(--radius-sm);
   white-space: nowrap;
 }
+.tag--skill {
+  color: var(--color-foreground-alt);
+  border-color: var(--color-foreground-muted);
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    Contact list (/contact)
