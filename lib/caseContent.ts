@@ -132,11 +132,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Design deliverables for the C1 Decision Engine — component library, interaction patterns, and migration roadmap",
         src: "/projects/images/c1-decision-engine-deliverables.png",
       },
-      {
-        type: "image",
-        alt: "Complete onboarding flow — all three setup steps on a single scrollable page: assign an outcome type, name the model, then select data elements from a searchable list with inline metadata preview",
-        src: "/projects/images/c1-decision-engine-onboarding-flow.png",
-      },
       { type: "hr" },
       { type: "h3", text: "Design goals" },
       {
