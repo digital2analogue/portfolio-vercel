@@ -642,6 +642,13 @@ h2.eyebrow,
     padding-left var(--motion-duration-emphasized) var(--motion-easing-move),
     background   var(--motion-duration-emphasized) var(--motion-easing-default);
 }
+/* Middle grid cell — min-width: 0 lets 1fr actually constrain on narrow
+   viewports; without it, the long sub-line ("Lead Product Designer, Design
+   Systems – Product Owner") expands the cell, pushes the year column right,
+   and the row overflows the viewport (mirrors .work-row__header > div). */
+.case > div {
+  min-width: 0;
+}
 .case:hover,
 .case:focus-visible {
   padding-left: var(--spacing-inline);
@@ -1240,6 +1247,11 @@ h2.eyebrow,
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-element);
+}
+/* Pager 1fr cells need min-width: 0 so long italic titles don't push the
+   column wider than its share of the row and overflow on mobile. */
+.case-detail__pager > div {
+  min-width: 0;
 }
 .case-detail__pager-link {
   text-decoration: none;
