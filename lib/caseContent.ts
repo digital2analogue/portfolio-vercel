@@ -155,7 +155,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Live Prototype" },
       {
         type: "p",
-        text: "A public-safe, runnable version of the prototype lives at [decisioning-table.vercel.app](https://decisioning-table.vercel.app/). It's an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface.",
+        text: "A public-safe, runnable version of the prototype is live: try the [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1). It's an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface.",
       },
       { type: "h3", text: "Onboarding: three decisions, one page" },
       {
