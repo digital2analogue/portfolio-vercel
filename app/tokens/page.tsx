@@ -123,6 +123,40 @@ export default function TokensPage() {
         · · · · · · · ·
       </div>
 
+      {/* ═══════════════ LINEAGE ═══════════════ */}
+      <div className="section-head rise d5">
+        <h2 className="eyebrow">
+          <span>
+            Lineage <span aria-hidden="true">//</span>
+          </span>
+          <span className="eyebrow__italic">small, sharp tools</span>
+        </h2>
+      </div>
+
+      <div className="hero__term rise d5">
+        <div>
+          <span className="accent" aria-hidden="true">~</span> $ man
+          brand-tokens
+        </div>
+        <div>
+          <span className="hero__term-slash" aria-hidden="true">// </span>
+          Borrowed from Unix: <em>small, sharp tools that compose</em>.
+        </div>
+        <div>
+          <span className="hero__term-slash" aria-hidden="true">// </span>
+          Primitives hold values · semantics name roles · components render
+          decisions.
+        </div>
+        <div>
+          <span className="hero__term-slash" aria-hidden="true">// </span>
+          Each layer does one thing well — the next composes from it.
+        </div>
+      </div>
+
+      <div className="dot-rule rise d5" aria-hidden="true">
+        · · · · · · · ·
+      </div>
+
       {/* ═══════════════ COLOR ═══════════════ */}
       <div className="section-head rise d5">
         <h2 className="eyebrow">
