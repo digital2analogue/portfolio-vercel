@@ -1457,9 +1457,25 @@ h2.eyebrow,
     white-space: normal;
   }
 
-  /* Status bar — let it wrap naturally. */
+  /* Display heading — balance line lengths so the italic-serif phrase
+     ("for systems") doesn't strand awkwardly at narrow widths. */
+  .display {
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  /* Lede prose — avoid widow words on the last line of the paragraph. */
+  .lede {
+    text-wrap: pretty;
+  }
+
+  /* Status bar — let it wrap between phrases, but keep each phrase on one line
+     so labels like "Response within 24–48h" don't break mid-text. */
   .single-status {
     flex-wrap: wrap;
+  }
+  .single-status > span {
+    white-space: nowrap;
   }
 
   /* Section eyebrow — allow wrap at the italic break. */
