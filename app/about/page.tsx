@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
@@ -31,7 +32,7 @@ const EXPERIENCE = [
     period: "2024 – 2025",
   },
   {
-    role: "Lead Product Designer, Design Systems",
+    role: "Lead Product Designer, Design Systems - Product Owner",
     company: "OpenTable",
     period: "2019 – 2024",
   },
@@ -139,7 +140,8 @@ export default function AboutPage() {
       </div>
 
       <p className="bio-inline rise d7">
-        Based in San Francisco; <span className="accent">taking new work</span>.
+        Based in San Francisco and taking new work —{" "}
+        <a href="https://linkedin.com/in/riverromney" target="_blank" rel="noopener noreferrer">let's connect on LinkedIn</a>.
       </p>
     </div>
   );

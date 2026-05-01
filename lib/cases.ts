@@ -22,16 +22,16 @@ export const CASES: CaseStudy[] = [
     tags: ["Design Systems", "Fintech", "Compliance"],
     summary:
       "Replaced spreadsheet-driven policy workflows with a modular, compliance-ready decision engine — enabling non-technical stakeholders to own complex rule logic without engineering support.",
-    metrics: ["↓ 60% time-to-policy-change", "↑ 3 teams unblocked", "0 compliance gaps at launch"],
+    metrics: ["↑ 3 teams unblocked", "~30% improvement in accessibility compliance"],
     status: "COMPLETE",
   },
   {
     slug: "ot-design-system",
     index: "02",
-    title: "Design System",
+    title: "OpenTable's OTKit Design System",
     company: "OpenTable",
     year: "2022 – 2024",
-    role: "Lead Designer, Product Owner",
+    role: "Lead Product Designer, Design Systems - Product Owner",
     tags: ["Design Systems", "Tokens", "Multi-platform"],
     summary:
       "Built and scaled OpenTable's design system — establishing shared tokens, component patterns, and contribution workflows across web and native platforms.",

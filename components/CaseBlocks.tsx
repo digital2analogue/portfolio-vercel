@@ -47,7 +47,15 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "image":
             return (
-              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} />
+              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} />
+            );
+          case "image-pair":
+            return (
+              <div key={i} className="block-image-pair">
+                {b.images.map((img, j) => (
+                  <CaseImage key={j} alt={img.alt} caption={img.caption} src={img.src} />
+                ))}
+              </div>
             );
           case "hr":
             return <hr key={i} />;
@@ -97,17 +105,29 @@ function CaseImage({
   alt,
   caption,
   src,
+  naturalSize,
 }: {
   alt: string;
   caption?: string;
   src?: string;
+  naturalSize?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <figure>
+    <figure className={naturalSize ? "block-image--natural-size" : undefined}>
       {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} onClick={() => setOpen(true)} />
+        <div className="block-image__wrap" onClick={() => setOpen(true)}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={src} alt={alt} />
+          <div className="block-image__zoom-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 5V1H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M13 5V1H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M1 9V13H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M13 9V13H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
       ) : (
         <div className="block-image__placeholder">
           <div className="block-image__placeholder-inner">

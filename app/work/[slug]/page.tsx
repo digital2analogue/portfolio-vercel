@@ -82,15 +82,6 @@ export default async function CaseStudyPage({
           </div>
         </div>
 
-        <div className="case-detail__meta-row rise d2">
-          <span className="case-detail__index" aria-hidden="true">
-            {meta.index}
-          </span>
-          <span className="case-detail__company-year">
-            {meta.company} · {meta.year}
-          </span>
-        </div>
-
         <h1 className="display rise d2">{content.title}</h1>
 
         <p className="lede rise d3">{meta.summary}</p>
@@ -110,9 +101,9 @@ export default async function CaseStudyPage({
                 type: "meta",
                 rows: [
                   ["Company", meta.company],
+                  ["Year", meta.year],
                   ["Role", meta.role],
                   ["Timeline", content.timeline],
-                  ["Status", meta.status],
                 ],
               },
             ]}

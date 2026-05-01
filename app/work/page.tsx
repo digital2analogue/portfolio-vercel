@@ -27,10 +27,6 @@ export default function WorkPage() {
           <div>
             <span className="accent" aria-hidden="true">~</span> $ ls ./work/
           </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            <span className="hero__term-ans">{CASES.length} case studies</span>
-          </div>
         </div>
 
         <h1 className="display rise d2">
@@ -69,13 +65,6 @@ export default function WorkPage() {
               </div>
               <div className="work-row__body">
                 <p className="work-row__summary">{c.summary}</p>
-
-                <div className="work-row__label">Impact //</div>
-                <div className="work-row__metrics">
-                  {c.metrics.map((m) => (
-                    <span key={m}>{m}</span>
-                  ))}
-                </div>
 
                 <div className="work-row__tags">
                   {c.tags.map((t) => (

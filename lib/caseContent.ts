@@ -3,7 +3,8 @@ export type Block =
   | { type: "h3"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "image"; alt: string; caption?: string; src?: string }
+  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean }
+  | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
@@ -46,8 +47,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       {
         type: "image",
-        alt: "Credit Line Decisioning Model — the rules-table interface Capital One analysts use to manage consumer-lending approval rules",
-        src: "/projects/images/01_hero_dark.png",
+        alt: "Coded prototype of the Decision Engine interface demonstrating interactive rule-building behaviour",
+        src: "/projects/images/c1-decision-coded-prototype.gif",
+        naturalSize: true,
+      },
+      {
+        type: "image",
+        alt: "Figma animation demonstrating the Decision Engine interface being built and composed in design tooling",
+        src: "/projects/images/c1-decision-engine-figma-make-animation.gif",
+        naturalSize: true,
       },
       { type: "h2", text: "The Problem" },
       {
@@ -127,25 +135,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
+        alt: "Design deliverables for the C1 Decision Engine — component library, interaction patterns, and migration roadmap",
+        src: "/projects/images/c1-decision-engine-deliverables.png",
+      },
+      {
+        type: "image",
         alt: "Complete onboarding flow — all three setup steps on a single scrollable page: assign an outcome type, name the model, then select data elements from a searchable list with inline metadata preview",
         src: "/projects/images/c1-decision-engine-onboarding-flow.png",
       },
       { type: "hr" },
-      { type: "h2", text: "Component Deep Dive: Rule Cell (Conceptual)" },
-      {
-        type: "p",
-        text: "One critical interaction pattern encapsulated complex decision logic into a single, reusable unit.",
-      },
-      {
-        type: "image",
-        alt: "Decision Engine component system — data attribute badges, outcome badges, operators, and row states as reusable, tokenized primitives",
-        src: "/projects/images/04_component_system_dark.png",
-      },
-      {
-        type: "image",
-        alt: "Rule row anatomy — annotated breakdown of each interactive element in a rule row",
-        src: "/projects/images/c1-decision-engine-rule-row-anatomy.png",
-      },
       { type: "h3", text: "Design goals" },
       {
         type: "ul",
@@ -159,16 +157,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model — badge tap to swap attribute, dropdown for operator, direct input for value — eliminated the modal-heavy workflows analysts had been tolerating.",
       },
-      {
-        type: "image",
-        alt: "Data element selector — step 3 split panel showing available attributes and metadata preview",
-        src: "/projects/images/c1-decision-engine-data-element-selector.png",
-      },
       { type: "h3", text: "Impact" },
       {
         type: "ul",
         items: [
-          "Reduced interaction steps by ~63%",
           "Improved task-completion success in discovery testing",
           "Lowered error rates during rule creation",
         ],
@@ -229,9 +221,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     blocks: [
       {
         type: "image",
-        alt: "OTKit Design System v3.2 overview — color palette, semantic tokens, and component library spanning iOS, Android, and web",
-        caption: "OTKit at a glance — the system River led to consolidate fragmented patterns across iOS, Android, and web.",
-        src: "/projects/images/ot-design-system-hero.png",
+        alt: "OTKit Design System hero — overview of the design system River built at OpenTable spanning iOS, Android, and web",
+        src: "/projects/images/otkit-ds-hero.png",
       },
       { type: "h2", text: "Overview" },
       {
@@ -356,9 +347,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Token architecture — primitives flow into semantic tokens, which compose into component tokens scoped per UI element",
+        alt: "Figma Variables panel showing OTKit foreground color tokens — semantic roles (default, alt, disabled, action, success, info, warning, danger) mapped across Light and Dark themes with primitive references",
         caption: "Primitive → Semantic → Component. The three-tier contract that made OTKit's theming scale without forking.",
-        src: "/projects/images/ot-design-system-detail.png",
+        src: "/projects/images/3UxjijGLRDUlHaXt.png",
       },
       {
         type: "image",
@@ -471,11 +462,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Animation showing updated OTKit brand and theme on iPhone app",
         src: "/projects/images/casestudy-otkit-opentable-new-brand-app.gif",
+        naturalSize: true,
       },
       {
         type: "image",
         alt: "Animation showing updated OTKit iconography shared by Debby on LinkedIn",
         src: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin.gif",
+        naturalSize: true,
       },
       { type: "p", text: "This allowed brand evolution without breaking product consistency. Namely:" },
       {
@@ -504,7 +497,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Mass Theme — functional editorial restaurant detail with hero section, two-column layout, and booking flow",
-        src: "/projects/images/casestudy-otkit-mass-theme.png",
+        src: "/projects/images/ot-brand-refresh-mass-theme.png",
       },
       { type: "h3", text: "Iconic Theme" },
       {
@@ -514,7 +507,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Iconic Theme — premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
-        src: "/projects/images/casestudy-otkit-iconic-theme.png",
+        src: "/projects/images/ot-brand-refresh-iconic-theme.png",
       },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
@@ -530,9 +523,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
-        type: "image",
-        alt: "OTKit adoption across teams and platforms",
-        caption: "OTKit scaled across 6 product teams, supporting iOS, Android, and web simultaneously.",
+        type: "quote",
+        text: "OTKit scaled across 6 product teams, supporting iOS, Android, and web simultaneously.",
       },
       { type: "hr" },
       { type: "h2", text: "What Made This Work" },
@@ -624,8 +616,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Reservation Details — before-and-after comparison. Legacy flat layout on the left; the redesigned card-based hierarchy on the right.",
-        caption: "Before → After. Same information density, restructured for clarity under pressure.",
-        src: "/projects/images/ot-reservations-hero.png",
+        caption: "iPad → iPhone. Reverse-engineering OpenTable's Front of House iPad app to iPhone and Android.",
+        src: "/projects/images/ot-reservations-native-ios-android.png",
       },
       { type: "hr" },
       {
@@ -659,9 +651,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Screenshot of legacy Reservation Details page before redesign",
-        caption: "Legacy reservation details view. High density, low hierarchy, fragmented styling.",
-        src: "/projects/images/ot-reservations-legacy-detail.png",
+        alt: "Before and after comparison of the reservation card — legacy flat layout on the left, redesigned modular card-based hierarchy on the right",
+        caption: "Before → After. Same information density, restructured for clarity and cross-platform consistency.",
+        src: "/projects/images/ot-reservations-reservation-card-before-after.png",
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -693,13 +685,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "This allowed us to modernize the experience without disrupting established workflows.",
       },
-      {
-        type: "image",
-        alt: "Animation showing the modular card-based breakdown of the reservation details view",
-        caption:
-          "Each section of the reservation view mapped to a discrete system pattern, making the layout predictable for both users and engineers.",
-        src: "/projects/images/cs-rest-modular-design.gif",
-      },
       { type: "hr" },
       { type: "h2", text: "Solution: Modular, Card-Based Architecture" },
       {
@@ -719,20 +704,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Each card mapped to a system pattern, allowing teams to iterate safely and predictably.",
       },
-      {
-        type: "image",
-        alt: "Redesigned Reservation Details in OpenTable's Restaurant Manager — booking summary, guest profile, special requests, recent visits, and availability on a single desktop surface",
-        caption: "Final Restaurant Manager view — every section of the reservation mapped to a reusable OTKit card.",
-        src: "/projects/images/ot-reservations-detail.png",
-      },
-      {
-        type: "image",
-        alt: "Animation of the updated iOS Restaurant app showing modular layout and design system components",
-        caption:
-          "The modular card architecture in action — each zone behaves predictably and scales responsively across screen sizes.",
-        src: "/projects/images/ot-reservations-ios-modular-layout.gif",
-      },
       { type: "h3", text: "Modular ecosystem" },
+      {
+        type: "image",
+        alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
+        caption: "Making guest and reservation information modular — components designed to scale across multiple contexts.",
+        src: "/projects/images/ot-reservations-modularity.png",
+      },
       {
         type: "image",
         alt: "Screenshot of the redesigned Guest Profile component in the Back of House web view",
@@ -743,6 +721,22 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Close-up screenshot of the Guest Profile component showing structured guest data in Back of House",
         caption: "The new Guest Profile component made guest data easily viewable in Back of House",
         src: "/projects/images/ot-reservations-guest-profile-boh-detail.png",
+      },
+      {
+        type: "image",
+        alt: "Animation showing the modular card-based breakdown of the reservation details view",
+        caption:
+          "Each section of the reservation view mapped to a discrete system pattern, making the layout predictable for both users and engineers.",
+        src: "/projects/images/zwVjhA3cW2v1jFcL.gif",
+        naturalSize: true,
+      },
+      {
+        type: "image",
+        alt: "Animation of the updated iOS Restaurant app showing modular layout and design system components",
+        caption:
+          "The modular card architecture in action — each zone behaves predictably and scales responsively across screen sizes.",
+        src: "/projects/images/ot-reservations-ios-modular-layout.gif",
+        naturalSize: true,
       },
       { type: "hr" },
       { type: "h2", text: "System Alignment" },
@@ -768,7 +762,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Screenshot of OTKit color token references inside iOS app",
-        caption: "OTKit color tokens",
+        caption: "OTKit tokens in SwiftUI",
         src: "/projects/images/ot-reservations-color-tokens-native.png",
       },
       { type: "hr" },
