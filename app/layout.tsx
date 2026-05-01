@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono, Space_Grotesk, Spectral } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import FocusCaret from "@/components/FocusCaret";
@@ -125,6 +126,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
