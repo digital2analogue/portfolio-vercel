@@ -409,11 +409,12 @@ button:focus-visible,
   /* Type + spacing tokens scale automatically via clamp() in :root — no overrides needed here.
      This block handles layout and wrapping behavior only. */
 
-  /* Nav — single line; letter-spacing reduction saves ~19px across all items */
+  /* Nav — single line; shrink link font + drop letter-spacing so all 5 items
+     fit on a 320px viewport with breathing room between them. */
   .topbar {
     flex-wrap: nowrap;
-    gap: 4px;
-    padding: var(--spacing-tight) 12px 0;
+    gap: var(--primitive-space-xs);
+    padding: var(--spacing-tight) var(--spacing-inline) 0;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -421,10 +422,11 @@ button:focus-visible,
     flex-shrink: 0;
   }
   .topbar__links {
-    gap: 3px;
+    gap: var(--primitive-space-xs);
     flex-wrap: nowrap;
     white-space: nowrap;
-    letter-spacing: 0.03em; /* reduce from 0.1em */
+    letter-spacing: var(--letter-spacing-body);
+    font-size: var(--primitive-font-size-xs);
   }
 
   /* Footer — stay on one line */
