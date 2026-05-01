@@ -111,34 +111,12 @@ export default function TokensPage() {
           touches hex.
         </p>
 
-        <div className="section-head rise d4">
-          <h2 className="eyebrow">
-            <span>
-              Lineage <span aria-hidden="true">//</span>
-            </span>
-            <span className="eyebrow__italic">small, sharp tools</span>
-          </h2>
-        </div>
-
-        <div className="hero__term rise d4">
-          <div>
-            <span className="accent" aria-hidden="true">~</span> $ man
-            brand-tokens
-          </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            Borrowed from Unix: <em>small, sharp tools that compose</em>.
-          </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            Primitives hold values · semantics name roles · components render
-            decisions.
-          </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            Each layer does one thing well — the next composes from it.
-          </div>
-        </div>
+        <p className="lede rise d4">
+          The architecture takes a cue from Unix&rsquo;s{" "}
+          <em>small, sharp tools</em> philosophy. Primitives hold values,
+          semantics name roles, and components render decisions — each layer
+          does one thing well, and the next composes from it.
+        </p>
 
         <div className="single-status rise d4">
           <span className="status-dot" aria-hidden="true">●</span>
