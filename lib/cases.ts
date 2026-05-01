@@ -26,7 +26,7 @@ export const CASES: CaseStudy[] = [
     tags: ["Design Systems", "Fintech", "Compliance"],
     summary:
       "Replaced spreadsheet-driven policy workflows with a modular, compliance-ready decision engine — enabling non-technical stakeholders to own complex rule logic without engineering support.",
-    metrics: ["↑ 3 teams unblocked", "~30% improvement in accessibility compliance"],
+    metrics: ["~30% improvement in accessibility compliance"],
     status: "COMPLETE",
   },
   {

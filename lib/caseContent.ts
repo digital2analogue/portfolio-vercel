@@ -149,15 +149,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model — badge tap to swap attribute, dropdown for operator, direct input for value — eliminated the modal-heavy workflows analysts had been tolerating.",
+        text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model — badge tap to swap attribute, dropdown for operator, direct input for value — eliminated the modal-heavy workflows analysts had been tolerating, cutting the path to a saved rule from eight clicks down to three (a 63% reduction).",
       },
       { type: "h3", text: "Impact" },
       {
-        type: "ul",
-        items: [
-          "Improved task-completion success in discovery testing",
-          "Lowered error rates during rule creation",
-        ],
+        type: "p",
+        text: "In discovery testing, analysts completed 12 of 13 tasks against the new model, with markedly lower error rates during rule creation than the spreadsheet baseline.",
       },
       { type: "hr" },
       { type: "h2", text: "Live Prototype" },
@@ -308,6 +305,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           ["Role", "Design Systems Lead"],
           ["Scope", "iOS, Android, Web"],
           ["Team", "6 product teams"],
+          ["Timeline", "~1 year focused engagement"],
         ],
       },
       { type: "hr" },
@@ -588,6 +586,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Unified design language across 6 teams",
           "Supported a full OpenTable brand refresh",
         ],
+      },
+      {
+        type: "p",
+        text: "Designers and engineers also reported a **27% lift in clarity around Figma component sources** in our follow-up survey — the consolidation work made it easier to find authoritative components without hunting through legacy Storybooks and one-off libraries.",
       },
       {
         type: "quote",
