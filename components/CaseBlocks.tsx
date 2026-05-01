@@ -79,16 +79,30 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
 }
 
 /**
- * Inline text renderer that supports **bold** markdown-style emphasis.
- * Bold segments render as <strong> with a style tier bump (see globals.css).
+ * Inline text renderer. Supports **bold** and [label](url) markdown-style links.
+ * External links open in a new tab with safe rel attrs.
  */
 function InlineText({ text }: { text: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  const parts = text.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
   return (
     <>
       {parts.map((p, i) => {
         if (p.startsWith("**") && p.endsWith("**")) {
           return <strong key={i}>{p.slice(2, -2)}</strong>;
+        }
+        const link = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+        if (link) {
+          const [, label, href] = link;
+          const external = /^https?:\/\//.test(href);
+          return (
+            <a
+              key={i}
+              href={href}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            >
+              {label}
+            </a>
+          );
         }
         return <span key={i}>{p}</span>;
       })}

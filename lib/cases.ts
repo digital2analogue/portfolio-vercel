@@ -77,23 +77,6 @@ export const CASES: CaseStudy[] = [
     status: "PROOF OF CONCEPT",
     href: "/tokens",
   },
-  {
-    slug: "decisioning-table",
-    index: "05",
-    title: "Decisioning Table",
-    company: "Open Source",
-    year: "2026",
-    role: "Designer & Design Engineer",
-    tags: ["React", "TypeScript", "Design Systems", "Fintech", "Vite"],
-    summary:
-      "Open-source fintech prototype for configuring credit decisioning rules — a working extraction of the inline-edit table pattern, with a guided onboarding flow, categorized data-element picker, and progressive-disclosure controls.",
-    metrics: [
-      "Live prototype on Vercel",
-      "Inline-edit rule table",
-      "Categorized data-element picker",
-    ],
-    status: "PROTOTYPE",
-  },
 ];
 
 export function getCase(slug: string): CaseStudy | undefined {
