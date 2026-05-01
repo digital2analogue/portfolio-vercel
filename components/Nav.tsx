@@ -3,7 +3,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
-  { label: "INDEX", href: "/" },
   { label: "WORK", href: "/work" },
   { label: "TOKENS", href: "/tokens" },
   { label: "ABOUT", href: "/about" },
@@ -17,7 +16,7 @@ export default function Nav() {
 
   return (
     <nav className="topbar" aria-label="Primary">
-      <Link className="topbar__brand" href="/">
+      <Link className="topbar__brand" href="/" aria-label="Home">
         <span className="topbar__brand-glyph" aria-hidden="true">›</span>
         river.
         <span className="cursor cursor--sm" aria-hidden="true" />
