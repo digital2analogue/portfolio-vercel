@@ -51,6 +51,38 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-coded-prototype.gif",
         naturalSize: true,
       },
+      {
+        type: "image",
+        alt: "Onboarding flow — step 1 of 3 picks an outcome type from six cards (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit). The full flow then walks through naming the model and selecting data elements on a single scrollable page.",
+        caption:
+          "Live prototype, step 1 — outcome selection. Each step is scoped to a single decision, reducing cognitive load before the analyst reaches the table.",
+        src: "/images/cases/decisioning-onboarding.png",
+      },
+      {
+        type: "image",
+        alt: "Main rule table — five decision rules with columns for Rule Name, Data Attribute (Income/Expense chip), Operator, Amount, conditional Existing Account and Annual Income variables, and an Approve/Deny segmented Outcome control.",
+        caption:
+          "Live prototype, main view. Each row is a single rule expressed as data attribute → operator → threshold → outcome. Confidential domain, abstracted into a public-safe demo.",
+        src: "/images/cases/decisioning-table.png",
+      },
+      {
+        type: "image",
+        alt: "Data attribute chip dropdown opened on row 2, listing Income, Expense, Asset, Liability. The chip itself reflects the currently selected attribute and reuses the same visual language as the row tag.",
+        caption:
+          "Inline edit — tap the data-attribute chip to swap categories without leaving the row. No modal, no context loss.",
+        src: "/images/cases/decisioning-attribute-dropdown.png",
+      },
+      {
+        type: "image",
+        alt: "Conditional cell on row 1 — the Existing Account em-dash placeholder expanded into a two-part editor: an operator dropdown defaulting to '==' and a variable picker showing AnnualIncome and MonthlyExpenses with their plain-language descriptions.",
+        caption:
+          "Conditional cells progressively disclose. The variable picker surfaces a description for each data element so analysts can choose without leaving the row.",
+        src: "/images/cases/decisioning-conditional-cell.png",
+      },
+      {
+        type: "p",
+        text: "A live, public-safe version of the prototype is hosted at **decisioning-table.vercel.app** — it walks through the same onboarding and rule-building flow shown above.",
+      },
       { type: "h2", text: "The Problem" },
       {
         type: "p",

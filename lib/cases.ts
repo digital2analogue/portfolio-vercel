@@ -77,6 +77,24 @@ export const CASES: CaseStudy[] = [
     status: "PROOF OF CONCEPT",
     href: "/tokens",
   },
+  {
+    slug: "decisioning-table",
+    index: "05",
+    title: "Decisioning Table Prototype",
+    company: "Personal",
+    year: "2026",
+    role: "Designer & Design Engineer",
+    tags: ["Decision Tooling", "Prototype", "Enterprise UX"],
+    summary:
+      "A public-safe, runnable version of the Decision Engine work — onboarding wizard, inline rule editing, and progressively-disclosed conditional cells. Built to demonstrate the patterns from the Capital One engagement without exposing confidential details.",
+    metrics: [
+      "Live, runnable prototype",
+      "Inline rule authoring",
+      "Conditional cell progressive disclosure",
+    ],
+    status: "PROTOTYPE",
+    href: "https://decisioning-table.vercel.app/",
+  },
 ];
 
 export function getCase(slug: string): CaseStudy | undefined {
