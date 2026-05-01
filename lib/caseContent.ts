@@ -51,38 +51,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-coded-prototype.gif",
         naturalSize: true,
       },
-      {
-        type: "image",
-        alt: "Onboarding flow — step 1 of 3 picks an outcome type from six cards (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit). The full flow then walks through naming the model and selecting data elements on a single scrollable page.",
-        caption:
-          "Live prototype, step 1 — outcome selection. Each step is scoped to a single decision, reducing cognitive load before the analyst reaches the table.",
-        src: "/images/cases/decisioning-onboarding.png",
-      },
-      {
-        type: "image",
-        alt: "Main rule table — five decision rules with columns for Rule Name, Data Attribute (Income/Expense chip), Operator, Amount, conditional Existing Account and Annual Income variables, and an Approve/Deny segmented Outcome control.",
-        caption:
-          "Live prototype, main view. Each row is a single rule expressed as data attribute → operator → threshold → outcome. Confidential domain, abstracted into a public-safe demo.",
-        src: "/images/cases/decisioning-table.png",
-      },
-      {
-        type: "image",
-        alt: "Data attribute chip dropdown opened on row 2, listing Income, Expense, Asset, Liability. The chip itself reflects the currently selected attribute and reuses the same visual language as the row tag.",
-        caption:
-          "Inline edit — tap the data-attribute chip to swap categories without leaving the row. No modal, no context loss.",
-        src: "/images/cases/decisioning-attribute-dropdown.png",
-      },
-      {
-        type: "image",
-        alt: "Conditional cell on row 1 — the Existing Account em-dash placeholder expanded into a two-part editor: an operator dropdown defaulting to '==' and a variable picker showing AnnualIncome and MonthlyExpenses with their plain-language descriptions.",
-        caption:
-          "Conditional cells progressively disclose. The variable picker surfaces a description for each data element so analysts can choose without leaving the row.",
-        src: "/images/cases/decisioning-conditional-cell.png",
-      },
-      {
-        type: "p",
-        text: "A live, public-safe version of the prototype is hosted at **decisioning-table.vercel.app** — it walks through the same onboarding and rule-building flow shown above.",
-      },
       { type: "h2", text: "The Problem" },
       {
         type: "p",
@@ -811,6 +779,135 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "This work showed how design systems can enable meaningful product improvements without disrupting workflows that teams depend on daily.",
+      },
+    ],
+  },
+  "decisioning-table": {
+    slug: "decisioning-table",
+    title: "Decisioning Table: An Open-Source Rule-Builder Prototype",
+    scope: "Product design, frontend engineering, design system extraction",
+    timeline: "Ongoing",
+    blocks: [
+      { type: "h2", text: "Overview" },
+      {
+        type: "p",
+        text: "Decisioning Table is an open-source prototype for configuring credit decisioning rules — a working extraction of the inline-edit rule-row pattern I shipped at Capital One, rebuilt as a public artifact in React, TypeScript, and Vite.",
+      },
+      {
+        type: "p",
+        text: "It exists to make the pattern legible outside an NDA: the guided onboarding, the categorized data-element picker, the inline rule editor, the segmented outcome control. A live demo runs at decisioning-table.vercel.app.",
+      },
+      { type: "hr" },
+      {
+        type: "meta",
+        rows: [
+          ["Role", "Designer & Design Engineer"],
+          ["Stack", "React, TypeScript, Vite"],
+          ["Status", "Live prototype"],
+          ["Demo", "decisioning-table.vercel.app"],
+        ],
+      },
+      { type: "hr" },
+      { type: "h2", text: "Why an Open Prototype" },
+      {
+        type: "p",
+        text: "The original work was compliance-sensitive — the patterns that mattered most never got to live anywhere I could point at. This prototype solves that. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as something any designer or engineer can clone, run, and pull apart.",
+      },
+      {
+        type: "p",
+        text: "The goal isn't a finished product. It's a **reference implementation** for a class of interface that comes up over and over in fintech, ops tooling, and policy management — the **decisioning table**.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Onboarding: Three Decisions, One Page" },
+      {
+        type: "p",
+        text: "Rather than dropping users into an empty editor, the prototype opens with a guided three-step setup: pick an outcome type, name the model, then choose the data the model is allowed to evaluate. Each step is scoped to a single decision, and the whole flow lives on a single scrollable page so the model's shape stays visible while you build it.",
+      },
+      {
+        type: "image",
+        alt: "Step 1 of the onboarding flow — Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
+        caption:
+          "Step 1 — outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
+        src: "/projects/images/decisioning-table-onboarding-step1.png",
+      },
+      {
+        type: "image",
+        alt: "Step 3 of the onboarding flow — Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
+        caption:
+          "Step 3 — categorized data elements. The right pane previews details for the selected element before you commit to it.",
+        src: "/projects/images/decisioning-table-onboarding-step3.png",
+      },
+      { type: "hr" },
+      { type: "h2", text: "The Rule Table" },
+      {
+        type: "p",
+        text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line — name, data attribute, operator, value, optional companion attributes, and the outcome.",
+      },
+      {
+        type: "image",
+        alt: "Main rule table — five rules with colored data attribute badges (Income green, Expense red), operator dropdowns (At least, Less than, Greater than, At most), amount values, and segmented Approve/Deny outcome switches per row",
+        caption:
+          "The main editor. Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
+        src: "/projects/images/decisioning-table-rules.png",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Three Patterns Worth Pulling Out" },
+      { type: "h3", text: "Inline data-attribute picker" },
+      {
+        type: "p",
+        text: "The data attribute on each row is a button styled as a colored badge. Clicking it opens a small inline dropdown anchored to the badge — Income, Expense, Asset, Liability — so the user can change the attribute without leaving the row, opening a modal, or losing context on the rest of the table.",
+      },
+      {
+        type: "image",
+        alt: "Inline dropdown opened from the Income badge in the first rule, showing four options (Income, Expense, Asset, Liability)",
+        caption:
+          "Click a badge, swap the attribute. No modal, no navigation, no row expansion.",
+        src: "/projects/images/decisioning-table-data-attribute-dropdown.png",
+      },
+      { type: "h3", text: "Segmented Approve / Deny outcome" },
+      {
+        type: "p",
+        text: "Each row's outcome is a segmented two-state control — green Approve on the left, red Deny on the right — with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
+      },
+      {
+        type: "image",
+        alt: "Close-up of the Outcome column showing per-row segmented switches alternating between Approve (green) and Deny (red) selected states",
+        caption:
+          "The segmented switch makes a binary outcome scannable. Selected state carries the color; the other side recedes.",
+        src: "/projects/images/decisioning-table-outcome-toggles.png",
+      },
+      { type: "h3", text: "Split-button progressive disclosure" },
+      {
+        type: "p",
+        text: "The primary CTA is a split button: the main face is +&nbsp;Add rule (the common path), and a chevron beside it opens a small menu with the secondary action — Add existing rule. The split keeps the default action one click away while making the alternative discoverable rather than buried in a kebab menu.",
+      },
+      {
+        type: "image",
+        alt: "Split-button dropdown opened from the chevron next to + Add rule, showing two options: Add rule and Add existing rule",
+        caption:
+          "Split-button. One-click default, one-click-and-pick for the secondary action.",
+        src: "/projects/images/decisioning-table-split-button.png",
+      },
+      { type: "hr" },
+      { type: "h2", text: "What's Under the Hood" },
+      {
+        type: "ul",
+        items: [
+          "React + TypeScript on Vite for fast iteration and easy forking",
+          "Token-driven styling so the palette can be re-skinned without touching components",
+          "Component anatomy modeled directly on the production rule-row spec",
+          "Deployed on Vercel as a single-page app — no backend, all state in memory",
+        ],
+      },
+      { type: "hr" },
+      { type: "h2", text: "Why It's Useful" },
+      {
+        type: "p",
+        text: "Most decisioning tools live behind enterprise logins. The patterns that make them tolerable — inline editing, scoped onboarding, progressive disclosure — rarely get written down where someone building the next one can find them.",
+      },
+      {
+        type: "p",
+        text: "This prototype is my attempt at fixing that. The repo is small, the dependencies are short, and the interaction model is the part that does the work. Take it and adapt it.",
       },
     ],
   },

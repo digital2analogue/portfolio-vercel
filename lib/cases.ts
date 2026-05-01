@@ -80,20 +80,19 @@ export const CASES: CaseStudy[] = [
   {
     slug: "decisioning-table",
     index: "05",
-    title: "Decisioning Table Prototype",
-    company: "Personal",
+    title: "Decisioning Table",
+    company: "Open Source",
     year: "2026",
     role: "Designer & Design Engineer",
-    tags: ["Decision Tooling", "Prototype", "Enterprise UX"],
+    tags: ["React", "TypeScript", "Design Systems", "Fintech", "Vite"],
     summary:
-      "A public-safe, runnable version of the Decision Engine work — onboarding wizard, inline rule editing, and progressively-disclosed conditional cells. Built to demonstrate the patterns from the Capital One engagement without exposing confidential details.",
+      "Open-source fintech prototype for configuring credit decisioning rules — a working extraction of the inline-edit table pattern, with a guided onboarding flow, categorized data-element picker, and progressive-disclosure controls.",
     metrics: [
-      "Live, runnable prototype",
-      "Inline rule authoring",
-      "Conditional cell progressive disclosure",
+      "Live prototype on Vercel",
+      "Inline-edit rule table",
+      "Categorized data-element picker",
     ],
     status: "PROTOTYPE",
-    href: "https://decisioning-table.vercel.app/",
   },
 ];
 
