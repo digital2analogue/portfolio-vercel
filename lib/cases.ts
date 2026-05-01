@@ -9,6 +9,10 @@ export type CaseStudy = {
   summary: string;
   metrics: string[];
   status: string;
+  /** Optional override for the listing link target. When set, the entry
+   *  links here instead of the standard /work/[slug] detail page. Use for
+   *  portfolio entries that point to a live artifact rather than a writeup. */
+  href?: string;
 };
 
 export const CASES: CaseStudy[] = [
@@ -54,6 +58,24 @@ export const CASES: CaseStudy[] = [
       "Zero data loss or regressions",
     ],
     status: "COMPLETE",
+  },
+  {
+    slug: "design-tokens",
+    index: "04",
+    title: "Brand Tokens System",
+    company: "Personal",
+    year: "2026",
+    role: "Designer & Design Engineer",
+    tags: ["Design Tokens", "Design Systems", "Theming"],
+    summary:
+      "A multi-layer token system — primitives, semantics, and themed surfaces — wired into a contrast-gated build. Live, browsable token catalog as a working proof of concept for portable design infrastructure.",
+    metrics: [
+      "Live token catalog",
+      "WCAG AA contrast gate at build",
+      "Foundation for multi-brand theming",
+    ],
+    status: "PROOF OF CONCEPT",
+    href: "/tokens",
   },
 ];
 

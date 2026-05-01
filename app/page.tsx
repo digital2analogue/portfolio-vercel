@@ -66,7 +66,7 @@ export default function IndexPage() {
           <li key={c.index}>
             <Link
               className={`case rise d${6 + i}`}
-              href={`/work/${c.slug}`}
+              href={c.href ?? `/work/${c.slug}`}
             >
               <span className="case__idx" aria-hidden="true">
                 {c.index}

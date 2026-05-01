@@ -274,6 +274,7 @@ footer {
 .d6 { animation-delay: 920ms; }
 .d7 { animation-delay: 1120ms; }
 .d8 { animation-delay: 1320ms; }
+.d9 { animation-delay: 1520ms; }
 
 @media (prefers-reduced-motion: reduce) {
   .rise,

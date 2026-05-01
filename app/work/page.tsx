@@ -46,7 +46,7 @@ export default function WorkPage() {
       <ul className="work-list rise d3">
         {CASES.map((c) => (
           <li key={c.slug}>
-            <Link href={`/work/${c.slug}`} className="work-row">
+            <Link href={c.href ?? `/work/${c.slug}`} className="work-row">
               <div className="work-row__header">
                 <span className="case__idx" aria-hidden="true">
                   {c.index}

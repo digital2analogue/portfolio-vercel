@@ -8,8 +8,9 @@ import CaseBlocks from "@/components/CaseBlocks";
 type Params = { slug: string };
 
 // Pre-render every case at build time for SEO + fast first paint.
+// Skip entries with an href override — those point to a live artifact, not a writeup.
 export function generateStaticParams(): Params[] {
-  return CASES.map((c) => ({ slug: c.slug }));
+  return CASES.filter((c) => !c.href).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({
@@ -124,7 +125,7 @@ export default async function CaseStudyPage({
         <div>
           {prev && (
             <Link
-              href={`/work/${prev.slug}`}
+              href={prev.href ?? `/work/${prev.slug}`}
               className="case-detail__pager-link"
             >
               <div className="case-detail__pager-label">
@@ -139,7 +140,7 @@ export default async function CaseStudyPage({
         <div className="case-detail__pager-next">
           {next && (
             <Link
-              href={`/work/${next.slug}`}
+              href={next.href ?? `/work/${next.slug}`}
               className="case-detail__pager-link"
             >
               <div className="case-detail__pager-label">
