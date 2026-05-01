@@ -51,6 +51,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-coded-prototype.gif",
         naturalSize: true,
       },
+      {
+        type: "p",
+        text: "**Try the live prototype:** [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1).",
+      },
       { type: "h2", text: "The Problem" },
       {
         type: "p",
