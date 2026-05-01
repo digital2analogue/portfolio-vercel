@@ -37,7 +37,7 @@ export default function IndexPage() {
           <span className="status-dot" aria-hidden="true">●</span>
           &nbsp;<span className="single-status__v">Open to work</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
-          <span>Remote / San Francisco</span>
+          <span>San Francisco</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
           <span>Updated {new Date().toISOString().slice(0, 7)}</span>
         </div>
