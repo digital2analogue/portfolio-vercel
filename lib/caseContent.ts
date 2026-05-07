@@ -77,6 +77,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Before: spreadsheet workflow used prior to the decision engine",
         src: "/projects/images/c1-decision-engine-before.png",
+        naturalSize: true,
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -203,6 +204,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "The segmented switch makes a binary outcome scannable. Selected state carries the color; the other side recedes.",
         src: "/projects/images/decisioning-table-outcome-toggles.png",
+        naturalSize: true,
       },
       { type: "h3", text: "Split-button progressive disclosure" },
       {
@@ -215,6 +217,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "Split-button. One-click default, one-click-and-pick for the secondary action.",
         src: "/projects/images/decisioning-table-split-button.png",
+        naturalSize: true,
       },
       { type: "hr" },
       { type: "h2", text: "Accessibility as a System Lever" },
