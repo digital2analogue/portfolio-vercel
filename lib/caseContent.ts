@@ -48,7 +48,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Coded prototype of the Decision Engine interface demonstrating interactive rule-building behaviour",
-        src: "/projects/images/c1-decision-coded-prototype.gif",
+        src: "/projects/images/c1-decision-coded-prototype.png",
         naturalSize: true,
       },
       {
@@ -77,6 +77,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Before: spreadsheet workflow used prior to the decision engine",
         src: "/projects/images/c1-decision-engine-before.png",
+        naturalSize: true,
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -192,18 +193,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
         src: "/projects/images/decisioning-table-rules.png",
       },
-      { type: "h3", text: "Inline data-attribute picker" },
-      {
-        type: "p",
-        text: "The data attribute on each row is a button styled as a colored badge. Clicking it opens a small inline dropdown anchored to the badge (Income, Expense, Asset, Liability), so the user can change the attribute without leaving the row, opening a modal, or losing context on the rest of the table.",
-      },
-      {
-        type: "image",
-        alt: "Inline dropdown opened from the Income badge in the first rule, showing four options (Income, Expense, Asset, Liability)",
-        caption:
-          "Click a badge, swap the attribute. No modal, no navigation, no row expansion.",
-        src: "/projects/images/decisioning-table-data-attribute-dropdown.png",
-      },
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {
         type: "p",
@@ -215,6 +204,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "The segmented switch makes a binary outcome scannable. Selected state carries the color; the other side recedes.",
         src: "/projects/images/decisioning-table-outcome-toggles.png",
+        naturalSize: true,
       },
       { type: "h3", text: "Split-button progressive disclosure" },
       {
@@ -227,6 +217,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "Split-button. One-click default, one-click-and-pick for the secondary action.",
         src: "/projects/images/decisioning-table-split-button.png",
+        naturalSize: true,
       },
       { type: "hr" },
       { type: "h2", text: "Accessibility as a System Lever" },
