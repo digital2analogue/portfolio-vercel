@@ -48,7 +48,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "image",
         alt: "Coded prototype of the Decision Engine interface demonstrating interactive rule-building behaviour",
-        src: "/projects/images/c1-decision-coded-prototype.gif",
+        src: "/projects/images/c1-decision-coded-prototype.png",
         naturalSize: true,
       },
       {
