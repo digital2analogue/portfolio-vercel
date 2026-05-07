@@ -192,18 +192,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
         src: "/projects/images/decisioning-table-rules.png",
       },
-      { type: "h3", text: "Inline data-attribute picker" },
-      {
-        type: "p",
-        text: "The data attribute on each row is a button styled as a colored badge. Clicking it opens a small inline dropdown anchored to the badge (Income, Expense, Asset, Liability), so the user can change the attribute without leaving the row, opening a modal, or losing context on the rest of the table.",
-      },
-      {
-        type: "image",
-        alt: "Inline dropdown opened from the Income badge in the first rule, showing four options (Income, Expense, Asset, Liability)",
-        caption:
-          "Click a badge, swap the attribute. No modal, no navigation, no row expansion.",
-        src: "/projects/images/decisioning-table-data-attribute-dropdown.png",
-      },
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {
         type: "p",
