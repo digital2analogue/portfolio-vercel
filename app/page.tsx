@@ -38,8 +38,6 @@ export default function IndexPage() {
           &nbsp;<span className="single-status__v">Open to work</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
           <span>San Francisco</span>
-          <span className="single-status__sep" aria-hidden="true">·</span>
-          <span>Updated {new Date().toISOString().slice(0, 7)}</span>
         </div>
       </section>
 
