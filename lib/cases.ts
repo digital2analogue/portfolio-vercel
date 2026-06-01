@@ -62,20 +62,19 @@ export const CASES: CaseStudy[] = [
   {
     slug: "design-tokens",
     index: "04",
-    title: "Brand Tokens System",
+    title: "Agentic Design System",
     company: "Personal",
     year: "2026",
     role: "Designer & Design Engineer",
-    tags: ["Design Tokens", "Design Systems", "Theming"],
+    tags: ["Design Systems", "Design Tokens", "Agentic / AI", "Web Components"],
     summary:
-      "A multi-layer token system — primitives, semantics, and themed surfaces — wired into a contrast-gated build. Live, browsable token catalog as a working proof of concept for portable design infrastructure.",
+      "A cross-site design system built to be consumed by agents as well as people — one versioned source of truth flowing from DTCG tokens through framework-agnostic components to an MCP server that lets an AI read the system and lint against it before it writes a line of UI.",
     metrics: [
-      "Live token catalog",
-      "WCAG AA contrast gate at build",
-      "Foundation for multi-brand theming",
+      "18 components, 4 brands, 1 source",
+      "MCP server: read + lint the system",
+      "Code Connect: design ↔ code, two-way",
     ],
-    status: "PROOF OF CONCEPT",
-    href: "/tokens",
+    status: "LIVE · EVOLVING",
   },
 ];
 

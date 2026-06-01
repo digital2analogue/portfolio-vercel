@@ -847,4 +847,174 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
     ],
   },
+  "design-tokens": {
+    slug: "design-tokens",
+    title: "Building an Agentic Design System",
+    scope: "Token architecture, component library, agent tooling",
+    timeline: "2026 — ongoing",
+    blocks: [
+      {
+        type: "image",
+        alt: "Architecture diagram of the brand-tokens agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
+        caption:
+          "The whole system on one canvas: one source of truth, consumed by humans and agents alike. Solid green is shipped; dashed amber is deliberately deferred.",
+        src: "/projects/images/ds-architecture.svg",
+        naturalSize: true,
+      },
+      { type: "h2", text: "Overview" },
+      {
+        type: "p",
+        text: "I build most of my work through AI agents now — across chat windows, rarely seeing the whole system at once. So I built a design system for that reality: one where the rules aren't just written for a human reading docs, but encoded so a machine can read the system, build against it, and catch its own mistakes.",
+      },
+      {
+        type: "p",
+        text: "**brand-tokens is a design system with an API for agents.** One versioned source of truth flows from raw DTCG tokens, through framework-agnostic web components, to an MCP server an agent can query — and lint against — before it writes a line of UI.",
+      },
+      {
+        type: "note",
+        text: "Note: This is personal, living infrastructure — it runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand. It's actively evolving, so I've marked what's shipped versus deferred honestly throughout.",
+      },
+      { type: "hr" },
+      {
+        type: "meta",
+        rows: [
+          ["Role", "Designer & Design Engineer"],
+          ["Scope", "Token architecture, components, agent tooling"],
+          ["Stack", "DTCG · Style Dictionary · Lit · MCP · Figma Code Connect"],
+          ["Status", "Live and evolving"],
+        ],
+      },
+      {
+        type: "p",
+        text: "**Browse the live token catalog:** [the full token reference is here](/tokens).",
+      },
+      { type: "hr" },
+      { type: "h2", text: "The Problem" },
+      {
+        type: "p",
+        text: "Design systems are written for people. Documentation sites, Figma libraries, \"use this, not that\" — all of it assumes a human reading and remembering. But the thing building my UI is increasingly an agent, and an agent doesn't read your docs site.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Documentation assumes a human reader who remembers the rules",
+          "The agent building your UI never visits your docs site",
+          "Without the system as data, every agent reinvents — and drift spreads across every repo that consumes it",
+        ],
+      },
+      {
+        type: "p",
+        text: "The core issue wasn't missing tokens. It was that the system wasn't **legible to a machine**.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "The Architecture" },
+      {
+        type: "p",
+        text: "One repo, one direction of flow — the diagram above is the entire system. The decision that holds it together: **tokens and components version together.** A token rename is a breaking change to every component that uses it, by design, so there's no version skew to chase across separately published packages.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Author** — DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides ride the same source.",
+          "**Build** — Style Dictionary compiles every brand to CSS; a validation gate rejects hardcoded hex and primitive references in UI code.",
+          "**Components** — 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
+          "**Artifact** — component metadata merges into a single design-system.json.",
+          "**Interfaces** — humans read Figma and Markdown docs; agents read an MCP server.",
+          "**Consumers** — every site and product repo syncs from the same source.",
+        ],
+      },
+      { type: "hr" },
+      { type: "h2", text: "One Source of Truth, Four Brands" },
+      {
+        type: "image",
+        alt: "Four brand panels — base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading) — each showing the same UI rendered in its own canvas, surface, text, and accent token values",
+        caption:
+          "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
+        src: "/projects/images/ds-brands.svg",
+      },
+      {
+        type: "p",
+        text: "decision-engine inverts the whole thing to a light enterprise theme with a blue primary; dot-art swaps the canvas to pure black for photography; dot-blog bumps the reading size. No component is forked to make any of this happen. The difference between brands is **data** — a small override file — not code.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Components as Contracts" },
+      {
+        type: "image",
+        alt: "A rendered badge.meta.json file with callouts highlighting tokensUsed (which tokens the component may touch), rules (the constraints it must obey), and accessibility (the ARIA pattern and WCAG criteria it implements)",
+        caption:
+          "badge.meta.json — the component's machine-readable rulebook. get_component() returns this verbatim.",
+        src: "/projects/images/ds-meta-json.svg",
+        naturalSize: true,
+      },
+      {
+        type: "p",
+        text: "Each component ships its own rulebook. badge.meta.json doesn't just describe a badge — it declares exactly which tokens the component may touch, which rules apply to it, and which ARIA pattern and WCAG criteria it implements. The metadata is the spec, and it's the same file the agent reads.",
+      },
+      {
+        type: "p",
+        text: "Three components — badge, button, and input — are the fully productionized reference implementation. The remaining fifteen are built and wired to Figma, with machine-readable metadata rolling out behind them.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "check_usage: Governance, Moved Upstream" },
+      {
+        type: "image",
+        alt: "The check_usage MCP tool: an input panel of agent-proposed CSS containing a hardcoded hex and a primitive-token reference (both flagged red), feeding into an output panel listing the two rule violations returned by the system",
+        caption:
+          "Paste a snippet, get back every violation. Catch the mistake before it ships, not after.",
+        src: "/projects/images/ds-check-usage.svg",
+      },
+      {
+        type: "p",
+        text: "Most design-system governance is detection after the fact — a linter in CI, a reviewer catching drift in a pull request. **check_usage moves that upstream.** Before an agent commits to a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+      },
+      {
+        type: "p",
+        text: "It's a small tool with a specific point of view: catch the violation before it multiplies, not after.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Honest Status" },
+      {
+        type: "p",
+        text: "Knowing what *not* to build yet is part of the design. Here's where things actually stand.",
+      },
+      { type: "h3", text: "Shipped" },
+      {
+        type: "ul",
+        items: [
+          "Three-layer token architecture across four brands",
+          "18 Lit web components, all wired to Figma via Code Connect",
+          "MCP server with three tools: list_components, get_component, check_usage",
+          "Drift detection as a grep-based GitHub Action",
+          "WCAG AA contrast verified across every token pairing",
+        ],
+      },
+      { type: "h3", text: "Deliberately deferred" },
+      {
+        type: "ul",
+        items: [
+          "Full metadata coverage across all 18 components (three are the reference today)",
+          "Publishing the packages to npm",
+          "The self-healing loop — drift signals that auto-open pull requests",
+        ],
+      },
+      {
+        type: "p",
+        text: "The grep Action proves the drift signal exists before I invest in automating the cure. That sequencing is intentional, not a backlog.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Reflection" },
+      {
+        type: "p",
+        text: "Every design system I'd built before this was about making complexity legible to people. This one asked a newer question: what does a system look like when its most active reader is a machine?",
+      },
+      {
+        type: "p",
+        text: "The answer wasn't more documentation. It was **structure** — tokens as data, components as contracts, rules as something you can query.",
+      },
+      {
+        type: "p",
+        text: "A library tells you what exists. This tells an agent what's allowed.",
+      },
+    ],
+  },
 };

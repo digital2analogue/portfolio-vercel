@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="1180" viewBox="0 0 1480 1180" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<defs><linearGradient id="spine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.9"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0.35"/></linearGradient><marker id="ah" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#4ADE6E"/></marker></defs>
+<rect width="1480" height="1180" fill="#0A0D0A"/>
+<text x="60" y="62" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="34" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Agentic Design System</text>
+<text x="60" y="92" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16" font-weight="400" fill="#A0A89A" text-anchor="start" opacity="1.0">How brand-tokens fits together: one source of truth, consumed by humans and agents alike.</text>
+<text x="60" y="116" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">brand-tokens  ·  DTCG tokens → Style Dictionary → Lit components → metadata → MCP + Figma → consumers</text>
+<rect x="1120" y="40" width="300" height="58" rx="8" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<rect x="1136" y="56" width="22" height="12" rx="3" fill="none" stroke="#4ADE6E" stroke-width="1.5"/>
+<text x="1166" y="66" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#A0A89A" text-anchor="start" opacity="1.0">shipped</text>
+<rect x="1270" y="56" width="22" height="12" rx="3" fill="none" stroke="#FCD34D" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1300" y="66" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#FCD34D" text-anchor="start" opacity="1.0">planned / deferred</text>
+<text x="44" y="180" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">01</text>
+<text x="44" y="200" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">AUTHOR</text>
+<rect x="150" y="150" width="1180" height="150" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="180" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">SOURCE OF TRUTH  ·  tokens/  (DTCG 2025.10 JSON)</text>
+<text x="172" y="200" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">tokens and components version together in one repo — a rename is a breaking change, by design</text>
+<rect x="176" y="208" width="268.5" height="70" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="192" y="238" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Primitives</text>
+<text x="192" y="260" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">raw hex · px · ms</text>
+<rect x="462.5" y="208" width="268.5" height="70" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="478.5" y="238" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Semantic</text>
+<text x="478.5" y="260" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">named roles → primitives</text>
+<rect x="749.0" y="208" width="268.5" height="70" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="765.0" y="238" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Component</text>
+<text x="765.0" y="260" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">scoped to a component</text>
+<rect x="1035.5" y="208" width="268.5" height="70" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="1051.5" y="238" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Brand overrides</text>
+<text x="1051.5" y="260" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">4 brands, one source</text>
+<text x="44" y="360" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">02</text>
+<text x="44" y="380" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">BUILD</text>
+<rect x="150" y="330" width="1180" height="138" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="360" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">BUILD  ·  Style Dictionary v4  →  build/css/&lt;brand&gt;.css</text>
+<rect x="176" y="382" width="364.0" height="64" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="192" y="412" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">build-brands.mjs</text>
+<text x="192" y="434" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">compiles every brand</text>
+<rect x="558.0" y="382" width="364.0" height="64" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="574.0" y="412" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">base · decision-engine</text>
+<text x="574.0" y="434" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">dot-art · dot-blog</text>
+<rect x="940.0" y="382" width="364.0" height="64" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="956.0" y="412" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">validate.mjs (gate)</text>
+<text x="956.0" y="434" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">no hex · no --primitive-* in UI</text>
+<text x="44" y="528" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">03</text>
+<text x="44" y="548" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">COMPONENTS</text>
+<rect x="150" y="498" width="1180" height="168" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="528" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">COMPONENTS  ·  packages/components  (framework-agnostic Lit)</text>
+<rect x="176" y="550" width="268.5" height="92" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="192" y="580" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">18 web components</text>
+<text x="192" y="602" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">alert · avatar · badge · button</text>
+<text x="192" y="620" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">card · checkbox · dialog · input …</text>
+<rect x="462.5" y="550" width="268.5" height="92" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="478.5" y="580" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">*.meta.json</text>
+<text x="478.5" y="602" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">props · slots · events</text>
+<text x="478.5" y="620" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">tokens used · a11y · rules</text>
+<rect x="749.0" y="550" width="268.5" height="92" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="765.0" y="580" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">*.figma.ts → Code Connect</text>
+<text x="765.0" y="602" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">all 18 mapped to Figma nodes</text>
+<text x="765.0" y="620" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">design ↔ code, two-way</text>
+<rect x="1035.5" y="550" width="268.5" height="92" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="1051.5" y="580" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">3 reference components</text>
+<text x="1051.5" y="602" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">badge · button · input</text>
+<text x="1051.5" y="620" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">fully metadata-complete</text>
+<text x="44" y="726" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">04</text>
+<text x="44" y="746" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">ARTIFACT</text>
+<rect x="150" y="696" width="1180" height="118" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="726" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">ARTIFACT  ·  build-design-system-json.mjs  →  design-system.json</text>
+<rect x="176" y="746" width="1128.0" height="48" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="192" y="776" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">design-system.json — merged *.meta.json + Custom Elements Manifest, one machine-readable file the agent layer reads</text>
+<text x="44" y="874" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">05</text>
+<text x="44" y="894" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">INTERFACES</text>
+<rect x="150" y="844" width="1180" height="150" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="874" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">CONSUMED BY  ·  humans and agents read the same source</text>
+<rect x="176" y="894" width="555.0" height="84" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.5" opacity="1.0"/>
+<text x="192" y="920" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#A0A89A" text-anchor="start" letter-spacing="1.5" opacity="1.0">HUMANS</text>
+<text x="192" y="944" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">Figma (Code Connect) · ai/*.md always-on docs</text>
+<text x="192" y="964" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">docs/index.html reference · AGENTS.md</text>
+<rect x="749.0" y="894" width="555.0" height="84" rx="9" fill="#1E241E" stroke="#4ADE6E" stroke-width="1.6" opacity="1.0"/>
+<text x="765.0" y="920" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="0.5" opacity="1.0">AGENTS  ·  MCP server (packages/mcp)</text>
+<text x="765.0" y="944" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">list_components()  ·  get_component(name)</text>
+<text x="765.0" y="964" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">check_usage(snippet) → flags rule violations</text>
+<text x="44" y="1054" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" opacity="1.0">06</text>
+<text x="44" y="1074" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#8B9683" text-anchor="start" letter-spacing="1.5" opacity="1.0">CONSUMERS</text>
+<rect x="150" y="1024" width="1180" height="120" rx="14" fill="#0E120D" stroke="#1E241E" stroke-width="1.5" opacity="1.0"/>
+<text x="172" y="1054" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#4ADE6E" text-anchor="start" letter-spacing="1" opacity="1.0">CONSUMERS  ·  each runs sync-tokens to stay aligned with source</text>
+<rect x="176" y="1074" width="211.2" height="50" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="192" y="1104" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">portfolio-vercel</text>
+<rect x="405.2" y="1074" width="211.2" height="50" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="421.2" y="1104" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">decisioning-table</text>
+<rect x="634.4" y="1074" width="211.2" height="50" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="650.4" y="1104" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">.com · .design</text>
+<rect x="863.5999999999999" y="1074" width="211.2" height="50" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="879.5999999999999" y="1104" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">.art · .blog</text>
+<rect x="1092.8" y="1074" width="211.2" height="50" rx="9" fill="#161C16" stroke="#2E3A2E" stroke-width="1.6" opacity="1.0"/>
+<text x="1108.8" y="1104" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="15.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">enterprise UI</text>
+<text x="1108.8" y="1126" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">decision-engine</text>
+<line x1="740.0" y1="300" x2="740.0" y2="321" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M735.0,321 L745.0,321 L740.0,330 Z" fill="#4ADE6E"/>
+<line x1="740.0" y1="468" x2="740.0" y2="489" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M735.0,489 L745.0,489 L740.0,498 Z" fill="#4ADE6E"/>
+<line x1="740.0" y1="666" x2="740.0" y2="687" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M735.0,687 L745.0,687 L740.0,696 Z" fill="#4ADE6E"/>
+<line x1="740.0" y1="814" x2="740.0" y2="835" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M735.0,835 L745.0,835 L740.0,844 Z" fill="#4ADE6E"/>
+<line x1="453.5" y1="978" x2="453.5" y2="1015" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M448.5,1015 L458.5,1015 L453.5,1024 Z" fill="#4ADE6E"/>
+<line x1="1026.5" y1="978" x2="1026.5" y2="1015" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M1021.5,1015 L1031.5,1015 L1026.5,1024 Z" fill="#4ADE6E"/>
+<path d="M1330,1084.0 H1394 V225.0 H1330" fill="none" stroke="#FCD34D" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#ah)" opacity="0.9"/>
+<path d="M1339,220.0 L1330,225.0 L1339,230.0 Z" fill="#FCD34D"/>
+<text x="1410" y="677.0" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#FCD34D" text-anchor="middle" transform="rotate(90 1410 677.0)">drift detection · grep Action flags violations → upstream PR</text>
+<text x="1428" y="677.0" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11" fill="#FCD34D" opacity="0.75" text-anchor="middle" transform="rotate(90 1428 677.0)">self-healing auto-PR loop: planned</text>
+</svg>
