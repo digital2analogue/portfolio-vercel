@@ -916,9 +916,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "ul",
         items: [
           "**Author** — DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides ride the same source.",
-          "**Build** — Style Dictionary compiles every brand to CSS; a validation gate rejects hardcoded hex and primitive references in UI code.",
+          "**Build** — Style Dictionary compiles every brand to CSS; a validation gate rejects hardcoded hex, primitive references, and dangling token aliases — a rename that wasn't propagated fails the build, not production.",
           "**Components** — 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
-          "**Artifact** — component metadata merges into a single design-system.json.",
+          "**Artifact** — each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
           "**Interfaces** — humans read Figma and Markdown docs; agents read an MCP server.",
           "**Consumers** — every site and product repo syncs from the same source.",
         ],
@@ -952,7 +952,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Three components — badge, button, and input — are the fully productionized reference implementation. The remaining fifteen are built and wired to Figma, with machine-readable metadata rolling out behind them.",
+        text: "All 18 components carry an auto-generated Custom Elements Manifest — the mechanical API surface an agent needs to wire one up. Three — badge, button, and input — go further with a hand-authored meta.json that layers the token, rule, and accessibility contract on top. The rest are built and Figma-wired, with that richer contract rolling out behind them.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -984,7 +984,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Three-layer token architecture across four brands",
           "18 Lit web components, all wired to Figma via Code Connect",
           "MCP server with three tools: list_components, get_component, check_usage",
-          "Drift detection as a grep-based GitHub Action",
+          "One shared rule set behind every checker — the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
+          "A CI gate on every change: schema validation, lint rules, token-reference resolution, a deterministic artifact check, and 229 tests",
           "WCAG AA contrast verified across every token pairing",
         ],
       },
@@ -992,8 +993,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Full metadata coverage across all 18 components (three are the reference today)",
-          "Publishing the packages to npm",
+          "Hand-authored meta.json on all 18 components — the Custom Elements Manifest already covers all 18; the richer token/rule/a11y contract is on three",
+          "Publishing the packages to npm (distribution is still a manual token sync today)",
           "The self-healing loop — drift signals that auto-open pull requests",
         ],
       },
