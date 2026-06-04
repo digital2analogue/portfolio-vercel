@@ -849,7 +849,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
   },
   "design-tokens": {
     slug: "design-tokens",
-    title: "Building an Agentic Design System",
+    title: "Building Parsimony, an Agentic Design System",
     scope: "Token architecture, component library, agent tooling",
     timeline: "2026 — ongoing",
     blocks: [

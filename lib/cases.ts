@@ -62,7 +62,7 @@ export const CASES: CaseStudy[] = [
   {
     slug: "design-tokens",
     index: "04",
-    title: "Agentic Design System",
+    title: "Parsimony, an Agentic Design System",
     company: "Personal",
     year: "2026",
     role: "Designer & Design Engineer",
