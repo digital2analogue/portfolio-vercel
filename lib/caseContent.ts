@@ -972,6 +972,27 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "It's a small tool with a specific point of view: catch the violation before it multiplies, not after.",
       },
       { type: "hr" },
+      { type: "h2", text: "Decisions & Tradeoffs" },
+      {
+        type: "p",
+        text: "A system is the sum of its forks in the road. Three that shaped Parsimony:",
+      },
+      { type: "h3", text: "Distribution: public npm over GitHub Packages" },
+      {
+        type: "p",
+        text: "Distribution had one job — kill the hand-copied CSS block so consumers just install the tokens. GitHub Packages was the obvious first move, same ecosystem as the repo. But it ties a package's scope to the repo owner, and — the dealbreaker — it makes **consumers authenticate to install, even for public packages**. That drops friction right back onto the step I was trying to remove: every site and every CI would need a token just to pull tokens. Public npm decouples them — any project, any build, installs with zero auth. The real unlock was noticing tokens were never secret to begin with: they ship to the browser as plain CSS on every page, so there was nothing to protect by keeping them private.",
+      },
+      { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
+      {
+        type: "p",
+        text: "Three ways to hand the system to an agent. Better docs — but agents don't read your docs site. A REST API — but that means hosting, auth, and the agent has to know it exists. Or **MCP**, the protocol agent clients already discover and call natively. MCP meets the agent where it works: the same session writing the UI can list components, pull a contract, and lint a snippet without leaving the editor. The tradeoff is that MCP is young and runs locally rather than as a hosted public API — fine when the first consumer is my own toolchain.",
+      },
+      { type: "h3", text: "Components: framework-agnostic Lit over framework-native" },
+      {
+        type: "p",
+        text: "The components are Lit web components, not React. There's a real cost — web components have rougher edges in React and server rendering. The payoff: one implementation renders on every surface — any framework, plain HTML, a Figma Code Connect mapping — instead of rebuilding the same button per framework and watching the versions drift. For a multi-brand system meant to outlive whatever framework I'm using this year, one source beats native ergonomics.",
+      },
+      { type: "hr" },
       { type: "h2", text: "Honest Status" },
       {
         type: "p",
