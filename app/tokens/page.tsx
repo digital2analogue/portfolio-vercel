@@ -4,12 +4,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Design Tokens",
   description:
-    "The brand-tokens design system that powers every River Romney property — primitives, semantic tokens, and a clear contract between design and code.",
+    "The Parsimony design system that powers every River Romney property — primitives, semantic tokens, and a clear contract between design and code.",
   alternates: { canonical: "/tokens" },
   openGraph: {
     title: "Design Tokens · River Romney",
     description:
-      "Brand-tokens design system — colors, typography, spacing, motion, radius.",
+      "Parsimony design system — colors, typography, spacing, motion, radius.",
     url: "/tokens",
   },
 };
@@ -95,7 +95,7 @@ export default function TokensPage() {
         <div className="hero__term rise d1">
           <div>
             <span className="accent" aria-hidden="true">~</span> $ cat
-            ./brand-tokens.md
+            ./parsimony.md
           </div>
         </div>
 
@@ -105,7 +105,7 @@ export default function TokensPage() {
 
         <p className="lede rise d3">
           Every color, type style, spacing value, motion, and radius on this
-          site comes from <span className="accent">brand-tokens</span> — a
+          site comes from <span className="accent">Parsimony</span> — a
           design system I maintain to keep every River Romney property
           consistent. Primitives feed the semantic layer. UI code never
           touches hex.
@@ -286,7 +286,7 @@ export default function TokensPage() {
           href="https://github.com/digital2analogue/brand-tokens"
           className="accent"
         >
-          brand-tokens
+          Parsimony
         </a>{" "}
         repo — Style Dictionary pipeline, per-brand overrides, and a clear
         primitive → semantic contract. This portfolio is the system{" "}
