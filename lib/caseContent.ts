@@ -855,7 +855,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     blocks: [
       {
         type: "image",
-        alt: "Architecture diagram of the brand-tokens agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
+        alt: "Architecture diagram of the Parsimony agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
         caption:
           "The whole system on one canvas: one source of truth, consumed by humans and agents alike. Solid green is shipped; dashed amber is deliberately deferred.",
         src: "/projects/images/ds-architecture.svg",
@@ -868,7 +868,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**brand-tokens is a design system with an API for agents.** One versioned source of truth flows from raw DTCG tokens, through framework-agnostic web components, to an MCP server an agent can query — and lint against — before it writes a line of UI.",
+        text: "**Parsimony is a design system with an API for agents.** One versioned source of truth flows from raw DTCG tokens, through framework-agnostic web components, to an MCP server an agent can query — and lint against — before it writes a line of UI.",
       },
       {
         type: "note",
