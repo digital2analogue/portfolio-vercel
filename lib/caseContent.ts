@@ -858,7 +858,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Architecture diagram of the Parsimony agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
         caption:
           "The whole system on one canvas: one source of truth, consumed by humans and agents alike. Solid green is shipped; dashed amber is deliberately deferred.",
-        src: "/projects/images/ds-architecture.svg",
+        src: "/projects/images/ds-architecture.png",
         naturalSize: true,
       },
       { type: "h2", text: "Overview" },
@@ -930,7 +930,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Four brand panels — base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading) — each showing the same UI rendered in its own canvas, surface, text, and accent token values",
         caption:
           "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
-        src: "/projects/images/ds-brands.svg",
+        src: "/projects/images/ds-brands.png",
       },
       {
         type: "p",
@@ -943,7 +943,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "A rendered badge.meta.json file with callouts highlighting tokensUsed (which tokens the component may touch), rules (the constraints it must obey), and accessibility (the ARIA pattern and WCAG criteria it implements)",
         caption:
           "badge.meta.json — the component's machine-readable rulebook. get_component() returns this verbatim.",
-        src: "/projects/images/ds-meta-json.svg",
+        src: "/projects/images/ds-meta-json.png",
         naturalSize: true,
       },
       {
@@ -961,7 +961,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "The check_usage MCP tool: an input panel of agent-proposed CSS containing a hardcoded hex and a primitive-token reference (both flagged red), feeding into an output panel listing the two rule violations returned by the system",
         caption:
           "Paste a snippet, get back every violation. Catch the mistake before it ships, not after.",
-        src: "/projects/images/ds-check-usage.svg",
+        src: "/projects/images/ds-check-usage.png",
       },
       {
         type: "p",
