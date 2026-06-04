@@ -24,7 +24,7 @@
 <text x="184" y="516" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Artifact — one machine-readable file</text>
 <rect x="470.0" y="530" width="360" height="58" rx="12" fill="#161C16" stroke="#4ADE6E" stroke-width="2" opacity="1.0"/>
 <text x="650" y="556" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="17" font-weight="500" fill="#4ADE6E" text-anchor="middle" opacity="1.0">design-system.json</text>
-<text x="650" y="575" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11.5" font-weight="400" fill="#8B9683" text-anchor="middle" opacity="1.0">merged meta.json + Custom Elements Manifest</text>
+<text x="650" y="575" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11.5" font-weight="400" fill="#8B9683" text-anchor="middle" opacity="1.0">component APIs + usage rules, in one file</text>
 <text x="650" y="618" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" font-weight="400" fill="#A0A89A" text-anchor="middle" letter-spacing="2" opacity="1.0">read by</text>
 <path d="M590,588 C590,625.0 460.0,625.0 460.0,653" fill="none" stroke="#4ADE6E" stroke-width="2.0"/>
 <path d="M455.0,653 L465.0,653 L460.0,662 Z" fill="#4ADE6E"/>
