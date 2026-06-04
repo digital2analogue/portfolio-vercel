@@ -975,22 +975,22 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Decisions & Tradeoffs" },
       {
         type: "p",
-        text: "A system is the sum of its forks in the road. Three that shaped Parsimony:",
+        text: "Three decisions, and what each one cost.",
       },
       { type: "h3", text: "Distribution: public npm over GitHub Packages" },
       {
         type: "p",
-        text: "Distribution had one job — kill the hand-copied CSS block so consumers just install the tokens. GitHub Packages was the obvious first move, same ecosystem as the repo. But it ties a package's scope to the repo owner, and — the dealbreaker — it makes **consumers authenticate to install, even for public packages**. That drops friction right back onto the step I was trying to remove: every site and every CI would need a token just to pull tokens. Public npm decouples them — any project, any build, installs with zero auth. The real unlock was noticing tokens were never secret to begin with: they ship to the browser as plain CSS on every page, so there was nothing to protect by keeping them private.",
+        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. The catch: it makes you log in to install a package, even a public one. So every site and every build would need a token just to download tokens — the exact friction I was trying to remove. Public npm has none of that: anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
       },
       { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
       {
         type: "p",
-        text: "Three ways to hand the system to an agent. Better docs — but agents don't read your docs site. A REST API — but that means hosting, auth, and the agent has to know it exists. Or **MCP**, the protocol agent clients already discover and call natively. MCP meets the agent where it works: the same session writing the UI can list components, pull a contract, and lint a snippet without leaving the editor. The tradeoff is that MCP is young and runs locally rather than as a hosted public API — fine when the first consumer is my own toolchain.",
+        text: "How should an agent read the system? Docs are out: agents don't open your docs site. A REST API would work, but it needs a server, a login, and the agent has to know it's there. MCP is the format agents already speak, so the same session writing the code can ask the system what it needs, with no setup. The downside: MCP is new, and mine runs on my machine rather than as a public service. That's fine while I'm the main user.",
       },
-      { type: "h3", text: "Components: framework-agnostic Lit over framework-native" },
+      { type: "h3", text: "Components: Web Components over React" },
       {
         type: "p",
-        text: "The components are Lit web components, not React. There's a real cost — web components have rougher edges in React and server rendering. The payoff: one implementation renders on every surface — any framework, plain HTML, a Figma Code Connect mapping — instead of rebuilding the same button per framework and watching the versions drift. For a multi-brand system meant to outlive whatever framework I'm using this year, one source beats native ergonomics.",
+        text: "I built the components as Web Components (using Lit) instead of React. The cost: Web Components are a bit clunkier inside React. The win: one version of each component works everywhere — React, plain HTML, or a Figma mapping — instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
       },
       { type: "hr" },
       { type: "h2", text: "Honest Status" },
