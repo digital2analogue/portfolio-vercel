@@ -857,22 +857,22 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Architecture diagram of the Parsimony agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
         caption:
-          "The whole system on one canvas: one source of truth, consumed by humans and agents alike. Solid green is shipped; dashed amber is deliberately deferred.",
+          "The whole system in one view: one source of truth, read by both people and agents. Green is shipped; dashed amber is planned.",
         src: "/projects/images/ds-architecture.png",
         naturalSize: true,
       },
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "I build most of my work through AI agents now — across chat windows, rarely seeing the whole system at once. So I built a design system for that reality: one where the rules aren't just written for a human reading docs, but encoded so a machine can read the system, build against it, and catch its own mistakes.",
+        text: "Most of my work now happens through AI agents, in chat windows, where I rarely see the whole codebase at once. So I built a design system for that setup. Instead of rules written for a person to read and remember, the rules are encoded so a machine can read them, build against them, and catch its own mistakes.",
       },
       {
         type: "p",
-        text: "**Parsimony is a design system with an API for agents.** One versioned source of truth flows from raw DTCG tokens, through framework-agnostic web components, to an MCP server an agent can query — and lint against — before it writes a line of UI.",
+        text: "**Parsimony is a design system with an API for agents.** One source of truth runs from DTCG tokens, through framework-agnostic Web Components, to an MCP server an agent can query and lint against before it writes any UI.",
       },
       {
         type: "note",
-        text: "Note: This is personal, living infrastructure — it runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand. It's actively evolving, so I've marked what's shipped versus deferred honestly throughout.",
+        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving — so I've marked what's shipped versus what's deferred throughout.",
       },
       { type: "hr" },
       {
@@ -904,7 +904,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The core issue wasn't missing tokens. It was that the system wasn't **legible to a machine**.",
+        text: "The problem was never missing tokens. It was that nothing in the system was **readable by a machine**.",
       },
       { type: "hr" },
       { type: "h2", text: "The Architecture" },
@@ -915,7 +915,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "**Author** — DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides ride the same source.",
+          "**Author** — DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
           "**Build** — Style Dictionary compiles every brand to CSS; a validation gate rejects hardcoded hex, primitive references, and dangling token aliases — a rename that wasn't propagated fails the build, not production.",
           "**Components** — 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
           "**Artifact** — each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
@@ -934,7 +934,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "decision-engine inverts the whole thing to a light enterprise theme with a blue primary; dot-art swaps the canvas to pure black for photography; dot-blog bumps the reading size. No component is forked to make any of this happen. The difference between brands is **data** — a small override file — not code.",
+        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component — each brand is just a small override file on top of the same tokens.",
       },
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
@@ -948,11 +948,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each component ships its own rulebook. badge.meta.json doesn't just describe a badge — it declares exactly which tokens the component may touch, which rules apply to it, and which ARIA pattern and WCAG criteria it implements. The metadata is the spec, and it's the same file the agent reads.",
+        text: "Each component ships its own rulebook. badge.meta.json spells out which tokens the component may touch, which rules apply to it, and which ARIA pattern and WCAG criteria it implements. That file is the spec, and it's the same file the agent reads.",
       },
       {
         type: "p",
-        text: "All 18 components carry an auto-generated Custom Elements Manifest — the mechanical API surface an agent needs to wire one up. Three — badge, button, and input — go further with a hand-authored meta.json that layers the token, rule, and accessibility contract on top. The rest are built and Figma-wired, with that richer contract rolling out behind them.",
+        text: "All 18 components carry an auto-generated Custom Elements Manifest — the basic API an agent needs to use one. Three of them (badge, button, input) add a hand-written meta.json on top, with the token, rule, and accessibility contract. The rest are built and wired to Figma; the fuller contract is rolling out behind them.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -965,11 +965,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Most design-system governance is detection after the fact — a linter in CI, a reviewer catching drift in a pull request. **check_usage moves that upstream.** Before an agent commits to a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+        text: "Most design-system checks happen after the fact — a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
       },
       {
         type: "p",
-        text: "It's a small tool with a specific point of view: catch the violation before it multiplies, not after.",
+        text: "The same rules run in three places — this check, the build gate, and the drift scan — so the answer an agent gets here is the one the build will enforce later.",
       },
       { type: "hr" },
       { type: "h2", text: "Decisions & Tradeoffs" },
@@ -996,7 +996,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Honest Status" },
       {
         type: "p",
-        text: "Knowing what *not* to build yet is part of the design. Here's where things actually stand.",
+        text: "Part of the work was deciding what to leave unbuilt for now. Here's where things stand.",
       },
       { type: "h3", text: "Shipped" },
       {
@@ -1006,7 +1006,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "18 Lit web components, all wired to Figma via Code Connect",
           "MCP server with three tools: list_components, get_component, check_usage",
           "One shared rule set behind every checker — the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
-          "A CI gate on every change: schema validation, lint rules, token-reference resolution, a deterministic artifact check, and 229 tests",
+          "A CI gate on every change: schema checks, lint rules, token-reference resolution, a stale-artifact check, and a full test suite",
           "Distribution: the token build ships as a versioned, installable npm package — consumers add a dependency instead of hand-copying the CSS",
           "WCAG AA contrast verified across every token pairing",
         ],
@@ -1022,17 +1022,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The drift scan proves the signal exists before I invest in automating the cure. That sequencing is intentional, not a backlog.",
+        text: "The drift scan already finds the problems; auto-opening PRs to fix them is the part I've left for later. That order is deliberate, not a backlog.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "Every design system I'd built before this was about making complexity legible to people. This one asked a newer question: what does a system look like when its most active reader is a machine?",
+        text: "Every design system I'd built before was about making things clear to people. This one started from a different question: what does a system look like when its main reader is a machine?",
       },
       {
         type: "p",
-        text: "The answer wasn't more documentation. It was **structure** — tokens as data, components as contracts, rules as something you can query.",
+        text: "The answer wasn't more documentation. It was **structure**: tokens stored as data, components that carry their own rules, and a system an agent can query.",
       },
       {
         type: "p",

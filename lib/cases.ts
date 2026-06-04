@@ -68,7 +68,7 @@ export const CASES: CaseStudy[] = [
     role: "Designer & Design Engineer",
     tags: ["Design Systems", "Design Tokens", "Agentic / AI", "Web Components"],
     summary:
-      "A cross-site design system built to be consumed by agents as well as people — one versioned source of truth flowing from DTCG tokens through framework-agnostic components to an MCP server that lets an AI read the system and lint against it before it writes a line of UI.",
+      "A cross-site design system built to be used by agents as much as by people: one source of truth, from DTCG tokens through framework-agnostic components to an MCP server an agent can read and lint against before it writes any UI.",
     metrics: [
       "18 components, 4 brands, 1 source",
       "MCP server: read + lint the system",
