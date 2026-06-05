@@ -861,10 +861,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/ds-architecture.png",
         naturalSize: true,
       },
+      {
+        type: "quote",
+        text: "Most design systems are documentation a person has to read. Parsimony is data an agent can query, build against, and lint itself with before it ships any UI.",
+      },
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "Most of my work now happens through AI agents, in chat windows, where I rarely see the whole codebase at once. So I built a design system for that setup. Instead of rules written for a person to read and remember, the rules are encoded so a machine can read them, build against them, and catch its own mistakes.",
+        text: "Interfaces are increasingly assembled by agents rather than typed by hand, and design systems were never written for that reader. Most of my own work now happens through AI agents, in chat windows where I rarely see the whole codebase at once, so I built a design system for that setup. Instead of rules written for a person to read and remember, the rules are encoded so a machine can read them, build against them, and catch its own mistakes.",
       },
       {
         type: "p",
