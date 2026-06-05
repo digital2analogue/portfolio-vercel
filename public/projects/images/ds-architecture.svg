@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1300" height="980" viewBox="0 0 1300 980" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
 <defs><radialGradient id="bloom" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.20"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0"/></radialGradient></defs>
 <rect width="1300" height="980" fill="#0A0D0A"/>
-<text x="120" y="64" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="33" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Agentic Design System</text>
-<text x="120" y="94" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16" font-weight="400" fill="#A0A89A" text-anchor="start" opacity="1.0">One source of truth, read by humans and agents alike.</text>
+<text x="120" y="64" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="33" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Parsimony</text>
+<text x="120" y="94" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16" font-weight="400" fill="#A0A89A" text-anchor="start" opacity="1.0">An agentic design system — one source of truth, read by both people and agents.</text>
 <rect x="970" y="58" width="20" height="11" rx="3" fill="#4ADE6E"/>
 <text x="998" y="68" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" font-weight="400" fill="#A0A89A" text-anchor="start" opacity="1.0">shipped</text>
 <rect x="1095" y="58" width="20" height="11" rx="3" fill="none" stroke="#FCD34D" stroke-width="1.5" stroke-dasharray="4 3"/>
