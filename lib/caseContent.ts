@@ -975,6 +975,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
       },
+      {
+        type: "quote",
+        text: "Before, drift surfaced in code review, after the code was already written. Now the agent checks the same rules before the line exists, turning a review-cycle catch into a single tool call.",
+      },
       { type: "hr" },
       { type: "h2", text: "An Agent, Self-Correcting" },
       {
