@@ -1,0 +1,19 @@
+# Files exempt from design-system drift scanning, with reasons.
+# Honored by brand-tokens scripts/drift-lint.mjs (and its CI workflow).
+# Everything not listed here is held to the shared rules in
+# brand-tokens/scripts/rules.mjs.
+
+# The inlined token block is a sanctioned copy of the source of truth — raw hex
+# primitives live here by design. See CLAUDE.md "Design Token System".
+app/globals.css
+
+# The /tokens viewer renders hex values as displayed data, not as styling.
+app/tokens/page.tsx
+
+# Next.js viewport themeColor must be a literal hex; CSS vars aren't allowed there.
+app/layout.tsx
+
+# The JS token bridge is the single sanctioned adapter allowed to reference
+# --primitive-font-family-* (no semantic family-only token exists yet).
+# See brand-tokens docs/decisions.md (2026-06-05 font-family decision).
+lib/tokens.ts

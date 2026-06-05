@@ -27,11 +27,11 @@ export default function NotFound() {
           moved, or never was.
         </p>
 
-        <div className="rise d4" style={{ marginTop: "var(--primitive-space-xl)" }}>
+        <div className="rise d4" style={{ marginTop: "var(--spacing-group)" }}>
           <Link
             href="/"
             className="accent"
-            style={{ fontFamily: "var(--primitive-font-family-mono)", fontSize: "var(--primitive-font-size-sm)" }}
+            style={{ font: "var(--font-code)" }}
           >
             ← cd ~/
           </Link>

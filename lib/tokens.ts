@@ -17,7 +17,6 @@ export const T = {
   // Interactive / accent
   accent: "var(--color-foreground-action)",
   onAccent: "var(--color-foreground-on-action)",
-  bgAccent: "var(--color-background-accent)",
 } as const;
 
 // Font family primitives (for cases where the semantic shorthand isn't enough).

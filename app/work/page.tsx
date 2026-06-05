@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <div className="column">
-      <section className="hero" style={{ marginBottom: "var(--primitive-space-3xl)" }}>
+      <section className="hero" style={{ marginBottom: "var(--spacing-block)" }}>
         <span className="marginalia" aria-hidden="true">
           §&nbsp;<span className="accent">01</span>&nbsp;/&nbsp;WORK
         </span>
