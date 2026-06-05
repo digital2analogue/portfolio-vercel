@@ -1054,6 +1054,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
+        text: "There's no settled playbook for this yet. What an AI-native design system should be is still being worked out across the industry, so I'm treating Parsimony as a moving target: as conventions for tokens, component contracts, and agent interfaces solidify, it will adopt them. I'd rather keep iterating toward the standards as they form than freeze around today's best guess.",
+      },
+      {
+        type: "p",
         text: "A component library tells you what exists. This one also tells an agent what it's allowed to use.",
       },
     ],
