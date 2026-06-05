@@ -972,6 +972,20 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
       },
       { type: "hr" },
+      { type: "h2", text: "An Agent, Self-Correcting" },
+      {
+        type: "image",
+        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
+        caption:
+          "One session, four steps: get_component, a hand-rolled draft, check_usage, a fix. The violation text is the literal output of the shared rule set, not a mockup.",
+        src: "/projects/images/ds-agent-loop.png",
+        naturalSize: true,
+      },
+      {
+        type: "p",
+        text: "Here is the whole argument in one session. The agent asks the system what a badge is, drafts the markup the quick way with raw hex, and runs check_usage before it commits to that. The system hands back the exact violations the build would later reject, so the agent drops the hand-rolled version and uses the component instead. Same tools, same rules, one loop. None of it is staged: the messages come straight from the shared rule set, and the fix is the component's own documented usage.",
+      },
+      { type: "hr" },
       { type: "h2", text: "Decisions & Tradeoffs" },
       {
         type: "p",
