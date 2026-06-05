@@ -4,12 +4,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Design Tokens",
   description:
-    "The Parsimony design system that powers every River Romney property — primitives, semantic tokens, and a clear contract between design and code.",
+    "The Parsimony design system that powers every River Romney property: primitives, semantic tokens, and a clear contract between design and code.",
   alternates: { canonical: "/tokens" },
   openGraph: {
     title: "Design Tokens · River Romney",
     description:
-      "Parsimony design system — colors, typography, spacing, motion, radius.",
+      "Parsimony design system: colors, typography, spacing, motion, radius.",
     url: "/tokens",
   },
 };
@@ -20,28 +20,28 @@ const COLORS = [
     group: "Background",
     rows: [
       { token: "--color-background-default", hex: "#0A0D0A", role: "Page canvas. Every full-bleed surface." },
-      { token: "--color-background-alt", hex: "#1E241E", role: "Elevated surfaces — cards, panels, inputs." },
-      { token: "--color-background-action", hex: "#4ADE6E", role: "Interactive fills — primary buttons, selected states." },
+      { token: "--color-background-alt", hex: "#1E241E", role: "Elevated surfaces: cards, panels, inputs." },
+      { token: "--color-background-action", hex: "#4ADE6E", role: "Interactive fills: primary buttons, selected states." },
     ],
   },
   {
     group: "Foreground",
     rows: [
       { token: "--color-foreground-default", hex: "#C8CFC4", role: "Primary text and icons. AAA contrast (12.3:1)." },
-      { token: "--color-foreground-alt", hex: "#A0A89A", role: "Secondary text — subtitles, metadata. AA (8.0:1)." },
-      { token: "--color-foreground-muted", hex: "#8B9683", role: "Tertiary content — placeholders, fine print. AA (6.3:1)." },
-      { token: "--color-foreground-action", hex: "#4ADE6E", role: "Interactive text — links, active nav. AAA (11.3:1)." },
+      { token: "--color-foreground-alt", hex: "#A0A89A", role: "Secondary text: subtitles, metadata. AA (8.0:1)." },
+      { token: "--color-foreground-muted", hex: "#8B9683", role: "Tertiary content: placeholders, fine print. AA (6.3:1)." },
+      { token: "--color-foreground-action", hex: "#4ADE6E", role: "Interactive text: links, active nav. AAA (11.3:1)." },
     ],
   },
   {
     group: "Border",
     rows: [
-      { token: "--color-border-default", hex: "#1E241E", role: "All UI edges. Borders recede — they don't frame." },
+      { token: "--color-border-default", hex: "#1E241E", role: "All UI edges. Borders recede rather than frame." },
     ],
   },
 ];
 
-// Typography scale — semantic shorthand tokens
+// Typography scale: semantic shorthand tokens
 const BODY_SAMPLE = "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.";
 const TYPE = [
   { token: "--font-display",      label: "Display",        sample: "Display",       size: "40px / 1.1 · Space Grotesk 300" },
@@ -57,7 +57,7 @@ const TYPE = [
   { token: "--font-code",         label: "Code",           sample: "Code",          size: "14px / 1.6 · JetBrains Mono 400" },
 ];
 
-// Spacing scale — semantic
+// Spacing scale: semantic
 const SPACING = [
   { token: "--spacing-tight", value: "8px", role: "Icon + label, checkbox + text" },
   { token: "--spacing-inline", value: "12px", role: "Nav row, tag groups" },
@@ -67,7 +67,7 @@ const SPACING = [
   { token: "--spacing-section", value: "128px", role: "Between top-level page sections" },
 ];
 
-// Motion — duration + easing
+// Motion: duration + easing
 const MOTION = [
   { token: "--motion-duration-instant", value: "120ms", role: "Hover, focus ring, micro-interactions" },
   { token: "--motion-duration-standard", value: "200ms", role: "Dropdowns, tooltips, accordions" },
@@ -105,7 +105,7 @@ export default function TokensPage() {
 
         <p className="lede rise d3">
           Every color, type style, spacing value, motion, and radius on this
-          site comes from <span className="accent">Parsimony</span> — a
+          site comes from <span className="accent">Parsimony</span>, a
           design system I maintain to keep every River Romney property
           consistent. Primitives feed the semantic layer. UI code never
           touches hex.
@@ -114,7 +114,7 @@ export default function TokensPage() {
         <p className="lede rise d4">
           The architecture takes a cue from Unix&rsquo;s{" "}
           <em>small, sharp tools</em> philosophy. Primitives hold values,
-          semantics name roles, and components render decisions — each layer
+          semantics name roles, and components render decisions. Each layer
           does one thing well, and the next composes from it.
         </p>
 
@@ -288,7 +288,7 @@ export default function TokensPage() {
         >
           Parsimony
         </a>{" "}
-        repo — Style Dictionary pipeline, per-brand overrides, and a clear
+        repo: Style Dictionary pipeline, per-brand overrides, and a clear
         primitive → semantic contract. This portfolio is the system{" "}
         <em>eating its own dog food</em>.
       </p>

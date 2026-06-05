@@ -15,7 +15,7 @@ export default function IndexPage() {
           </div>
           <div>
             <span className="hero__term-slash" aria-hidden="true">// </span>
-            <span className="hero__term-ans">River — Principal Designer</span>
+            <span className="hero__term-ans">River, Principal Designer</span>
           </div>
           <div>
             <span className="hero__term-slash" aria-hidden="true">// </span>

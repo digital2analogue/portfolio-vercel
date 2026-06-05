@@ -74,12 +74,12 @@ export default function AboutPage() {
       <div className="about-prose rise d4">
         <p>
           I&apos;m a Principal Designer with ten years specializing in complex
-          B2B systems — <em>design systems infrastructure, decision tooling,</em>{" "}
+          B2B systems: <em>design systems infrastructure, decision tooling,</em>{" "}
           and the compliance-heavy surfaces enterprise teams rely on daily.
         </p>
         <p>
           My work lives at the intersection of <em>policy, data, and enterprise
-          UX</em>. I care about making the invisible legible — surfacing the
+          UX</em>. I care about making the invisible legible by surfacing the
           rules, states, and edge cases that software usually buries. The best
           design systems work looks quiet on the surface and holds up under
           real pressure.
@@ -140,7 +140,7 @@ export default function AboutPage() {
       </div>
 
       <p className="bio-inline rise d7">
-        Based in San Francisco and taking new work —{" "}
+        Based in San Francisco and taking new work,{" "}
         <a href="https://linkedin.com/in/riverromney" target="_blank" rel="noopener noreferrer">let's connect on LinkedIn</a>.
       </p>
     </div>

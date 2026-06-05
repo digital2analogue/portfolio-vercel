@@ -980,17 +980,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Distribution: public npm over GitHub Packages" },
       {
         type: "p",
-        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. The catch: it makes you log in to install a package, even a public one. So every site and every build would need a token just to download tokens. That's the exact friction I was trying to remove. Public npm has none of it: anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
+        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. But it makes you log in to install a package, even a public one, so every site and every build would need a token just to download tokens. That's the friction I was trying to remove. With public npm, anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
       },
       { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
       {
         type: "p",
-        text: "How should an agent read the system? Docs are out: agents don't open your docs site. A REST API would work, but it needs a server, a login, and the agent has to know it's there. MCP is the format agents already speak, so the same session writing the code can ask the system what it needs, with no setup. The downside: MCP is new, and mine runs on my machine rather than as a public service. That's fine while I'm the main user.",
+        text: "How should an agent read the system? Plain docs won't do, since agents don't open your docs site. A REST API would work, but it needs a server, a login, and the agent has to know it's there. MCP is the format agents already speak, so the same session writing the code can ask the system what it needs with no setup. Its one downside is that MCP is new, and mine runs on my machine rather than as a public service, which is fine while I'm the main user.",
       },
       { type: "h3", text: "Components: Web Components over React" },
       {
         type: "p",
-        text: "I built the components as Web Components (using Lit) instead of React. The cost: Web Components are a bit clunkier inside React. The win: one version of each component works everywhere (React, plain HTML, or a Figma mapping) instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
+        text: "I built the components as Web Components (using Lit) instead of React. They're a bit clunkier inside React, which is the real cost. But one version of each then works everywhere (React, plain HTML, or a Figma mapping), instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
       },
       { type: "hr" },
       { type: "h2", text: "Honest Status" },
@@ -1036,7 +1036,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "A library tells you what exists. This tells an agent what's allowed.",
+        text: "A component library tells you what exists. This one also tells an agent what it's allowed to use.",
       },
     ],
   },
