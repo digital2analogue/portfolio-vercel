@@ -851,7 +851,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     slug: "design-tokens",
     title: "Building Parsimony, an Agentic Design System",
     scope: "Token architecture, component library, agent tooling",
-    timeline: "2026 — ongoing",
+    timeline: "2026 (ongoing)",
     blocks: [
       {
         type: "image",
@@ -872,7 +872,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "note",
-        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving — so I've marked what's shipped versus what's deferred throughout.",
+        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving, so I've marked what's shipped versus what's deferred throughout.",
       },
       { type: "hr" },
       {
@@ -892,14 +892,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Design systems are written for people. Documentation sites, Figma libraries, \"use this, not that\" — all of it assumes a human reading and remembering. But the thing building my UI is increasingly an agent, and an agent doesn't read your docs site.",
+        text: "Design systems are written for people. Documentation sites, Figma libraries, \"use this, not that.\" All of it assumes a human who reads and remembers. But more and more, the thing building my UI is an agent, and an agent doesn't read your docs site.",
       },
       {
         type: "ul",
         items: [
           "Documentation assumes a human reader who remembers the rules",
           "The agent building your UI never visits your docs site",
-          "Without the system as data, every agent reinvents — and drift spreads across every repo that consumes it",
+          "Without the system as data, every agent reinvents, and drift spreads across every repo that consumes it",
         ],
       },
       {
@@ -910,31 +910,31 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Architecture" },
       {
         type: "p",
-        text: "One repo, one direction of flow — the diagram above is the entire system. The decision that holds it together: **tokens and components version together.** A token rename is a breaking change to every component that uses it, by design, so there's no version skew to chase across separately published packages.",
+        text: "One repo, one direction of flow. The diagram above is the entire system. The decision that holds it together: **tokens and components version together.** A token rename is a breaking change to every component that uses it, by design, so there's no version skew to chase across separately published packages.",
       },
       {
         type: "ul",
         items: [
-          "**Author** — DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
-          "**Build** — Style Dictionary compiles every brand to CSS; a validation gate rejects hardcoded hex, primitive references, and dangling token aliases — a rename that wasn't propagated fails the build, not production.",
-          "**Components** — 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
-          "**Artifact** — each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
-          "**Interfaces** — humans read Figma and Markdown docs; agents read an MCP server.",
-          "**Consumers** — every site and product repo pulls from one source, now as an installable token package.",
+          "**Author.** DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
+          "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
+          "**Components.** 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
+          "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
+          "**Interfaces.** Humans read Figma and Markdown docs; agents read an MCP server.",
+          "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
         ],
       },
       { type: "hr" },
       { type: "h2", text: "One Source of Truth, Four Brands" },
       {
         type: "image",
-        alt: "Four brand panels — base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading) — each showing the same UI rendered in its own canvas, surface, text, and accent token values",
+        alt: "Four brand panels: base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading). Each shows the same UI rendered in its own canvas, surface, text, and accent token values.",
         caption:
           "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
         src: "/projects/images/ds-brands.png",
       },
       {
         type: "p",
-        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component — each brand is just a small override file on top of the same tokens.",
+        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
       },
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
@@ -942,7 +942,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "A rendered badge.meta.json file with callouts highlighting tokensUsed (which tokens the component may touch), rules (the constraints it must obey), and accessibility (the ARIA pattern and WCAG criteria it implements)",
         caption:
-          "badge.meta.json — the component's machine-readable rulebook. get_component() returns this verbatim.",
+          "badge.meta.json: the component's machine-readable rulebook. get_component() returns it verbatim.",
         src: "/projects/images/ds-meta-json.png",
         naturalSize: true,
       },
@@ -952,7 +952,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "All 18 components carry an auto-generated Custom Elements Manifest — the basic API an agent needs to use one. Three of them (badge, button, input) add a hand-written meta.json on top, with the token, rule, and accessibility contract. The rest are built and wired to Figma; the fuller contract is rolling out behind them.",
+        text: "All 18 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Three of them (badge, button, input) add a hand-written meta.json on top, with the token, rule, and accessibility contract. The rest are built and wired to Figma; the fuller contract is rolling out behind them.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -965,11 +965,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Most design-system checks happen after the fact — a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+        text: "Most design-system checks happen after the fact: a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
       },
       {
         type: "p",
-        text: "The same rules run in three places — this check, the build gate, and the drift scan — so the answer an agent gets here is the one the build will enforce later.",
+        text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
       },
       { type: "hr" },
       { type: "h2", text: "Decisions & Tradeoffs" },
@@ -980,7 +980,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Distribution: public npm over GitHub Packages" },
       {
         type: "p",
-        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. The catch: it makes you log in to install a package, even a public one. So every site and every build would need a token just to download tokens — the exact friction I was trying to remove. Public npm has none of that: anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
+        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. The catch: it makes you log in to install a package, even a public one. So every site and every build would need a token just to download tokens. That's the exact friction I was trying to remove. Public npm has none of it: anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
       },
       { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
       {
@@ -990,7 +990,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Components: Web Components over React" },
       {
         type: "p",
-        text: "I built the components as Web Components (using Lit) instead of React. The cost: Web Components are a bit clunkier inside React. The win: one version of each component works everywhere — React, plain HTML, or a Figma mapping — instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
+        text: "I built the components as Web Components (using Lit) instead of React. The cost: Web Components are a bit clunkier inside React. The win: one version of each component works everywhere (React, plain HTML, or a Figma mapping) instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
       },
       { type: "hr" },
       { type: "h2", text: "Honest Status" },
@@ -1005,9 +1005,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Three-layer token architecture across four brands",
           "18 Lit web components, all wired to Figma via Code Connect",
           "MCP server with three tools: list_components, get_component, check_usage",
-          "One shared rule set behind every checker — the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
+          "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
           "A CI gate on every change: schema checks, lint rules, token-reference resolution, a stale-artifact check, and a full test suite",
-          "Distribution: the token build ships as a versioned, installable npm package — consumers add a dependency instead of hand-copying the CSS",
+          "Distribution: the token build ships as a versioned, installable npm package, so consumers add a dependency instead of hand-copying the CSS",
           "WCAG AA contrast verified across every token pairing",
         ],
       },
@@ -1015,9 +1015,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Hand-authored meta.json on all 18 components — the Custom Elements Manifest already covers all 18; the richer token/rule/a11y contract is on three",
-          "Migrating every consumer onto the published package — it's live on npm; moving each site off its inlined token copy is the last mile",
-          "The self-healing loop — drift signals that auto-open pull requests",
+          "Hand-authored meta.json on all 18 components (the Custom Elements Manifest already covers all 18; the richer token/rule/a11y contract is on three so far)",
+          "Migrating every consumer onto the published package (it's live on npm; moving each site off its inlined copy is the last mile)",
+          "The self-healing loop, where drift signals auto-open pull requests",
         ],
       },
       {
