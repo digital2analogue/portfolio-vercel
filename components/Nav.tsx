@@ -4,15 +4,21 @@ import { usePathname } from "next/navigation";
 
 const LINKS = [
   { label: "WORK", href: "/work" },
-  { label: "TOKENS", href: "/tokens" },
+  { label: "SYSTEM", href: "/work/design-tokens" },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ] as const;
 
 export default function Nav() {
   const pathname = usePathname();
-  const isActive = (href: string) =>
+  // Most specific match wins, so /work/design-tokens lights up SYSTEM (not WORK),
+  // while /work and other /work/* pages light up WORK.
+  const matches = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
+  const activeHref = LINKS
+    .map((l) => l.href)
+    .filter(matches)
+    .sort((a, b) => b.length - a.length)[0];
 
   return (
     <nav className="topbar" aria-label="Primary">
@@ -23,7 +29,7 @@ export default function Nav() {
       </Link>
       <div className="topbar__links">
         {LINKS.map((l) => {
-          const active = isActive(l.href);
+          const active = l.href === activeHref;
           return (
             <Link
               key={l.label}
