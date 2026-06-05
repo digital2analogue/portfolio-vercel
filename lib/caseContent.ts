@@ -847,4 +847,223 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
     ],
   },
+  "design-tokens": {
+    slug: "design-tokens",
+    title: "Building Parsimony, an Agentic Design System",
+    scope: "Token architecture, component library, agent tooling",
+    timeline: "2026 (ongoing)",
+    blocks: [
+      {
+        type: "image",
+        alt: "Architecture diagram of the Parsimony agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
+        caption:
+          "The whole system in one view: one source of truth, read by both people and agents. Green is shipped; dashed amber is planned.",
+        src: "/projects/images/ds-architecture.png",
+        naturalSize: true,
+      },
+      {
+        type: "quote",
+        text: "Most design systems are documentation a person has to read. Parsimony is data an agent can query, build against, and lint itself with before it ships any UI.",
+      },
+      { type: "h2", text: "Overview" },
+      {
+        type: "p",
+        text: "Interfaces are increasingly assembled by agents rather than typed by hand, and design systems were never written for that reader. Most of my own work now happens through AI agents, in chat windows where I rarely see the whole codebase at once, so I built a design system for that setup. Instead of rules written for a person to read and remember, the rules are encoded so a machine can read them, build against them, and catch its own mistakes.",
+      },
+      {
+        type: "p",
+        text: "**Parsimony is a design system with an API for agents.** One source of truth runs from DTCG tokens, through framework-agnostic Web Components, to an MCP server an agent can query and lint against before it writes any UI.",
+      },
+      {
+        type: "note",
+        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving, so I've marked what's shipped versus what's deferred throughout.",
+      },
+      { type: "hr" },
+      {
+        type: "meta",
+        rows: [
+          ["Role", "Designer & Design Engineer"],
+          ["Scope", "Token architecture, components, agent tooling"],
+          ["Stack", "DTCG · Style Dictionary · Lit · MCP · Figma Code Connect"],
+          ["Status", "Live and evolving"],
+        ],
+      },
+      {
+        type: "p",
+        text: "**Browse the live token catalog:** [the full token reference is here](/tokens).",
+      },
+      { type: "hr" },
+      { type: "h2", text: "The Problem" },
+      {
+        type: "p",
+        text: "Design systems are written for people. Documentation sites, Figma libraries, \"use this, not that.\" All of it assumes a human who reads and remembers. But more and more, the thing building my UI is an agent, and an agent doesn't read your docs site.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Documentation assumes a human reader who remembers the rules",
+          "The agent building your UI never visits your docs site",
+          "Without the system as data, every agent reinvents, and drift spreads across every repo that consumes it",
+        ],
+      },
+      {
+        type: "p",
+        text: "The problem was never missing tokens. It was that nothing in the system was **readable by a machine**.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "The Architecture" },
+      {
+        type: "p",
+        text: "One repo, one direction of flow. The diagram above is the entire system. The decision that holds it together: **tokens and components version together.** A token rename is a breaking change to every component that uses it, by design, so there's no version skew to chase across separately published packages.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Author.** DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
+          "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
+          "**Components.** 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
+          "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
+          "**Interfaces.** Humans read Figma and Markdown docs; agents read an MCP server.",
+          "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
+        ],
+      },
+      { type: "hr" },
+      { type: "h2", text: "One Source of Truth, Four Brands" },
+      {
+        type: "image",
+        alt: "Four brand panels: base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading). Each shows the same UI rendered in its own canvas, surface, text, and accent token values.",
+        caption:
+          "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
+        src: "/projects/images/ds-brands.png",
+      },
+      {
+        type: "p",
+        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Components as Contracts" },
+      {
+        type: "image",
+        alt: "A rendered badge.meta.json file with callouts highlighting tokensUsed (which tokens the component may touch), rules (the constraints it must obey), and accessibility (the ARIA pattern and WCAG criteria it implements)",
+        caption:
+          "badge.meta.json: the component's machine-readable rulebook. get_component() returns it verbatim.",
+        src: "/projects/images/ds-meta-json.png",
+        naturalSize: true,
+      },
+      {
+        type: "p",
+        text: "Each component ships its own rulebook. badge.meta.json spells out which tokens the component may touch, which rules apply to it, and which ARIA pattern and WCAG criteria it implements. That file is the spec, and it's the same file the agent reads.",
+      },
+      {
+        type: "p",
+        text: "All 18 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Three of them (badge, button, input) add a hand-written meta.json on top, with the token, rule, and accessibility contract. The rest are built and wired to Figma; the fuller contract is rolling out behind them.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "check_usage: Governance, Moved Upstream" },
+      {
+        type: "image",
+        alt: "The check_usage MCP tool: an input panel of agent-proposed CSS containing a hardcoded hex and a primitive-token reference (both flagged red), feeding into an output panel listing the two rule violations returned by the system",
+        caption:
+          "Paste a snippet, get back every violation. Catch the mistake before it ships, not after.",
+        src: "/projects/images/ds-check-usage.png",
+      },
+      {
+        type: "p",
+        text: "Most design-system checks happen after the fact: a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+      },
+      {
+        type: "p",
+        text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
+      },
+      {
+        type: "quote",
+        text: "Before, drift surfaced in code review, after the code was already written. Now the agent checks the same rules before the line exists, turning a review-cycle catch into a single tool call.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "An Agent, Self-Correcting" },
+      {
+        type: "image",
+        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
+        caption:
+          "One session, four steps: get_component, a hand-rolled draft, check_usage, a fix. The violation text is the literal output of the shared rule set, not a mockup.",
+        src: "/projects/images/ds-agent-loop.png",
+        naturalSize: true,
+      },
+      {
+        type: "p",
+        text: "Here is the whole argument in one session. The agent asks the system what a badge is, drafts the markup the quick way with raw hex, and runs check_usage before it commits to that. The system hands back the exact violations the build would later reject, so the agent drops the hand-rolled version and uses the component instead. Same tools, same rules, one loop. None of it is staged: the messages come straight from the shared rule set, and the fix is the component's own documented usage.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Decisions & Tradeoffs" },
+      {
+        type: "p",
+        text: "Three decisions, and what each one cost.",
+      },
+      { type: "h3", text: "Distribution: public npm over GitHub Packages" },
+      {
+        type: "p",
+        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. But it makes you log in to install a package, even a public one, so every site and every build would need a token just to download tokens. That's the friction I was trying to remove. With public npm, anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
+      },
+      { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
+      {
+        type: "p",
+        text: "How should an agent read the system? Plain docs won't do, since agents don't open your docs site. A REST API would work, but it needs a server, a login, and the agent has to know it's there. MCP is the format agents already speak, so the same session writing the code can ask the system what it needs with no setup. Its one downside is that MCP is new, and mine runs on my machine rather than as a public service, which is fine while I'm the main user.",
+      },
+      { type: "h3", text: "Components: Web Components over React" },
+      {
+        type: "p",
+        text: "I built the components as Web Components (using Lit) instead of React. They're a bit clunkier inside React, which is the real cost. But one version of each then works everywhere (React, plain HTML, or a Figma mapping), instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Honest Status" },
+      {
+        type: "p",
+        text: "Part of the work was deciding what to leave unbuilt for now. Here's where things stand.",
+      },
+      { type: "h3", text: "Shipped" },
+      {
+        type: "ul",
+        items: [
+          "Three-layer token architecture across four brands",
+          "18 Lit web components, all wired to Figma via Code Connect",
+          "MCP server with three tools: list_components, get_component, check_usage",
+          "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
+          "A CI gate on every change: schema checks, lint rules, token-reference resolution, a stale-artifact check, and a full test suite",
+          "Distribution: the token build ships as a versioned, installable npm package, so consumers add a dependency instead of hand-copying the CSS",
+          "WCAG AA contrast verified across every token pairing",
+        ],
+      },
+      { type: "h3", text: "Deliberately deferred" },
+      {
+        type: "ul",
+        items: [
+          "Hand-authored meta.json on all 18 components (the Custom Elements Manifest already covers all 18; the richer token/rule/a11y contract is on three so far)",
+          "Migrating every consumer onto the published package (it's live on npm; moving each site off its inlined copy is the last mile)",
+          "The self-healing loop, where drift signals auto-open pull requests",
+        ],
+      },
+      {
+        type: "p",
+        text: "The drift scan already finds the problems; auto-opening PRs to fix them is the part I've left for later. That order is deliberate, not a backlog.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Reflection" },
+      {
+        type: "p",
+        text: "Every design system I'd built before was about making things clear to people. This one started from a different question: what does a system look like when its main reader is a machine?",
+      },
+      {
+        type: "p",
+        text: "The answer wasn't more documentation. It was **structure**: tokens stored as data, components that carry their own rules, and a system an agent can query.",
+      },
+      {
+        type: "p",
+        text: "There's no settled playbook for this yet. What an AI-native design system should be is still being worked out across the industry, so I'm treating Parsimony as a moving target: as conventions for tokens, component contracts, and agent interfaces solidify, it will adopt them. I'd rather keep iterating toward the standards as they form than freeze around today's best guess.",
+      },
+      {
+        type: "p",
+        text: "A component library tells you what exists. This one also tells an agent what it's allowed to use.",
+      },
+    ],
+  },
 };

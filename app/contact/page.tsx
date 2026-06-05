@@ -88,7 +88,7 @@ export default function ContactPage() {
               {...(l.external && {
                 target: "_blank",
                 rel: "noopener noreferrer",
-                "aria-label": `${l.label.charAt(0) + l.label.slice(1).toLowerCase()} — ${l.value} (opens in new tab)`,
+                "aria-label": `${l.label.charAt(0) + l.label.slice(1).toLowerCase()}, ${l.value} (opens in new tab)`,
               })}
             >
               <span className="contact-row__label">{l.label}</span>
