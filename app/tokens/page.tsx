@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { tokenValue } from "@/lib/tokenValues";
+import { tokenValue, tokenVersion } from "@/lib/tokenValues";
 
 export const metadata: Metadata = {
   title: "Design Tokens",
@@ -131,9 +131,9 @@ export default function TokensPage() {
 
         <div className="single-status rise d4">
           <span className="status-dot" aria-hidden="true">●</span>
-          &nbsp;<span className="single-status__v">v0.3 · Production</span>
+          &nbsp;<span className="single-status__v">v{tokenVersion} · Production</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
-          <span>44 semantic tokens across 6 tiers</span>
+          <span>primitives → semantic → component</span>
         </div>
       </section>
 

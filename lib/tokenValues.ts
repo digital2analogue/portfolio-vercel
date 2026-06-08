@@ -16,6 +16,14 @@ const CSS_PATH = path.join(
   "node_modules/@digital2analogue2/tokens/css/variables.css",
 );
 
+/** The installed package version — shown in the /tokens hero so it can't drift. */
+export const tokenVersion: string = JSON.parse(
+  fs.readFileSync(
+    path.join(process.cwd(), "node_modules/@digital2analogue2/tokens/package.json"),
+    "utf8",
+  ),
+).version;
+
 const RAW: Record<string, string> = {};
 for (const m of fs
   .readFileSync(CSS_PATH, "utf8")
