@@ -1,155 +1,39 @@
 @import "tailwindcss";
+@import "@digital2analogue2/tokens/base.css";
 
-/* ═══════════════════════════════════════════════════════════════════
-   BRAND-TOKENS — inlined from brand-tokens/build/css/variables.css
-   (the authoritative build output).
-   Source of truth: /brand-tokens — do not edit values here directly.
-   When brand-tokens ships as a package, replace this block with an import.
-   ═══════════════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   BRAND-TOKENS — consumed from @digital2analogue2/tokens (base.css), above.
+   The base dark-theme primitives, semantic roles, and typography shorthands
+   now come from the published package — single source of truth, installed,
+   not hand-copied. Do not redeclare them here.
+
+   The :root below re-declares ONLY the portfolio's deltas on top of the
+   package base:
+     1. responsive clamp() scaling for the larger spacing + type steps
+     2. font-family tokens that defer to the next/font variables (layout.tsx)
+   Both override the package's fixed values; semantic + shorthand tokens
+   reference these primitives via var(), so the overrides cascade through.
+   ═══════════════════════════════════════════════════ */
 :root {
-  /* Primitives — colors */
-  --primitive-color-green-200: #c8cfc4;
-  --primitive-color-green-400: #a0a89a;
-  --primitive-color-green-500: #7a9e80;
-  --primitive-color-green-600: #8b9683;
-  --primitive-color-green-900: #1e241e;
-  --primitive-color-green-950: #0a0d0a;
-  --primitive-color-green-accent: #4ade6e;
-  --primitive-color-neutral-white: #ffffff;
-  --primitive-color-neutral-black: #000000;
+  /* Responsive scaling — fluid clamp(mobile-floor, vw, desktop-ceiling).
+     Smaller steps (space 3xs–md, font xs/sm/base) stay fixed from the package. */
+  --primitive-space-lg:  clamp(16px, 3.75vw, 24px);
+  --primitive-space-xl:  clamp(20px, 5vw,    32px);
+  --primitive-space-2xl: clamp(32px, 7.5vw,  48px);
+  --primitive-space-3xl: clamp(40px, 10vw,   64px);
+  --primitive-space-4xl: clamp(48px, 12.5vw, 80px);
+  --primitive-space-5xl: clamp(80px, 20vw,   128px);
 
-  /* Primitives — letter-spacing */
-  --primitive-letter-spacing-tight: -0.01em;
-  --primitive-letter-spacing-tightest: -0.025em;
-  --primitive-letter-spacing-normal: 0em;
-  --primitive-letter-spacing-wide: 0.03em;
-  --primitive-letter-spacing-wider: 0.1em;
+  --primitive-font-size-md:  clamp(1rem,    3.2vw,  1.25rem);
+  --primitive-font-size-lg:  clamp(1.25rem, 3.8vw,  1.5rem);
+  --primitive-font-size-2xl: clamp(1.5rem,  5vw,    2rem);
+  --primitive-font-size-3xl: clamp(1.75rem, 6.25vw, 2.5rem);
 
-  /* Primitives — motion */
-  --primitive-duration-fast: 120ms;
-  --primitive-duration-normal: 200ms;
-  --primitive-duration-slow: 350ms;
-  --primitive-easing-default: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --primitive-easing-in: cubic-bezier(0.42, 0, 1, 1);
-  --primitive-easing-out: cubic-bezier(0, 0, 0.58, 1);
-  --primitive-easing-in-out: cubic-bezier(0.42, 0, 0.58, 1);
-
-  /* Primitives — radius */
-  --primitive-radius-none: 0;
-  --primitive-radius-sm: 4px;
-  --primitive-radius-md: 8px;
-  --primitive-radius-lg: 12px;
-  --primitive-radius-xl: 16px;
-  --primitive-radius-full: 9999px;
-
-  /* Primitives — shadow */
-  --primitive-shadow-none: 0 0 0 0 rgba(0, 0, 0, 0);
-  --primitive-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
-  --primitive-shadow-md: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
-  --primitive-shadow-lg: 0 6px 20px 0 rgba(0, 0, 0, 0.16);
-  --primitive-shadow-xl: 0 12px 40px 0 rgba(0, 0, 0, 0.24);
-
-  /* Primitives — spacing */
-  --primitive-space-3xs: 2px;
-  --primitive-space-2xs: 4px;
-  --primitive-space-xs: 8px;
-  --primitive-space-sm: 12px;
-  --primitive-space-md: 16px;
-  --primitive-space-lg:  clamp(16px, 3.75vw, 24px);  /* 16 → 24 — component gaps */
-  --primitive-space-xl:  clamp(20px, 5vw,    32px);  /* 20 → 32 — group gaps */
-  --primitive-space-2xl: clamp(32px, 7.5vw,  48px);  /* 32 → 48 — layout gaps */
-  --primitive-space-3xl: clamp(40px, 10vw,   64px);  /* 40 → 64 — block gaps */
-  --primitive-space-4xl: clamp(48px, 12.5vw, 80px);  /* 48 → 80 — page gaps */
-  --primitive-space-5xl: clamp(80px, 20vw,   128px); /* 80 → 128 — section gaps */
-
-  /* Primitives — type
-     Font-family tokens defer first to the next/font variables populated in
-     layout.tsx (which include the locally-hosted Google Font files).
-     Fallbacks after the comma keep the system functional during font load. */
+  /* Font families defer to the next/font variables (layout.tsx) for the
+     locally-hosted Google Fonts, then fall back. */
   --primitive-font-family-sans: var(--next-font-sans), "Space Grotesk", system-ui, sans-serif;
   --primitive-font-family-serif: var(--next-font-serif), Spectral, Georgia, serif;
   --primitive-font-family-mono: var(--next-font-mono), "JetBrains Mono", ui-monospace, monospace;
-  --primitive-font-weight-light: 300;
-  --primitive-font-weight-regular: 400;
-  --primitive-font-weight-medium: 500;
-  --primitive-font-weight-semibold: 600;
-  --primitive-font-weight-bold: 700;
-  --primitive-font-size-xs:   0.75rem;                            /* fixed — captions, badges */
-  --primitive-font-size-sm:   0.875rem;                           /* fixed — UI labels, tags, code */
-  --primitive-font-size-base: 1rem;                               /* fixed — body text */
-  --primitive-font-size-md:   clamp(1rem,     3.2vw,  1.25rem);  /* 16   → 20px — small titles */
-  --primitive-font-size-lg:   clamp(1.25rem,  3.8vw,  1.5rem);   /* 20   → 24px — section heads */
-  --primitive-font-size-2xl:  clamp(1.5rem,   5vw,    2rem);     /* 24   → 32px — large heads */
-  --primitive-font-size-3xl:  clamp(1.75rem,  6.25vw, 2.5rem);   /* 28   → 40px — display */
-  --primitive-font-line-height-tight: 1.1;
-  --primitive-font-line-height-snug: 1.25;
-  --primitive-font-line-height-normal: 1.6;
-  --primitive-font-line-height-relaxed: 1.7;
-
-  /* Semantic — colors */
-  --color-background-default: var(--primitive-color-green-950);
-  --color-background-alt: var(--primitive-color-green-900);
-  --color-background-action: var(--primitive-color-green-accent);
-  --color-background-accent: var(--primitive-color-green-accent);
-  --color-foreground-default: var(--primitive-color-green-200);
-  --color-foreground-alt: var(--primitive-color-green-400);
-  --color-foreground-muted: var(--primitive-color-green-600);
-  --color-foreground-action: var(--primitive-color-green-accent);
-  --color-foreground-accent: var(--primitive-color-green-accent);
-  --color-foreground-on-action: var(--primitive-color-green-950);
-  --color-foreground-on-accent: var(--primitive-color-green-950);
-  --color-border-default: var(--primitive-color-green-900);
-
-  /* Semantic — letter-spacing */
-  --letter-spacing-display: var(--primitive-letter-spacing-tight);
-  --letter-spacing-title: var(--primitive-letter-spacing-tightest);
-  --letter-spacing-body: var(--primitive-letter-spacing-normal);
-  --letter-spacing-label: var(--primitive-letter-spacing-wide);
-  --letter-spacing-all-caps: var(--primitive-letter-spacing-wider);
-
-  /* Semantic — motion */
-  --motion-duration-instant: var(--primitive-duration-fast);
-  --motion-duration-standard: var(--primitive-duration-normal);
-  --motion-duration-emphasized: var(--primitive-duration-slow);
-  --motion-easing-enter: var(--primitive-easing-out);
-  --motion-easing-exit: var(--primitive-easing-in);
-  --motion-easing-move: var(--primitive-easing-in-out);
-  --motion-easing-default: var(--primitive-easing-default);
-
-  /* Semantic — radius */
-  --radius-none: var(--primitive-radius-none);
-  --radius-sm: var(--primitive-radius-sm);
-  --radius-default: var(--primitive-radius-md);
-  --radius-lg: var(--primitive-radius-lg);
-  --radius-xl: var(--primitive-radius-xl);
-  --radius-full: var(--primitive-radius-full);
-
-  /* Semantic — shadow */
-  --shadow-none: var(--primitive-shadow-none);
-  --shadow-raised: var(--primitive-shadow-sm);
-  --shadow-overlay: var(--primitive-shadow-lg);
-  --shadow-dialog: var(--primitive-shadow-xl);
-
-  /* Semantic — spacing */
-  --spacing-tight: var(--primitive-space-xs);
-  --spacing-inline: var(--primitive-space-sm);
-  --spacing-element: var(--primitive-space-md);
-  --spacing-component: var(--primitive-space-lg);
-  --spacing-layout: var(--primitive-space-2xl);
-  --spacing-section: var(--primitive-space-5xl);
-
-  /* Semantic — typography shorthand */
-  --font-display:      var(--primitive-font-weight-light)   var(--primitive-font-size-3xl)/var(--primitive-font-line-height-tight)   var(--primitive-font-family-sans);
-  --font-title-large:  var(--primitive-font-weight-light)   var(--primitive-font-size-2xl)/var(--primitive-font-line-height-snug)    var(--primitive-font-family-sans);
-  --font-title-medium: var(--primitive-font-weight-light)   var(--primitive-font-size-lg)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-sans);
-  --font-title-small:  var(--primitive-font-weight-light)   var(--primitive-font-size-md)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-sans);
-  --font-body-large:   var(--primitive-font-weight-regular) var(--primitive-font-size-base)/var(--primitive-font-line-height-normal) var(--primitive-font-family-serif);
-  --font-body-medium:  var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-serif);
-  --font-body-small:   var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-serif);
-  --font-label-large:  var(--primitive-font-weight-regular) var(--primitive-font-size-base)/var(--primitive-font-line-height-snug)   var(--primitive-font-family-mono);
-  --font-label-medium: var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-mono);
-  --font-label-small:  var(--primitive-font-weight-regular) var(--primitive-font-size-xs)/var(--primitive-font-line-height-snug)     var(--primitive-font-family-mono);
-  --font-code:         var(--primitive-font-weight-regular) var(--primitive-font-size-sm)/var(--primitive-font-line-height-normal)   var(--primitive-font-family-mono);
 }
 
 /* ═══════════════════════════════════════════════════════════════════

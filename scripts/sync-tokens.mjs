@@ -1,17 +1,16 @@
 /**
  * scripts/sync-tokens.mjs
  *
- * Compares the brand-tokens base build output (build/css/variables.css)
- * against the inlined token block in app/globals.css and reports any
- * drift in the --color-* namespace.
+ * Since the portfolio migrated off its inlined token block and now consumes
+ * @digital2analogue2/tokens (see app/globals.css), this no longer diffs a copied
+ * block. Instead it checks that the INSTALLED package version matches the latest
+ * published on npm — i.e. that this consumer hasn't drifted behind the source of
+ * truth.
  *
  * Usage:
  *   npm run sync-tokens
  *
- * This script does NOT auto-overwrite. It shows you what's drifted so you
- * can decide whether to update brand-tokens or globals.css (or both).
- *
- * Exits 1 if drift is found, 0 if everything matches.
+ * Exits 1 if the installed version is behind the published latest, 0 if current.
  */
 
 import fs from 'fs'
@@ -19,118 +18,38 @@ import path from 'path'
 import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 
-const __dirname  = path.dirname(fileURLToPath(import.meta.url))
-const BRAND_DIR  = path.join(__dirname, '../../brand-tokens')
-const BRAND_CSS  = path.join(BRAND_DIR, 'build/css/variables.css')
-const LOCAL_CSS  = path.join(__dirname, '../app/globals.css')
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const PKG = '@digital2analogue2/tokens'
+const INSTALLED_PKG_JSON = path.join(__dirname, `../node_modules/${PKG}/package.json`)
 
-// ─── Build brand-tokens ────────────────────────────────────────────────────────
-
-console.log('\n  Building brand-tokens...\n')
-try {
-  execSync('node scripts/build-brands.mjs', { cwd: BRAND_DIR, stdio: 'inherit' })
-} catch {
-  console.error('\n  ❌ brand-tokens build failed — fix errors above first.\n')
+function fail(msg) {
+  console.error(`\n  ✗ ${msg}\n`)
   process.exit(1)
 }
 
-// ─── Parse + resolve ───────────────────────────────────────────────────────────
-
-function parseTokens(css) {
-  const tokens = {}
-  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, '')
-  const re = /--([a-zA-Z0-9-]+)\s*:\s*([^;]+);/g
-  let m
-  while ((m = re.exec(stripped)) !== null) {
-    tokens[`--${m[1]}`] = m[2].trim()
-  }
-  return tokens
+if (!fs.existsSync(INSTALLED_PKG_JSON)) {
+  fail(`${PKG} is not installed. Run: npm install ${PKG}`)
 }
 
-function resolveVar(value, tokens, depth = 0) {
-  if (depth > 20) return value
-  return value.replace(/var\(--([a-zA-Z0-9-]+)(?:[^)]*)\)/g, (_, name) => {
-    const ref = `--${name}`
-    return tokens[ref] ? resolveVar(tokens[ref], tokens, depth + 1) : value
-  })
-}
+const installed = JSON.parse(fs.readFileSync(INSTALLED_PKG_JSON, 'utf8')).version
 
-function fullyResolve(tokens) {
-  const out = {}
-  for (const [k, raw] of Object.entries(tokens)) {
-    const v = resolveVar(raw, tokens)
-    out[k] = v.toLowerCase()
-  }
-  return out
-}
-
-const brandRaw  = parseTokens(fs.readFileSync(BRAND_CSS, 'utf8'))
-const localRaw  = parseTokens(fs.readFileSync(LOCAL_CSS, 'utf8'))
-
-const brandFull = fullyResolve({ ...brandRaw })
-const localFull = fullyResolve({ ...localRaw })
-
-// Only compare --color-* semantic tokens
-const brandColors = Object.fromEntries(Object.entries(brandFull).filter(([k]) => k.match(/^--color-/)))
-const localColors = Object.fromEntries(Object.entries(localFull).filter(([k]) => k.match(/^--color-/)))
-
-const allKeys = new Set([...Object.keys(brandColors), ...Object.keys(localColors)])
-
-const drifted      = []
-const missingLocal = []
-const localOnly    = []
-
-for (const key of [...allKeys].sort()) {
-  const inBrand = key in brandColors
-  const inLocal = key in localColors
-
-  if (inBrand && inLocal) {
-    if (brandColors[key] !== localColors[key]) {
-      drifted.push({ key, brand: brandColors[key], local: localColors[key] })
-    }
-  } else if (inBrand) {
-    missingLocal.push({ key, value: brandColors[key] })
-  } else {
-    localOnly.push({ key, value: localColors[key] })
-  }
-}
-
-// ─── Report ────────────────────────────────────────────────────────────────────
-
-console.log('\n  Token sync report\n')
-
-if (drifted.length === 0 && missingLocal.length === 0 && localOnly.length === 0) {
-  console.log('  ✅ Perfect sync — globals.css matches brand-tokens exactly.\n')
+let latest
+try {
+  latest = execSync(`npm view ${PKG} version`, { encoding: 'utf8' }).trim()
+} catch {
+  console.log(`\n  ⚠ Could not reach npm to check the latest ${PKG} version.`)
+  console.log(`     Installed: ${installed}. Skipping the freshness check.\n`)
   process.exit(0)
 }
 
-if (drifted.length) {
-  console.log(`  ⚠️  ${drifted.length} token(s) have drifted between brand-tokens and globals.css:\n`)
-  for (const { key, brand, local } of drifted) {
-    console.log(`    ${key}`)
-    console.log(`      brand-tokens → ${brand}`)
-    console.log(`      globals.css  → ${local}`)
-    console.log()
-  }
-  console.log('  Action: update brand-tokens (if globals.css is correct) or vice versa.\n')
-}
+console.log(`\n  ${PKG}`)
+console.log(`    installed: ${installed}`)
+console.log(`    published: ${latest}`)
 
-if (missingLocal.length) {
-  console.log(`  ℹ️  ${missingLocal.length} token(s) exist in brand-tokens but not in globals.css:\n`)
-  for (const { key, value } of missingLocal) {
-    console.log(`    ${key}: ${value}`)
-  }
-  console.log()
-}
-
-if (localOnly.length) {
-  console.log(`  ℹ️  ${localOnly.length} local-only token(s) in globals.css not yet in brand-tokens:\n`)
-  for (const { key, value } of localOnly) {
-    console.log(`    ${key}: ${value}`)
-  }
-  console.log('  Action: move these into brand-tokens when stable.\n')
-}
-
-if (drifted.length > 0) {
+if (installed === latest) {
+  console.log(`\n  ✓ Up to date with the published source of truth.\n`)
+  process.exit(0)
+} else {
+  console.error(`\n  ✗ Behind the published tokens. Run: npm install ${PKG}@${latest}\n`)
   process.exit(1)
 }
