@@ -13,6 +13,9 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const CSS_FILE = path.join(__dirname, '../app/globals.css')
+// Base tokens come from the installed @digital2analogue2/tokens package;
+// globals.css carries only the portfolio's overrides. Parse both.
+const PKG_CSS = path.join(__dirname, '../node_modules/@digital2analogue2/tokens/css/variables.css')
 
 // ─── Token resolution ──────────────────────────────────────────────────────────
 
@@ -67,8 +70,10 @@ function contrastRatio(a, b) {
 
 // ─── Load tokens ───────────────────────────────────────────────────────────────
 
+const pkgCss = fs.existsSync(PKG_CSS) ? fs.readFileSync(PKG_CSS, 'utf8') : ''
 const css = fs.readFileSync(CSS_FILE, 'utf8')
-const tokens = parseTokens(css)
+// Package base first, portfolio overrides second so the last definition wins.
+const tokens = parseTokens(pkgCss + '\n' + css)
 const tok = name => resolve(name, tokens)
 
 const BG         = tok('--color-background-default')  // #0A0D0A
