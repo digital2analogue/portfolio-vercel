@@ -32,8 +32,8 @@ type Section = { subLabel?: string; rows: CatToken[] };
 
 // Group color tokens by category, then nest within each:
 //  - Feedback (success/warning/danger/info) -> a sub-group per state
-//  - Accents -> Surfaces / Text / Text on accent
-//  - other categories -> a nested "Text on fills" block for their on-* tokens
+//  - Accents -> Background / Foreground / Foreground on accent
+//  - other categories -> a nested "Foreground on fills" block for their on-* tokens
 function groupColors(tokens: CatToken[]) {
   const order = ["Background", "Foreground", "Border", "State", "Feedback", "Accents"];
   const map: Record<string, CatToken[]> = {};
@@ -60,16 +60,16 @@ function groupColors(tokens: CatToken[]) {
     }
     if (label === "Accents") {
       const sections: Section[] = [
-        { subLabel: "Surfaces", rows: rows.filter((t) => t.name.startsWith("--color-background-")) },
-        { subLabel: "Text", rows: rows.filter((t) => t.name.startsWith("--color-foreground-") && !t.name.includes("-on-")) },
-        { subLabel: "Text on accent", rows: rows.filter((t) => t.name.includes("-on-")) },
+        { subLabel: "Background", rows: rows.filter((t) => t.name.startsWith("--color-background-")) },
+        { subLabel: "Foreground", rows: rows.filter((t) => t.name.startsWith("--color-foreground-") && !t.name.includes("-on-")) },
+        { subLabel: "Foreground on accent", rows: rows.filter((t) => t.name.includes("-on-")) },
       ];
       return { label, sections: sections.filter((s) => s.rows.length > 0) };
     }
     const main = rows.filter((t) => !t.name.includes("-on-"));
     const on = rows.filter((t) => t.name.includes("-on-"));
     const sections: Section[] = [{ rows: main }];
-    if (on.length > 0) sections.push({ subLabel: "Text on fills", rows: on });
+    if (on.length > 0) sections.push({ subLabel: "Foreground on fills", rows: on });
     return { label, sections };
   });
 }
