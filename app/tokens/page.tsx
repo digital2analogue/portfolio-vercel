@@ -24,24 +24,31 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const humanize = (name: string, prefix: string) =>
   name.slice(`--${prefix}-`.length).split("-").map(cap).join(" ");
 
-// Group a category's tokens by their first name segment (e.g. color ->
-// background / foreground / border / state), preserving source order.
-function groupBySegment(tokens: CatToken[], prefix: string) {
-  const groups: { label: string; rows: CatToken[] }[] = [];
-  const seen: Record<string, number> = {};
+// Group color tokens: accent-* get their own "Accents" bucket; the rest are
+// grouped by their first name segment (background / foreground / border / state).
+function groupColors(tokens: CatToken[]) {
+  const order = ["Background", "Foreground", "Border", "State", "Accents"];
+  const groups: Record<string, CatToken[]> = {};
   for (const t of tokens) {
-    const seg = t.name.slice(`--${prefix}-`.length).split("-")[0];
-    if (!(seg in seen)) {
-      seen[seg] = groups.length;
-      groups.push({ label: cap(seg), rows: [] });
-    }
-    groups[seen[seg]].rows.push(t);
+    const label = t.name.includes("accent")
+      ? "Accents"
+      : cap(t.name.slice("--color-".length).split("-")[0]);
+    (groups[label] ??= []).push(t);
   }
-  return groups;
+  const labels = [
+    ...order.filter((l) => groups[l]),
+    ...Object.keys(groups).filter((l) => !order.includes(l)),
+  ];
+  return labels.map((label) => ({ label, rows: groups[label] }));
 }
 
-const COLOR_GROUPS = groupBySegment(catalog("color"), "color");
-const TYPE = catalog("font");
+const COLOR_GROUPS = groupColors(catalog("color"));
+
+// The font category mixes full shorthands (renderable via `font:`) with bare
+// family tokens (just a typeface — must render via `fontFamily:`). Split them.
+const FONT = catalog("font");
+const FAMILIES = FONT.filter((t) => t.name.startsWith("--font-family-"));
+const TYPE = FONT.filter((t) => !t.name.startsWith("--font-family-"));
 const SPACING = catalog("spacing");
 const RADIUS = catalog("radius");
 const MOTION = catalog("motion");
@@ -158,6 +165,20 @@ export default function TokensPage() {
       {/* ═══════════════ TYPOGRAPHY ═══════════════ */}
       <SectionHead title="Typography" italic="three voices, one system" />
       <div className="tokens-type rise d7">
+        {FAMILIES.map((t) => (
+          <div key={t.name} className="tokens-type__row">
+            <div className="tokens-type__meta">
+              <code className="tokens-row__token">{t.name}</code>
+              <div className="tokens-type__size">{t.value}</div>
+            </div>
+            <div
+              className="tokens-type__sample"
+              style={{ fontFamily: `var(${t.name})`, fontSize: "1.5rem" }}
+            >
+              Aa Bb Cc 0123
+            </div>
+          </div>
+        ))}
         {TYPE.map((t) => (
           <div key={t.name} className="tokens-type__row">
             <div className="tokens-type__meta">
