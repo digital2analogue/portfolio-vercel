@@ -55,7 +55,7 @@ function groupColors(tokens: CatToken[]) {
     const main = rows.filter((t) => !t.name.includes("-on-"));
     const on = rows.filter((t) => t.name.includes("-on-"));
     const sections: { subLabel?: string; rows: CatToken[] }[] = [{ rows: main }];
-    if (on.length > 0) sections.push({ subLabel: "on fills · text/icons on a colored fill", rows: on });
+    if (on.length > 0) sections.push({ subLabel: "on fills", rows: on });
     return { label, sections };
   });
 }
@@ -66,9 +66,8 @@ function SubLabel({ text }: { text: string }) {
       style={{
         font: "var(--font-mono-label-small)",
         color: "var(--color-foreground-muted)",
+        letterSpacing: "var(--letter-spacing-label)",
         margin: "var(--spacing-component) 0 var(--spacing-tight)",
-        paddingLeft: "var(--spacing-inline)",
-        borderLeft: "2px solid var(--color-border-default)",
       }}
     >
       {text}
