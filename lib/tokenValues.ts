@@ -24,11 +24,21 @@ export const tokenVersion: string = JSON.parse(
   ),
 ).version;
 
+const CSS_TEXT = fs.readFileSync(CSS_PATH, "utf8");
+
+// Raw declared value for every token, in source order.
 const RAW: Record<string, string> = {};
-for (const m of fs
-  .readFileSync(CSS_PATH, "utf8")
-  .matchAll(/(--[a-zA-Z0-9-]+)\s*:\s*([^;]+);/g)) {
+for (const m of CSS_TEXT.matchAll(/(--[a-zA-Z0-9-]+)\s*:\s*([^;]+);/g)) {
   RAW[m[1]] = m[2].trim();
+}
+
+// The prose description Style Dictionary emits as a trailing /** ... */ comment.
+const DESC: Record<string, string> = {};
+for (const m of CSS_TEXT.matchAll(
+  /(--[a-zA-Z0-9-]+)\s*:\s*[^;]+;\s*\/\*\*\s*([\s\S]*?)\s*\*\//g,
+)) {
+  // Drop the "Resolves to: …" tail — the resolved value is shown separately.
+  DESC[m[1]] = m[2].replace(/\s*Resolves to:.*$/s, "").trim();
 }
 
 /**
@@ -52,3 +62,30 @@ export function tokenValue(name: string): string {
   v = v.trim();
   return /^#[0-9a-fA-F]{3,8}$/.test(v) ? v.toUpperCase() : v;
 }
+
+export type CatToken = { name: string; value: string; description: string };
+
+// Every semantic token (excludes raw primitives and component-scoped tokens),
+// in source order.
+const SEMANTIC = Object.keys(RAW).filter(
+  (n) => !n.startsWith("--primitive-") && !n.startsWith("--component-"),
+);
+
+/**
+ * All semantic tokens in a category (by `--{prefix}-` name), with resolved value
+ * and description — pulled straight from the installed package, so the catalog is
+ * complete and current by construction. New tokens appear automatically; removed
+ * ones make tokenValue() throw at build.
+ */
+export function catalog(prefix: string): CatToken[] {
+  const p = `--${prefix}-`;
+  return SEMANTIC.filter((n) => n.startsWith(p)).map((n) => ({
+    name: n,
+    value: tokenValue(n),
+    description: DESC[n] ?? "",
+  }));
+}
+
+/** Count of semantic tokens across all categories (for the hero). */
+export const semanticCount = SEMANTIC.length;
+

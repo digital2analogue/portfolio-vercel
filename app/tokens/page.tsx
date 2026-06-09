@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { tokenValue, tokenVersion } from "@/lib/tokenValues";
+import { catalog, tokenVersion, semanticCount, type CatToken } from "@/lib/tokenValues";
 
 export const metadata: Metadata = {
   title: "Design Tokens",
@@ -15,85 +15,71 @@ export const metadata: Metadata = {
   },
 };
 
-// Token names + curated roles are hand-written; VALUES (hex, sizes, durations)
-// are resolved at build time from the installed @digital2analogue2/tokens
-// package, so this catalog can't drift from what the site actually ships. If a
-// token is renamed or removed upstream, tokenValue() throws and the build fails.
+// Every value below is resolved at build time from the installed
+// @digital2analogue2/tokens package — names, values, and descriptions all come
+// from source, so this catalog is complete and current by construction. A token
+// added upstream shows up automatically; a token removed makes the build throw.
 
-// Color tokens grouped by tier
-const COLORS = [
-  {
-    group: "Background",
-    rows: [
-      { token: "--color-background-default", role: "Page canvas. Every full-bleed surface." },
-      { token: "--color-background-alt", role: "Elevated surfaces: cards, panels, inputs." },
-      { token: "--color-background-action", role: "Interactive fills: primary buttons, selected states." },
-    ],
-  },
-  {
-    group: "Foreground",
-    rows: [
-      { token: "--color-foreground-default", role: "Primary text and icons. AAA contrast (12.3:1)." },
-      { token: "--color-foreground-alt", role: "Secondary text: subtitles, metadata. AA (8.0:1)." },
-      { token: "--color-foreground-muted", role: "Tertiary content: placeholders, fine print. AA (6.3:1)." },
-      { token: "--color-foreground-action", role: "Interactive text: links, active nav. AAA (11.3:1)." },
-    ],
-  },
-  {
-    group: "Border",
-    rows: [
-      { token: "--color-border-default", role: "All UI edges. Borders recede rather than frame." },
-    ],
-  },
-].map((g) => ({
-  ...g,
-  rows: g.rows.map((r) => ({ ...r, hex: tokenValue(r.token) })),
-}));
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+const humanize = (name: string, prefix: string) =>
+  name.slice(`--${prefix}-`.length).split("-").map(cap).join(" ");
 
-// Typography scale: semantic shorthand tokens. Each sample renders with the real
-// token (font: var(--token)), so the type is already live; the size annotation
-// is a description.
-const BODY_SAMPLE = "The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.";
-const TYPE = [
-  { token: "--font-display",      label: "Display",        sample: "Display",       size: "40px / 1.1 · Space Grotesk 300" },
-  { token: "--font-title-large",  label: "Title Large",    sample: "Title Large",   size: "32px / 1.25 · Space Grotesk 300" },
-  { token: "--font-title-medium", label: "Title Medium",   sample: "Title Medium",  size: "24px / 1.25 · Space Grotesk 300" },
-  { token: "--font-title-small",  label: "Title Small",    sample: "Title Small",   size: "20px / 1.25 · Space Grotesk 300" },
-  { token: "--font-body-large",   label: "Body Large",     sample: BODY_SAMPLE,     size: "16px / 1.6 · Spectral 400" },
-  { token: "--font-body-medium",  label: "Body Medium",    sample: BODY_SAMPLE,     size: "14px / 1.6 · Spectral 400" },
-  { token: "--font-body-small",   label: "Body Small",     sample: BODY_SAMPLE,     size: "12px / 1.6 · Spectral 400" },
-  { token: "--font-label-large",  label: "Label Large",    sample: "Label Large",   size: "16px / 1.25 · JetBrains Mono 400" },
-  { token: "--font-label-medium", label: "Label Medium",   sample: "Label Medium",  size: "14px / 1.25 · JetBrains Mono 400" },
-  { token: "--font-label-small",  label: "Label Small",    sample: "Label Small",   size: "12px / 1.25 · JetBrains Mono 400" },
-  { token: "--font-code",         label: "Code",           sample: "Code",          size: "14px / 1.6 · JetBrains Mono 400" },
-];
+// Group a category's tokens by their first name segment (e.g. color ->
+// background / foreground / border / state), preserving source order.
+function groupBySegment(tokens: CatToken[], prefix: string) {
+  const groups: { label: string; rows: CatToken[] }[] = [];
+  const seen: Record<string, number> = {};
+  for (const t of tokens) {
+    const seg = t.name.slice(`--${prefix}-`.length).split("-")[0];
+    if (!(seg in seen)) {
+      seen[seg] = groups.length;
+      groups.push({ label: cap(seg), rows: [] });
+    }
+    groups[seen[seg]].rows.push(t);
+  }
+  return groups;
+}
 
-// Spacing scale: semantic (values resolved from the package)
-const SPACING = [
-  { token: "--spacing-tight", role: "Icon + label, checkbox + text" },
-  { token: "--spacing-inline", role: "Nav row, tag groups" },
-  { token: "--spacing-element", role: "Internal padding, default unit" },
-  { token: "--spacing-component", role: "Between sibling components" },
-  { token: "--spacing-layout", role: "Between major layout regions" },
-  { token: "--spacing-section", role: "Between top-level page sections" },
-].map((s) => ({ ...s, value: tokenValue(s.token) }));
+const COLOR_GROUPS = groupBySegment(catalog("color"), "color");
+const TYPE = catalog("font");
+const SPACING = catalog("spacing");
+const RADIUS = catalog("radius");
+const MOTION = catalog("motion");
+const SHADOW = catalog("shadow");
+const LETTER = catalog("letter-spacing");
+const ICON = catalog("icon");
 
-// Motion: duration (values resolved from the package)
-const MOTION = [
-  { token: "--motion-duration-instant", role: "Hover, focus ring, micro-interactions" },
-  { token: "--motion-duration-standard", role: "Dropdowns, tooltips, accordions" },
-  { token: "--motion-duration-emphasized", role: "Modals, drawers, page-level transitions" },
-].map((m) => ({ ...m, value: tokenValue(m.token) }));
+function SectionHead({ title, italic }: { title: string; italic?: string }) {
+  return (
+    <div className="section-head">
+      <h2 className="eyebrow">
+        <span>
+          {title} <span aria-hidden="true">//</span>
+        </span>
+        {italic && <span className="eyebrow__italic">{italic}</span>}
+      </h2>
+    </div>
+  );
+}
 
-// Radius (values resolved from the package)
-const RADIUS = [
-  { token: "--radius-none", role: "Code blocks, tables, structural" },
-  { token: "--radius-sm", role: "Inputs, small tags, inline chips" },
-  { token: "--radius-default", role: "Buttons, dropdowns, most interactive" },
-  { token: "--radius-lg", role: "Cards, panels, content regions" },
-  { token: "--radius-xl", role: "Modals, hero cards, featured surfaces" },
-  { token: "--radius-full", role: "Pills, avatars, toggle switches" },
-].map((r) => ({ ...r, value: tokenValue(r.token) }));
+// Generic name / value / description rows — used for motion, shadow,
+// letter-spacing, and icon.
+function CompactSection({ title, italic, tokens }: { title: string; italic?: string; tokens: CatToken[] }) {
+  return (
+    <>
+      <SectionHead title={title} italic={italic} />
+      <div className="tokens-compact">
+        {tokens.map((t) => (
+          <div key={t.name} className="tokens-compact__row">
+            <code className="tokens-row__token">{t.name}</code>
+            <code className="tokens-row__value">{t.value}</code>
+            <div className="tokens-row__role">{t.description}</div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 
 export default function TokensPage() {
   return (
@@ -133,7 +119,7 @@ export default function TokensPage() {
           <span className="status-dot" aria-hidden="true">●</span>
           &nbsp;<span className="single-status__v">v{tokenVersion} · Production</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
-          <span>primitives → semantic → component</span>
+          <span>{semanticCount} semantic tokens, generated from source</span>
         </div>
       </section>
 
@@ -142,31 +128,23 @@ export default function TokensPage() {
       </div>
 
       {/* ═══════════════ COLOR ═══════════════ */}
-      <div className="section-head rise d5">
-        <h2 className="eyebrow">
-          <span>
-            Color <span aria-hidden="true">//</span>
-          </span>
-          <span className="eyebrow__italic">every hex earns its way in</span>
-        </h2>
-      </div>
-
+      <SectionHead title="Color" italic="every hex earns its way in" />
       <div className="tokens-group rise d6">
-        {COLORS.map((group) => (
-          <div key={group.group} className="tokens-group__tier">
-            <div className="tokens-group__label">{group.group}</div>
+        {COLOR_GROUPS.map((group) => (
+          <div key={group.label} className="tokens-group__tier">
+            <div className="tokens-group__label">{group.label}</div>
             {group.rows.map((row) => (
-              <div key={row.token} className="tokens-row">
+              <div key={row.name} className="tokens-row">
                 <span
                   className="tokens-row__swatch"
-                  style={{ background: row.hex }}
+                  style={{ background: row.value }}
                   aria-hidden="true"
                 />
                 <div className="tokens-row__body">
-                  <code className="tokens-row__token">{row.token}</code>
-                  <div className="tokens-row__role">{row.role}</div>
+                  <code className="tokens-row__token">{row.name}</code>
+                  <div className="tokens-row__role">{row.description}</div>
                 </div>
-                <code className="tokens-row__value">{row.hex}</code>
+                <code className="tokens-row__value">{row.value}</code>
               </div>
             ))}
           </div>
@@ -178,27 +156,19 @@ export default function TokensPage() {
       </div>
 
       {/* ═══════════════ TYPOGRAPHY ═══════════════ */}
-      <div className="section-head rise d6">
-        <h2 className="eyebrow">
-          <span>
-            Typography <span aria-hidden="true">//</span>
-          </span>
-          <span className="eyebrow__italic">three voices, one system</span>
-        </h2>
-      </div>
-
+      <SectionHead title="Typography" italic="three voices, one system" />
       <div className="tokens-type rise d7">
         {TYPE.map((t) => (
-          <div key={t.token} className="tokens-type__row">
+          <div key={t.name} className="tokens-type__row">
             <div className="tokens-type__meta">
-              <code className="tokens-row__token">{t.token}</code>
-              <div className="tokens-type__size">{t.size}</div>
+              <code className="tokens-row__token">{t.name}</code>
+              <div className="tokens-type__size">{t.description}</div>
             </div>
             <div
               className="tokens-type__sample"
-              style={{ font: `var(${t.token})` }}
+              style={{ font: `var(${t.name})` }}
             >
-              {t.sample}
+              {humanize(t.name, "font")}
             </div>
           </div>
         ))}
@@ -209,21 +179,13 @@ export default function TokensPage() {
       </div>
 
       {/* ═══════════════ SPACING ═══════════════ */}
-      <div className="section-head rise d7">
-        <h2 className="eyebrow">
-          <span>
-            Spacing <span aria-hidden="true">//</span>
-          </span>
-          <span className="eyebrow__italic">8-point base, six semantic tiers</span>
-        </h2>
-      </div>
-
+      <SectionHead title="Spacing" italic="8-point base scale" />
       <div className="tokens-spacing rise d8">
         {SPACING.map((s) => (
-          <div key={s.token} className="tokens-spacing__row">
+          <div key={s.name} className="tokens-spacing__row">
             <div className="tokens-spacing__meta">
-              <code className="tokens-row__token">{s.token}</code>
-              <div className="tokens-row__role">{s.role}</div>
+              <code className="tokens-row__token">{s.name}</code>
+              <div className="tokens-row__role">{s.description}</div>
             </div>
             <div
               className="tokens-spacing__bar"
@@ -239,52 +201,41 @@ export default function TokensPage() {
         · · · · · · · ·
       </div>
 
-      {/* ═══════════════ MOTION + RADIUS ═══════════════ */}
-      <div className="tokens-split rise d8">
-        <div>
-          <div className="section-head">
-            <h2 className="eyebrow">
-              <span>
-                Motion <span aria-hidden="true">//</span>
-              </span>
-            </h2>
+      {/* ═══════════════ RADIUS ═══════════════ */}
+      <SectionHead title="Radius" />
+      <div className="tokens-radius rise d8">
+        {RADIUS.map((r) => (
+          <div key={r.name} className="tokens-radius__row">
+            <div
+              className="tokens-radius__swatch"
+              style={{ borderRadius: r.value }}
+              aria-hidden="true"
+            />
+            <div className="tokens-radius__body">
+              <code className="tokens-row__token">{r.name}</code>
+              <div className="tokens-row__role">{r.description}</div>
+            </div>
+            <code className="tokens-row__value">{r.value}</code>
           </div>
-          <div className="tokens-compact">
-            {MOTION.map((m) => (
-              <div key={m.token} className="tokens-compact__row">
-                <code className="tokens-row__token">{m.token}</code>
-                <code className="tokens-row__value">{m.value}</code>
-                <div className="tokens-row__role">{m.role}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
+      </div>
 
-        <div>
-          <div className="section-head">
-            <h2 className="eyebrow">
-              <span>
-                Radius <span aria-hidden="true">//</span>
-              </span>
-            </h2>
-          </div>
-          <div className="tokens-radius">
-            {RADIUS.map((r) => (
-              <div key={r.token} className="tokens-radius__row">
-                <div
-                  className="tokens-radius__swatch"
-                  style={{ borderRadius: r.value }}
-                  aria-hidden="true"
-                />
-                <div className="tokens-radius__body">
-                  <code className="tokens-row__token">{r.token}</code>
-                  <div className="tokens-row__role">{r.role}</div>
-                </div>
-                <code className="tokens-row__value">{r.value}</code>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="dot-rule rise d8" aria-hidden="true">
+        · · · · · · · ·
+      </div>
+
+      {/* ═══════════════ MOTION / SHADOW / LETTER-SPACING / ICON ═══════════════ */}
+      <div className="rise d8">
+        <CompactSection title="Motion" italic="duration + easing" tokens={MOTION} />
+      </div>
+      <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
+        <CompactSection title="Shadow" italic="elevation, used sparingly" tokens={SHADOW} />
+      </div>
+      <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
+        <CompactSection title="Letter-spacing" tokens={LETTER} />
+      </div>
+      <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
+        <CompactSection title="Icon size" tokens={ICON} />
       </div>
 
       <div className="dot-rule rise d8" aria-hidden="true">
@@ -292,15 +243,16 @@ export default function TokensPage() {
       </div>
 
       <p className="bio-inline rise d8">
-        The full token source lives in the{" "}
+        Every token above is generated at build time from{" "}
         <a
           href="https://github.com/digital2analogue/brand-tokens"
           className="accent"
         >
           Parsimony
-        </a>{" "}
-        repo: Style Dictionary pipeline, per-brand overrides, and a clear
-        primitive → semantic contract. This portfolio is the system{" "}
+        </a>
+        , so this page can&rsquo;t drift from the source. Component-scoped tokens
+        (badge, button, input, and so on) aren&rsquo;t listed here, they live in
+        each component&rsquo;s own contract. This portfolio is the system{" "}
         <em>eating its own dog food</em>.
       </p>
 
