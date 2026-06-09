@@ -24,16 +24,25 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const humanize = (name: string, prefix: string) =>
   name.slice(`--${prefix}-`.length).split("-").map(cap).join(" ");
 
-// Group color tokens by category (accent-* -> Accents, else first name segment),
-// then within each category split the "on-*" tokens (text/icons on a colored
-// fill) into a nested sub-group.
+// Feedback / status states get their own category (best-practice in most DS),
+// grouped by state with each state's surface + text + on-color together.
+const FEEDBACK = ["success", "warning", "danger", "info"];
+
+type Section = { subLabel?: string; rows: CatToken[] };
+
+// Group color tokens by category, then nest within each:
+//  - Feedback (success/warning/danger/info) -> a sub-group per state
+//  - Accents -> Surfaces / Text / Text on accent
+//  - other categories -> a nested "Text on fills" block for their on-* tokens
 function groupColors(tokens: CatToken[]) {
-  const order = ["Background", "Foreground", "Border", "State", "Accents"];
+  const order = ["Background", "Foreground", "Border", "State", "Feedback", "Accents"];
   const map: Record<string, CatToken[]> = {};
   for (const t of tokens) {
-    const label = t.name.includes("accent")
-      ? "Accents"
-      : cap(t.name.slice("--color-".length).split("-")[0]);
+    const label = FEEDBACK.some((s) => t.name.includes(s))
+      ? "Feedback"
+      : t.name.includes("accent")
+        ? "Accents"
+        : cap(t.name.slice("--color-".length).split("-")[0]);
     (map[label] ??= []).push(t);
   }
   const labels = [
@@ -42,20 +51,25 @@ function groupColors(tokens: CatToken[]) {
   ];
   return labels.map((label) => {
     const rows = map[label];
-    // Accents holds both bg and fg accent tokens, so split it three ways.
+    if (label === "Feedback") {
+      const sections: Section[] = FEEDBACK.map((s) => ({
+        subLabel: cap(s),
+        rows: rows.filter((t) => t.name.includes(s)),
+      })).filter((s) => s.rows.length > 0);
+      return { label, sections };
+    }
     if (label === "Accents") {
-      const sections: { subLabel: string; rows: CatToken[] }[] = [
-        { subLabel: "background", rows: rows.filter((t) => t.name.startsWith("--color-background-")) },
-        { subLabel: "foreground", rows: rows.filter((t) => t.name.startsWith("--color-foreground-") && !t.name.includes("-on-")) },
-        { subLabel: "foreground-on-accent", rows: rows.filter((t) => t.name.includes("-on-")) },
+      const sections: Section[] = [
+        { subLabel: "Surfaces", rows: rows.filter((t) => t.name.startsWith("--color-background-")) },
+        { subLabel: "Text", rows: rows.filter((t) => t.name.startsWith("--color-foreground-") && !t.name.includes("-on-")) },
+        { subLabel: "Text on accent", rows: rows.filter((t) => t.name.includes("-on-")) },
       ];
       return { label, sections: sections.filter((s) => s.rows.length > 0) };
     }
-    // Other categories: a main block, plus a nested "on fills" block if present.
     const main = rows.filter((t) => !t.name.includes("-on-"));
     const on = rows.filter((t) => t.name.includes("-on-"));
-    const sections: { subLabel?: string; rows: CatToken[] }[] = [{ rows: main }];
-    if (on.length > 0) sections.push({ subLabel: "on fills", rows: on });
+    const sections: Section[] = [{ rows: main }];
+    if (on.length > 0) sections.push({ subLabel: "Text on fills", rows: on });
     return { label, sections };
   });
 }
