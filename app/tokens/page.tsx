@@ -24,24 +24,44 @@ const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const humanize = (name: string, prefix: string) =>
   name.slice(`--${prefix}-`.length).split("-").map(cap).join(" ");
 
-// Group color tokens: "on-*" (text/icons on a colored fill) into their own
-// "On fills" bucket, accent-* into "Accents", the rest by first name segment.
+// Group color tokens by category (accent-* -> Accents, else first name segment),
+// then within each category split the "on-*" tokens (text/icons on a colored
+// fill) into a nested sub-group.
 function groupColors(tokens: CatToken[]) {
-  const order = ["Background", "Foreground", "On fills", "Border", "State", "Accents"];
-  const groups: Record<string, CatToken[]> = {};
+  const order = ["Background", "Foreground", "Border", "State", "Accents"];
+  const map: Record<string, CatToken[]> = {};
   for (const t of tokens) {
-    const label = t.name.includes("-on-")
-      ? "On fills"
-      : t.name.includes("accent")
-        ? "Accents"
-        : cap(t.name.slice("--color-".length).split("-")[0]);
-    (groups[label] ??= []).push(t);
+    const label = t.name.includes("accent")
+      ? "Accents"
+      : cap(t.name.slice("--color-".length).split("-")[0]);
+    (map[label] ??= []).push(t);
   }
   const labels = [
-    ...order.filter((l) => groups[l]),
-    ...Object.keys(groups).filter((l) => !order.includes(l)),
+    ...order.filter((l) => map[l]),
+    ...Object.keys(map).filter((l) => !order.includes(l)),
   ];
-  return labels.map((label) => ({ label, rows: groups[label] }));
+  return labels.map((label) => ({
+    label,
+    main: map[label].filter((t) => !t.name.includes("-on-")),
+    on: map[label].filter((t) => t.name.includes("-on-")),
+  }));
+}
+
+function ColorRow({ row }: { row: CatToken }) {
+  return (
+    <div className="tokens-row">
+      <span
+        className="tokens-row__swatch"
+        style={{ background: row.value }}
+        aria-hidden="true"
+      />
+      <div className="tokens-row__body">
+        <code className="tokens-row__token">{row.name}</code>
+        <div className="tokens-row__role">{row.description}</div>
+      </div>
+      <code className="tokens-row__value">{row.value}</code>
+    </div>
+  );
 }
 
 const COLOR_GROUPS = groupColors(catalog("color"));
@@ -163,20 +183,28 @@ export default function TokensPage() {
         {COLOR_GROUPS.map((group) => (
           <div key={group.label} className="tokens-group__tier">
             <div className="tokens-group__label">{group.label}</div>
-            {group.rows.map((row) => (
-              <div key={row.name} className="tokens-row">
-                <span
-                  className="tokens-row__swatch"
-                  style={{ background: row.value }}
-                  aria-hidden="true"
-                />
-                <div className="tokens-row__body">
-                  <code className="tokens-row__token">{row.name}</code>
-                  <div className="tokens-row__role">{row.description}</div>
-                </div>
-                <code className="tokens-row__value">{row.value}</code>
-              </div>
+            {group.main.map((row) => (
+              <ColorRow key={row.name} row={row} />
             ))}
+            {group.on.length > 0 && (
+              <>
+                <div
+                  className="tokens-group__sublabel"
+                  style={{
+                    font: "var(--font-mono-label-small)",
+                    color: "var(--color-foreground-muted)",
+                    margin: "var(--spacing-component) 0 var(--spacing-tight)",
+                    paddingLeft: "var(--spacing-inline)",
+                    borderLeft: "2px solid var(--color-border-default)",
+                  }}
+                >
+                  on fills · text/icons on a colored fill
+                </div>
+                {group.on.map((row) => (
+                  <ColorRow key={row.name} row={row} />
+                ))}
+              </>
+            )}
           </div>
         ))}
       </div>
