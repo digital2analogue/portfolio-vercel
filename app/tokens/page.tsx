@@ -113,6 +113,37 @@ const COLOR_GROUPS = groupColors(catalog("color"));
 const FONT = catalog("font");
 const FAMILIES = FONT.filter((t) => t.name.startsWith("--font-family-"));
 const TYPE = FONT.filter((t) => !t.name.startsWith("--font-family-"));
+
+// Group the type shorthands by role so Typography has the same group → rows
+// depth as Color. Matches are mutually exclusive, so array order = display
+// order (Label must exclude Label Strong; both differ from Mono Label).
+const TYPE_ROLES: { label: string; match: (n: string) => boolean }[] = [
+  { label: "Display", match: (n) => n === "--font-display" },
+  { label: "Title", match: (n) => n.startsWith("--font-title-") },
+  { label: "Body", match: (n) => n.startsWith("--font-body-") },
+  {
+    label: "Label",
+    match: (n) =>
+      n.startsWith("--font-label-") && !n.startsWith("--font-label-strong-"),
+  },
+  { label: "Label Strong", match: (n) => n.startsWith("--font-label-strong-") },
+  { label: "Mono Label", match: (n) => n.startsWith("--font-mono-label-") },
+  { label: "Code", match: (n) => n === "--font-code" },
+];
+
+function groupType(tokens: CatToken[]) {
+  const groups = TYPE_ROLES.map((role) => ({
+    label: role.label,
+    rows: tokens.filter((t) => role.match(t.name)),
+  })).filter((g) => g.rows.length > 0);
+  // Surface anything unmatched so the catalog stays complete by construction.
+  const seen = new Set(groups.flatMap((g) => g.rows.map((r) => r.name)));
+  const rest = tokens.filter((t) => !seen.has(t.name));
+  if (rest.length > 0) groups.push({ label: "Other", rows: rest });
+  return groups;
+}
+
+const TYPE_GROUPS = groupType(TYPE);
 const SPACING = catalog("spacing");
 const RADIUS = catalog("radius");
 const MOTION = catalog("motion");
@@ -243,35 +274,56 @@ export default function TokensPage() {
 
       {/* ═══════════════ TYPOGRAPHY ═══════════════ */}
       <SectionHead title="Typography" italic="three voices, one system" />
-      <div className="tokens-type rise d7">
-        {FAMILIES.map((t) => (
-          <div key={t.name} className="tokens-type__row">
-            <div className="tokens-type__meta">
+      <div className="rise d7">
+        <div className="tokens-type">
+          <SubLabel text="Families" />
+          {FAMILIES.map((t) => (
+            <div key={t.name} className="tokens-type__row">
+              <div className="tokens-type__meta">
+                <code className="tokens-row__token">{t.name}</code>
+                <div className="tokens-type__size">{t.value}</div>
+              </div>
+              <div
+                className="tokens-type__sample"
+                style={{ fontFamily: `var(${t.name})`, fontSize: "1.5rem" }}
+              >
+                Aa Bb Cc 0123
+              </div>
+            </div>
+          ))}
+          {TYPE_GROUPS.map((group) => (
+            <div key={group.label}>
+              <SubLabel text={group.label} />
+              {group.rows.map((t) => (
+                <div key={t.name} className="tokens-type__row">
+                  <div className="tokens-type__meta">
+                    <code className="tokens-row__token">{t.name}</code>
+                    <div className="tokens-type__size">{t.description}</div>
+                  </div>
+                  <div
+                    className="tokens-type__sample"
+                    style={{ font: `var(${t.name})` }}
+                  >
+                    {humanize(t.name, "font")}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Letter-spacing lives under Typography — it's a type property, not a
+            standalone token family. */}
+        <SubLabel text="Letter-spacing" />
+        <div className="tokens-compact">
+          {LETTER.map((t) => (
+            <div key={t.name} className="tokens-compact__row">
               <code className="tokens-row__token">{t.name}</code>
-              <div className="tokens-type__size">{t.value}</div>
+              <code className="tokens-row__value">{t.value}</code>
+              <div className="tokens-row__role">{t.description}</div>
             </div>
-            <div
-              className="tokens-type__sample"
-              style={{ fontFamily: `var(${t.name})`, fontSize: "1.5rem" }}
-            >
-              Aa Bb Cc 0123
-            </div>
-          </div>
-        ))}
-        {TYPE.map((t) => (
-          <div key={t.name} className="tokens-type__row">
-            <div className="tokens-type__meta">
-              <code className="tokens-row__token">{t.name}</code>
-              <div className="tokens-type__size">{t.description}</div>
-            </div>
-            <div
-              className="tokens-type__sample"
-              style={{ font: `var(${t.name})` }}
-            >
-              {humanize(t.name, "font")}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div className="dot-rule rise d7" aria-hidden="true">
@@ -330,9 +382,6 @@ export default function TokensPage() {
       </div>
       <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
         <CompactSection title="Shadow" italic="elevation, used sparingly" tokens={SHADOW} />
-      </div>
-      <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
-        <CompactSection title="Letter-spacing" tokens={LETTER} />
       </div>
       <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
         <CompactSection
