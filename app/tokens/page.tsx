@@ -40,11 +40,40 @@ function groupColors(tokens: CatToken[]) {
     ...order.filter((l) => map[l]),
     ...Object.keys(map).filter((l) => !order.includes(l)),
   ];
-  return labels.map((label) => ({
-    label,
-    main: map[label].filter((t) => !t.name.includes("-on-")),
-    on: map[label].filter((t) => t.name.includes("-on-")),
-  }));
+  return labels.map((label) => {
+    const rows = map[label];
+    // Accents holds both bg and fg accent tokens, so split it three ways.
+    if (label === "Accents") {
+      const sections: { subLabel: string; rows: CatToken[] }[] = [
+        { subLabel: "background", rows: rows.filter((t) => t.name.startsWith("--color-background-")) },
+        { subLabel: "foreground", rows: rows.filter((t) => t.name.startsWith("--color-foreground-") && !t.name.includes("-on-")) },
+        { subLabel: "foreground-on-accent", rows: rows.filter((t) => t.name.includes("-on-")) },
+      ];
+      return { label, sections: sections.filter((s) => s.rows.length > 0) };
+    }
+    // Other categories: a main block, plus a nested "on fills" block if present.
+    const main = rows.filter((t) => !t.name.includes("-on-"));
+    const on = rows.filter((t) => t.name.includes("-on-"));
+    const sections: { subLabel?: string; rows: CatToken[] }[] = [{ rows: main }];
+    if (on.length > 0) sections.push({ subLabel: "on fills · text/icons on a colored fill", rows: on });
+    return { label, sections };
+  });
+}
+
+function SubLabel({ text }: { text: string }) {
+  return (
+    <div
+      style={{
+        font: "var(--font-mono-label-small)",
+        color: "var(--color-foreground-muted)",
+        margin: "var(--spacing-component) 0 var(--spacing-tight)",
+        paddingLeft: "var(--spacing-inline)",
+        borderLeft: "2px solid var(--color-border-default)",
+      }}
+    >
+      {text}
+    </div>
+  );
 }
 
 function ColorRow({ row }: { row: CatToken }) {
@@ -183,28 +212,14 @@ export default function TokensPage() {
         {COLOR_GROUPS.map((group) => (
           <div key={group.label} className="tokens-group__tier">
             <div className="tokens-group__label">{group.label}</div>
-            {group.main.map((row) => (
-              <ColorRow key={row.name} row={row} />
-            ))}
-            {group.on.length > 0 && (
-              <>
-                <div
-                  className="tokens-group__sublabel"
-                  style={{
-                    font: "var(--font-mono-label-small)",
-                    color: "var(--color-foreground-muted)",
-                    margin: "var(--spacing-component) 0 var(--spacing-tight)",
-                    paddingLeft: "var(--spacing-inline)",
-                    borderLeft: "2px solid var(--color-border-default)",
-                  }}
-                >
-                  on fills · text/icons on a colored fill
-                </div>
-                {group.on.map((row) => (
+            {group.sections.map((section, i) => (
+              <div key={section.subLabel ?? i}>
+                {section.subLabel && <SubLabel text={section.subLabel} />}
+                {section.rows.map((row) => (
                   <ColorRow key={row.name} row={row} />
                 ))}
-              </>
-            )}
+              </div>
+            ))}
           </div>
         ))}
       </div>
