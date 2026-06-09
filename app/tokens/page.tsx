@@ -71,10 +71,31 @@ function SectionHead({ title, italic }: { title: string; italic?: string }) {
 
 // Generic name / value / description rows — used for motion, shadow,
 // letter-spacing, and icon.
-function CompactSection({ title, italic, tokens }: { title: string; italic?: string; tokens: CatToken[] }) {
+function CompactSection({
+  title,
+  italic,
+  note,
+  tokens,
+}: {
+  title: string;
+  italic?: string;
+  note?: string;
+  tokens: CatToken[];
+}) {
   return (
     <>
       <SectionHead title={title} italic={italic} />
+      {note && (
+        <p
+          style={{
+            font: "var(--font-body-small)",
+            color: "var(--color-foreground-muted)",
+            margin: "0 0 var(--spacing-component)",
+          }}
+        >
+          {note}
+        </p>
+      )}
       <div className="tokens-compact">
         {tokens.map((t) => (
           <div key={t.name} className="tokens-compact__row">
@@ -256,7 +277,12 @@ export default function TokensPage() {
         <CompactSection title="Letter-spacing" tokens={LETTER} />
       </div>
       <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
-        <CompactSection title="Icon size" tokens={ICON} />
+        <CompactSection
+          title="Icon size"
+          italic="under construction"
+          note="Provisional — the icon system isn't finalized yet, so these sizes are placeholders and may change."
+          tokens={ICON}
+        />
       </div>
 
       <div className="dot-rule rise d8" aria-hidden="true">
