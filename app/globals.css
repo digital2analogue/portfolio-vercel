@@ -1306,8 +1306,9 @@ h2.eyebrow,
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 560px) {
   /* Nav — single row on mobile. With INDEX removed (the brand handles home),
-     the 4 remaining links fit alongside the brand at 375px, each still hitting
-     the 44px Apple/Google HIG tap-target floor. */
+     the 5 links (WORK/SYSTEM/BLOG/ABOUT/CONTACT) fit alongside the brand at
+     375px: the short BLOG label and tightened gaps keep them on one row while
+     each still hits the 44px Apple/Google HIG tap-target floor. */
   .topbar {
     align-items: center;
     padding: var(--spacing-tight) var(--spacing-inline) 0;

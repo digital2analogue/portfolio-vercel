@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 const LINKS = [
   { label: "WORK", href: "/work" },
   { label: "SYSTEM", href: "/work/design-tokens" },
+  // External: points at the Substack, so it opens in a new tab and never
+  // participates in the active-page highlighting below.
+  { label: "BLOG", href: "https://riverromney.substack.com", external: true },
   { label: "ABOUT", href: "/about" },
   { label: "CONTACT", href: "/contact" },
 ] as const;
@@ -29,6 +32,19 @@ export default function Nav() {
       </Link>
       <div className="topbar__links">
         {LINKS.map((l) => {
+          if ("external" in l && l.external) {
+            return (
+              <a
+                key={l.label}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${l.label} (opens in new tab)`}
+              >
+                {l.label}
+              </a>
+            );
+          }
           const active = l.href === activeHref;
           return (
             <Link
