@@ -525,10 +525,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin.gif",
         naturalSize: true,
       },
-      {
-        type: "p",
-        text: "**See it shipped:** the refreshed [OpenTable icon set is live in production](https://www.opentable.com/icons/san-francisco).",
-      },
       { type: "p", text: "This allowed brand evolution without breaking product consistency. Namely:" },
       {
         type: "ul",
@@ -570,7 +566,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**See it live:** the Iconic theme in production on a [real restaurant page (Rich Table, San Francisco)](https://www.opentable.com/r/rich-table-san-francisco).",
+        text: "**See it live:** browse the [Icons collection of premium restaurants](https://www.opentable.com/icons/san-francisco), or open an individual [Iconic restaurant page (Rich Table, San Francisco)](https://www.opentable.com/r/rich-table-san-francisco) to see the theme in production.",
       },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
