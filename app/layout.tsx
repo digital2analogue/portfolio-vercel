@@ -3,6 +3,7 @@ import { JetBrains_Mono, Space_Grotesk, Spectral } from "next/font/google";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import FocusCaret from "@/components/FocusCaret";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 // Fonts match the brand-tokens system:
@@ -125,6 +126,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
