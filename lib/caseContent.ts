@@ -564,6 +564,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Iconic Theme: premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
         src: "/projects/images/ot-brand-refresh-iconic-theme.png",
       },
+      {
+        type: "p",
+        text: "**See it live:** browse the [Icons collection of premium restaurants](https://www.opentable.com/icons/san-francisco), or open an individual [Iconic restaurant page (Rich Table, San Francisco)](https://www.opentable.com/r/rich-table-san-francisco) to see the theme in production.",
+      },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
       { type: "p", text: "OTKit delivered measurable ROI:" },
