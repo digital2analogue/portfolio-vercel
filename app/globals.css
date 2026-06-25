@@ -1,8 +1,8 @@
 @import "tailwindcss";
-@import "@digital2analogue2/tokens/base.css";
+@import "@digital2analogue2/parsimony/base.css";
 
 /* ═══════════════════════════════════════════════════
-   BRAND-TOKENS — consumed from @digital2analogue2/tokens (base.css), above.
+   BRAND-TOKENS — consumed from @digital2analogue2/parsimony (base.css), above.
    The base dark-theme primitives, semantic roles, and typography shorthands
    now come from the published package — single source of truth, installed,
    not hand-copied. Do not redeclare them here.

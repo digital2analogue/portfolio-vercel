@@ -1,7 +1,7 @@
 name: Tokens Freshness
 
 # Closes the "published -> consumer install" staleness arrow: if a newer
-# @digital2analogue2/tokens has been published, this site is shipping old token
+# @digital2analogue2/parsimony has been published, this site is shipping old token
 # values until it reinstalls. Runs `sync-tokens` (installed vs latest published)
 # and reflects the result as a single tracked issue — opened/updated when behind,
 # closed automatically once the dependency is bumped.
@@ -43,7 +43,7 @@ jobs:
             const fs = require('fs');
             const report = fs.readFileSync('/tmp/report.txt', 'utf8').trim();
             const stale = '${{ steps.check.outputs.result }}' === 'stale';
-            const title = 'Installed @digital2analogue2/tokens is behind the published version';
+            const title = 'Installed @digital2analogue2/parsimony is behind the published version';
             const label = 'tokens-freshness';
             const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
@@ -61,7 +61,7 @@ jobs:
               '',
               '---',
               `Checked at ${stamp} UTC by the [tokens-freshness workflow](${runUrl}).`,
-              'To resolve: `npm install @digital2analogue2/tokens@latest`, then redeploy.',
+              'To resolve: `npm install @digital2analogue2/parsimony@latest`, then redeploy.',
             ].join('\n');
 
             if (stale) {

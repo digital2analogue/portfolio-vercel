@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 // Every value below is resolved at build time from the installed
-// @digital2analogue2/tokens package — names, values, and descriptions all come
+// @digital2analogue2/parsimony package — names, values, and descriptions all come
 // from source, so this catalog is complete and current by construction. A token
 // added upstream shows up automatically; a token removed makes the build throw.
 
