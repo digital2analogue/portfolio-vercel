@@ -13,9 +13,9 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const CSS_FILE = path.join(__dirname, '../app/globals.css')
-// Base tokens come from the installed @digital2analogue2/tokens package;
+// Base tokens come from the installed @digital2analogue2/parsimony package;
 // globals.css carries only the portfolio's overrides. Parse both.
-const PKG_CSS = path.join(__dirname, '../node_modules/@digital2analogue2/tokens/css/variables.css')
+const PKG_CSS = path.join(__dirname, '../node_modules/@digital2analogue2/parsimony/css/variables.css')
 
 // ─── Token resolution ──────────────────────────────────────────────────────────
 

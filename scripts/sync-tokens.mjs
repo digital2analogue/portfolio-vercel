@@ -2,7 +2,7 @@
  * scripts/sync-tokens.mjs
  *
  * Since the portfolio migrated off its inlined token block and now consumes
- * @digital2analogue2/tokens (see app/globals.css), this no longer diffs a copied
+ * @digital2analogue2/parsimony (see app/globals.css), this no longer diffs a copied
  * block. Instead it checks that the INSTALLED package version matches the latest
  * published on npm — i.e. that this consumer hasn't drifted behind the source of
  * truth.
@@ -19,7 +19,7 @@ import { execSync } from 'child_process'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const PKG = '@digital2analogue2/tokens'
+const PKG = '@digital2analogue2/parsimony'
 const INSTALLED_PKG_JSON = path.join(__dirname, `../node_modules/${PKG}/package.json`)
 
 function fail(msg) {

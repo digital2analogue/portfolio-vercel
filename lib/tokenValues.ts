@@ -1,6 +1,6 @@
 // Build-time resolver for the published design-system tokens.
 //
-// Reads the installed @digital2analogue2/tokens base CSS and resolves a token
+// Reads the installed @digital2analogue2/parsimony base CSS and resolves a token
 // name to its concrete value, following var() references. The /tokens viewer
 // uses this so its swatches and values are always what the package actually
 // ships — never a hand-typed copy that can drift from the source of truth.
@@ -13,13 +13,13 @@ import path from "node:path";
 
 const CSS_PATH = path.join(
   process.cwd(),
-  "node_modules/@digital2analogue2/tokens/css/variables.css",
+  "node_modules/@digital2analogue2/parsimony/css/variables.css",
 );
 
 /** The installed package version — shown in the /tokens hero so it can't drift. */
 export const tokenVersion: string = JSON.parse(
   fs.readFileSync(
-    path.join(process.cwd(), "node_modules/@digital2analogue2/tokens/package.json"),
+    path.join(process.cwd(), "node_modules/@digital2analogue2/parsimony/package.json"),
     "utf8",
   ),
 ).version;
@@ -51,7 +51,7 @@ for (const m of CSS_TEXT.matchAll(
 export function tokenValue(name: string): string {
   if (!(name in RAW)) {
     throw new Error(
-      `tokenValue: ${name} not found in @digital2analogue2/tokens. ` +
+      `tokenValue: ${name} not found in @digital2analogue2/parsimony. ` +
         `It may have been renamed or removed — update the /tokens catalog or bump the package.`,
     );
   }

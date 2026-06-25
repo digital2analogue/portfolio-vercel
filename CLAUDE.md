@@ -9,7 +9,7 @@ npm run dev            # Start dev server (Next.js 16, http://localhost:3000)
 npm run build          # contrast check → next build (contrast gate blocks on failure)
 npm run lint           # ESLint via next lint
 npm run check-contrast # Run WCAG AA check in isolation
-npm run sync-tokens    # Check installed @digital2analogue2/tokens version against the latest published
+npm run sync-tokens    # Check installed @digital2analogue2/parsimony version against the latest published
 ```
 
 ## Architecture
@@ -18,17 +18,17 @@ npm run sync-tokens    # Check installed @digital2analogue2/tokens version again
 
 ### Design Token System
 
-This repo consumes tokens from the **brand-tokens** design system as the published npm package **`@digital2analogue2/tokens`**. `app/globals.css` imports the base dark-theme CSS (`@digital2analogue2/tokens/base.css`) — it is no longer hand-copied. The token *values* are never edited here; change them in brand-tokens, publish a new package version, and `npm install` it.
+This repo consumes tokens from the **brand-tokens** design system as the published npm package **`@digital2analogue2/parsimony`**. `app/globals.css` imports the base dark-theme CSS (`@digital2analogue2/parsimony/base.css`) — it is no longer hand-copied. The token *values* are never edited here; change them in brand-tokens, publish a new package version, and `npm install` it.
 
 #### Source of truth hierarchy
 
 ```
 brand-tokens/tokens/base/              ← edit token values here first
   ↓ build (node scripts/build-brands.mjs in brand-tokens)
-brand-tokens/packages/tokens           ← published as @digital2analogue2/tokens
+brand-tokens/packages/tokens           ← published as @digital2analogue2/parsimony
   ↓ npm install
-node_modules/@digital2analogue2/tokens/css/variables.css
-  ↓ @import "@digital2analogue2/tokens/base.css"
+node_modules/@digital2analogue2/parsimony/css/variables.css
+  ↓ @import "@digital2analogue2/parsimony/base.css"
 app/globals.css                        ← imports base + a thin override layer
 ```
 
@@ -36,12 +36,12 @@ app/globals.css                        ← imports base + a thin override layer
 
 #### Token layers in globals.css
 
-1. **Imported base** — `@import "@digital2analogue2/tokens/base.css"` provides all primitives, semantic roles, and typography shorthands (fixed base values).
+1. **Imported base** — `@import "@digital2analogue2/parsimony/base.css"` provides all primitives, semantic roles, and typography shorthands (fixed base values).
 2. **Portfolio override `:root`** — re-declares ONLY the deltas on top of the package: responsive `clamp()` scaling for the larger spacing/type steps, and font-family tokens that defer to the next/font variables. Cascades through because semantic/shorthand tokens reference primitives via `var()`.
 3. **Portfolio-specific** — layout widths, phosphor bloom not yet in brand-tokens.
 4. **Tailwind bridge** — `@theme inline` block re-exposes semantic tokens as Tailwind utilities.
 
-To change a token value, edit brand-tokens → publish → `npm install @digital2analogue2/tokens@latest`. For a portfolio-only override, add it to the override `:root` in `globals.css`.
+To change a token value, edit brand-tokens → publish → `npm install @digital2analogue2/parsimony@latest`. For a portfolio-only override, add it to the override `:root` in `globals.css`.
 
 ### Contrast Gate
 
