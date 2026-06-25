@@ -67,9 +67,7 @@ export default function AboutPage() {
         </h1>
       </section>
 
-      <div className="dot-rule rise d3" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d3" aria-hidden="true" />
 
       <div className="about-prose rise d4">
         <p>
@@ -135,9 +133,7 @@ export default function AboutPage() {
         ))}
       </div>
 
-      <div className="dot-rule rise d7" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d7" aria-hidden="true" />
 
       <p className="bio-inline rise d7">
         Based in San Francisco and taking new work,{" "}

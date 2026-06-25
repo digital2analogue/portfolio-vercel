@@ -39,9 +39,7 @@ export default function WorkPage() {
         </p>
       </section>
 
-      <div className="dot-rule rise d4" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d4" aria-hidden="true" />
 
       <ul className="work-list rise d3">
         {CASES.map((c) => (

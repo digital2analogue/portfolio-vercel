@@ -311,7 +311,7 @@ button:focus-visible,
     margin-bottom: var(--primitive-space-2xl);
   }
   .dot-rule {
-    margin: var(--primitive-space-2xl) 0 var(--primitive-space-lg);
+    margin: var(--primitive-space-2xl) auto var(--primitive-space-lg);
   }
 }
 
@@ -371,14 +371,23 @@ button:focus-visible,
 /* ═══════════════════════════════════════════════════════════════════
    ASCII dot-divider between sections
    ═══════════════════════════════════════════════════════════════════ */
+/* Decorative dotted divider. Drawn with a CSS background rather than bullet
+   glyphs so it carries no text node — a faint divider this low-contrast is
+   intentional, and as text it failed WCAG 1.4.3 (it is purely decorative,
+   aria-hidden). As a background image no contrast rule applies. */
 .dot-rule {
-  font: var(--font-code);
-  color: var(--color-border-default);
-  letter-spacing: 0.5em;
-  text-align: center;
-  margin: var(--primitive-space-3xl) 0 var(--primitive-space-xl);
+  height: 0.75em;
+  max-width: 12em;
+  margin: var(--primitive-space-3xl) auto var(--primitive-space-xl);
+  background-image: radial-gradient(
+    circle at center,
+    var(--color-border-default) 0 1.4px,
+    transparent 1.7px
+  );
+  background-size: 1.4em 100%;
+  background-position: center;
+  background-repeat: repeat-x;
   user-select: none;
-  line-height: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

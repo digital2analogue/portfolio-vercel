@@ -112,9 +112,7 @@ export default async function CaseStudyPage({
         </div>
       </section>
 
-      <div className="dot-rule rise d5" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d5" aria-hidden="true" />
 
       <CaseBlocks blocks={content.blocks} />
 
