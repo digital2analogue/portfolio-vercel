@@ -137,14 +137,9 @@ footer {
 /* ═══════════════════════════════════════════════════════════════════
    Keyframes
    ═══════════════════════════════════════════════════════════════════ */
-/* Entrance reveal. Animates transform only — never opacity — so text always
-   renders at full contrast. A staggered opacity fade dimmed low-contrast text
-   (muted/alt foregrounds) below WCAG AA for the duration of the fade, which
-   automated audits captured mid-flight. The slide preserves the reveal feel
-   without ever leaving content low-contrast or invisible. */
 @keyframes rise {
-  from { transform: translateY(10px); }
-  to   { transform: translateY(0); }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes blink {
   50% { opacity: 0.15; }
@@ -154,7 +149,7 @@ footer {
   50%      { opacity: 0.62; text-shadow: 0 0 2px rgba(74, 222, 110, 0.25); }
 }
 
-.rise { animation: rise 640ms var(--motion-easing-enter) both; }
+.rise { opacity: 0; animation: rise 640ms var(--motion-easing-enter) forwards; }
 .d1 { animation-delay: 60ms; }
 .d2 { animation-delay: 200ms; }
 .d3 { animation-delay: 340ms; }
@@ -170,6 +165,7 @@ footer {
   .cursor,
   .status-dot,
   #focus-caret { animation: none; }
+  .rise        { opacity: 1; }
   #focus-caret { transition: none; }
 }
 
