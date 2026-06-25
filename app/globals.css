@@ -137,9 +137,14 @@ footer {
 /* ═══════════════════════════════════════════════════════════════════
    Keyframes
    ═══════════════════════════════════════════════════════════════════ */
+/* Entrance reveal. Animates transform only — never opacity — so text always
+   renders at full contrast. A staggered opacity fade dimmed low-contrast text
+   (muted/alt foregrounds) below WCAG AA for the duration of the fade, which
+   automated audits captured mid-flight. The slide preserves the reveal feel
+   without ever leaving content low-contrast or invisible. */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
 }
 @keyframes blink {
   50% { opacity: 0.15; }
@@ -149,7 +154,7 @@ footer {
   50%      { opacity: 0.62; text-shadow: 0 0 2px rgba(74, 222, 110, 0.25); }
 }
 
-.rise { opacity: 0; animation: rise 640ms var(--motion-easing-enter) forwards; }
+.rise { animation: rise 640ms var(--motion-easing-enter) both; }
 .d1 { animation-delay: 60ms; }
 .d2 { animation-delay: 200ms; }
 .d3 { animation-delay: 340ms; }
@@ -165,7 +170,6 @@ footer {
   .cursor,
   .status-dot,
   #focus-caret { animation: none; }
-  .rise        { opacity: 1; }
   #focus-caret { transition: none; }
 }
 
@@ -311,7 +315,7 @@ button:focus-visible,
     margin-bottom: var(--primitive-space-2xl);
   }
   .dot-rule {
-    margin: var(--primitive-space-2xl) 0 var(--primitive-space-lg);
+    margin: var(--primitive-space-2xl) auto var(--primitive-space-lg);
   }
 }
 
@@ -371,14 +375,23 @@ button:focus-visible,
 /* ═══════════════════════════════════════════════════════════════════
    ASCII dot-divider between sections
    ═══════════════════════════════════════════════════════════════════ */
+/* Decorative dotted divider. Drawn with a CSS background rather than bullet
+   glyphs so it carries no text node — a faint divider this low-contrast is
+   intentional, and as text it failed WCAG 1.4.3 (it is purely decorative,
+   aria-hidden). As a background image no contrast rule applies. */
 .dot-rule {
-  font: var(--font-code);
-  color: var(--color-border-default);
-  letter-spacing: 0.5em;
-  text-align: center;
-  margin: var(--primitive-space-3xl) 0 var(--primitive-space-xl);
+  height: 0.75em;
+  max-width: 12em;
+  margin: var(--primitive-space-3xl) auto var(--primitive-space-xl);
+  background-image: radial-gradient(
+    circle at center,
+    var(--color-border-default) 0 1.4px,
+    transparent 1.7px
+  );
+  background-size: 1.4em 100%;
+  background-position: center;
+  background-repeat: repeat-x;
   user-select: none;
-  line-height: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════════════

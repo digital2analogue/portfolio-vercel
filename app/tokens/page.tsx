@@ -246,9 +246,7 @@ export default function TokensPage() {
         </div>
       </section>
 
-      <div className="dot-rule rise d5" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d5" aria-hidden="true" />
 
       {/* ═══════════════ COLOR ═══════════════ */}
       <SectionHead title="Color" italic="every hex earns its way in" />
@@ -268,9 +266,7 @@ export default function TokensPage() {
         ))}
       </div>
 
-      <div className="dot-rule rise d6" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d6" aria-hidden="true" />
 
       {/* ═══════════════ TYPOGRAPHY ═══════════════ */}
       <SectionHead title="Typography" italic="three voices, one system" />
@@ -326,9 +322,7 @@ export default function TokensPage() {
         </div>
       </div>
 
-      <div className="dot-rule rise d7" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d7" aria-hidden="true" />
 
       {/* ═══════════════ SPACING ═══════════════ */}
       <SectionHead title="Spacing" italic="8-point base scale" />
@@ -349,9 +343,7 @@ export default function TokensPage() {
         ))}
       </div>
 
-      <div className="dot-rule rise d8" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d8" aria-hidden="true" />
 
       {/* ═══════════════ RADIUS ═══════════════ */}
       <SectionHead title="Radius" />
@@ -372,9 +364,7 @@ export default function TokensPage() {
         ))}
       </div>
 
-      <div className="dot-rule rise d8" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d8" aria-hidden="true" />
 
       {/* ═══════════════ MOTION / SHADOW / LETTER-SPACING / ICON ═══════════════ */}
       <div className="rise d8">
@@ -392,9 +382,7 @@ export default function TokensPage() {
         />
       </div>
 
-      <div className="dot-rule rise d8" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d8" aria-hidden="true" />
 
       <p className="bio-inline rise d8">
         Every token above is generated at build time from{" "}

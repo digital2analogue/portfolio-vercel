@@ -41,9 +41,7 @@ export default function IndexPage() {
         </div>
       </section>
 
-      <div className="dot-rule rise d5" aria-hidden="true">
-        · · · · · · · ·
-      </div>
+      <div className="dot-rule rise d5" aria-hidden="true" />
 
       <div className="section-head rise d5">
         <span className="marginalia" aria-hidden="true">
