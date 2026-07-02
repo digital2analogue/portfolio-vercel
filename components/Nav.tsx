@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 const LINKS = [
   { label: "WORK", href: "/work" },
-  { label: "SYSTEM", href: "/work/design-tokens" },
+  { label: "SYSTEM", href: "/work/system" },
   // External: points at the Substack, so it opens in a new tab and never
   // participates in the active-page highlighting below.
   { label: "BLOG", href: "https://riverromney.substack.com", external: true },
@@ -14,7 +14,7 @@ const LINKS = [
 
 export default function Nav() {
   const pathname = usePathname();
-  // Most specific match wins, so /work/design-tokens lights up SYSTEM (not WORK),
+  // Most specific match wins, so /work/system lights up SYSTEM (not WORK),
   // while /work and other /work/* pages light up WORK.
   const matches = (href: string) =>
     href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");

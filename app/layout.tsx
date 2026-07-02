@@ -6,7 +6,7 @@ import FocusCaret from "@/components/FocusCaret";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-// Fonts match the brand-tokens system:
+// Fonts match the Parsimony design system:
 //   sans  → Space Grotesk (titles, UI labels)
 //   serif → Spectral       (body prose)
 //   mono  → JetBrains Mono (code + terminal UI chrome)
