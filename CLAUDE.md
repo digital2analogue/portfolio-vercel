@@ -7,14 +7,17 @@ This file provides guidance when working with code in this repository.
 ```bash
 npm run dev            # Start dev server (Next.js 16, http://localhost:3000)
 npm run build          # contrast check → next build (contrast gate blocks on failure)
-npm run lint           # ESLint via next lint
+npm run lint           # ESLint CLI (flat config in eslint.config.mjs; next lint was removed in Next 16)
+npm run test           # Vitest unit tests (tests/unit)
+npm run test:visual    # Playwright visual regression (tests/visual, committed linux baselines)
+npm run test:visual:update # Regenerate baselines after intentional visual changes
 npm run check-contrast # Run WCAG AA check in isolation
 npm run sync-tokens    # Check installed @digital2analogue2/parsimony version against the latest published
 ```
 
 ## Architecture
 
-**Next.js 16 App Router** portfolio site with Tailwind CSS v4 and TypeScript. No testing framework is configured.
+**Next.js 16 App Router** portfolio site with Tailwind CSS v4 and TypeScript. Vitest covers unit tests (`tests/unit`), Playwright covers visual regression (`tests/visual`); both run in CI (`.github/workflows/ci.yml`) and the pre-commit hook runs lint-staged + unit tests + the contrast gate. Test infra is excluded from `next build`'s type-check via tsconfig `exclude` — keep it that way so test configs can never break a Vercel deploy.
 
 ### Design Token System
 
