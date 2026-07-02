@@ -9,7 +9,9 @@ export const T = {
   // Canvas
   bg: "var(--color-background-default)",
   surface: "var(--color-background-alt)",
-  border: "var(--color-border-default)",
+  border: "var(--color-border-default)", // legible functional edge (interactive controls)
+  borderAlt: "var(--color-border-alt)", // quiet boundary OF a surface (frames, outlines)
+  borderMuted: "var(--color-border-muted)", // separators WITHIN a surface (list rows, hr)
   // Foreground
   fg: "var(--color-foreground-default)",
   fgAlt: "var(--color-foreground-alt)",

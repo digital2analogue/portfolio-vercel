@@ -68,7 +68,7 @@ To reproduce what the portal sees, run an axe scan against the built site (`@axe
 ### Key Data Files
 
 - `lib/cases.ts` — Case study data (typed as `CaseStudy[]`)
-- `lib/tokenCatalog.ts` — Token documentation data for the `/tokens` viewer page (display-only hex values, not runtime references)
+- `lib/tokenValues.ts` — Build-time token resolver for the `/tokens` viewer page: reads the installed `@digital2analogue2/parsimony` CSS via `node:fs`, resolves `var()` chains, and exposes `catalog(prefix)` / `tokenValue(name)` / `tokenVersion` / `semanticCount`. Server-only (never import from a client component). The page therefore self-updates on every package bump — there is no hand-maintained catalog (the old `lib/tokenCatalog.ts` is gone). A missing/renamed upstream token fails the build loudly by design.
 
 ### Routes
 

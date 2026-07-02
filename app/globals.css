@@ -327,7 +327,7 @@ button:focus-visible,
   color: var(--color-foreground-muted);
   margin-bottom: var(--spacing-component);
 }
-.hero__term-slash { color: var(--color-border-default); }
+.hero__term-slash { color: var(--color-border-alt); }
 .hero__term-ans   { color: var(--color-foreground-default); }
 
 .display {
@@ -362,10 +362,10 @@ button:focus-visible,
   align-items: center;
   gap: var(--spacing-inline);
   padding: var(--primitive-space-xs) 0;
-  border-top: 1px solid var(--color-border-default);
-  border-bottom: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
+  border-bottom: 1px solid var(--color-border-alt);
 }
-.single-status__sep { color: var(--color-border-default); }
+.single-status__sep { color: var(--color-border-alt); }
 .single-status__v   { color: var(--color-foreground-default); }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -381,7 +381,7 @@ button:focus-visible,
   margin: var(--primitive-space-3xl) auto var(--primitive-space-xl);
   background-image: radial-gradient(
     circle at center,
-    var(--color-border-default) 0 1.4px,
+    var(--color-border-alt) 0 1.4px,
     transparent 1.7px
   );
   background-size: 1.4em 100%;
@@ -447,7 +447,7 @@ h2.eyebrow,
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
   position: relative;
 }
 .cases li { margin: 0; padding: 0; }
@@ -457,7 +457,7 @@ h2.eyebrow,
   gap: var(--spacing-element);
   align-items: baseline;
   padding: var(--spacing-component) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
   text-decoration: none;
   color: inherit;
   position: relative;
@@ -564,7 +564,7 @@ h2.eyebrow,
   max-width: var(--portfolio-column);
   margin: var(--primitive-space-4xl) auto 0;
   padding: var(--primitive-space-xl) var(--spacing-component) var(--spacing-component);
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -589,7 +589,7 @@ h2.eyebrow,
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
 }
 .work-list li { margin: 0; padding: 0; }
 .work-row {
@@ -597,7 +597,7 @@ h2.eyebrow,
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
   text-align: left;
   color: inherit;
   cursor: pointer;
@@ -692,7 +692,7 @@ h2.eyebrow,
      centered against the box. Replaceable with text-box-trim when support
      is universal. */
   padding: 3px var(--primitive-space-xs) 1px;
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-border-alt);
   border-radius: var(--radius-sm);
   white-space: nowrap;
 }
@@ -708,7 +708,7 @@ h2.eyebrow,
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
 }
 .contact-list li { margin: 0; padding: 0; }
 .contact-row {
@@ -716,7 +716,7 @@ h2.eyebrow,
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-element) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
   text-decoration: none;
   color: inherit;
   transition: padding-left var(--motion-duration-emphasized) var(--motion-easing-move);
@@ -763,7 +763,7 @@ h2.eyebrow,
   display: flex;
   justify-content: space-between;
   padding: var(--spacing-inline) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
   gap: var(--spacing-element);
 }
 .about-experience__role {
@@ -793,11 +793,11 @@ h2.eyebrow,
   letter-spacing: var(--letter-spacing-label);
   margin-top: var(--spacing-component);
   padding-top: var(--spacing-component);
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
   width: 100%;
 }
 .about-cta__sep {
-  color: var(--color-border-default);
+  color: var(--color-border-alt);
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -868,7 +868,7 @@ h2.eyebrow,
 .blocks .block-note {
   font: var(--font-code);
   color: var(--color-foreground-muted);
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-border-alt);
   padding: var(--spacing-element) var(--spacing-component);
   margin: var(--spacing-component) 0;
   background: var(--color-background-alt);
@@ -879,7 +879,7 @@ h2.eyebrow,
 }
 .blocks hr {
   border: none;
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-muted);
   margin: var(--primitive-space-xl) 0;
   max-width: var(--portfolio-column);
 }
@@ -915,7 +915,7 @@ h2.eyebrow,
   width: 100%;
   height: auto;
   display: block;
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-border-alt);
   background: var(--color-background-alt);
   border-radius: var(--radius-sm);
 }
@@ -973,7 +973,7 @@ h2.eyebrow,
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--color-background-alt);
-  border: 1px dashed var(--color-border-default);
+  border: 1px dashed var(--color-border-alt);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -1013,7 +1013,7 @@ h2.eyebrow,
   max-height: 100%;
   object-fit: contain;
   cursor: default;
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-border-alt);
   border-radius: var(--radius-sm);
 }
 .lightbox__close {
@@ -1075,15 +1075,15 @@ h2.eyebrow,
   margin: var(--spacing-component) 0 var(--spacing-component);
 }
 .case-detail__hero-meta {
-  border-top: 1px solid var(--color-border-default);
-  border-bottom: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
+  border-bottom: 1px solid var(--color-border-alt);
   padding: var(--spacing-element) 0;
   margin-bottom: var(--primitive-space-xs);
 }
 .case-detail__pager {
   margin-top: var(--primitive-space-3xl);
   padding-top: var(--spacing-component);
-  border-top: 1px solid var(--color-border-default);
+  border-top: 1px solid var(--color-border-alt);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-element);
@@ -1145,13 +1145,13 @@ h2.eyebrow,
   gap: var(--spacing-element);
   align-items: center;
   padding: var(--primitive-space-sm) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 .tokens-row__swatch {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border-default);
+  border: 1px solid var(--color-border-alt);
 }
 .tokens-row__body {
   display: flex;
@@ -1189,7 +1189,7 @@ h2.eyebrow,
   gap: var(--spacing-element);
   align-items: start;
   padding: var(--primitive-space-md) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 .tokens-type__meta {
   display: flex;
@@ -1222,7 +1222,7 @@ h2.eyebrow,
   gap: var(--spacing-element);
   align-items: center;
   padding: var(--primitive-space-sm) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 .tokens-spacing__meta {
   display: flex;
@@ -1262,7 +1262,7 @@ h2.eyebrow,
   grid-template-rows: auto auto;
   gap: var(--primitive-space-3xs) var(--spacing-element);
   padding: var(--primitive-space-sm) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 .tokens-compact__row > code:first-child {
   grid-column: 1;
@@ -1291,7 +1291,7 @@ h2.eyebrow,
   gap: var(--spacing-element);
   align-items: center;
   padding: var(--primitive-space-sm) 0;
-  border-bottom: 1px solid var(--color-border-default);
+  border-bottom: 1px solid var(--color-border-muted);
 }
 .tokens-radius__swatch {
   width: 32px;
