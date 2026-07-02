@@ -38,7 +38,7 @@
 
 /* ═══════════════════════════════════════════════════════════════════
    PORTFOLIO-SPECIFIC custom properties.
-   Values brand-tokens doesn't cover yet — proposed additions to the system.
+   Values Parsimony doesn't cover yet — proposed additions to the system.
    ═══════════════════════════════════════════════════════════════════ */
 :root {
   /* Content column widths — candidates for a layout-width family in the system. */
@@ -802,7 +802,7 @@ h2.eyebrow,
 
 /* ═══════════════════════════════════════════════════════════════════
    CaseBlocks — content blocks for case-detail pages (/work/[slug])
-   Each block type gets its own class consuming brand-tokens.
+   Each block type gets its own class consuming Parsimony tokens.
    ═══════════════════════════════════════════════════════════════════ */
 .blocks h2 {
   font: var(--font-title-medium);

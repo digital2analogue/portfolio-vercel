@@ -60,7 +60,7 @@ export const CASES: CaseStudy[] = [
     status: "COMPLETE",
   },
   {
-    slug: "design-tokens",
+    slug: "system",
     index: "04",
     title: "Parsimony, an Agentic Design System",
     company: "Personal",
@@ -70,7 +70,7 @@ export const CASES: CaseStudy[] = [
     summary:
       "A cross-site design system built to be used by agents as much as by people: one source of truth, from DTCG tokens through framework-agnostic components to an MCP server an agent can read and lint against before it writes any UI.",
     metrics: [
-      "18 components, 4 brands, 1 source",
+      "21 components, 4 brands, 1 source",
       "MCP server: read + lint the system",
       "Code Connect: design ↔ code, two-way",
     ],

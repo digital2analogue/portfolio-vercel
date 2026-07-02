@@ -2,7 +2,7 @@
 // globals.css is the source of truth; these are only for inline-style use cases
 // where a CSS class would be overkill (e.g. one-off dynamic styling).
 //
-// Prefer CSS classes for all new styling — the brand-tokens system lives in CSS,
+// Prefer CSS classes for all new styling — the Parsimony system lives in CSS,
 // not here.
 
 export const T = {

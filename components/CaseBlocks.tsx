@@ -6,7 +6,7 @@ import type { Block } from "@/lib/caseContent";
  * Renders a case-study content stream as typed React blocks.
  * Styling lives in globals.css under the `.blocks` scope — CaseBlocks
  * renders semantic HTML; all typography, spacing, and color comes from
- * brand-tokens via CSS classes.
+ * Parsimony tokens via CSS classes.
  */
 export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
   return (

@@ -387,7 +387,7 @@ export default function TokensPage() {
       <p className="bio-inline rise d8">
         Every token above is generated at build time from{" "}
         <a
-          href="https://github.com/digital2analogue/brand-tokens"
+          href="https://github.com/digital2analogue/parsimony"
           className="accent"
         >
           Parsimony

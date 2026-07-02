@@ -851,8 +851,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
     ],
   },
-  "design-tokens": {
-    slug: "design-tokens",
+  "system": {
+    slug: "system",
     title: "Building Parsimony, an Agentic Design System",
     scope: "Token architecture, component library, agent tooling",
     timeline: "2026 (ongoing)",
@@ -925,7 +925,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           "**Author.** DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
           "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
-          "**Components.** 18 framework-agnostic Lit web components, all wired to Figma via Code Connect.",
+          "**Components.** 21 framework-agnostic Lit web components, wired to Figma via Code Connect.",
           "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
           "**Interfaces.** Humans read Figma and Markdown docs; agents read an MCP server.",
           "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
@@ -960,7 +960,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "All 18 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Three of them (badge, button, input) add a hand-written meta.json on top, with the token, rule, and accessibility contract. The rest are built and wired to Figma; the fuller contract is rolling out behind them.",
+        text: "All 21 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Every one adds a hand-written meta.json on top, with the token, rule, and accessibility contract — and prop descriptions are single-sourced from the code's JSDoc, so the contract can't drift from the implementation.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -1029,8 +1029,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "ul",
         items: [
           "Three-layer token architecture across four brands",
-          "18 Lit web components, all wired to Figma via Code Connect",
-          "MCP server with three tools: list_components, get_component, check_usage",
+          "21 Lit web components, wired to Figma via Code Connect",
+          "MCP server with 17 tools: component contracts, token lookup, design rules and the decision log, brand diffs, WCAG contrast checks, and consumer-repo linting",
           "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
           "A CI gate on every change: schema checks, lint rules, token-reference resolution, a stale-artifact check, and a full test suite",
           "Distribution: the token build ships as a versioned npm package, and this very site already consumes it as a dependency instead of hand-copying the CSS",
@@ -1042,8 +1042,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Hand-authored meta.json on all 18 components (the Custom Elements Manifest already covers all 18; the richer token/rule/a11y contract is on three so far)",
-          "Migrating the remaining sites onto the package (the portfolio consumes it today; .com, .art, .blog, and the decision-engine sub-brand follow as they come online)",
+          "Publishing the component library itself to npm (the token package ships today; the Lit components and the MCP server are next)",
+          "Migrating the remaining sites onto the package (this portfolio, the decision-engine prototype, and the intro page consume it today; .art and .blog follow as they come online)",
           "Auto-fixing drift: the scheduled scan detects it and files an issue today; having it open a fix PR (a codemod) is the remaining step",
         ],
       },
