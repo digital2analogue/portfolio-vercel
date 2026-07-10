@@ -5,6 +5,7 @@ export type Block =
   | { type: "ul"; items: string[] }
   | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
+  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
@@ -187,11 +188,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line with name, data attribute, operator, value, optional companion attributes, and the outcome.",
       },
       {
-        type: "image",
-        alt: "Main rule table: five rules with colored data attribute badges (Income green, Expense red), operator dropdowns (At least, Less than, Greater than, At most), amount values, and segmented Approve/Deny outcome switches per row",
+        type: "embed",
+        src: "https://decisioning-table.vercel.app/?demo=1",
+        title: "Live Decision Model rules table — drag a rule to reorder, flip Approve/Deny, edit any cell",
+        poster: "/projects/images/decisioning-table-rules.png",
+        aspectRatio: "16 / 10",
         caption:
-          "Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
-        src: "/projects/images/decisioning-table-rules.png",
+          "The live prototype — not a screenshot. Drag a rule by its handle to reorder, flip the Approve/Deny outcome, edit any cell. Reorder works on touch too.",
       },
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {

@@ -953,6 +953,59 @@ h2.eyebrow,
   color: var(--color-foreground-muted);
   margin-top: var(--spacing-tight);
 }
+/* Live embed block — an interactive iframe framed like the other figures */
+.blocks figure.block-embed {
+  margin: var(--primitive-space-xl) 0;
+}
+.blocks .block-embed__frame {
+  position: relative;
+  width: 100%;
+  border: 1px solid var(--color-border-alt);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.blocks .block-embed__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.blocks .block-embed__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border: 0;
+  border-radius: 0;
+}
+.blocks .block-embed__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--font-label-small);
+  letter-spacing: 0.02em;
+  color: var(--color-foreground-on-action);
+  background: var(--color-background-action);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+}
+.blocks .block-embed__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-foreground-on-action);
+}
 /* Two-column image pair */
 .blocks .block-image-pair {
   display: grid;

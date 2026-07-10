@@ -57,6 +57,17 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
                 ))}
               </div>
             );
+          case "embed":
+            return (
+              <CaseEmbed
+                key={i}
+                src={b.src}
+                title={b.title}
+                caption={b.caption}
+                aspectRatio={b.aspectRatio}
+                poster={b.poster}
+              />
+            );
           case "hr":
             return <hr key={i} />;
           case "meta":
@@ -173,6 +184,49 @@ function CaseImage({
       {open && src && (
         <Lightbox src={src} alt={alt} onClose={closeLightbox} />
       )}
+    </figure>
+  );
+}
+
+/**
+ * Live embed block — an interactive iframe framed like the other figures.
+ * Shows the poster image (a screenshot of the same view) until the iframe loads,
+ * so the frame is never blank. A "Live" chip signals it's the real prototype.
+ */
+function CaseEmbed({
+  src,
+  title,
+  caption,
+  aspectRatio,
+  poster,
+}: {
+  src: string;
+  title: string;
+  caption?: string;
+  aspectRatio?: string;
+  poster?: string;
+}) {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <figure className="block-embed">
+      <div className="block-embed__frame" style={{ aspectRatio: aspectRatio ?? "16 / 10" }}>
+        {poster && !loaded && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="block-embed__poster" src={poster} alt="" aria-hidden="true" />
+        )}
+        <iframe
+          src={src}
+          title={title}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          allow="fullscreen"
+        />
+        <span className="block-embed__badge" aria-hidden="true">
+          <span className="block-embed__badge-dot" /> Live
+        </span>
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
 }
