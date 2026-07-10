@@ -68,6 +68,8 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
                 poster={b.poster}
               />
             );
+          case "outcome-demo":
+            return <OutcomeToggleDemo key={i} caption={b.caption} />;
           case "hr":
             return <hr key={i} />;
           case "meta":
@@ -228,6 +230,107 @@ function CaseEmbed({
       </div>
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
+  );
+}
+
+/** Outcome = a binary Approve/Deny decision, mirroring the prototype's model. */
+type Outcome = "Approve" | "Deny";
+
+/** The example ruleset shown in the demo — echoes the live table's rows. */
+const OUTCOME_DEMO_ROWS: Array<{ name: string; cond: string; initial: Outcome }> = [
+  { name: "Annual income", cond: "is greater than $50,000", initial: "Approve" },
+  { name: "Existing account", cond: "equals true", initial: "Approve" },
+  { name: "Credit score", cond: "is less than 600", initial: "Deny" },
+  { name: "Flagged for review", cond: "equals true", initial: "Deny" },
+];
+
+/**
+ * Interactive reproduction of the decision-engine's segmented Approve/Deny
+ * control — the real component, not a screenshot. Rendered inside a light
+ * "device" card because the decision-engine is a light (arctic) sub-brand while
+ * the portfolio page is dark; the arctic palette is scoped locally in
+ * globals.css (`.block-outcome-demo__device`) so it reads as intentional next
+ * to the surrounding light screenshots. Flipping a row slides the pill with the
+ * same `--easing-spring` curve used in the live app; the sliding transition is
+ * disabled under prefers-reduced-motion (also in globals.css).
+ */
+function OutcomeToggleDemo({ caption }: { caption?: string }) {
+  const [values, setValues] = useState<Outcome[]>(
+    OUTCOME_DEMO_ROWS.map((r) => r.initial)
+  );
+  const setAt = (i: number, v: Outcome) =>
+    setValues((prev) => prev.map((cur, j) => (j === i ? v : cur)));
+
+  return (
+    <figure className="block-outcome-demo">
+      <div className="block-outcome-demo__device">
+        <div className="block-outcome-demo__title">Decision Model — Outcome</div>
+        {OUTCOME_DEMO_ROWS.map((row, i) => (
+          <div className="block-outcome-demo__row" key={row.name}>
+            <div className="block-outcome-demo__rule">
+              <span className="block-outcome-demo__rule-name">{row.name}</span>
+              <span className="block-outcome-demo__rule-cond">{row.cond}</span>
+            </div>
+            <OutcomeSegment value={values[i]} onChange={(v) => setAt(i, v)} label={row.name} />
+          </div>
+        ))}
+      </div>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  );
+}
+
+/**
+ * A single two-state segmented control. Structure mirrors the prototype's
+ * OutcomeBadge: a sliding indicator pill (absolutely positioned, translates to
+ * the active segment) behind two radio buttons. `data-value` on the group drives
+ * the pill's position and semantic tint via CSS.
+ */
+function OutcomeSegment({
+  value,
+  onChange,
+  label,
+}: {
+  value: Outcome;
+  onChange: (v: Outcome) => void;
+  label: string;
+}) {
+  return (
+    <div
+      className="block-outcome-demo__seg"
+      data-value={value}
+      role="radiogroup"
+      aria-label={`Outcome for ${label}`}
+    >
+      <span
+        className={`block-outcome-demo__seg-indicator${value === "Deny" ? " block-outcome-demo__seg-indicator--right" : ""}`}
+        aria-hidden="true"
+      />
+      <button
+        type="button"
+        role="radio"
+        aria-checked={value === "Approve"}
+        onClick={() => onChange("Approve")}
+        className={`block-outcome-demo__seg-btn${value === "Approve" ? " is-approve" : ""}`}
+      >
+        <svg className="block-outcome-demo__seg-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M10 3L4.5 8.5L2 6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span>Approve</span>
+      </button>
+      <button
+        type="button"
+        role="radio"
+        aria-checked={value === "Deny"}
+        onClick={() => onChange("Deny")}
+        className={`block-outcome-demo__seg-btn${value === "Deny" ? " is-deny" : ""}`}
+      >
+        <svg className="block-outcome-demo__seg-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M9 3L3 9M3 3L9 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span>Deny</span>
+      </button>
+    </div>
   );
 }
 

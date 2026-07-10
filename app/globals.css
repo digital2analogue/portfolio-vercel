@@ -1006,6 +1006,180 @@ h2.eyebrow,
   border-radius: 50%;
   background: var(--color-foreground-on-action);
 }
+/* On narrow viewports the embedded app is a wide data table (~1520px). A short
+   16/10 box would leave only 2–3 rows visible and clip the right columns. Give
+   the frame a comfortable fixed floor instead so several rows show and the
+   app's own horizontal scroll (sticky # / name columns stay pinned) is the way
+   to reach the rest. min-height clamps the used height above the inline
+   aspect-ratio without needing to override the inline style. */
+@media (max-width: 700px) {
+  .blocks .block-embed__frame {
+    min-height: 460px;
+  }
+}
+/* Interactive outcome-toggle demo — the real decision-engine segmented control,
+   rendered on the dark portfolio page. The decision-engine is a LIGHT (arctic)
+   sub-brand, so the control lives inside a light "device" card: the arctic-light
+   token values are scoped locally as --od-* custom properties (not the page's
+   dark tokens) so the control matches the surrounding light screenshots and
+   reads as intentional. Recipe mirrors the app's .dt-outcome-seg. */
+.blocks figure.block-outcome-demo {
+  margin: var(--primitive-space-xl) 0;
+}
+.block-outcome-demo__device {
+  /* Scoped arctic-light palette (decision-engine brand values) */
+  --od-canvas: #f5f8fc;
+  --od-surface: #ffffff;
+  --od-trough: #ebf0f8;
+  --od-pill: #f0f4fa;
+  --od-border: #c8d6ea;
+  --od-text: #1a1a2e;
+  --od-text-muted: #5e6e88;
+  --od-inactive: #a8b0be;
+  --od-success: #15803d;
+  --od-success-icon: #00875a;
+  --od-danger: #c8002e;
+  --od-focus: #2456e4;
+  --od-shadow: 0 1px 2px 0 rgba(15, 26, 46, 0.06);
+  --od-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --od-dur: 200ms;
+
+  background: var(--od-canvas);
+  border: 1px solid var(--od-border);
+  border-radius: var(--radius-sm);
+  padding: var(--primitive-space-md);
+}
+.block-outcome-demo__title {
+  font: var(--font-label-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--od-text-muted);
+  margin: 0 0 var(--primitive-space-sm);
+}
+.block-outcome-demo__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--primitive-space-md);
+  padding: var(--primitive-space-sm) var(--primitive-space-md);
+  background: var(--od-surface);
+  border: 1px solid var(--od-border);
+  border-radius: var(--radius-sm);
+}
+.block-outcome-demo__row + .block-outcome-demo__row {
+  margin-top: var(--primitive-space-xs);
+}
+.block-outcome-demo__rule {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.block-outcome-demo__rule-name {
+  font: var(--font-label-medium);
+  color: var(--od-text);
+}
+.block-outcome-demo__rule-cond {
+  font: var(--font-label-small);
+  color: var(--od-text-muted);
+}
+/* Recessed trough holding the sliding pill */
+.block-outcome-demo__seg {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--od-trough);
+  border: 1px solid var(--od-border);
+}
+/* Sliding pill — behind the buttons (z-index 0), translates to the active side */
+.block-outcome-demo__seg-indicator {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: calc(50% - 3px);
+  height: calc(100% - 4px);
+  background: var(--od-pill);
+  border: 1px solid var(--od-border);
+  box-shadow: var(--od-shadow);
+  border-radius: 3px;
+  transition: transform var(--od-dur) var(--od-spring),
+              background-color var(--od-dur) ease,
+              border-color var(--od-dur) ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.block-outcome-demo__seg-indicator--right {
+  transform: translateX(calc(100% + 2px));
+}
+/* Semantic tint on the active pill — scannable at a glance across rows */
+.block-outcome-demo__seg[data-value="Approve"] .block-outcome-demo__seg-indicator {
+  background-color: color-mix(in srgb, var(--od-success-icon) 12%, var(--od-pill));
+  border-color: color-mix(in srgb, var(--od-success-icon) 30%, var(--od-border));
+}
+.block-outcome-demo__seg[data-value="Deny"] .block-outcome-demo__seg-indicator {
+  background-color: color-mix(in srgb, var(--od-danger) 8%, var(--od-pill));
+  border-color: color-mix(in srgb, var(--od-danger) 20%, var(--od-border));
+}
+.block-outcome-demo__seg-btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 84px;
+  gap: 4px;
+  font: var(--font-label-small);
+  letter-spacing: 0.01em;
+  padding: 3px 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  color: var(--od-inactive);
+  transition: color var(--od-dur) ease;
+}
+.block-outcome-demo__seg-btn:hover:not(.is-approve):not(.is-deny) {
+  color: var(--od-text-muted);
+}
+.block-outcome-demo__seg-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--od-focus);
+}
+.block-outcome-demo__seg-icon {
+  flex-shrink: 0;
+}
+.block-outcome-demo__seg-btn.is-approve {
+  color: var(--od-success);
+}
+.block-outcome-demo__seg-btn.is-approve .block-outcome-demo__seg-icon {
+  color: var(--od-success-icon);
+}
+.block-outcome-demo__seg-btn.is-deny,
+.block-outcome-demo__seg-btn.is-deny .block-outcome-demo__seg-icon {
+  color: var(--od-danger);
+}
+/* Stack the row on narrow viewports so the control never overflows the card */
+@media (max-width: 560px) {
+  .block-outcome-demo__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--primitive-space-sm);
+  }
+  .block-outcome-demo__seg {
+    align-self: flex-start;
+  }
+}
+/* Honor reduced-motion: the pill jumps instead of springing */
+@media (prefers-reduced-motion: reduce) {
+  .block-outcome-demo__seg-indicator,
+  .block-outcome-demo__seg-btn {
+    transition: none;
+  }
+}
+
 /* Two-column image pair */
 .blocks .block-image-pair {
   display: grid;

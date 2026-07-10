@@ -6,6 +6,7 @@ export type Block =
   | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
+  | { type: "outcome-demo"; caption?: string }
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
@@ -202,12 +203,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Each row's outcome is a segmented two-state control: green Approve on the left, red Deny on the right, with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
       },
       {
-        type: "image",
-        alt: "Close-up of the Outcome column showing per-row segmented switches alternating between Approve (green) and Deny (red) selected states",
+        type: "outcome-demo",
         caption:
-          "The segmented switch makes a binary outcome scannable. Selected state carries the color; the other side recedes.",
-        src: "/projects/images/decisioning-table-outcome-toggles.png",
-        naturalSize: true,
+          "The real control, not a screenshot — flip any row's outcome and the pill springs across, settling into the semantic color. Selected state carries the color; the other side recedes to a muted ghost.",
       },
       { type: "h3", text: "Split-button progressive disclosure" },
       {
