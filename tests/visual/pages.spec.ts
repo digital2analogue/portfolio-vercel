@@ -27,5 +27,12 @@ for (const { path, name } of ROUTES) {
 
 test('case study detail page matches baseline', async ({ page }) => {
   await settle(page, '/work/c1-decision-engine')
-  await expect(page).toHaveScreenshot('case-detail.png', { fullPage: true })
+  // The Capital One study embeds a live external iframe (the decision-engine
+  // prototype). Its content is non-deterministic and depends on an external
+  // deploy, so mask the frame — the snapshot still verifies the surrounding
+  // page and the embed's framed layout, without the flaky iframe contents.
+  await expect(page).toHaveScreenshot('case-detail.png', {
+    fullPage: true,
+    mask: [page.locator('.block-embed__frame')],
+  })
 })
