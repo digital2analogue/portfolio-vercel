@@ -100,6 +100,26 @@ const PAIRINGS = [
   { text: '--color-foreground-muted',   bg: BG,        label: 'Marginalia labels on page canvas' },
   // Action surface (primary buttons, CTAs)
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
+
+  // ── OTKit reservation-status demo (components/demos/ReservationStatusDemo) ──
+  // Light-mode surface with its own OTKit-local palette (resolved hexes, not
+  // portfolio tokens). Fills come from the OTKit Variables library; two are
+  // nudged darker to clear AA for their white label (No show, Dessert).
+  { text: '#ffffff', bg: '#247f9e', label: 'Demo: status label — action (Booked)' },
+  { text: '#ffffff', bg: '#2f864d', label: 'Demo: status label — success (Confirmed/Paid)' },
+  { text: '#141a26', bg: '#fdaf08', label: 'Demo: status label — warning (Running late)' },
+  { text: '#ffffff', bg: '#cc3b48', label: 'Demo: status label — danger (No show, AA-nudged)' },
+  { text: '#ffffff', bg: '#ad4cc3', label: 'Demo: status label — accent-purple (Arrived/Seated)' },
+  { text: '#ffffff', bg: '#d82c82', label: 'Demo: status label — accent-fuchsia (Partially)' },
+  { text: '#ffffff', bg: '#7f5ce8', label: 'Demo: status label — accent-violet (Appetizer)' },
+  { text: '#ffffff', bg: '#4a6fde', label: 'Demo: status label — accent-blue (Entree)' },
+  { text: '#ffffff', bg: '#20738f', label: 'Demo: status label — accent-teal (Dessert, AA-nudged)' },
+  { text: '#ffffff', bg: '#c84f29', label: 'Demo: status label — accent-orange (Cleared)' },
+  { text: '#2d333f', bg: '#ffffff', label: 'Demo: ink on white (Finished/Cancelled, row name, swatch)' },
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (outline hover, active seg)' },
+  { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
+  { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
+  { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 ]
 
 // ─── Run ───────────────────────────────────────────────────────────────────────

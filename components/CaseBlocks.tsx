@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
+import { DEMO_REGISTRY } from "@/components/demos/registry";
 
 /**
  * Renders a case-study content stream as typed React blocks.
@@ -57,6 +58,21 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
                 ))}
               </div>
             );
+          case "demo": {
+            const Demo = DEMO_REGISTRY[b.demo];
+            return (
+              <figure key={i} className="demo-frame">
+                <div className="demo-frame__chrome" aria-hidden="true">
+                  <span className="demo-frame__dot" />
+                  <span className="demo-frame__label">OTKit · Reservations · Floor view</span>
+                </div>
+                <div className="demo-frame__surface">
+                  <Demo />
+                </div>
+                {b.caption && <figcaption>{b.caption}</figcaption>}
+              </figure>
+            );
+          }
           case "hr":
             return <hr key={i} />;
           case "meta":

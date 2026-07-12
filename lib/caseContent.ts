@@ -1,3 +1,5 @@
+import type { DemoKey } from "@/components/demos/registry";
+
 export type Block =
   | { type: "h2"; text: string }
   | { type: "h3"; text: string }
@@ -8,7 +10,8 @@ export type Block =
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
-  | { type: "meta"; rows: [string, string][] };
+  | { type: "meta"; rows: [string, string][] }
+  | { type: "demo"; demo: DemoKey; caption?: string };
 
 export type CaseContent = {
   slug: string;
@@ -422,6 +425,16 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. The product got what it needed. The system stayed coherent.",
+      },
+      {
+        type: "demo",
+        demo: "reservation-status",
+        caption:
+          "Live component, recreated from the OTKit Figma source. Advance a reservation through its service lifecycle to see each state's productive-motion feedback, then toggle the palette lens — 22 reservation states resolve to 11 semantic tokens instead of 21 one-off colors.",
+      },
+      {
+        type: "note",
+        text: "Fidelity note: fills, type, and states are pulled from the real `reservation-states` component. Two source states (No show, Dessert) whose white label sat just under WCAG AA were nudged a half-step darker here to pass — the remediation an accessibility audit would recommend.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
