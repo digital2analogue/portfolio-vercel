@@ -183,7 +183,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Step 3: categorized data elements. The right pane previews details for the selected element before you commit to it.",
         src: "/projects/images/decisioning-table-onboarding-step3.png",
       },
-      { type: "h3", text: "The rule table" },
+      { type: "h3", text: "The rule table — live prototype" },
       {
         type: "p",
         text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line with name, data attribute, operator, value, optional companion attributes, and the outcome.",
