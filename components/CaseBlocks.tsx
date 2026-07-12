@@ -228,6 +228,25 @@ function CaseEmbed({
           <span className="block-embed__badge-dot" /> Live
         </span>
       </div>
+      {/* Mobile fallback: embedding a wide data-table app in an iframe is unreliable
+          on iOS/WebKit (the app escapes the frame and pushes the page sideways), so on
+          narrow viewports we show the poster and link out to the full-screen prototype,
+          which renders its own correct mobile layout. Desktop keeps the live iframe. */}
+      <a
+        className="block-embed__mobile"
+        href={src}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {poster && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="block-embed__mobile-img" src={poster} alt={title} />
+        )}
+        <span className="block-embed__mobile-cta">
+          <span className="block-embed__badge-dot" /> Open the live prototype
+          <span aria-hidden="true"> ↗</span>
+        </span>
+      </a>
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );

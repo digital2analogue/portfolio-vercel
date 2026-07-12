@@ -1006,15 +1006,56 @@ h2.eyebrow,
   border-radius: 50%;
   background: var(--color-foreground-on-action);
 }
-/* On narrow viewports the embedded app is a wide data table (~1520px). A short
-   16/10 box would leave only 2–3 rows visible and clip the right columns. Give
-   the frame a comfortable fixed floor instead so several rows show and the
-   app's own horizontal scroll (sticky # / name columns stay pinned) is the way
-   to reach the rest. min-height clamps the used height above the inline
-   aspect-ratio without needing to override the inline style. */
+/* Mobile fallback (shown only ≤700px; see .block-embed__mobile below). */
+.blocks .block-embed__mobile {
+  display: none;
+}
+/* Narrow viewports: an iframe of the wide (~1520px) data-table app is unreliable on
+   iOS/WebKit — the iframe sizes to its content, escapes the frame's overflow:hidden,
+   and pushes the whole page sideways. So hide the live frame and show the poster as a
+   link to the full-screen prototype, which renders its own correct mobile layout. */
 @media (max-width: 700px) {
   .blocks .block-embed__frame {
-    min-height: 460px;
+    display: none;
+  }
+  .blocks .block-embed__mobile {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 1px solid var(--color-border-alt);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    text-decoration: none;
+    background: var(--color-background-alt);
+  }
+  .blocks .block-embed__mobile-img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* scrim so the accent CTA stays legible over the light screenshot */
+  .blocks .block-embed__mobile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent 40%, rgba(10, 13, 10, 0.62));
+  }
+  .blocks .block-embed__mobile-cta {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    font: var(--font-label-medium);
+    color: var(--color-foreground-on-action);
+    background: var(--color-background-action);
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
   }
 }
 /* Interactive outcome-toggle demo — the real decision-engine segmented control,
