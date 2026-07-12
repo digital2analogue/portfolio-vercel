@@ -82,6 +82,10 @@ body {
   color: var(--color-foreground-default);
   font: var(--font-body-large);
   -webkit-font-smoothing: antialiased;
+  /* Contain any full-bleed breakout (and stray sub-pixel overflow) to the
+     viewport width without a horizontal scrollbar. `clip` (not `hidden`)
+     preserves position: sticky/fixed descendants. */
+  overflow-x: clip;
 }
 
 /* Global link default — underlined at rest, underline removed on hover.
@@ -1056,6 +1060,23 @@ h2.eyebrow,
     background: var(--color-background-action);
     padding: 9px 16px;
     border-radius: var(--radius-pill);
+  }
+}
+/* Desktop (>700px): the live iframe shows here, but the decision table is ~1520px —
+   wider than the ~880px text column, so its right columns (incl. Outcome) scroll out
+   of view. Break the embed out to a full-bleed showcase capped at 1560px so the whole
+   table fits on wide screens. body { overflow-x: clip } contains the 100vw breakout. */
+@media (min-width: 701px) {
+  .blocks figure.block-embed {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: clamp(24px, 4vw, 80px);
+    box-sizing: border-box;
+  }
+  .blocks .block-embed__frame,
+  .blocks figure.block-embed > figcaption {
+    max-width: 1560px;
+    margin-inline: auto;
   }
 }
 /* Interactive outcome-toggle demo — the real decision-engine segmented control,
