@@ -100,6 +100,17 @@ const PAIRINGS = [
   { text: '--color-foreground-muted',   bg: BG,        label: 'Marginalia labels on page canvas' },
   // Action surface (primary buttons, CTAs)
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
+  // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
+  // card embedded on the dark page. These pairings use the scoped arctic hex
+  // values from `.block-outcome-demo__device` in globals.css (not page tokens).
+  // Labels are checked against the un-tinted pill base (#F0F4FA), mirroring the
+  // decisioning-table source gate; the inactive-ghost label (#A8B0BE) is
+  // WCAG-exempt by design and intentionally omitted.
+  { text: '#15803d', bg: '#F0F4FA', label: 'Outcome demo: Approve segment label (active) on pill' },
+  { text: '#C8002E', bg: '#F0F4FA', label: 'Outcome demo: Deny segment label (active) on pill' },
+  { text: '#1A1A2E', bg: '#FFFFFF', label: 'Outcome demo: rule name on device row surface' },
+  { text: '#5E6E88', bg: '#FFFFFF', label: 'Outcome demo: rule condition (muted) on device row surface' },
+  { text: '#5E6E88', bg: '#F5F8FC', label: 'Outcome demo: card title on device canvas' },
 ]
 
 // ─── Run ───────────────────────────────────────────────────────────────────────

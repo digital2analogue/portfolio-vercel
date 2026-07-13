@@ -5,6 +5,8 @@ export type Block =
   | { type: "ul"; items: string[] }
   | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
+  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
+  | { type: "outcome-demo"; caption?: string }
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
@@ -46,14 +48,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       {
-        type: "image",
-        alt: "Coded prototype of the Decision Engine interface demonstrating interactive rule-building behaviour",
-        src: "/projects/images/c1-decision-coded-prototype.png",
-        naturalSize: true,
+        type: "p",
+        text: "Before the write-up — the actual thing. A public-safe, runnable prototype of the decision engine: drag a rule to reorder, flip an outcome, edit any cell. Open the [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1).",
       },
       {
-        type: "p",
-        text: "**Try the live prototype:** [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1).",
+        type: "embed",
+        src: "https://decisioning-table.vercel.app/?demo=1",
+        title: "Live Decision Model rules table — drag a rule to reorder, flip Approve/Deny, edit any cell",
+        poster: "/projects/images/decisioning-table-rules.png",
+        aspectRatio: "16 / 10",
+        caption:
+          "The live prototype — not a screenshot. Drag a rule by its handle to reorder, flip the Approve/Deny outcome, edit any cell. Reorder works on touch too.",
       },
       { type: "h2", text: "The Problem" },
       {
@@ -157,10 +162,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "In discovery testing, analysts completed 12 of 13 tasks against the new model, with markedly lower error rates during rule creation than the spreadsheet baseline.",
       },
       { type: "hr" },
-      { type: "h2", text: "Live Prototype" },
+      { type: "h2", text: "Inside the Prototype" },
       {
         type: "p",
-        text: "A public-safe, runnable version of the prototype is live: try the [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1). It's an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface.",
+        text: "The prototype above is an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface. A few interactions worth calling out:",
       },
       { type: "h3", text: "Onboarding: three decisions, one page" },
       {
@@ -184,14 +189,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "The rule table" },
       {
         type: "p",
-        text: "Once setup is done, the model opens into the main editor: a five-row example ruleset showing each rule as a single line with name, data attribute, operator, value, optional companion attributes, and the outcome.",
-      },
-      {
-        type: "image",
-        alt: "Main rule table: five rules with colored data attribute badges (Income green, Expense red), operator dropdowns (At least, Less than, Greater than, At most), amount values, and segmented Approve/Deny outcome switches per row",
-        caption:
-          "Five rules, each editable inline. Colored badges for data attributes; dropdowns for operators; per-row segmented outcome.",
-        src: "/projects/images/decisioning-table-rules.png",
+        text: "Once setup is done, the model opens into the main editor shown at the top of this page: a five-row example ruleset with each rule on a single line — name, data attribute, operator, value, optional companion attributes, and the outcome.",
       },
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {
@@ -199,12 +197,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Each row's outcome is a segmented two-state control: green Approve on the left, red Deny on the right, with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
       },
       {
-        type: "image",
-        alt: "Close-up of the Outcome column showing per-row segmented switches alternating between Approve (green) and Deny (red) selected states",
+        type: "outcome-demo",
         caption:
-          "The segmented switch makes a binary outcome scannable. Selected state carries the color; the other side recedes.",
-        src: "/projects/images/decisioning-table-outcome-toggles.png",
-        naturalSize: true,
+          "The real control, not a screenshot — flip any row's outcome and the pill springs across, settling into the semantic color. Selected state carries the color; the other side recedes to a muted ghost.",
       },
       { type: "h3", text: "Split-button progressive disclosure" },
       {
