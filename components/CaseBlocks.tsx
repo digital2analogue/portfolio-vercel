@@ -64,7 +64,7 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
               <figure key={i} className="demo-frame">
                 <div className="demo-frame__chrome" aria-hidden="true">
                   <span className="demo-frame__dot" />
-                  <span className="demo-frame__label">OTKit · Reservations · Floor view</span>
+                  <span className="demo-frame__label">{b.frameLabel ?? "OTKit · Live component"}</span>
                 </div>
                 <div className="demo-frame__surface">
                   <Demo />

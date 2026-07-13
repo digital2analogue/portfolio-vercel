@@ -11,7 +11,7 @@ export type Block =
   | { type: "note"; text: string }
   | { type: "hr" }
   | { type: "meta"; rows: [string, string][] }
-  | { type: "demo"; demo: DemoKey; caption?: string };
+  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string };
 
 export type CaseContent = {
   slug: string;
@@ -429,12 +429,29 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "demo",
         demo: "reservation-status",
+        frameLabel: "OTKit · Reservations · Floor view",
         caption:
           "Live component, recreated from the OTKit Figma source. Advance a reservation through its service lifecycle to see each state's productive-motion feedback, then toggle the palette lens — 22 reservation states resolve to 11 semantic tokens instead of 21 one-off colors.",
       },
       {
         type: "note",
         text: "Fidelity note: fills, type, and states are pulled from the real `reservation-states` component. Two source states (No show, Dessert) whose white label sat just under WCAG AA were nudged a half-step darker here to pass — the remediation an accessibility audit would recommend.",
+      },
+      { type: "h3", text: "The same system, denser: table-status tiles" },
+      {
+        type: "p",
+        text: "The reservation button is one half of the floor screen. The other half is the **floor plan** — a grid of table tiles, each a table number plus a course icon, color-coded by the same semantic palette. Denser, smaller, and a sharper accessibility test: here the label and icon sit *on* the color. Toggling the audit surfaces where that broke.",
+      },
+      {
+        type: "demo",
+        demo: "table-status",
+        frameLabel: "OTKit · Floor plan · Table status",
+        caption:
+          "Live audit of the real table-status tiles. Toggle Before/After: four tiles (the three drinks tiles and course 4) bound a white label to a fill too light for it — 1.99:1 and 3.24:1. The fix follows the system's own rule — light fills pair with ink — so every tile clears WCAG AA. Select a tile to inspect its token and live contrast ratio.",
+      },
+      {
+        type: "note",
+        text: "This is the failure the static contrast gate can't see: it checks token *pairings*, but here a valid token was paired with the wrong on-color. Catching it needs the icon/number rendered on the fill — which is exactly what this audit does.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },

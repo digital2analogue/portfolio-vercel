@@ -121,6 +121,30 @@ const PAIRINGS = [
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
+
+  // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
+  // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
+  // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills
+  // pair with white (already registered above). These are the AA-REPAIRED
+  // pairings — the demo's default state. The two intentionally-failing "Before"
+  // pairings (white on teal #2b9abf 3.24:1, white on lime #abc31b 1.99:1) are
+  // shown ONLY when the viewer toggles to "Before" as the audit's subject and
+  // are deliberately NOT registered here.
+  { text: '#141a26', bg: '#d5c9f7', label: 'Demo/tile: ink on accent-violet-secondary (Appetizer)' },
+  { text: '#141a26', bg: '#61bddb', label: 'Demo/tile: ink on accent-teal-secondary (Dessert)' },
+  { text: '#141a26', bg: '#64c987', label: 'Demo/tile: ink on accent-green-secondary (Paid)' },
+  { text: '#141a26', bg: '#ddeb8a', label: 'Demo/tile: ink on accent-lime-secondary (Course 1)' },
+  { text: '#141a26', bg: '#eb93bf', label: 'Demo/tile: ink on accent-fuchsia-secondary (Course 2)' },
+  { text: '#141a26', bg: '#2b9abf', label: 'Demo/tile: ink on accent-teal (Course 4, AA-repaired)' },
+  { text: '#141a26', bg: '#b1c1f1', label: 'Demo/tile: ink on accent-blue-secondary (Course 5)' },
+  { text: '#141a26', bg: '#e69b84', label: 'Demo/tile: ink on accent-orange-secondary (Course 6)' },
+  { text: '#141a26', bg: '#3ddbb6', label: 'Demo/tile: ink on accent-aqua-secondary (Palate cleanser)' },
+  { text: '#141a26', bg: '#abc31b', label: 'Demo/tile: ink on accent-lime (drinks, AA-repaired)' },
+  { text: '#141a26', bg: '#ffe922', label: 'Demo/tile: ink on accent-lemon (Table knock)' },
+  { text: '#ffffff', bg: '#931b23', label: 'Demo/tile: warning badge glyph on danger' },
+  { text: '#931b23', bg: '#ffffff', label: 'Demo/tile: fail summary text on white' },
+  { text: '#236439', bg: '#f1f2f4', label: 'Demo/tile: AA-pass verdict on grey surface' },
+  { text: '#931b23', bg: '#f1f2f4', label: 'Demo/tile: fail verdict on grey surface' },
 ]
 
 // ─── Run ───────────────────────────────────────────────────────────────────────
