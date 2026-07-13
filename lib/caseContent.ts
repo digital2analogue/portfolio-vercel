@@ -447,7 +447,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         demo: "table-status",
         frameLabel: "OTKit · Floor plan · Table status",
         caption:
-          "Live audit of the real table-status tiles. Toggle Before/After: four tiles (the three drinks tiles and course 4) bound a white label to a fill too light for it — 1.99:1 and 3.24:1. The fix follows the system's own rule — light fills pair with ink — so every tile clears WCAG AA. Select a tile to inspect its token and live contrast ratio.",
+          "Live audit of the real table-status tiles. Each tile's label uses its background's foreground/on-* token. Toggle Before/After: four tiles bind that on-token to white on a fill too light for it — the three drinks tiles (1.99:1) and course 4 (3.24:1). The fix stays in-system: drinks fall back to foreground-default, course 4's fill is darkened a step — so every tile clears WCAG AA. Select a tile to inspect its background and label tokens.",
       },
       {
         type: "note",

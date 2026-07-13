@@ -135,11 +135,11 @@ const PAIRINGS = [
   { text: '#141a26', bg: '#64c987', label: 'Demo/tile: ink on accent-green-secondary (Paid)' },
   { text: '#141a26', bg: '#ddeb8a', label: 'Demo/tile: ink on accent-lime-secondary (Course 1)' },
   { text: '#141a26', bg: '#eb93bf', label: 'Demo/tile: ink on accent-fuchsia-secondary (Course 2)' },
-  { text: '#141a26', bg: '#2b9abf', label: 'Demo/tile: ink on accent-teal (Course 4, AA-repaired)' },
   { text: '#141a26', bg: '#b1c1f1', label: 'Demo/tile: ink on accent-blue-secondary (Course 5)' },
   { text: '#141a26', bg: '#e69b84', label: 'Demo/tile: ink on accent-orange-secondary (Course 6)' },
   { text: '#141a26', bg: '#3ddbb6', label: 'Demo/tile: ink on accent-aqua-secondary (Palate cleanser)' },
-  { text: '#141a26', bg: '#abc31b', label: 'Demo/tile: ink on accent-lime (drinks, AA-repaired)' },
+  // Course 4 (accent-teal) repaired = white on darkened #20738f (already registered above as Dessert).
+  { text: '#2d333f', bg: '#abc31b', label: 'Demo/tile: foreground-default on accent-lime (drinks, AA-repaired)' },
   { text: '#141a26', bg: '#ffe922', label: 'Demo/tile: ink on accent-lemon (Table knock)' },
   { text: '#ffffff', bg: '#931b23', label: 'Demo/tile: warning badge glyph on danger' },
   { text: '#931b23', bg: '#ffffff', label: 'Demo/tile: fail summary text on white' },
