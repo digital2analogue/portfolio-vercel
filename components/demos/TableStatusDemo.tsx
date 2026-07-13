@@ -13,13 +13,14 @@
  * repairs them per the token system: drinks fall back to foreground-default,
  * course 4's fill is darkened. Select any tile to inspect its tokens + ratio.
  *
- * Source: Figma node 15832:1266 (see lib/tableStatus.ts). Icons are redrawn to
- * match the OTKit glyphs (the source vectors sit behind an egress-blocked CDN in
- * this environment). Default mode is the repaired (AA-passing) state so the page
- * loads clean. Keyboard-operable, aria-live summary, prefers-reduced-motion.
+ * Source: Figma node 15832:1266 (see lib/tableStatus.ts). Icons are the real
+ * OTKit vectors (./otkitIcons, exported from the icon library), tinted via
+ * currentColor per tile. Default mode is the repaired (AA-passing) state so the
+ * page loads clean. Keyboard-operable, aria-live summary, prefers-reduced-motion.
  */
 
 import { useState } from "react";
+import { OTKIT_ICONS } from "./otkitIcons";
 import {
   TILES,
   TILE_COUNT,
@@ -31,39 +32,13 @@ import {
   type Tile,
 } from "@/lib/tableStatus";
 
-const ICONS: Record<string, React.ReactNode> = {
-  // Seating progression
-  seated: <><rect x="6" y="3.5" width="8" height="6.5" rx="1.5" /><path d="M4.5 10.5h11" /><path d="M6 11v3.5M14 11v3.5" /></>,
-  partial: <><circle cx="7" cy="9" r="3" fill="currentColor" stroke="none" /><circle cx="13.5" cy="9" r="3" /><path d="M4 15h12" /></>,
-  // Courses (named)
-  appetizer: <><path d="M3.5 9.5a6.5 6.5 0 0 0 13 0z" /><path d="M8.5 4v2.6M11.5 4v2.6" /></>,
-  entree: <><path d="M4 13a6 6 0 0 1 12 0z" /><path d="M3 13.5h14" /><circle cx="10" cy="6.4" r="0.9" fill="currentColor" stroke="none" /></>,
-  dessert: <><path d="M5.5 9h9l-1 6.5h-7z" /><path d="M5 9a5 5 0 0 1 10 0" /><circle cx="10" cy="4" r="1" fill="currentColor" stroke="none" /></>,
-  sorbet: <><path d="M6.5 8.5L10 16.5l3.5-8" /><circle cx="8.4" cy="7.6" r="2.2" /><circle cx="11.6" cy="7.6" r="2.2" /></>,
-  cleared: <><ellipse cx="10" cy="7.5" rx="6" ry="1.8" /><ellipse cx="10" cy="11.5" rx="6" ry="1.8" /><ellipse cx="10" cy="15" rx="5.4" ry="1.6" /></>,
-  receipt: <><path d="M5 3.5h10v13l-2-1.3-1.7 1.3-1.3-1.3-1.3 1.3-1.7-1.3-2 1.3z" /><path d="M7.5 7h5M7.5 10h5" /></>,
-  price: <><rect x="3" y="6" width="14" height="8" rx="1.5" /><circle cx="10" cy="10" r="2" /><path d="M6 8.2v3.6M14 8.2v3.6" /></>,
-  bussing: <><path d="M14.5 3.5 8.5 9.5" /><path d="M8.5 9.5 4.5 13.5 7 16 11 12z" /><path d="M5.6 14 8.1 16.5M7 12.6 9.5 15M8.4 11.2 10.9 13.7" /></>,
-  // Drinks
-  drinks: <><path d="M6.5 3.5h7l-.7 4.2a3 3 0 0 1-5.6 0z" /><path d="M10 11.4v4.1M7 15.5h6" /></>,
-  cocktail: <><path d="M4 4.5h12l-6 6.5z" /><path d="M10 11v4.5M7 15.5h6" /><circle cx="12.8" cy="6" r="0.8" fill="currentColor" stroke="none" /></>,
-  bottle: <><path d="M8.5 3h3v2l1 2.5v9h-5v-9l1-2.5z" /><path d="M8 8.5h4" /></>,
-  chef: <><path d="M6 11a2.7 2.7 0 1 1 1.2-5.2 3 3 0 0 1 5.6 0A2.7 2.7 0 1 1 14 11z" /><path d="M6.5 11h7v3.6a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1z" /></>,
-  flag: <><path d="M5 3v14" /><path d="M5 3.5h9l-2 3 2 3H5z" /></>,
-};
-
 function TileGlyph({ icon }: { icon: string }) {
-  const course = /^c([1-6])$/.exec(icon);
+  const g = OTKIT_ICONS[icon] ?? OTKIT_ICONS.seated;
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {course ? (
-        <>
-          <circle cx="10" cy="10" r="7.5" />
-          <text x="10" y="10.5" textAnchor="middle" dominantBaseline="central" fontSize="9" fontWeight="600" fill="currentColor" stroke="none">{course[1]}</text>
-        </>
-      ) : (
-        ICONS[icon] ?? ICONS.seated
-      )}
+    <svg width="20" height="20" viewBox={g.viewBox} fill="currentColor" aria-hidden="true">
+      {g.paths.map((p, i) => (
+        <path key={i} d={p.d} fillRule={p.fillRule} clipRule={p.clipRule} />
+      ))}
     </svg>
   );
 }
