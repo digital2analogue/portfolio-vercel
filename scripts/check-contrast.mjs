@@ -119,6 +119,7 @@ const PAIRINGS = [
   { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (outline hover, active seg)' },
   { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
+  { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 ]
 
