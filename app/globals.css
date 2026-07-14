@@ -1367,7 +1367,7 @@ h2.eyebrow,
     radial-gradient(120% 120% at 50% 0%, #ffffff 0%, #fbfcfd 60%, #f4f6f8 100%);
 }
 .blocks .demo-frame figcaption {
-  padding: 0 var(--primitive-space-md) var(--primitive-space-md);
+  padding: var(--primitive-space-md);
   margin: 0;
 }
 
