@@ -24,7 +24,8 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { OTKIT_ICONS } from "./otkitIcons";
 import {
   LIFECYCLE,
-  BRANCHES,
+  PRE_DINING,
+  DURING_SERVICE,
   ALL_STATES,
   type ReservationState,
 } from "@/lib/reservationStates";
@@ -235,13 +236,13 @@ export default function ReservationStatusDemo() {
               aria-activedescendant={`${baseId}-opt-${activeIndex}`}
               onKeyDown={onListKeyDown}
             >
-              <div role="group" aria-label="Lifecycle" className="rr-status-menu__group">
-                <div className="rr-status-menu__grouplabel" aria-hidden="true">Lifecycle</div>
-                {LIFECYCLE.map(renderOption)}
+              <div role="group" aria-label="Pre-dining" className="rr-status-menu__group">
+                <div className="rr-status-menu__grouplabel" aria-hidden="true">Pre-dining</div>
+                {PRE_DINING.map(renderOption)}
               </div>
-              <div role="group" aria-label="Branch states" className="rr-status-menu__group">
-                <div className="rr-status-menu__grouplabel" aria-hidden="true">Branch states</div>
-                {BRANCHES.map(renderOption)}
+              <div role="group" aria-label="During service" className="rr-status-menu__group">
+                <div className="rr-status-menu__grouplabel" aria-hidden="true">During service</div>
+                {DURING_SERVICE.map(renderOption)}
               </div>
             </div>
           )}
