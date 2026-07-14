@@ -926,6 +926,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
         ],
       },
+      {
+        type: "image",
+        alt: "Three-tier token diagram: a component token (component.badge.success.background) resolves to a semantic token (background.success-alt), which resolves to a primitive (color.green.900 = #0F2016), rendering as a success badge. A footer rule states UI code references component and semantic tokens only, never primitives.",
+        caption:
+          "Three tiers resolve to one value. UI code references the semantic and component layers; the raw primitive layer is never touched directly.",
+        src: "/projects/images/ds-token-tiers.png",
+      },
       { type: "hr" },
       { type: "h2", text: "One Source of Truth, Four Brands" },
       {
@@ -956,6 +963,19 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "All 21 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Every one adds a hand-written meta.json on top, with the token, rule, and accessibility contract — and prop descriptions are single-sourced from the code's JSDoc, so the contract can't drift from the implementation.",
+      },
+      { type: "hr" },
+      { type: "h2", text: "Docs That Can't Drift" },
+      {
+        type: "image",
+        alt: "The documentation pipeline: metadata (design-system.json, meta.json, token store) feeds a deterministic DocGen pass that emits one MDX file per component. Each file splits into GEN regions (properties, tokens, accessibility) that regenerate every run and AUTHORED regions (overview, usage) that are preserved. Output is released to a shipped CI freshness gate and a planned human docs site.",
+        caption:
+          "Component docs are generated from the same metadata the agent reads. GEN regions regenerate; AUTHORED prose is preserved; a CI gate blocks a stale doc from merging.",
+        src: "/projects/images/ds-docs-pipeline.png",
+      },
+      {
+        type: "p",
+        text: "The docs are generated from the same metadata, not hand-written. One deterministic pass turns each component's meta.json into an MDX page: the mechanical parts — props, tokens, accessibility — regenerate on every run, while the hand-written overview and usage prose stay preserved in place. A CI gate regenerates and diffs them, so a component change that didn't update its docs fails the build instead of quietly going stale.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },

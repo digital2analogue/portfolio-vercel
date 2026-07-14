@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="780" viewBox="0 0 1240 780" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<defs><radialGradient id="bloom" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.18"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0"/></radialGradient></defs>
+<rect width="1240" height="780" fill="#0A0D0A"/>
+<text x="120" y="64" font-size="33" font-weight="500" fill="#C8CFC4">Docs that can't drift</text>
+<text x="120" y="94" font-size="16" font-weight="400" fill="#A0A89A">Component docs are generated from the metadata, not hand-written &#8212; and a CI gate keeps them honest.</text>
+<rect x="930" y="58" width="20" height="11" rx="3" fill="#4ADE6E"/>
+<text x="958" y="68" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#A0A89A">shipped</text>
+<rect x="1055" y="58" width="20" height="11" rx="3" fill="none" stroke="#FCD34D" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="1083" y="68" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#FCD34D">planned</text>
+
+<!-- 01 Source -->
+<rect x="120" y="132" width="1000" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4"/>
+<text x="146" y="171" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E">01</text>
+<text x="184" y="171" font-size="16.5" font-weight="500" fill="#C8CFC4">Source: the metadata already exists</text>
+<text x="184" y="195" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">design-system.json&#8195;&#183;&#8195;21 meta.json&#8195;&#183;&#8195;token store (resolved values)</text>
+
+<line x1="620" y1="216" x2="620" y2="253" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M614.5,253 L625.5,253 L620,262 Z" fill="#4ADE6E"/>
+
+<!-- 02 Generate -->
+<rect x="120" y="262" width="1000" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4"/>
+<text x="146" y="301" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E">02</text>
+<text x="184" y="301" font-size="16.5" font-weight="500" fill="#C8CFC4">Generate: one deterministic pass</text>
+<text x="184" y="325" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">npm run docs:components&#8195;&#8594;&#8195;one portable .mdx per component</text>
+
+<line x1="620" y1="346" x2="620" y2="383" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M614.5,383 L625.5,383 L620,392 Z" fill="#4ADE6E"/>
+
+<!-- 03 The MDX file (hero) -->
+<ellipse cx="620" cy="496" rx="360" ry="120" fill="url(#bloom)"/>
+<rect x="120" y="392" width="1000" height="196" rx="12" fill="#11160F" stroke="#4ADE6E" stroke-width="1.8"/>
+<text x="146" y="426" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="15" font-weight="500" fill="#4ADE6E">docs/components/rr-badge.mdx</text>
+<!-- front-matter -->
+<rect x="144" y="440" width="952" height="30" rx="6" fill="#0E120D" stroke="#1A211A" stroke-width="1"/>
+<text x="160" y="460" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">--- front-matter: title &#183; component &#183; status &#183; a11yPattern &#183; sourceUrl ---</text>
+<!-- GEN region -->
+<rect x="144" y="478" width="952" height="44" rx="6" fill="#101A12" stroke="#2E5A38" stroke-width="1.2"/>
+<rect x="158" y="490" width="44" height="18" rx="4" fill="#4ADE6E"/>
+<text x="180" y="503" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11" font-weight="600" fill="#0A0D0A" text-anchor="middle">GEN</text>
+<text x="216" y="497" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" fill="#C8CFC4">Properties &#183; Design tokens &#183; Accessibility &#183; Examples &#183; Guardrails</text>
+<text x="216" y="514" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11.5" fill="#8B9683">regenerated every run &#8212; never hand-edited</text>
+<!-- AUTHORED region -->
+<rect x="144" y="530" width="952" height="44" rx="6" fill="#0E120D" stroke="#2E3A2E" stroke-width="1.2"/>
+<rect x="158" y="542" width="96" height="18" rx="4" fill="none" stroke="#8B9683" stroke-width="1"/>
+<text x="206" y="555" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11" font-weight="600" fill="#A0A89A" text-anchor="middle">AUTHORED</text>
+<text x="268" y="549" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" fill="#C8CFC4">Overview &#183; Usage (Do / Don't)</text>
+<text x="268" y="566" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="11.5" fill="#8B9683">human prose &#8212; preserved across regens</text>
+
+<text x="620" y="622" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" fill="#A0A89A" text-anchor="middle" letter-spacing="2">released to</text>
+<path d="M560,588 C560,614 400,606 400,636" fill="none" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M395,636 L405,636 L400,645 Z" fill="#4ADE6E"/>
+<path d="M680,588 C680,614 840,606 840,636" fill="none" stroke="#FCD34D" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>
+<path d="M835,636 L845,636 L840,645 Z" fill="#FCD34D" opacity="0.85"/>
+
+<!-- CI gate (shipped) -->
+<rect x="180" y="645" width="440" height="92" rx="12" fill="#161C16" stroke="#4ADE6E" stroke-width="1.8"/>
+<text x="206" y="685" font-size="16" font-weight="500" fill="#4ADE6E">CI freshness gate</text>
+<text x="206" y="710" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" fill="#8B9683">regenerate + git diff &#8212; a stale doc can't merge</text>
+
+<!-- Host (planned) -->
+<rect x="640" y="645" width="440" height="92" rx="12" fill="#0E120D" stroke="#FCD34D" stroke-width="1.4" stroke-dasharray="5 4" opacity="0.9"/>
+<text x="666" y="685" font-size="16" font-weight="500" fill="#C8CFC4">Human docs site</text>
+<text x="666" y="710" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12.5" fill="#8B9683">Mintlify now&#8195;&#183;&#8195;Next.js + MDX (live components)</text>
+</svg>

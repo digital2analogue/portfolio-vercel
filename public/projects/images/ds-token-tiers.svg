@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="720" viewBox="0 0 1240 720" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<defs><radialGradient id="bloom" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.16"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0"/></radialGradient></defs>
+<rect width="1240" height="720" fill="#0A0D0A"/>
+<text x="120" y="64" font-size="33" font-weight="500" fill="#C8CFC4">Token architecture</text>
+<text x="120" y="94" font-size="16" font-weight="400" fill="#A0A89A">Three tiers, one resolved value. UI code references the top two &#8212; never the raw layer beneath.</text>
+
+<!-- 01 Component / brand -->
+<rect x="120" y="140" width="1000" height="92" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4"/>
+<text x="146" y="180" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E">01</text>
+<text x="184" y="180" font-size="16.5" font-weight="500" fill="#C8CFC4">Component &amp; brand tokens &#8212; what a component references</text>
+<text x="184" y="206" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">component.badge.success.background&#8195;&#183;&#8195;4 brand overrides re-point these, no forks</text>
+
+<line x1="620" y1="232" x2="620" y2="277" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M614.5,277 L625.5,277 L620,286 Z" fill="#4ADE6E"/>
+<text x="642" y="263" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">resolves to</text>
+
+<!-- 02 Semantic -->
+<rect x="120" y="286" width="1000" height="92" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4"/>
+<text x="146" y="326" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E">02</text>
+<text x="184" y="326" font-size="16.5" font-weight="500" fill="#C8CFC4">Semantic tokens &#8212; named roles, what UI imports</text>
+<text x="184" y="352" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">background.success-alt&#8195;&#183;&#8195;foreground.success&#8195;&#183;&#8195;the whole vocabulary UI writes against</text>
+
+<line x1="620" y1="378" x2="620" y2="423" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M614.5,423 L625.5,423 L620,432 Z" fill="#4ADE6E"/>
+<text x="642" y="409" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">resolves to</text>
+
+<!-- 03 Primitive (highlighted, the raw value) -->
+<ellipse cx="620" cy="478" rx="300" ry="70" fill="url(#bloom)"/>
+<rect x="120" y="432" width="1000" height="92" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+<text x="146" y="472" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#8B9683">03</text>
+<text x="184" y="472" font-size="16.5" font-weight="500" fill="#A0A89A">Primitives &#8212; raw values, never referenced in UI</text>
+<text x="184" y="498" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">color.green.900&#8195;&#8594;&#8195;</text>
+<text x="393" y="498" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#C8CFC4">#0F2016</text>
+<rect x="470" y="486" width="18" height="16" rx="3" fill="#0F2016" stroke="#2E3A2E" stroke-width="1"/>
+
+<line x1="620" y1="524" x2="620" y2="569" stroke="#4ADE6E" stroke-width="2"/>
+<path d="M614.5,569 L625.5,569 L620,578 Z" fill="#4ADE6E"/>
+<text x="642" y="555" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">renders as</text>
+
+<!-- rendered success badge -->
+<rect x="556" y="588" width="128" height="30" rx="15" fill="#0F2016"/>
+<circle cx="584" cy="603" r="4" fill="#4ADE6E"/>
+<text x="600" y="608" font-size="14" font-weight="500" fill="#4ADE6E">Active</text>
+
+<!-- guardrail -->
+<text x="120" y="686" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">Hard rule&#8195;&#183;&#8195;UI code references <tspan fill="#C8CFC4">component</tspan> + <tspan fill="#C8CFC4">semantic</tspan> tokens only &#8212; <tspan fill="#FCD34D">--primitive-*</tspan> never appears in UI.</text>
+</svg>
