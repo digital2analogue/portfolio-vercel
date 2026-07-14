@@ -100,6 +100,52 @@ const PAIRINGS = [
   { text: '--color-foreground-muted',   bg: BG,        label: 'Marginalia labels on page canvas' },
   // Action surface (primary buttons, CTAs)
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
+
+  // ── OTKit reservation-status demo (components/demos/ReservationStatusDemo) ──
+  // Light-mode surface with its own OTKit-local palette (resolved hexes, not
+  // portfolio tokens). Fills come from the OTKit Variables library; two are
+  // nudged darker to clear AA for their white label (No show, Dessert).
+  { text: '#ffffff', bg: '#247f9e', label: 'Demo: status label — action (Booked)' },
+  { text: '#ffffff', bg: '#2f864d', label: 'Demo: status label — success (Confirmed/Paid)' },
+  { text: '#141a26', bg: '#fdaf08', label: 'Demo: status label — warning (Running late)' },
+  { text: '#ffffff', bg: '#cc3b48', label: 'Demo: status label — danger (No show, AA-nudged)' },
+  { text: '#ffffff', bg: '#ad4cc3', label: 'Demo: status label — accent-purple (Arrived/Seated)' },
+  { text: '#ffffff', bg: '#d82c82', label: 'Demo: status label — accent-fuchsia (Partially)' },
+  { text: '#ffffff', bg: '#7f5ce8', label: 'Demo: status label — accent-violet (Appetizer)' },
+  { text: '#ffffff', bg: '#4a6fde', label: 'Demo: status label — accent-blue (Entree)' },
+  { text: '#ffffff', bg: '#20738f', label: 'Demo: status label — accent-teal (Dessert, AA-nudged)' },
+  { text: '#ffffff', bg: '#c84f29', label: 'Demo: status label — accent-orange (Cleared)' },
+  { text: '#2d333f', bg: '#ffffff', label: 'Demo: ink on white (Finished/Cancelled, row name, swatch)' },
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (outline hover, active seg)' },
+  { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
+  { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
+  { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
+  { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
+
+  // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
+  // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
+  // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills
+  // pair with white (already registered above). These are the AA-REPAIRED
+  // pairings the demo actually renders. The two families whose real on-token
+  // (white) failed AA are repaired here (drinks → foreground-default #2d333f on
+  // lime; course 4 → white on darkened teal #20738f), so the failing white-on-
+  // light pairings are never rendered and are deliberately NOT registered.
+  { text: '#141a26', bg: '#d5c9f7', label: 'Demo/tile: ink on accent-violet-secondary (Appetizer)' },
+  { text: '#141a26', bg: '#61bddb', label: 'Demo/tile: ink on accent-teal-secondary (Dessert)' },
+  { text: '#141a26', bg: '#64c987', label: 'Demo/tile: ink on accent-green-secondary (Paid)' },
+  { text: '#141a26', bg: '#ddeb8a', label: 'Demo/tile: ink on accent-lime-secondary (Course 1)' },
+  { text: '#141a26', bg: '#eb93bf', label: 'Demo/tile: ink on accent-fuchsia-secondary (Course 2)' },
+  { text: '#141a26', bg: '#b1c1f1', label: 'Demo/tile: ink on accent-blue-secondary (Course 5)' },
+  { text: '#141a26', bg: '#e69b84', label: 'Demo/tile: ink on accent-orange-secondary (Course 6)' },
+  { text: '#141a26', bg: '#3ddbb6', label: 'Demo/tile: ink on accent-aqua-secondary (Palate cleanser)' },
+  // Course 4 (accent-teal) repaired = white on darkened #20738f (already registered above as Dessert).
+  { text: '#2d333f', bg: '#abc31b', label: 'Demo/tile: foreground-default on accent-lime (drinks, AA-repaired)' },
+  { text: '#141a26', bg: '#ffe922', label: 'Demo/tile: ink on accent-lemon (Table knock)' },
+  { text: '#ffffff', bg: '#931b23', label: 'Demo/tile: warning badge glyph on danger' },
+  { text: '#931b23', bg: '#ffffff', label: 'Demo/tile: fail summary text on white' },
+  { text: '#236439', bg: '#f1f2f4', label: 'Demo/tile: AA-pass verdict on grey surface' },
+  { text: '#931b23', bg: '#f1f2f4', label: 'Demo/tile: fail verdict on grey surface' },
+
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex
   // values from `.block-outcome-demo__device` in globals.css (not page tokens).

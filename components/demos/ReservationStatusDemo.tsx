@@ -1,0 +1,265 @@
+"use client";
+
+/**
+ * ReservationStatusDemo — a live, faithful recreation of OpenTable's OTKit
+ * `web-button/reservation-states` component, embedded in the OTKit case study.
+ *
+ * It makes the case's "Table Statuses" argument interactive: 22 reservation
+ * states, each mapped onto one of 11 semantic OTKit tokens. The status button
+ * is a real dropdown (faithful to the source component) that opens a listbox of
+ * every state, grouped by service phase (pre-dining before the guest arrives,
+ * during-service after); "Advance service" steps the reservation through its
+ * lifecycle with productive-motion feedback (rest → hover → active → loading →
+ * settle).
+ *
+ * Faithful to the Figma source (variant names, fills, radius, type) with two
+ * fills nudged to clear WCAG AA — see lib/reservationStates.ts. Light-mode by
+ * design; the surrounding .demo-frame frames it as a product surface inside the
+ * dark portfolio. The dropdown is a WAI-ARIA listbox (keyboard-operable,
+ * aria-activedescendant, Escape/click-away), state changes announce via
+ * aria-live, and all animation is CSS-gated behind prefers-reduced-motion.
+ */
+
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { OTKIT_ICONS } from "./otkitIcons";
+import {
+  LIFECYCLE,
+  PRE_DINING,
+  DURING_SERVICE,
+  ALL_STATES,
+  type ReservationState,
+} from "@/lib/reservationStates";
+
+function StateIcon({ name }: { name: string }) {
+  const g = OTKIT_ICONS[name] ?? OTKIT_ICONS.menu;
+  return (
+    <svg className="rr-demo-icon" width="20" height="20" viewBox={g.viewBox} fill="currentColor" aria-hidden="true">
+      {g.paths.map((pth, i) => (
+        <path key={i} d={pth.d} fillRule={pth.fillRule} clipRule={pth.clipRule} />
+      ))}
+    </svg>
+  );
+}
+
+function Spinner() {
+  return (
+    <svg className="rr-demo-spinner" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+      <path d="M10 2.5 A7.5 7.5 0 0 1 17.5 10" />
+    </svg>
+  );
+}
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+export default function ReservationStatusDemo() {
+  const [current, setCurrent] = useState<ReservationState>(LIFECYCLE[0]);
+  const [advancing, setAdvancing] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const pillRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const baseId = useId();
+
+  const lifeIndex = LIFECYCLE.findIndex((s) => s.id === current.id);
+  const currentIndex = ALL_STATES.findIndex((s) => s.id === current.id);
+  const canAdvance = lifeIndex >= 0 && lifeIndex < LIFECYCLE.length - 1;
+
+  const settle = useCallback((next: ReservationState) => {
+    setCurrent(next);
+    setAdvancing(false);
+  }, []);
+
+  const advance = useCallback(() => {
+    if (!canAdvance || advancing) return;
+    const next = LIFECYCLE[lifeIndex + 1];
+    if (prefersReducedMotion()) {
+      settle(next);
+      return;
+    }
+    // Productive-motion beat: a brief loading state simulating the server write
+    // that the real host UI performs when a server taps the status.
+    setAdvancing(true);
+    timer.current = setTimeout(() => settle(next), 460);
+  }, [canAdvance, advancing, lifeIndex, settle]);
+
+  const reset = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setAdvancing(false);
+    setCurrent(LIFECYCLE[0]);
+  };
+
+  // ── Dropdown (WAI-ARIA listbox) ──
+  const openMenu = () => {
+    setActiveIndex(currentIndex >= 0 ? currentIndex : 0);
+    setOpen(true);
+  };
+  const closeMenu = (focusPill = true) => {
+    setOpen(false);
+    if (focusPill) setTimeout(() => pillRef.current?.focus(), 0);
+  };
+  const selectIndex = (i: number) => {
+    if (timer.current) clearTimeout(timer.current);
+    setAdvancing(false);
+    setCurrent(ALL_STATES[i]);
+    closeMenu();
+  };
+
+  // Focus the listbox when it opens.
+  useEffect(() => {
+    if (open) listRef.current?.focus();
+  }, [open]);
+
+  // Keep the active option scrolled into view.
+  useEffect(() => {
+    if (!open) return;
+    document.getElementById(`${baseId}-opt-${activeIndex}`)?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex, open, baseId]);
+
+  // Click / focus outside closes.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    return () => document.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  const onPillKeyDown = (e: React.KeyboardEvent) => {
+    if (!open && (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Enter" || e.key === " ")) {
+      e.preventDefault();
+      openMenu();
+    }
+  };
+
+  const onListKeyDown = (e: React.KeyboardEvent) => {
+    const n = ALL_STATES.length;
+    switch (e.key) {
+      case "ArrowDown": e.preventDefault(); setActiveIndex((i) => (i + 1) % n); break;
+      case "ArrowUp":   e.preventDefault(); setActiveIndex((i) => (i - 1 + n) % n); break;
+      case "Home":      e.preventDefault(); setActiveIndex(0); break;
+      case "End":       e.preventDefault(); setActiveIndex(n - 1); break;
+      case "Enter":
+      case " ":         e.preventDefault(); selectIndex(activeIndex); break;
+      case "Escape":    e.preventDefault(); closeMenu(); break;
+      case "Tab":       setOpen(false); break;
+    }
+  };
+
+  const announce = current.sublabel ? `${current.label}, ${current.sublabel}` : current.label;
+
+  const renderOption = (s: ReservationState) => {
+    const i = ALL_STATES.indexOf(s);
+    const isCurrent = s.id === current.id;
+    return (
+      <div
+        key={s.id}
+        id={`${baseId}-opt-${i}`}
+        role="option"
+        aria-selected={isCurrent}
+        className="rr-status-opt"
+        data-active={activeIndex === i}
+        data-current={isCurrent}
+        onMouseEnter={() => setActiveIndex(i)}
+        onClick={() => selectIndex(i)}
+      >
+        <span className="rr-status-opt__chip" data-variant={s.variant} style={{ ["--fill" as string]: s.fill, ["--on" as string]: s.on }}>
+          <StateIcon name={s.icon} />
+        </span>
+        <span className="rr-status-opt__label">
+          {s.label}
+          {s.sublabel && <span className="rr-status-opt__sub"> · {s.sublabel}</span>}
+        </span>
+        {isCurrent && (
+          <svg className="rr-status-opt__check" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <polyline points="3.5 8.5 6.5 11.5 12.5 4.5" />
+          </svg>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="rr-demo">
+      {/* ── Product surface: a single reservation on the floor view ── */}
+      <div className="rr-demo-surface">
+        <div className="rr-demo-reso">
+          <div className="rr-demo-reso__avatar" aria-hidden="true">RB</div>
+          <div className="rr-demo-reso__meta">
+            <span className="rr-demo-reso__name">Blumenthal, party of 4</span>
+            <span className="rr-demo-reso__sub">7:30 PM · Table 12 · Window</span>
+          </div>
+        </div>
+
+        {/* The real component: reservation-status dropdown button */}
+        <div className="rr-status-wrap" ref={wrapRef}>
+          <button
+            ref={pillRef}
+            type="button"
+            className="rr-status"
+            data-variant={current.variant}
+            data-open={open}
+            onClick={() => (open ? closeMenu(false) : openMenu())}
+            onKeyDown={onPillKeyDown}
+            disabled={advancing}
+            aria-busy={advancing}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={`${baseId}-list`}
+            aria-label={`Reservation status: ${announce}. Change status.`}
+            style={{ ["--fill" as string]: current.fill, ["--on" as string]: current.on }}
+          >
+            <span className="rr-status__icon">
+              {advancing ? <Spinner /> : <StateIcon name={current.icon} />}
+            </span>
+            <span className="rr-status__label">
+              {current.label}
+              {current.sublabel && <span className="rr-status__sub">{current.sublabel}</span>}
+            </span>
+            <svg className="rr-status__chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="4 6 8 10 12 6" />
+            </svg>
+          </button>
+
+          {open && (
+            <div
+              ref={listRef}
+              id={`${baseId}-list`}
+              className="rr-status-menu"
+              role="listbox"
+              tabIndex={-1}
+              aria-label="Reservation status"
+              aria-activedescendant={`${baseId}-opt-${activeIndex}`}
+              onKeyDown={onListKeyDown}
+            >
+              <div role="group" aria-label="Pre-dining" className="rr-status-menu__group">
+                <div className="rr-status-menu__grouplabel" aria-hidden="true">Pre-dining</div>
+                {PRE_DINING.map(renderOption)}
+              </div>
+              <div role="group" aria-label="During service" className="rr-status-menu__group">
+                <div className="rr-status-menu__grouplabel" aria-hidden="true">During service</div>
+                {DURING_SERVICE.map(renderOption)}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Controls ── */}
+      <div className="rr-demo-controls">
+        <button type="button" className="rr-demo-btn rr-demo-btn--primary" onClick={advance} disabled={!canAdvance || advancing}>
+          {canAdvance ? "Advance service →" : "Service complete"}
+        </button>
+        <button type="button" className="rr-demo-btn" onClick={reset}>Reset</button>
+      </div>
+
+      {/* Screen-reader announcement of the current status */}
+      <p className="rr-demo-sr" aria-live="polite">Reservation status: {announce}</p>
+
+    </div>
+  );
+}

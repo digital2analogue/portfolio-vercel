@@ -1,3 +1,5 @@
+import type { DemoKey } from "@/components/demos/registry";
+
 export type Block =
   | { type: "h2"; text: string }
   | { type: "h3"; text: string }
@@ -10,7 +12,8 @@ export type Block =
   | { type: "quote"; text: string }
   | { type: "note"; text: string }
   | { type: "hr" }
-  | { type: "meta"; rows: [string, string][] };
+  | { type: "meta"; rows: [string, string][] }
+  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string };
 
 export type CaseContent = {
   slug: string;
@@ -417,6 +420,29 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. The product got what it needed. The system stayed coherent.",
+      },
+      {
+        type: "demo",
+        demo: "reservation-status",
+        frameLabel: "OTKit · Reservations · Floor view",
+        caption:
+          "Live component, recreated from the OTKit Figma source. Advance a reservation through its service lifecycle to see each state's productive-motion feedback, or open the status dropdown to jump to any state. Every state is bound to an existing semantic OTKit token — no new color enters the system.",
+      },
+      {
+        type: "note",
+        text: "Fidelity note: fills, type, and states are pulled from the real `reservation-states` component. Two source states (No show, Dessert) whose white label sat just under WCAG AA were nudged a half-step darker here to pass — the remediation an accessibility audit would recommend.",
+      },
+      { type: "h3", text: "The same system, denser: table-status tiles" },
+      {
+        type: "p",
+        text: "The reservation button is one half of the floor screen. The other half is the **floor plan** — a grid of table tiles, each a table number plus a course icon, color-coded by the same semantic palette. Here the label and icon sit *on* the color, so each tile pairs its fill with its own `foreground/on-*` token to stay legible.",
+      },
+      {
+        type: "demo",
+        demo: "table-status",
+        frameLabel: "OTKit · Floor plan · Table status",
+        caption:
+          "Live recreation of the real table-status tiles — the floor-plan counterpart to the reservation button. Each tile's label uses its background's foreground/on-* token, so all 21 clear WCAG AA. Select a tile to inspect its background token, label token, and live contrast ratio.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
