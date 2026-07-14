@@ -48,15 +48,15 @@ export const LIFECYCLE: ReservationState[] = [
   { id: "confirmed-sms", label: "Confirmed", sublabel: "SMS sent", token: "background/success", tokenLabel: "success", fill: "#2f864d", on: "#ffffff", variant: "solid", icon: "check", sprawl: "#67c98d" },
   { id: "running-late", label: "Running late", token: "background/warning", tokenLabel: "warning", fill: "#fdaf08", on: "#141a26", variant: "solid", icon: "clock", sprawl: "#f2c14e" },
   { id: "arrived", label: "Arrived", token: "background/accent-purple", tokenLabel: "accent-purple", fill: "#ad4cc3", on: "#ffffff", variant: "solid", icon: "arrived", sprawl: "#9b5de5" },
-  { id: "partially-arrived", label: "Partially arrived", token: "background/accent-fuchsia", tokenLabel: "accent-fuchsia", fill: "#d82c82", on: "#ffffff", variant: "solid", icon: "partial", sprawl: "#e05299" },
+  { id: "partially-arrived", label: "Partially arrived", token: "background/accent-fuchsia", tokenLabel: "accent-fuchsia", fill: "#d82c82", on: "#ffffff", variant: "solid", icon: "partial-arrived", sprawl: "#e05299" },
   { id: "seated", label: "Seated", token: "background/accent-purple", tokenLabel: "accent-purple", fill: "#ad4cc3", on: "#ffffff", variant: "solid", icon: "seat", sprawl: "#7b4bd0" },
-  { id: "partially-seated", label: "Partially seated", token: "background/accent-fuchsia", tokenLabel: "accent-fuchsia", fill: "#d82c82", on: "#ffffff", variant: "solid", icon: "partial", sprawl: "#c74bb0" },
-  { id: "appetizer", label: "Appetizer", token: "background/accent-violet", tokenLabel: "accent-violet", fill: "#7f5ce8", on: "#ffffff", variant: "solid", icon: "plate", sprawl: "#6d5ae0" },
-  { id: "entree", label: "Entree", token: "background/accent-blue", tokenLabel: "accent-blue", fill: "#4a6fde", on: "#ffffff", variant: "solid", icon: "plate", sprawl: "#4f86e8" },
-  { id: "dessert", label: "Dessert", token: "background/accent-teal", tokenLabel: "accent-teal", fill: "#20738f", on: "#ffffff", variant: "solid", icon: "plate", nudgedAA: true, sprawl: "#37b0c9" },
-  { id: "cleared", label: "Cleared", token: "background/accent-orange", tokenLabel: "accent-orange", fill: "#c84f29", on: "#ffffff", variant: "solid", icon: "clear", sprawl: "#e0713f" },
+  { id: "partially-seated", label: "Partially seated", token: "background/accent-fuchsia", tokenLabel: "accent-fuchsia", fill: "#d82c82", on: "#ffffff", variant: "solid", icon: "partial-seated", sprawl: "#c74bb0" },
+  { id: "appetizer", label: "Appetizer", token: "background/accent-violet", tokenLabel: "accent-violet", fill: "#7f5ce8", on: "#ffffff", variant: "solid", icon: "appetizer", sprawl: "#6d5ae0" },
+  { id: "entree", label: "Entree", token: "background/accent-blue", tokenLabel: "accent-blue", fill: "#4a6fde", on: "#ffffff", variant: "solid", icon: "entree", sprawl: "#4f86e8" },
+  { id: "dessert", label: "Dessert", token: "background/accent-teal", tokenLabel: "accent-teal", fill: "#20738f", on: "#ffffff", variant: "solid", icon: "dessert", nudgedAA: true, sprawl: "#37b0c9" },
+  { id: "cleared", label: "Cleared", token: "background/accent-orange", tokenLabel: "accent-orange", fill: "#c84f29", on: "#ffffff", variant: "solid", icon: "cleared", sprawl: "#e0713f" },
   { id: "check-dropped", label: "Check dropped", token: "background/success", tokenLabel: "success", fill: "#2f864d", on: "#ffffff", variant: "solid", icon: "receipt", sprawl: "#2f9e8a" },
-  { id: "bussing-needed", label: "Bussing needed", token: "background/warning", tokenLabel: "warning", fill: "#fdaf08", on: "#141a26", variant: "solid", icon: "broom", sprawl: "#f2a93e" },
+  { id: "bussing-needed", label: "Bussing needed", token: "background/warning", tokenLabel: "warning", fill: "#fdaf08", on: "#141a26", variant: "solid", icon: "bussing", sprawl: "#f2a93e" },
   { id: "paid", label: "Paid", token: "background/success", tokenLabel: "success", fill: "#2f864d", on: "#ffffff", variant: "solid", icon: "price", sprawl: "#4ab07a" },
   { id: "finished", label: "Finished", token: "background/default", tokenLabel: "default", fill: "#ffffff", on: "#2d333f", variant: "outline", icon: "check", sprawl: "#8b95a6" },
 ];
@@ -66,8 +66,8 @@ export const BRANCHES: ReservationState[] = [
   { id: "left-message", label: "Left message", token: "background/action", tokenLabel: "action", fill: "#247f9e", on: "#ffffff", variant: "solid", icon: "message", sprawl: "#5aa2d6" },
   { id: "confirmed-by-guest", label: "Confirmed", sublabel: "By guest", token: "background/success", tokenLabel: "success", fill: "#2f864d", on: "#ffffff", variant: "solid", icon: "check", sprawl: "#57c088" },
   { id: "guest-on-way", label: "Guest on their way", token: "background/success", tokenLabel: "success", fill: "#2f864d", on: "#ffffff", variant: "solid", icon: "nav", sprawl: "#43b39a" },
-  { id: "cancelled", label: "Cancelled", token: "background/default", tokenLabel: "default", fill: "#ffffff", on: "#2d333f", variant: "outline", icon: "x", sprawl: "#9aa3b2" },
-  { id: "no-show", label: "No show", token: "background/danger", tokenLabel: "danger", fill: "#cc3b48", on: "#ffffff", variant: "solid", icon: "x", nudgedAA: true, sprawl: "#e0554f" },
+  { id: "cancelled", label: "Cancelled", token: "background/default", tokenLabel: "default", fill: "#ffffff", on: "#2d333f", variant: "outline", icon: "cancelled", sprawl: "#9aa3b2" },
+  { id: "no-show", label: "No show", token: "background/danger", tokenLabel: "danger", fill: "#cc3b48", on: "#ffffff", variant: "solid", icon: "no-show", nudgedAA: true, sprawl: "#e0554f" },
 ];
 
 export const ALL_STATES: ReservationState[] = [...LIFECYCLE, ...BRANCHES];

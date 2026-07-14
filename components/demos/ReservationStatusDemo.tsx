@@ -21,6 +21,7 @@
  */
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { OTKIT_ICONS } from "./otkitIcons";
 import {
   LIFECYCLE,
   BRANCHES,
@@ -31,27 +32,13 @@ import {
   type ReservationState,
 } from "@/lib/reservationStates";
 
-const ICONS: Record<string, React.ReactNode> = {
-  menu: <><line x1="4" y1="6" x2="16" y2="6" /><line x1="4" y1="10" x2="16" y2="10" /><line x1="4" y1="14" x2="16" y2="14" /></>,
-  check: <polyline points="4 10.5 8.5 15 16 5.5" />,
-  clock: <><circle cx="10" cy="10" r="6.5" /><polyline points="10 6.5 10 10 12.5 11.5" /></>,
-  arrived: <><polyline points="3 10 11 10" /><polyline points="8 6.5 11.5 10 8 13.5" /><line x1="15" y1="4" x2="15" y2="16" /></>,
-  partial: <><circle cx="10" cy="10" r="6.5" /><path d="M10 3.5 A6.5 6.5 0 0 1 10 16.5 Z" fill="currentColor" stroke="none" /></>,
-  seat: <><path d="M5 4v6h10V4" /><line x1="5" y1="10" x2="5" y2="16" /><line x1="15" y1="10" x2="15" y2="16" /><line x1="4" y1="10" x2="16" y2="10" /></>,
-  plate: <><line x1="6" y1="3.5" x2="6" y2="16.5" /><path d="M13.5 3.5v5a1.5 1.5 0 0 1-3 0v-5" /><line x1="12" y1="3.5" x2="12" y2="16.5" /></>,
-  clear: <><rect x="4" y="4" width="12" height="4" rx="1" /><rect x="4" y="11" width="12" height="4" rx="1" /></>,
-  receipt: <><path d="M5 3.5h10v13l-2-1.3-1.7 1.3-1.3-1.3-1.3 1.3-1.7-1.3-2 1.3z" /><line x1="7.5" y1="7" x2="12.5" y2="7" /><line x1="7.5" y1="10" x2="12.5" y2="10" /></>,
-  broom: <><line x1="14" y1="4" x2="8" y2="10" /><path d="M8 10l-3.5 3.5a2 2 0 0 0 0 2.8h2.8L11 12.8z" /></>,
-  price: <><path d="M10.5 3.5H16V9l-6.5 6.5a1.5 1.5 0 0 1-2.1 0L3.5 11.6a1.5 1.5 0 0 1 0-2.1z" /><circle cx="12.5" cy="7" r="1" /></>,
-  message: <><path d="M4 5h12v8H9l-3.5 2.5V13H4z" /></>,
-  nav: <polygon points="16 4 4 9.5 9 11 11 16" />,
-  x: <><line x1="5.5" y1="5.5" x2="14.5" y2="14.5" /><line x1="14.5" y1="5.5" x2="5.5" y2="14.5" /></>,
-};
-
 function StateIcon({ name }: { name: string }) {
+  const g = OTKIT_ICONS[name] ?? OTKIT_ICONS.menu;
   return (
-    <svg className="rr-demo-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {ICONS[name] ?? ICONS.menu}
+    <svg className="rr-demo-icon" width="20" height="20" viewBox={g.viewBox} fill="currentColor" aria-hidden="true">
+      {g.paths.map((pth, i) => (
+        <path key={i} d={pth.d} fillRule={pth.fillRule} clipRule={pth.clipRule} />
+      ))}
     </svg>
   );
 }
