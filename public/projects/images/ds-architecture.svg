@@ -10,7 +10,7 @@
 <rect x="120" y="140" width="1060" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4" opacity="1.0"/>
 <text x="146" y="179.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">01</text>
 <text x="184" y="179.6" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Source: design tokens</text>
-<text x="184" y="203.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">primitives → semantic → component   ·   + 4 brand overrides   ·   DTCG JSON</text>
+<text x="184" y="203.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">primitives → semantic   ·   + 3 brand overrides   ·   DTCG JSON</text>
 <rect x="120" y="270" width="1060" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4" opacity="1.0"/>
 <text x="146" y="309.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">02</text>
 <text x="184" y="309.6" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Build: Style Dictionary, validated</text>
@@ -33,7 +33,7 @@
 <rect x="310" y="662" width="300" height="78" rx="11" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5" opacity="1.0"/>
 <text x="328" y="690" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="600" fill="#A0A89A" text-anchor="start" letter-spacing="1.5" opacity="1.0">HUMANS</text>
 <text x="328" y="714" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">Figma (Code Connect)</text>
-<text x="328" y="732" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">Markdown docs</text>
+<text x="328" y="732" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">Component docs (generated)</text>
 <rect x="690" y="662" width="300" height="78" rx="11" fill="#161C16" stroke="#4ADE6E" stroke-width="1.8" opacity="1.0"/>
 <text x="708" y="690" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="600" fill="#4ADE6E" text-anchor="start" letter-spacing="1.5" opacity="1.0">AGENTS</text>
 <text x="708" y="714" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">MCP server</text>

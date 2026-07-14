@@ -944,13 +944,20 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "**Author.** DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
+          "**Author.** DTCG tokens in two layers: primitives (raw values) → semantic (named roles UI writes against). Brand overrides re-point the same semantic roles.",
           "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
           "**Components.** 21 framework-agnostic Lit web components, wired to Figma via Code Connect.",
           "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
           "**Interfaces.** Humans read Figma and Markdown docs; agents read an MCP server.",
           "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
         ],
+      },
+      {
+        type: "image",
+        alt: "Token resolution diagram: a semantic token (background.success-alt) resolves to a primitive (color.green.chip = #0F2016), rendering as a success badge. A footer rule states UI references semantic roles, never primitives, and brand overrides re-point the semantic role without touching components.",
+        caption:
+          "Two tiers, one value — UI writes against named semantic roles, and each role resolves to exactly one raw primitive. Brand overrides re-point the semantic role; the components never change.",
+        src: "/projects/images/ds-token-tiers.png",
       },
       { type: "hr" },
       { type: "h2", text: "One Source of Truth, Four Brands" },
@@ -984,6 +991,19 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "All 21 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Every one adds a hand-written meta.json on top, with the token, rule, and accessibility contract — and prop descriptions are single-sourced from the code's JSDoc, so the contract can't drift from the implementation.",
       },
       { type: "hr" },
+      { type: "h2", text: "Docs That Can't Drift" },
+      {
+        type: "image",
+        alt: "The documentation pipeline: metadata (design-system.json, meta.json, token store) feeds a deterministic DocGen pass that emits one MDX file per component. Each file splits into GEN regions (properties, tokens, accessibility) that regenerate every run and AUTHORED regions (overview, usage) that are preserved. Output is released to a shipped CI freshness gate and a planned human docs site.",
+        caption:
+          "Component docs are generated from the same metadata the agent reads. GEN regions regenerate; AUTHORED prose is preserved; a CI gate blocks a stale doc from merging.",
+        src: "/projects/images/ds-docs-pipeline.png",
+      },
+      {
+        type: "p",
+        text: "The docs are generated from the same metadata, not hand-written. One deterministic pass turns each component's meta.json into an MDX page: the mechanical parts — props, tokens, accessibility — regenerate on every run, while the hand-written overview and usage prose stay preserved in place. A CI gate regenerates and diffs them, so a component change that didn't update its docs fails the build instead of quietly going stale.",
+      },
+      { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
       {
         type: "image",
@@ -1008,7 +1028,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "An Agent, Self-Correcting" },
       {
         type: "image",
-        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
+        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 semantic tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
         caption:
           "One session, four steps: get_component, a hand-rolled draft, check_usage, a fix. The violation text is the literal output of the shared rule set, not a mockup.",
         src: "/projects/images/ds-agent-loop.png",
@@ -1049,7 +1069,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Three-layer token architecture across four brands",
+          "Two-layer token architecture (primitives → semantic) across four brands",
           "21 Lit web components, wired to Figma via Code Connect",
           "MCP server with 17 tools: component contracts, token lookup, design rules and the decision log, brand diffs, WCAG contrast checks, and consumer-repo linting",
           "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",

@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "check-contrast": "node scripts/check-contrast.mjs",
     "sync-tokens": "node scripts/sync-tokens.mjs",
+    "render-diagrams": "node scripts/render-diagrams.mjs",
     "deploy": "node scripts/deploy.mjs",
     "test": "vitest",
     "test:ui": "vitest --ui",
