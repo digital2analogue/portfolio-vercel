@@ -1002,7 +1002,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "An Agent, Self-Correcting" },
       {
         type: "image",
-        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
+        alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 semantic tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
         caption:
           "One session, four steps: get_component, a hand-rolled draft, check_usage, a fix. The violation text is the literal output of the shared rule set, not a mockup.",
         src: "/projects/images/ds-agent-loop.png",
@@ -1043,7 +1043,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Three-layer token architecture across four brands",
+          "Two-layer token architecture (primitives → semantic) across four brands",
           "21 Lit web components, wired to Figma via Code Connect",
           "MCP server with 17 tools: component contracts, token lookup, design rules and the decision log, brand diffs, WCAG contrast checks, and consumer-repo linting",
           "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
