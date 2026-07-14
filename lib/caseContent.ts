@@ -928,9 +928,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Three-tier token diagram: a component token (component.badge.success.background) resolves to a semantic token (background.success-alt), which resolves to a primitive (color.green.900 = #0F2016), rendering as a success badge. A footer rule states UI code references component and semantic tokens only, never primitives.",
+        alt: "Token resolution diagram: a semantic token (background.success-alt) resolves to a primitive (color.green.chip = #0F2016), rendering as a success badge. Above it, an optional component hook (component.badge.success.background, used by 12 of 21 components) points at the semantic token so a brand can re-point it without touching component code. A footer rule states UI references semantic roles, never primitives.",
         caption:
-          "Three tiers resolve to one value. UI code references the semantic and component layers; the raw primitive layer is never touched directly.",
+          "Two tiers carry the values — semantic roles resolve to primitives. The component layer is an optional re-pointable hook, not a third set of values.",
         src: "/projects/images/ds-token-tiers.png",
       },
       { type: "hr" },
