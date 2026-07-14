@@ -126,10 +126,10 @@ const PAIRINGS = [
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
   // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills
   // pair with white (already registered above). These are the AA-REPAIRED
-  // pairings — the demo's default state. The two intentionally-failing "Before"
-  // pairings (white on teal #2b9abf 3.24:1, white on lime #abc31b 1.99:1) are
-  // shown ONLY when the viewer toggles to "Before" as the audit's subject and
-  // are deliberately NOT registered here.
+  // pairings the demo actually renders. The two families whose real on-token
+  // (white) failed AA are repaired here (drinks → foreground-default #2d333f on
+  // lime; course 4 → white on darkened teal #20738f), so the failing white-on-
+  // light pairings are never rendered and are deliberately NOT registered.
   { text: '#141a26', bg: '#d5c9f7', label: 'Demo/tile: ink on accent-violet-secondary (Appetizer)' },
   { text: '#141a26', bg: '#61bddb', label: 'Demo/tile: ink on accent-teal-secondary (Dessert)' },
   { text: '#141a26', bg: '#64c987', label: 'Demo/tile: ink on accent-green-secondary (Paid)' },
@@ -145,6 +145,18 @@ const PAIRINGS = [
   { text: '#931b23', bg: '#ffffff', label: 'Demo/tile: fail summary text on white' },
   { text: '#236439', bg: '#f1f2f4', label: 'Demo/tile: AA-pass verdict on grey surface' },
   { text: '#931b23', bg: '#f1f2f4', label: 'Demo/tile: fail verdict on grey surface' },
+
+  // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
+  // card embedded on the dark page. These pairings use the scoped arctic hex
+  // values from `.block-outcome-demo__device` in globals.css (not page tokens).
+  // Labels are checked against the un-tinted pill base (#F0F4FA), mirroring the
+  // decisioning-table source gate; the inactive-ghost label (#A8B0BE) is
+  // WCAG-exempt by design and intentionally omitted.
+  { text: '#15803d', bg: '#F0F4FA', label: 'Outcome demo: Approve segment label (active) on pill' },
+  { text: '#C8002E', bg: '#F0F4FA', label: 'Outcome demo: Deny segment label (active) on pill' },
+  { text: '#1A1A2E', bg: '#FFFFFF', label: 'Outcome demo: rule name on device row surface' },
+  { text: '#5E6E88', bg: '#FFFFFF', label: 'Outcome demo: rule condition (muted) on device row surface' },
+  { text: '#5E6E88', bg: '#F5F8FC', label: 'Outcome demo: card title on device canvas' },
 ]
 
 // ─── Run ───────────────────────────────────────────────────────────────────────
