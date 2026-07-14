@@ -1140,12 +1140,14 @@ h2.eyebrow,
 
 /* The reservation-status dropdown button (faithful to OTKit web-button/reservation-states) */
 .rr-status-wrap { position: relative; }
-/* Grow the demo while its dropdown is open so the tall menu isn't cropped by
-   .demo-frame's overflow:hidden. `.rr-status-menu` only renders while open.
-   Two values: the surface wraps ≤600px (pill sits lower → menu needs more room). */
-.rr-demo:has(.rr-status-menu) { min-height: 410px; }
+/* Reserve a constant height on the reservation demo so the dropdown (opens
+   downward, up to 320px) is never cropped by .demo-frame's overflow:hidden, and
+   the frame stays the SAME height whether the menu is open or closed — no
+   distracting grow/shrink on toggle. Two values: the surface wraps ≤600px
+   (pill sits lower → the open menu needs more room). */
+.rr-demo { min-height: 410px; }
 @media (max-width: 600px) {
-  .rr-demo:has(.rr-status-menu) { min-height: 470px; }
+  .rr-demo { min-height: 470px; }
 }
 .rr-status {
   --fill: var(--otk-action);
