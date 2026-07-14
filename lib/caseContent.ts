@@ -918,7 +918,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "**Author.** DTCG tokens in three layers: primitives (raw values) → semantic (named roles) → component (scoped). Brand overrides use the same source.",
+          "**Author.** DTCG tokens in two layers: primitives (raw values) → semantic (named roles UI writes against). Brand overrides re-point the same semantic roles.",
           "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
           "**Components.** 21 framework-agnostic Lit web components, wired to Figma via Code Connect.",
           "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
@@ -928,9 +928,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Token resolution diagram: a semantic token (background.success-alt) resolves to a primitive (color.green.chip = #0F2016), rendering as a success badge. Above it, an optional component hook (component.badge.success.background, used by 12 of 21 components) points at the semantic token so a brand can re-point it without touching component code. A footer rule states UI references semantic roles, never primitives.",
+        alt: "Token resolution diagram: a semantic token (background.success-alt) resolves to a primitive (color.green.chip = #0F2016), rendering as a success badge. A footer rule states UI references semantic roles, never primitives, and brand overrides re-point the semantic role without touching components.",
         caption:
-          "Two tiers carry the values — semantic roles resolve to primitives. The component layer is an optional re-pointable hook, not a third set of values.",
+          "Two tiers, one value — UI writes against named semantic roles, and each role resolves to exactly one raw primitive. Brand overrides re-point the semantic role; the components never change.",
         src: "/projects/images/ds-token-tiers.png",
       },
       { type: "hr" },
