@@ -13,6 +13,7 @@ npm run test:visual    # Playwright visual regression (tests/visual, committed l
 npm run test:visual:update # Regenerate baselines after intentional visual changes
 npm run check-contrast # Run WCAG AA check in isolation
 npm run sync-tokens    # Check installed @digital2analogue2/parsimony version against the latest published
+npm run render-diagrams # Rasterize public/projects/images/ds-*.svg → 2× PNG (headless chromium; see Case-Study Diagrams)
 ```
 
 ## Architecture
@@ -69,6 +70,13 @@ To reproduce what the portal sees, run an axe scan against the built site (`@axe
 
 - `lib/cases.ts` — Case study data (typed as `CaseStudy[]`)
 - `lib/tokenValues.ts` — Build-time token resolver for the `/tokens` viewer page: reads the installed `@digital2analogue2/parsimony` CSS via `node:fs`, resolves `var()` chains, and exposes `catalog(prefix)` / `tokenValue(name)` / `tokenVersion` / `semanticCount`. Server-only (never import from a client component). The page therefore self-updates on every package bump — there is no hand-maintained catalog (the old `lib/tokenCatalog.ts` is gone). A missing/renamed upstream token fails the build loudly by design.
+- `lib/caseContent.ts` — Case-study body content (`CASE_CONTENT`, a closed typed `Block` union; see Interactive Case Demos below). The Parsimony case study is keyed `"system"` (route `/work/system`).
+
+### Case-Study Diagrams (`public/projects/images/ds-*.svg`)
+
+The Parsimony (`/work/system`) case-study diagrams are **hand-authored SVGs**, rasterized to 2× PNG by `npm run render-diagrams` (`scripts/render-diagrams.mjs`, headless chromium — mirrors `generate-og.mjs`; uses the bundled browser at `/opt/pw-browsers/chromium`, never `playwright install`). Edit the `.svg`, re-run `render-diagrams`, commit both. House style: `#0A0D0A` canvas, `#4ADE6E` phosphor accent, Space Grotesk titles / JetBrains Mono labels, green = shipped / amber-dashed = planned. Because these PNGs embed in `/work/system`, a diagram edit shifts that page's visual baseline → run the "Update visual baselines" workflow **last** (see the baseline rule above).
+
+**Deliberate code/docs gap (2026-07-14):** the case study + diagrams present Parsimony's token model as **two-tier, semantic-only** (primitives → semantic, no component tier). This is the *target* state — the Parsimony repo still ships the `component.*` tier until the migration in **parsimony#114** lands. So the case study intentionally **leads the code**; do not "correct" it back to a three-tier / component-token framing. (Decision recorded in `parsimony/docs/decisions.md`, 2026-07-14; case study shipped in PR #33.)
 
 ### Interactive Case Demos (in-page live components)
 
