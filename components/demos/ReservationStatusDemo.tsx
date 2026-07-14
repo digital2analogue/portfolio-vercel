@@ -26,9 +26,6 @@ import {
   LIFECYCLE,
   BRANCHES,
   ALL_STATES,
-  SEMANTIC_PALETTE,
-  STATE_COUNT,
-  TOKEN_COUNT,
   type ReservationState,
 } from "@/lib/reservationStates";
 
@@ -58,7 +55,6 @@ const prefersReducedMotion = () =>
 export default function ReservationStatusDemo() {
   const [current, setCurrent] = useState<ReservationState>(LIFECYCLE[0]);
   const [advancing, setAdvancing] = useState(false);
-  const [lens, setLens] = useState<"adhoc" | "semantic">("semantic");
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -170,7 +166,9 @@ export default function ReservationStatusDemo() {
         onMouseEnter={() => setActiveIndex(i)}
         onClick={() => selectIndex(i)}
       >
-        <span className="rr-status-opt__dot" style={{ background: s.fill, boxShadow: s.variant === "outline" ? "inset 0 0 0 1px #d8d9db" : undefined }} />
+        <span className="rr-status-opt__chip" data-variant={s.variant} style={{ ["--fill" as string]: s.fill, ["--on" as string]: s.on }}>
+          <StateIcon name={s.icon} />
+        </span>
         <span className="rr-status-opt__label">
           {s.label}
           {s.sublabel && <span className="rr-status-opt__sub"> · {s.sublabel}</span>}
@@ -185,7 +183,7 @@ export default function ReservationStatusDemo() {
   };
 
   return (
-    <div className="rr-demo" data-lens={lens}>
+    <div className="rr-demo">
       {/* ── Product surface: a single reservation on the floor view ── */}
       <div className="rr-demo-surface">
         <div className="rr-demo-reso">
@@ -261,51 +259,6 @@ export default function ReservationStatusDemo() {
       {/* Screen-reader announcement of the current status */}
       <p className="rr-demo-sr" aria-live="polite">Reservation status: {announce}</p>
 
-      {/* ── Palette lens: the before/after governance story ── */}
-      <div className="rr-demo-lens">
-        <div className="rr-demo-lens__head">
-          <div className="rr-demo-lens__title">
-            {lens === "semantic"
-              ? `${STATE_COUNT} states → ${TOKEN_COUNT} semantic tokens`
-              : `${STATE_COUNT} states → 21 one-off colors`}
-          </div>
-          <div className="rr-demo-lens__toggle" role="radiogroup" aria-label="Color palette lens">
-            <button type="button" role="radio" aria-checked={lens === "adhoc"} className="rr-demo-seg" data-active={lens === "adhoc"} onClick={() => setLens("adhoc")}>Ad-hoc</button>
-            <button type="button" role="radio" aria-checked={lens === "semantic"} className="rr-demo-seg" data-active={lens === "semantic"} onClick={() => setLens("semantic")}>Semantic</button>
-          </div>
-        </div>
-
-        <div className="rr-demo-swatches">
-          {ALL_STATES.map((s) => (
-            <span
-              key={s.id}
-              className="rr-demo-swatch"
-              data-current={s.id === current.id}
-              style={{ ["--c" as string]: lens === "semantic" ? s.fill : s.sprawl }}
-              title={lens === "semantic" ? `${s.label} · ${s.tokenLabel}` : `${s.label} · one-off`}
-            >
-              <span className="rr-demo-swatch__dot" />
-              <span className="rr-demo-swatch__name">{s.label}</span>
-            </span>
-          ))}
-        </div>
-
-        <div className="rr-demo-legend" aria-hidden={lens !== "semantic"} data-visible={lens === "semantic"}>
-          {SEMANTIC_PALETTE.map((t) => (
-            <span key={t.token} className="rr-demo-legend__item">
-              <span className="rr-demo-legend__dot" style={{ background: t.fill, borderColor: t.fill === "#ffffff" ? "#d8d9db" : t.fill }} />
-              <span className="rr-demo-legend__name">{t.label}</span>
-              <span className="rr-demo-legend__count">×{t.count}</span>
-            </span>
-          ))}
-        </div>
-
-        <p className="rr-demo-lens__note">
-          {lens === "semantic"
-            ? "Every reservation state resolves to an existing OTKit token — no new color enters the system."
-            : "The original proposal: a distinct color per state. Visually noisy, unmaintainable, and impossible to theme."}
-        </p>
-      </div>
     </div>
   );
 }

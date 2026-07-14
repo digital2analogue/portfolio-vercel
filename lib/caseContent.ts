@@ -431,7 +431,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         demo: "reservation-status",
         frameLabel: "OTKit · Reservations · Floor view",
         caption:
-          "Live component, recreated from the OTKit Figma source. Advance a reservation through its service lifecycle to see each state's productive-motion feedback, then toggle the palette lens — 22 reservation states resolve to 11 semantic tokens instead of 21 one-off colors.",
+          "Live component, recreated from the OTKit Figma source. Advance a reservation through its service lifecycle to see each state's productive-motion feedback, or open the status dropdown to jump to any state. Every state is bound to an existing semantic OTKit token — no new color enters the system.",
       },
       {
         type: "note",
@@ -440,18 +440,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "The same system, denser: table-status tiles" },
       {
         type: "p",
-        text: "The reservation button is one half of the floor screen. The other half is the **floor plan** — a grid of table tiles, each a table number plus a course icon, color-coded by the same semantic palette. Denser, smaller, and a sharper accessibility test: here the label and icon sit *on* the color. Toggling the audit surfaces where that broke.",
+        text: "The reservation button is one half of the floor screen. The other half is the **floor plan** — a grid of table tiles, each a table number plus a course icon, color-coded by the same semantic palette. Here the label and icon sit *on* the color, so each tile pairs its fill with its own `foreground/on-*` token to stay legible.",
       },
       {
         type: "demo",
         demo: "table-status",
         frameLabel: "OTKit · Floor plan · Table status",
         caption:
-          "Live audit of the real table-status tiles. Each tile's label uses its background's foreground/on-* token. Toggle Before/After: four tiles bind that on-token to white on a fill too light for it — the three drinks tiles (1.99:1) and course 4 (3.24:1). The fix stays in-system: drinks fall back to foreground-default, course 4's fill is darkened a step — so every tile clears WCAG AA. Select a tile to inspect its background and label tokens.",
-      },
-      {
-        type: "note",
-        text: "This is the failure the static contrast gate can't see: it checks token *pairings*, but here a valid token was paired with the wrong on-color. Catching it needs the icon/number rendered on the fill — which is exactly what this audit does.",
+          "Live recreation of the real table-status tiles — the floor-plan counterpart to the reservation button. Each tile's label uses its background's foreground/on-* token, so all 21 clear WCAG AA. Select a tile to inspect its background token, label token, and live contrast ratio.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },

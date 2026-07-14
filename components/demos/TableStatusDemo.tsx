@@ -24,11 +24,7 @@ import { OTKIT_ICONS } from "./otkitIcons";
 import {
   TILES,
   TILE_COUNT,
-  failingIds,
-  variantFor,
   ratioFor,
-  passesAA,
-  type AuditMode,
   type Tile,
 } from "@/lib/tableStatus";
 
@@ -44,60 +40,47 @@ function TileGlyph({ icon }: { icon: string }) {
 }
 
 export default function TableStatusDemo() {
-  const [mode, setMode] = useState<AuditMode>("repaired");
   const [selected, setSelected] = useState<Tile | null>(null);
-
-  const failCount = failingIds.length;
-  const summary =
-    mode === "designed"
-      ? `${failCount} of ${TILE_COUNT} tiles fail WCAG AA — the on-token is white on a fill too light for it.`
-      : `All ${TILE_COUNT} tiles pass WCAG AA — each label uses its background's on-token (with a fallback where white failed).`;
-
   const tile = selected;
-  const tv = tile ? variantFor(tile, mode) : null;
+  const tv = tile ? tile.repaired : null;
+
+  const summary = `Every label uses its background's foreground/on-* token \u2014 all ${TILE_COUNT} clear WCAG AA.`;
+  const note = "Each tile's label is its background's foreground/on-* token. The lighter drinks fills pair with foreground-default and course 4 uses a darker accent-teal, so every label clears WCAG AA \u2014 no new colors. Every glyph is the real OTKit vector.";
 
   return (
-    <div className="rr-tiles" data-mode={mode}>
-      {/* ── Audit header ── */}
+    <div className="rr-tiles">
       <div className="rr-tiles-head">
         <div className="rr-tiles-title">Floor plan — table status</div>
-        <div className="rr-tiles-toggle" role="radiogroup" aria-label="Contrast audit view">
-          <button type="button" role="radio" aria-checked={mode === "designed"} className="rr-demo-seg" data-active={mode === "designed"} onClick={() => setMode("designed")}>Before</button>
-          <button type="button" role="radio" aria-checked={mode === "repaired"} className="rr-demo-seg" data-active={mode === "repaired"} onClick={() => setMode("repaired")}>After</button>
-        </div>
       </div>
 
-      {/* ── Tile floor ── */}
+      {/* \u2500\u2500 Tile floor \u2500\u2500 */}
       <div className="rr-tiles-grid" role="list">
         {TILES.map((t) => {
-          const v = variantFor(t, mode);
-          const ratio = ratioFor(t, mode);
-          const pass = passesAA(t, mode);
+          const v = t.repaired;
+          const ratio = ratioFor(t, "repaired");
           return (
             <button
               key={t.id}
               type="button"
               role="listitem"
               className="rr-tile"
-              data-fail={!pass}
               data-selected={selected?.id === t.id}
               onClick={() => setSelected(t)}
               onMouseEnter={() => setSelected(t)}
               onFocus={() => setSelected(t)}
-              aria-label={`Table 34, ${t.label}. Background ${t.fillToken}, label ${v.onToken}. Contrast ${ratio.toFixed(2)} to 1, ${pass ? "passes" : "fails"} AA.`}
+              aria-label={`Table 34, ${t.label}. Background ${t.fillToken}, label ${v.onToken}. Contrast ${ratio.toFixed(2)} to 1, passes AA.`}
               style={{ ["--fill" as string]: v.fill, ["--on" as string]: v.on }}
-              title={`${t.label} · ${t.fillToken} · ${ratio.toFixed(2)}:1`}
+              title={`${t.label} \u00b7 ${t.fillToken} \u00b7 ${ratio.toFixed(2)}:1`}
             >
               <span className="rr-tile__num">34</span>
               <span className="rr-tile__glyph"><TileGlyph icon={t.icon} /></span>
-              {!pass && <span className="rr-tile__warn" aria-hidden="true">!</span>}
             </button>
           );
         })}
       </div>
 
-      {/* ── Summary + inspector ── */}
-      <p className="rr-tiles-summary" data-fail={mode === "designed" && failCount > 0} aria-live="polite">{summary}</p>
+      {/* \u2500\u2500 Summary + inspector \u2500\u2500 */}
+      <p className="rr-tiles-summary">{summary}</p>
 
       <div className="rr-tiles-inspect">
         {tile && tv ? (
@@ -110,10 +93,8 @@ export default function TableStatusDemo() {
                 <span> · label </span>
                 <code>{tv.onToken}</code>
                 <span> · </span>
-                <code>{ratioFor(tile, mode).toFixed(2)}:1</code>
-                <span className="rr-tiles-inspect__verdict" data-pass={passesAA(tile, mode)}>
-                  {passesAA(tile, mode) ? "AA ✓" : "fails AA"}
-                </span>
+                <code>{ratioFor(tile, "repaired").toFixed(2)}:1</code>
+                <span className="rr-tiles-inspect__verdict" data-pass={true}>AA ✓</span>
               </div>
             </div>
           </>
@@ -122,11 +103,7 @@ export default function TableStatusDemo() {
         )}
       </div>
 
-      <p className="rr-tiles-note">
-        {mode === "designed"
-          ? "The drinks tiles (accent-lime) and course 4 (accent-teal) bind their on-token to white — 1.99:1 and 3.24:1. On the lime fill the icon fails even the 3:1 non-text bar."
-          : "Each label is its background's foreground/on-* token. Where that token is white and fails, the fix stays in-system: drinks fall back to foreground-default; course 4's fill is darkened a step. No new colors."}
-      </p>
+      <p className="rr-tiles-note">{note}</p>
     </div>
   );
 }
