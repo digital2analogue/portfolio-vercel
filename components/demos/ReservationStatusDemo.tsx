@@ -7,10 +7,10 @@
  * It makes the case's "Table Statuses" argument interactive: 22 reservation
  * states, each mapped onto one of 11 semantic OTKit tokens. The status button
  * is a real dropdown (faithful to the source component) that opens a listbox of
- * every state; "Advance service" steps the reservation through its lifecycle
- * with productive-motion feedback (rest → hover → active → loading → settle);
- * and the "palette lens" toggle shows 21 ad-hoc colors collapsing onto the
- * semantic system.
+ * every state, grouped by service phase (pre-dining before the guest arrives,
+ * during-service after); "Advance service" steps the reservation through its
+ * lifecycle with productive-motion feedback (rest → hover → active → loading →
+ * settle).
  *
  * Faithful to the Figma source (variant names, fills, radius, type) with two
  * fills nudged to clear WCAG AA — see lib/reservationStates.ts. Light-mode by

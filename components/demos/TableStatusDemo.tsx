@@ -7,11 +7,11 @@
  *
  * It's a contrast *audit*: a floor of table tiles (table number + course icon),
  * each filled by a semantic OTKit token, its label using that background's own
- * `foreground/on-<token>` color. Toggle "Before (as designed)" to see the four
- * tiles whose on-token is white on a fill too light for it — the three drinks
- * tiles (accent-lime, 1.99:1) and course 4 (accent-teal, 3.24:1). "After"
- * repairs them per the token system: drinks fall back to foreground-default,
- * course 4's fill is darkened. Select any tile to inspect its tokens + ratio.
+ * `foreground/on-<token>` color. Two families whose real on-token (white) failed
+ * AA are repaired per the token system: the three drinks tiles (accent-lime,
+ * white was 1.99:1) fall back to foreground-default, and course 4 (accent-teal,
+ * white was 3.24:1) darkens its fill. Every tile then clears WCAG AA. Select any
+ * tile to inspect its background token, label token, and live contrast ratio.
  *
  * Source: Figma node 15832:1266 (see lib/tableStatus.ts). Icons are the real
  * OTKit vectors (./otkitIcons, exported from the icon library), tinted via
