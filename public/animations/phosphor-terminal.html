@@ -1,0 +1,417 @@
+<!doctype html>
+<!-- Phosphor terminal — looping Unix session animation for the portfolio +
+     presentation slides. Self-contained static asset (no deps, no egress);
+     embed via iframe or open full-screen. Params: ?speed=1.5  ?static=1.
+     Palette synced from @digital2analogue2/parsimony base tokens. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>phosphor — riverromney.com</title>
+</head>
+<body>
+<style>
+  /* Palette synced from @digital2analogue2/parsimony base (dark) tokens.
+     Single-theme by design: this is a CRT, it has one mood. */
+  :root {
+    --bg:        #0A0D0A;  /* color-background-default */
+    --stage:     #050705;  /* one step darker than canvas, so the screen glows */
+    --surface:   #1E241E;  /* color-background-alt / border-alt */
+    --fg:        #C8CFC4;  /* color-foreground-default */
+    --fg-alt:    #A0A89A;  /* color-foreground-alt */
+    --muted:     #8B9683;  /* color-foreground-muted */
+    --accent:    #4ADE6E;  /* phosphor green — interactivity + verdicts only */
+    --amber:     #FCD34D;  /* color-foreground-warning */
+    --red:       #F87171;  /* color-foreground-danger */
+    --bloom-sm:  0 0 8px  rgba(74, 222, 110, 0.35);
+    --bloom-md:  0 0 12px rgba(74, 222, 110, 0.28);
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  }
+
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--stage);
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    overflow: hidden;
+  }
+
+  .stage {
+    display: grid;
+    justify-items: center;
+    gap: 14px;
+    width: min(920px, 94vw);
+  }
+
+  /* ---- CRT frame ------------------------------------------------------ */
+  .crt {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    transform-origin: 50% 50%;
+    transition: opacity 520ms ease;
+  }
+  .crt.off { opacity: 0; }
+
+  /* power-on: collapsed bright line -> full raster */
+  .crt.boot { transform: scaleY(0.004); filter: brightness(4) saturate(0.2); }
+  .crt.on {
+    transform: scaleY(1);
+    filter: brightness(1) saturate(1);
+    transition:
+      transform 420ms cubic-bezier(0.2, 0.7, 0.25, 1),
+      filter    700ms ease-out,
+      opacity   520ms ease;
+  }
+
+  .term {
+    background: var(--bg);
+    border: 1px solid var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.45),
+      0 0 90px rgba(74, 222, 110, 0.07);
+  }
+
+  .term__bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--surface);
+  }
+  .term__dot { width: 10px; height: 10px; border-radius: 9999px; opacity: 0.75; }
+  .term__dot--r { background: var(--red); }
+  .term__dot--y { background: var(--amber); }
+  .term__dot--g { background: var(--accent); }
+  .term__title {
+    margin-left: 8px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    user-select: none;
+  }
+
+  .term__screen {
+    height: clamp(330px, 58vh, 470px);
+    padding: 20px 24px;
+    overflow: hidden;
+    font-size: clamp(12.5px, 1.55vw, 16px);
+    line-height: 1.58;
+    color: var(--fg);
+  }
+
+  .ln  { white-space: pre; min-height: 1.58em; }
+  .gap { height: 0.7em; }
+
+  /* color roles */
+  .a  { color: var(--accent); text-shadow: var(--bloom-sm); }
+  .ok { color: var(--accent); text-shadow: var(--bloom-md); }
+  .f  { color: var(--fg); }
+  .d  { color: var(--fg-alt); }
+  .m  { color: var(--muted); }
+
+  .live { animation: pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse {
+    0%, 100% { opacity: 1;   text-shadow: var(--bloom-md); }
+    50%      { opacity: 0.55; text-shadow: none; }
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.56em;
+    height: 1.12em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background: var(--accent);
+    box-shadow: var(--bloom-sm);
+    animation: blink 1.06s steps(1) infinite;
+  }
+  .cursor.typing { animation: none; opacity: 1; }
+  @keyframes blink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+
+  /* ---- atmosphere ------------------------------------------------------ */
+  .crt__scan, .crt__vig, .crt__flick {
+    position: absolute;
+    inset: 0;
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .crt__scan {
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0 2px,
+      rgba(0, 0, 0, 0.16) 2px 3px
+    );
+    mix-blend-mode: multiply;
+  }
+  .crt__vig {
+    background: radial-gradient(
+      120% 100% at 50% 40%,
+      transparent 55%,
+      rgba(0, 0, 0, 0.32) 100%
+    );
+  }
+  .crt__flick {
+    background: #fff;
+    opacity: 0.012;
+    animation: flick 3.8s ease-in-out infinite;
+  }
+  @keyframes flick {
+    0%, 100% { opacity: 0.010; }
+    50%      { opacity: 0.026; }
+  }
+
+  .hint {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    opacity: 0.7;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor, .crt__flick, .live { animation: none; }
+    .crt.boot { transform: none; filter: none; }
+    .crt { transition: none; }
+  }
+</style>
+
+<div class="stage">
+  <figure class="crt boot" id="crt">
+    <div class="term"
+         role="img"
+         aria-label="Animated terminal session: whoami answers River Romney, principal product designer; ls work lists four case studies; make portfolio builds tokens for four brands, passes the WCAG AA contrast gate, and ships 21 components; then it opens riverromney.com — product design for systems that scale.">
+      <div class="term__bar" aria-hidden="true">
+        <span class="term__dot term__dot--r"></span>
+        <span class="term__dot term__dot--y"></span>
+        <span class="term__dot term__dot--g"></span>
+        <span class="term__title">river@phosphor — ~ — 80×24</span>
+      </div>
+      <div class="term__screen" id="screen" aria-hidden="true"></div>
+    </div>
+    <div class="crt__scan" aria-hidden="true"></div>
+    <div class="crt__vig" aria-hidden="true"></div>
+    <div class="crt__flick" aria-hidden="true"></div>
+  </figure>
+  <p class="hint">CLICK TO REPLAY&nbsp;&nbsp;·&nbsp;&nbsp;?speed=1.5&nbsp;&nbsp;·&nbsp;&nbsp;?static=1</p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  const screen = document.getElementById("screen");
+  const crt = document.getElementById("crt");
+  const params = new URLSearchParams(location.search);
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const STATIC = params.get("static") === "1" || reduced;
+  const SPEED = Math.max(0.25, parseFloat(params.get("speed")) || 1);
+
+  let run = 0; // generation token — bumping it aborts any in-flight scenario
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const d = (ms) => (STATIC ? 0 : ms / SPEED);
+  const abortIfStale = (id) => { if (id !== run) throw new Error("stale"); };
+
+  const cursor = document.createElement("span");
+  cursor.className = "cursor";
+
+  function el(cls, text) {
+    const s = document.createElement("span");
+    s.className = cls;
+    if (text != null) s.textContent = text;
+    return s;
+  }
+
+  let curLine = null;
+  function scrollDown() { screen.scrollTop = screen.scrollHeight; }
+  function newLine() {
+    curLine = document.createElement("div");
+    curLine.className = "ln";
+    screen.appendChild(curLine);
+    curLine.appendChild(cursor); // cursor always lives at the end of the active line
+    scrollDown();
+  }
+  function put(node) { curLine.insertBefore(node, cursor); scrollDown(); }
+  function gap() {
+    const g = document.createElement("div");
+    g.className = "gap";
+    screen.appendChild(g);
+  }
+
+  async function typeText(id, text, cls, cps) {
+    cursor.classList.add("typing");
+    const s = el(cls || "f", "");
+    put(s);
+    for (const ch of text) {
+      abortIfStale(id);
+      s.textContent += ch;
+      scrollDown();
+      await sleep(d((cps || 30) + Math.random() * 48 + (ch === " " ? 36 : 0)));
+    }
+    cursor.classList.remove("typing");
+  }
+
+  async function backspace(id, n) {
+    cursor.classList.add("typing");
+    const s = cursor.previousSibling;
+    for (let i = 0; i < n; i++) {
+      abortIfStale(id);
+      s.textContent = s.textContent.slice(0, -1);
+      await sleep(d(62));
+    }
+    cursor.classList.remove("typing");
+  }
+
+  function prompt() {
+    newLine();
+    const p = document.createDocumentFragment();
+    p.append(el("d", "river@phosphor"), el("m", " ~ "), el("a", "$ "));
+    put(p);
+  }
+
+  async function outLine(id, nodes, wait) {
+    abortIfStale(id);
+    newLine();
+    for (const n of nodes) put(n);
+    await sleep(d(wait == null ? 90 : wait));
+  }
+
+  async function statusLine(id, label, desc, nDots, verdict) {
+    abortIfStale(id);
+    newLine();
+    put(el("m", "  " + label));
+    put(el("d", desc + " "));
+    const dots = el("m", "");
+    put(dots);
+    for (let i = 0; i < nDots; i++) {
+      abortIfStale(id);
+      dots.textContent += "·";
+      await sleep(d(16));
+    }
+    await sleep(d(140));
+    put(el("ok", " " + verdict));
+    await sleep(d(220));
+  }
+
+  async function progressLine(id) {
+    abortIfStale(id);
+    newLine();
+    put(el("m", "  components  "));
+    const fill = el("a", "");
+    const rest = el("m", "");
+    const count = el("d", "  0/21");
+    put(fill); put(rest); put(count);
+    const total = 24;
+    for (let i = 0; i <= total; i++) {
+      abortIfStale(id);
+      fill.textContent = "█".repeat(i);
+      rest.textContent = "░".repeat(total - i);
+      count.textContent = "  " + String(Math.round((i / total) * 21)).padStart(2) + "/21";
+      await sleep(d(38));
+    }
+    await sleep(d(180));
+  }
+
+  async function scenario(id) {
+    newLine();
+    await sleep(d(300));
+    await outLine(id, [el("m", "Last login: Mon Jul 13 09:42:17 on ttys002")], 500);
+    gap();
+
+    // $ whoami
+    prompt();
+    await sleep(d(560));
+    await typeText(id, "whoami");
+    await sleep(d(340));
+    await outLine(id, [
+      el("f", "river romney"),
+      el("m", " — "),
+      el("d", "principal product designer · design systems"),
+    ], 240);
+    gap();
+
+    // $ ls work/  (with a human typo, corrected)
+    prompt();
+    await sleep(d(700));
+    await typeText(id, "ls wrok/");
+    await sleep(d(420)); // ...notices
+    await backspace(id, 4);
+    await typeText(id, "ork/");
+    await sleep(d(320));
+    const row = (idx, dir, pad, meta) => [
+      el("m", idx + "  "), el("a", dir), el("m", pad), el("d", meta),
+    ];
+    await outLine(id, row("01", "decision-engine/", "   ", "Capital One · 2024–2025"), 110);
+    await outLine(id, row("02", "otkit/", "             ", "OpenTable · 2022–2024"), 110);
+    await outLine(id, row("03", "reservations/", "      ", "OpenTable · 2019–2022"), 110);
+    await outLine(id, [
+      el("m", "04  "), el("a", "parsimony/"), el("m", "         "),
+      el("d", "Personal · 2026  "), el("a live", "●"), el("d", " live"),
+    ], 220);
+    gap();
+
+    // $ make portfolio
+    prompt();
+    await sleep(d(760));
+    await typeText(id, "make portfolio");
+    await sleep(d(420));
+    await statusLine(id, "tokens      ", "parsimony · 4 brands · 1 source", 10, "ok");
+    await statusLine(id, "contrast    ", "WCAG AA 4.5:1 · every pairing", 12, "pass");
+    await progressLine(id);
+    await outLine(id, [
+      el("ok", "✓"), el("f", " portfolio built"),
+      el("m", " — no drift detected"),
+    ], 300);
+    gap();
+
+    // $ open riverromney.com
+    prompt();
+    await sleep(d(820));
+    await typeText(id, "open riverromney.com");
+    await sleep(d(520));
+    await outLine(id, [el("a", "» ")], 0);
+    await typeText(id, "product design for systems that scale.", "f", 40);
+  }
+
+  async function cycle(first) {
+    const id = ++run;
+    try {
+      screen.replaceChildren();
+      if (first && !STATIC) {
+        // CRT power-on
+        await sleep(120);
+        crt.classList.add("on");
+        crt.classList.remove("boot");
+        await sleep(d(620));
+      } else {
+        crt.classList.add("on");
+        crt.classList.remove("boot", "off");
+      }
+      await scenario(id);
+      if (STATIC) return; // hold the finished frame
+      await sleep(d(4600));
+      abortIfStale(id);
+      crt.classList.add("off");
+      await sleep(560);
+      abortIfStale(id);
+      crt.classList.remove("off");
+      cycle(false);
+    } catch (e) { /* superseded by a restart — the new cycle owns the screen */ }
+  }
+
+  addEventListener("pointerdown", () => {
+    crt.classList.remove("off");
+    cycle(false);
+  });
+
+  cycle(true);
+})();
+</script>
+</body>
+</html>
