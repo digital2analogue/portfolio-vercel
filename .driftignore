@@ -17,3 +17,14 @@ app/layout.tsx
 # --primitive-font-family-* (no semantic family-only token exists yet).
 # See brand-tokens docs/decisions.md (2026-06-05 font-family decision).
 lib/tokens.ts
+
+# The OTKit case-study demos are faithful reproductions of another company's
+# design system, rendered inside the dark site. Their palette is demo-local
+# by design (see CLAUDE.md "Interactive Case Demos") — these hex values are
+# OTKit's, and must never leak into (or be replaced by) Parsimony tokens.
+lib/reservationStates.ts
+lib/tableStatus.ts
+
+# Case-study body content — hex appears only in prose/alt-text describing
+# token-resolution diagrams, not as styling.
+lib/caseContent.ts
