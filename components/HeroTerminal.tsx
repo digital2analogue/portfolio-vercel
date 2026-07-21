@@ -5,10 +5,13 @@
  * sequence instead of a static screenshot with a fade-in.
  *
  * On load it types `whoami`, "runs" it, then types the two `//` answer lines,
- * a blinking block caret trailing the active character. All three line rows are
- * reserved from first paint so nothing below shifts as text fills in. A
- * visually-hidden static copy carries the real content to assistive tech, and
- * `prefers-reduced-motion` renders the full text immediately with no typing.
+ * a blinking block caret trailing the active character. Each row reserves its
+ * FINAL height from first paint — an invisible in-flow copy of the full line
+ * sets the box (including wrapped lines on narrow viewports) and the typed
+ * text renders absolutely on top — so nothing below shifts as text fills in.
+ * A visually-hidden static copy carries the real content to assistive tech,
+ * and `prefers-reduced-motion` renders the full text immediately with no
+ * typing.
  */
 
 import { useEffect, useState } from "react";
@@ -74,22 +77,21 @@ export default function HeroTerminal() {
 
     const tick = () => {
       if (cancelled) return;
-      if (li >= LINES.length) {
-        setActive(LINES.length - 1);
-        setDone(true);
-        return;
-      }
       const full = LINES[li].text;
       if (ci < full.length) {
         buf[li] = full.slice(0, ci + 1);
         setTyped([...buf]);
         ci += 1;
         t = setTimeout(tick, LINES[li].prompt ? CMD_MS : CHAR_MS);
-      } else {
+      } else if (li + 1 < LINES.length) {
         li += 1;
         ci = 0;
         setActive(li);
         t = setTimeout(tick, LINE_PAUSE);
+      } else {
+        // Finish in place — the caret stays parked on the last line rather
+        // than vanishing for a beat past the end of the array.
+        setDone(true);
       }
     };
 
@@ -102,28 +104,39 @@ export default function HeroTerminal() {
 
   const caret = <span className="hero__term-caret" aria-hidden="true" />;
 
+  // One line's content — the same markup renders the invisible height-setting
+  // ghost (full text) and the visible typed layer, so wrap points match.
+  const rowContent = (line: Line, text: string, withCaret: boolean) => (
+    <>
+      {line.prompt && (
+        <>
+          <span className="accent">~</span> $ {text}
+        </>
+      )}
+      {line.slash && (
+        <>
+          <span className="hero__term-slash">// </span>
+          <span className={line.ans ? "hero__term-ans" : undefined}>{text}</span>
+        </>
+      )}
+      {withCaret && caret}
+    </>
+  );
+
   return (
     <div className="hero__term rise d1">
       {/* Screen-reader copy — the real content, read once, no typing artifacts. */}
-      <span className="sr-only">River, Principal Designer. Design systems, compliance-heavy fintech.</span>
+      <span className="sr-only">River, Principal Designer. Design systems. Compliance-heavy fintech.</span>
 
       <div aria-hidden="true">
         {LINES.map((line, i) => {
           const showCaret = !reduced && (done ? i === LINES.length - 1 : i === active);
           return (
             <div key={i} className="hero__term-row">
-              {line.prompt && (
-                <>
-                  <span className="accent">~</span> $ {typed[i]}
-                </>
-              )}
-              {line.slash && (
-                <>
-                  <span className="hero__term-slash">// </span>
-                  <span className={line.ans ? "hero__term-ans" : undefined}>{typed[i]}</span>
-                </>
-              )}
-              {showCaret && caret}
+              {/* In-flow, invisible: reserves the line's final (wrapped) height. */}
+              <span className="hero__term-ghost">{rowContent(line, line.text, false)}</span>
+              {/* Overlaid: the live typed text + caret. */}
+              <span className="hero__term-live">{rowContent(line, typed[i], showCaret)}</span>
             </div>
           );
         })}

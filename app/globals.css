@@ -334,9 +334,12 @@ button:focus-visible,
 }
 .hero__term-slash { color: var(--color-border-alt); }
 .hero__term-ans   { color: var(--color-foreground-default); }
-/* Each row holds one boot line; height is reserved from first paint so the
-   text typing in below never shifts the display heading. */
-.hero__term-row { min-height: 1.6em; }
+/* Each row holds one boot line. An invisible in-flow ghost of the FULL line
+   sets the row's height — including wrapped lines on narrow viewports — and
+   the typed text overlays it, so nothing below shifts while typing. */
+.hero__term-row { position: relative; min-height: 1.6em; }
+.hero__term-ghost { visibility: hidden; }
+.hero__term-live { position: absolute; inset: 0; }
 /* Block caret trailing the active character — the nav cursor, inline. */
 .hero__term-caret {
   display: inline-block;

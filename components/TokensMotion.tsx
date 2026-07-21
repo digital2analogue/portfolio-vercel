@@ -149,6 +149,13 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
               onMouseEnter={replay}
               onFocus={replay}
               onClick={replay}
+              onKeyDown={(e) => {
+                // role="button" carries no native activation — wire it up.
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  replay();
+                }
+              }}
             >
               <svg
                 className="tokens-motion__curve"
