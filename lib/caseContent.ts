@@ -13,7 +13,7 @@ export type Block =
   | { type: "note"; text: string }
   | { type: "hr" }
   | { type: "meta"; rows: [string, string][] }
-  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string };
+  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string; surface?: "light" | "dark" };
 
 export type CaseContent = {
   slug: string;
@@ -1015,6 +1015,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "Most design-system checks happen after the fact: a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+      },
+      {
+        type: "demo",
+        demo: "check-usage",
+        surface: "dark",
+        frameLabel: "Parsimony · check_usage",
+        caption:
+          "Live: edit the snippet and watch the violations update. A faithful port of the static rules — hardcoded hex, primitive references, hardcoded type. The deployed MCP tool runs the same rule set plus deprecated-token checks against the live registry.",
       },
       {
         type: "p",

@@ -1396,6 +1396,149 @@ h2.eyebrow,
   padding: var(--primitive-space-md);
   margin: 0;
 }
+/* Dark surface variant — for demos native to the dark Parsimony system
+   (e.g. check_usage), rather than the OTKit light product surface. */
+.demo-frame__surface[data-surface="dark"] {
+  background: var(--color-background-default);
+}
+
+/* ── check_usage playground (components/demos/CheckUsageDemo) ── */
+.cu {
+  font: var(--font-code);
+  color: var(--color-foreground-default);
+}
+.cu__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-xs);
+  margin-bottom: var(--spacing-tight);
+}
+.cu__title {
+  font: var(--font-mono-label-strong-small, var(--font-code));
+  color: var(--color-foreground-accent);
+  letter-spacing: var(--letter-spacing-label);
+}
+.cu__toolbar-spacer { flex: 1; }
+.cu__preset {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-action);
+  background: transparent;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--primitive-space-3xs) var(--primitive-space-xs);
+  cursor: pointer;
+  transition: border-color var(--motion-transition-micro), background var(--motion-transition-micro);
+}
+.cu__preset:hover,
+.cu__preset:focus-visible { border-color: var(--color-border-action); background: var(--color-background-accent-green); }
+.cu__preset[aria-pressed="true"] { border-color: var(--color-border-action); background: var(--color-background-accent-green); }
+.cu__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-element);
+  align-items: start;
+}
+.cu__panel { min-width: 0; }
+.cu__panel-label {
+  font: var(--font-mono-label-small);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-all-caps);
+  color: var(--color-foreground-muted);
+  margin-bottom: var(--primitive-space-2xs);
+}
+.cu__editor {
+  display: flex;
+  background: var(--color-background-alt);
+  border: 1px solid var(--color-border-alt);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.cu__editor:focus-within { border-color: var(--color-border-focus); }
+.cu__gutter {
+  display: flex;
+  flex-direction: column;
+  padding: var(--primitive-space-sm) var(--primitive-space-xs);
+  text-align: right;
+  color: var(--color-foreground-muted);
+  background: color-mix(in srgb, var(--color-foreground-action) 4%, transparent);
+  border-right: 1px solid var(--color-border-muted);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+.cu__gutter span[data-bad="true"] { color: var(--color-foreground-danger); font-weight: var(--primitive-font-weight-medium); }
+.cu__code {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-foreground-default);
+  font: var(--font-code);
+  line-height: 1.6;
+  padding: var(--primitive-space-sm);
+  white-space: pre;
+  overflow-x: auto;
+}
+.cu__out {
+  background: var(--color-background-alt);
+  border: 1px solid var(--color-border-alt);
+  border-radius: var(--radius-sm);
+  padding: var(--primitive-space-sm) var(--primitive-space-md) var(--primitive-space-md);
+}
+.cu__verdict {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-space-xs);
+  font: var(--font-mono-label-strong-small, var(--font-code));
+  color: var(--color-foreground-success);
+  padding-bottom: var(--primitive-space-xs);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+.cu__out[data-clean="false"] .cu__verdict { color: var(--color-foreground-danger); }
+.cu__verdict-mark { font-size: 1.1em; }
+.cu__list { list-style: none; margin: 0; padding: 0; font: var(--font-code); }
+/* Suppress the case-body's global "›" list bullet inside the playground.
+   Scoped under .blocks so it outranks `.blocks ul li::before`. */
+.blocks .cu__list li { padding-left: 0; }
+.blocks .cu__list li::before { content: none; }
+.cu__item {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: baseline;
+  gap: var(--primitive-space-2xs) var(--primitive-space-sm);
+  padding: var(--primitive-space-xs) 0;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+.cu__item:last-child { border-bottom: 0; }
+.cu__loc { color: var(--color-foreground-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.cu__rule {
+  color: var(--color-foreground-danger);
+  background: var(--color-background-danger-alt);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--primitive-space-2xs);
+  white-space: nowrap;
+  font: var(--font-mono-label-small);
+}
+.cu__msg {
+  grid-column: 1 / -1;
+  color: var(--color-foreground-alt);
+  font: var(--font-body-small);
+  line-height: 1.5;
+}
+.cu__hint {
+  margin: var(--primitive-space-xs) 0 0;
+  color: var(--color-foreground-muted);
+  font: var(--font-body-small);
+  line-height: 1.5;
+}
+@media (min-width: 601px) {
+  .cu__msg { grid-column: 3; }
+}
+@media (max-width: 700px) {
+  .cu__grid { grid-template-columns: 1fr; }
+}
 
 /* ── OTKit light-mode component context ── */
 .rr-demo {

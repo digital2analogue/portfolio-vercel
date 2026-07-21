@@ -101,6 +101,13 @@ const PAIRINGS = [
   // Action surface (primary buttons, CTAs)
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
 
+  // ── check_usage playground (components/demos/CheckUsageDemo) ──
+  // Dark-system editor (bg-alt) with danger accents for violations. Compliant
+  // verdict + code reuse pairings already registered above (success/default on
+  // bg-alt). New danger pairings:
+  { text: '--color-foreground-danger', bg: BG_ALT,                          label: 'check_usage: violation accents (verdict, gutter, rule) on editor' },
+  { text: '--color-foreground-danger', bg: '--color-background-danger-alt', label: 'check_usage: rule-id chip (danger on danger-alt)' },
+
   // ── OTKit reservation-status demo (components/demos/ReservationStatusDemo) ──
   // Light-mode surface with its own OTKit-local palette (resolved hexes, not
   // portfolio tokens). Fills come from the OTKit Variables library; two are

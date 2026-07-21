@@ -61,12 +61,12 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
           case "demo": {
             const Demo = DEMO_REGISTRY[b.demo];
             return (
-              <figure key={i} className="demo-frame">
+              <figure key={i} className="demo-frame" data-surface={b.surface ?? "light"}>
                 <div className="demo-frame__chrome" aria-hidden="true">
                   <span className="demo-frame__dot" />
                   <span className="demo-frame__label">{b.frameLabel ?? "OTKit · Live component"}</span>
                 </div>
-                <div className="demo-frame__surface">
+                <div className="demo-frame__surface" data-surface={b.surface ?? "light"}>
                   <Demo />
                 </div>
                 {b.caption && <figcaption>{b.caption}</figcaption>}
