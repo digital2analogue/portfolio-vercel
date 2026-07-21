@@ -970,7 +970,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
+        text: "Decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
       },
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
@@ -1020,7 +1020,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "demo",
         demo: "check-usage",
         surface: "dark",
-        frameLabel: "Parsimony · check_usage",
+        frameLabel: "Parsimony · check_usage · Playground",
         caption:
           "Live: edit the snippet and watch the violations update. A faithful port of the static rules — hardcoded hex, primitive references, hardcoded type. The deployed MCP tool runs the same rule set plus deprecated-token checks against the live registry.",
       },

@@ -1417,6 +1417,11 @@ h2.eyebrow,
   color: var(--color-foreground-accent);
   letter-spacing: var(--letter-spacing-label);
 }
+.cu__playground-tag {
+  font: var(--font-label-small);
+  color: var(--color-foreground-muted);
+  font-style: italic;
+}
 .cu__toolbar-spacer { flex: 1; }
 .cu__preset {
   font: var(--font-mono-label-small);
