@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CASES } from "@/lib/cases";
+import HeroTerminal from "@/components/HeroTerminal";
 
 export default function IndexPage() {
   return (
@@ -9,19 +10,7 @@ export default function IndexPage() {
           §&nbsp;<span className="accent">01</span>&nbsp;/&nbsp;MASTHEAD
         </span>
 
-        <div className="hero__term rise d1">
-          <div>
-            <span className="accent" aria-hidden="true">~</span> $ whoami
-          </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            <span className="hero__term-ans">River, Principal Designer</span>
-          </div>
-          <div>
-            <span className="hero__term-slash" aria-hidden="true">// </span>
-            Design systems. Compliance-heavy fintech.
-          </div>
-        </div>
+        <HeroTerminal />
 
         <h1 className="display rise d2">
           Product design <em>for&nbsp;systems</em> that scale.

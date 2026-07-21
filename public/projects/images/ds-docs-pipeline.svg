@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="780" viewBox="0 0 1240 780" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="740" viewBox="0 40 1240 740" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
 <defs><radialGradient id="bloom" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.18"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0"/></radialGradient></defs>
 <rect width="1240" height="780" fill="#0A0D0A"/>
-<text x="120" y="64" font-size="33" font-weight="500" fill="#C8CFC4">Docs that can't drift</text>
-<text x="120" y="94" font-size="16" font-weight="400" fill="#A0A89A">Component docs are generated from the metadata, not hand-written &#8212; and a CI gate keeps them honest.</text>
 <rect x="930" y="58" width="20" height="11" rx="3" fill="#4ADE6E"/>
 <text x="958" y="68" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#A0A89A">shipped</text>
 <rect x="1055" y="58" width="20" height="11" rx="3" fill="none" stroke="#FCD34D" stroke-width="1.5" stroke-dasharray="4 3"/>

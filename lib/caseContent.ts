@@ -13,7 +13,7 @@ export type Block =
   | { type: "note"; text: string }
   | { type: "hr" }
   | { type: "meta"; rows: [string, string][] }
-  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string };
+  | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string; surface?: "light" | "dark" };
 
 export type CaseContent = {
   slug: string;
@@ -901,7 +901,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "note",
-        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving, so I've marked what's shipped versus what's deferred throughout.",
+        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's a work in progress — I've marked what's shipped versus what's deferred throughout, and the [public roadmap on GitHub](https://github.com/digital2analogue/parsimony/milestones) tracks what's in flight next.",
       },
       { type: "hr" },
       {
@@ -915,7 +915,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**Browse the live token catalog:** [the full token reference is here](/tokens).",
+        text: "**Browse the live token catalog:** [the full token reference is here](/tokens). **Follow the roadmap:** [GitHub milestones](https://github.com/digital2analogue/parsimony/milestones) show what's shipping next.",
       },
       { type: "hr" },
       { type: "h2", text: "The Problem" },
@@ -970,7 +970,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
+        text: "Decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
       },
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
@@ -1015,6 +1015,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "Most design-system checks happen after the fact: a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+      },
+      {
+        type: "demo",
+        demo: "check-usage",
+        surface: "dark",
+        frameLabel: "Parsimony · check_usage · Playground",
+        caption:
+          "Live: edit the snippet and watch the violations update. A faithful port of the static rules — hardcoded hex, primitive references, hardcoded type. The deployed MCP tool runs the same rule set plus deprecated-token checks against the live registry.",
       },
       {
         type: "p",
