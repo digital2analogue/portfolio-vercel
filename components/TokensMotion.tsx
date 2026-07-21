@@ -6,15 +6,16 @@
  * Instead of listing --motion-* tokens as text, this drives real motion FROM
  * the resolved token values (available at build time as `value`, e.g.
  * "cubic-bezier(0,0,0.58,1)" / "200ms"):
- *  - Duration: three dots race the same track, each timed by its token, so you
- *    see instant finish first and emphasized last. Plays on a button and once
- *    when the section scrolls into view.
- *  - Easing: each curve is plotted as SVG (always visible) and a dot replays
- *    that curve on hover / focus / click, so you feel enter vs exit vs move.
+ *  - Duration: each row has its own track and ▶ button that darts a dot across
+ *    at that token's real duration. The rows also race once, together, when the
+ *    section first scrolls into view.
+ *  - Easing: each curve is plotted as SVG (always visible) with its own ▶
+ *    button (plus hover/focus replay) that runs a dot along that curve.
  *  - Transition composites stay as static rows — they combine the two above.
  *
- * All motion is driven via the Web Animations API from the token values and is
- * gated behind prefers-reduced-motion (curves + values stay; nothing moves).
+ * Motion runs via the Web Animations API. Ambient playback (scroll-in autoplay,
+ * hover replay) is gated behind prefers-reduced-motion; an explicit ▶ press
+ * always plays — deliberate user-initiated motion is the accepted exception.
  */
 
 import { useEffect, useRef } from "react";
@@ -45,6 +46,36 @@ const prefersReduced = () =>
   typeof window !== "undefined" &&
   !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
+/** Dart the dot across its track. `force` = explicit ▶ press, always plays. */
+const runDot = (
+  el: HTMLSpanElement | null,
+  duration: number,
+  easing: string,
+  force = false,
+) => {
+  if (!el || (!force && prefersReduced())) return;
+  const track = el.parentElement;
+  if (!track) return;
+  const dist = track.clientWidth - el.offsetWidth;
+  el.animate(
+    [{ transform: "translateX(0)" }, { transform: `translateX(${dist}px)` }],
+    { duration, easing, fill: "forwards" },
+  );
+};
+
+function PlayButton({ onPlay, name }: { onPlay: () => void; name: string }) {
+  return (
+    <button
+      type="button"
+      className="tokens-motion__play"
+      onClick={onPlay}
+      aria-label={`Play ${name}`}
+    >
+      ▶ Play
+    </button>
+  );
+}
+
 export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
   const durations = tokens.filter((t) => t.name.startsWith("--motion-duration-"));
   const easings = tokens.filter((t) => t.name.startsWith("--motion-easing-"));
@@ -53,22 +84,8 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
   const durDots = useRef<(HTMLSpanElement | null)[]>([]);
   const durSection = useRef<HTMLDivElement>(null);
 
-  const runDot = (el: HTMLSpanElement | null, duration: number, easing: string) => {
-    if (!el || prefersReduced()) return;
-    const track = el.parentElement;
-    if (!track) return;
-    const dist = track.clientWidth - el.offsetWidth;
-    el.animate(
-      [{ transform: "translateX(0)" }, { transform: `translateX(${dist}px)` }],
-      { duration, easing, fill: "forwards" },
-    );
-  };
-
-  const playDurations = () => {
-    durations.forEach((d, i) => runDot(durDots.current[i], parseMs(d.value), "linear"));
-  };
-
-  // Play the duration race once when the section first scrolls into view.
+  // Race all duration rows once when the section first scrolls into view, so
+  // the relative timing (instant finishes first, emphasized last) is visible.
   useEffect(() => {
     const node = durSection.current;
     if (!node || prefersReduced() || typeof IntersectionObserver === "undefined") return;
@@ -78,7 +95,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
         for (const e of entries) {
           if (e.isIntersecting && !played) {
             played = true;
-            playDurations();
+            durations.forEach((d, i) => runDot(durDots.current[i], parseMs(d.value), "linear"));
             io.disconnect();
           }
         }
@@ -105,9 +122,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
       {/* ── Duration ── */}
       <div className="tokens-motion__sublabel">
         <span>Duration</span>
-        <button type="button" className="tokens-motion__play" onClick={playDurations}>
-          ▶ Play
-        </button>
+        <span className="tokens-motion__hint">real time — instant is over in a blink by design</span>
       </div>
       <div className="tokens-motion__durations" ref={durSection}>
         {durations.map((d, i) => (
@@ -117,12 +132,18 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
               <code className="tokens-row__value">{d.value}</code>
               <span className="tokens-row__role">{d.description}</span>
             </div>
-            <div className="tokens-motion__track" aria-hidden="true">
-              <span
-                className="tokens-motion__dot"
-                ref={(el) => {
-                  durDots.current[i] = el;
-                }}
+            <div className="tokens-motion__anim">
+              <div className="tokens-motion__track" aria-hidden="true">
+                <span
+                  className="tokens-motion__dot"
+                  ref={(el) => {
+                    durDots.current[i] = el;
+                  }}
+                />
+              </div>
+              <PlayButton
+                name={label(d.name, "--motion-duration-")}
+                onPlay={() => runDot(durDots.current[i], parseMs(d.value), "linear", true)}
               />
             </div>
           </div>
@@ -132,23 +153,18 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
       {/* ── Easing ── */}
       <div className="tokens-motion__sublabel">
         <span>Easing</span>
-        <span className="tokens-motion__hint">hover a curve to replay</span>
+        <span className="tokens-motion__hint">same distance, same time — only the curve changes</span>
       </div>
       <div className="tokens-motion__easings">
         {easings.map((e) => {
           const path = curvePath(e.value, CURVE, 8);
           const dotRef = { current: null as HTMLSpanElement | null };
-          const replay = () => runDot(dotRef.current, 900, e.value);
+          const replay = (force = false) => runDot(dotRef.current, 900, e.value, force);
           return (
             <div
               key={e.name}
               className="tokens-motion__erow"
-              tabIndex={0}
-              role="button"
-              aria-label={`Replay ${label(e.name, "--motion-easing-")} easing`}
-              onMouseEnter={replay}
-              onFocus={replay}
-              onClick={replay}
+              onMouseEnter={() => replay()}
             >
               <svg
                 className="tokens-motion__curve"
@@ -170,12 +186,18 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
                 <code className="tokens-row__value">{e.value}</code>
                 <span className="tokens-row__role">{e.description}</span>
               </div>
-              <div className="tokens-motion__track" aria-hidden="true">
-                <span
-                  className="tokens-motion__dot"
-                  ref={(el) => {
-                    dotRef.current = el;
-                  }}
+              <div className="tokens-motion__anim">
+                <div className="tokens-motion__track" aria-hidden="true">
+                  <span
+                    className="tokens-motion__dot"
+                    ref={(el) => {
+                      dotRef.current = el;
+                    }}
+                  />
+                </div>
+                <PlayButton
+                  name={`${label(e.name, "--motion-easing-")} easing`}
+                  onPlay={() => replay(true)}
                 />
               </div>
             </div>
