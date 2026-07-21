@@ -901,7 +901,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "note",
-        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's still evolving, so I've marked what's shipped versus what's deferred throughout.",
+        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's a work in progress — I've marked what's shipped versus what's deferred throughout, and the [public roadmap on GitHub](https://github.com/digital2analogue/parsimony/milestones) tracks what's in flight next.",
       },
       { type: "hr" },
       {
@@ -915,7 +915,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**Browse the live token catalog:** [the full token reference is here](/tokens).",
+        text: "**Browse the live token catalog:** [the full token reference is here](/tokens). **Follow the roadmap:** [GitHub milestones](https://github.com/digital2analogue/parsimony/milestones) show what's shipping next.",
       },
       { type: "hr" },
       { type: "h2", text: "The Problem" },
