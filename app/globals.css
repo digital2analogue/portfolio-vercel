@@ -167,6 +167,7 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .rise,
   .cursor,
+  .hero__term-caret,
   .status-dot,
   #focus-caret { animation: none; }
   .rise        { opacity: 1; }
@@ -333,6 +334,31 @@ button:focus-visible,
 }
 .hero__term-slash { color: var(--color-border-alt); }
 .hero__term-ans   { color: var(--color-foreground-default); }
+/* Each row holds one boot line; height is reserved from first paint so the
+   text typing in below never shifts the display heading. */
+.hero__term-row { min-height: 1.6em; }
+/* Block caret trailing the active character — the nav cursor, inline. */
+.hero__term-caret {
+  display: inline-block;
+  width: 7px;
+  height: 12px;
+  background: var(--color-foreground-action);
+  vertical-align: -1px;
+  margin-left: var(--primitive-space-3xs);
+  box-shadow: var(--phosphor-bloom-sm);
+  animation: blink 1.05s infinite step-start;
+}
+
+/* Reusable visually-hidden utility (screen-reader-only text). */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .display {
   font: var(--font-display);
