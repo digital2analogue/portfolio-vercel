@@ -2067,6 +2067,116 @@ h2.eyebrow,
   min-width: 0;
 }
 
+/* ── Motion section (live) — components/TokensMotion.tsx ── */
+.tokens-motion__note {
+  font: var(--font-body-small);
+  color: var(--color-foreground-alt);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-component);
+  max-width: 60ch;
+}
+.tokens-motion__note strong { color: var(--color-foreground-default); font-weight: var(--primitive-font-weight-medium); }
+.tokens-motion__sublabel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-inline);
+  margin: var(--spacing-component) 0 var(--spacing-tight);
+}
+.tokens-motion__sublabel > span:first-child {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--letter-spacing-label);
+}
+.tokens-motion__hint {
+  font: var(--font-label-small);
+  color: var(--color-foreground-muted);
+  font-style: italic;
+}
+.tokens-motion__play {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-action);
+  background: transparent;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  padding: var(--primitive-space-3xs) var(--primitive-space-xs);
+  cursor: pointer;
+  transition: border-color var(--motion-transition-micro),
+    background var(--motion-transition-micro);
+}
+.tokens-motion__play:hover,
+.tokens-motion__play:focus-visible {
+  border-color: var(--color-border-action);
+  background: var(--color-background-accent-green);
+}
+.tokens-motion__durations,
+.tokens-motion__easings {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.tokens-motion__drow,
+.tokens-motion__erow {
+  display: grid;
+  align-items: center;
+  gap: var(--spacing-element);
+  padding: var(--primitive-space-sm) 0;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+.tokens-motion__drow { grid-template-columns: minmax(0, 1fr) minmax(120px, 200px); }
+.tokens-motion__erow {
+  grid-template-columns: 60px minmax(0, 1fr) minmax(120px, 200px);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--motion-transition-micro);
+}
+.tokens-motion__erow:hover,
+.tokens-motion__erow:focus-visible {
+  background: color-mix(in srgb, var(--color-foreground-action) 5%, transparent);
+  outline: none;
+}
+.tokens-motion__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-3xs);
+  min-width: 0;
+}
+.tokens-motion__meta .tokens-row__value { color: var(--color-foreground-muted); }
+.tokens-motion__track {
+  position: relative;
+  height: 10px;
+}
+.tokens-motion__track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--color-border-elevated);
+  border-radius: 2px;
+}
+.tokens-motion__dot {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: var(--radius-full);
+  background: var(--color-foreground-action);
+  box-shadow: var(--phosphor-bloom-sm);
+  will-change: transform;
+}
+.tokens-motion__curve { display: block; }
+.tokens-motion__axis { stroke: var(--color-border-alt); stroke-width: 1; }
+.tokens-motion__curveline {
+  stroke: var(--color-foreground-action);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 2px rgba(74, 222, 110, 0.4));
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    Mobile overrides (≤560px)
    Placed at the end of the file so they win the cascade over base

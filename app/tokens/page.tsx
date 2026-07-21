@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { catalog, tokenVersion, semanticCount, type CatToken } from "@/lib/tokenValues";
+import TokensMotion from "@/components/TokensMotion";
 
 export const metadata: Metadata = {
   title: "Design Tokens",
@@ -368,7 +369,8 @@ export default function TokensPage() {
 
       {/* ═══════════════ MOTION / SHADOW / LETTER-SPACING / ICON ═══════════════ */}
       <div className="rise d8">
-        <CompactSection title="Motion" italic="duration + easing" tokens={MOTION} />
+        <SectionHead title="Motion" italic="duration + easing, in motion" />
+        <TokensMotion tokens={MOTION} />
       </div>
       <div className="rise d8" style={{ marginTop: "var(--spacing-layout)" }}>
         <CompactSection title="Shadow" italic="elevation, used sparingly" tokens={SHADOW} />
