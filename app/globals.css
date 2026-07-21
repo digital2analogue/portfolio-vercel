@@ -2287,7 +2287,13 @@ h2.eyebrow,
   gap: var(--primitive-space-3xs);
   min-width: 0;
 }
-.tokens-motion__meta .tokens-row__value { color: var(--color-foreground-muted); }
+.tokens-motion__meta .tokens-row__value {
+  color: var(--color-foreground-muted);
+  /* The base value style is nowrap; in this narrow column a long
+     cubic-bezier() must wrap rather than overflow under the track. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .tokens-motion__track {
   position: relative;
   height: 10px;
@@ -2316,6 +2322,15 @@ h2.eyebrow,
   will-change: transform;
 }
 .tokens-motion__curve { display: block; }
+/* Mobile: stack the rows — meta (with the curve beside it for easings) on
+   top, the track + ▶ on its own full-width line below. Prevents the anim
+   column from colliding with wrapped token/value text. */
+@media (max-width: 700px) {
+  .tokens-motion__drow { grid-template-columns: 1fr; }
+  .tokens-motion__erow { grid-template-columns: 60px minmax(0, 1fr); }
+  .tokens-motion__erow .tokens-motion__anim,
+  .tokens-motion__drow .tokens-motion__anim { grid-column: 1 / -1; }
+}
 .tokens-motion__axis { stroke: var(--color-border-alt); stroke-width: 1; }
 .tokens-motion__curveline {
   stroke: var(--color-foreground-action);
