@@ -46,7 +46,16 @@ const prefersReduced = () =>
   typeof window !== "undefined" &&
   !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-/** Dart the dot across its track. `force` = explicit ▶ press, always plays. */
+/**
+ * Dart the dot across its track. `force` = explicit ▶ press, always plays.
+ *
+ * The dot RESTS at the start: it darts, holds at the end for a beat (so even a
+ * 120ms dart leaves an unmissable state change), then snaps home ready to
+ * replay. Without the reset, a finished dot sits at the end and the next press
+ * reads as "nothing happened" for the short durations.
+ */
+const HOLD_MS = 1100;
+
 const runDot = (
   el: HTMLSpanElement | null,
   duration: number,
@@ -57,10 +66,16 @@ const runDot = (
   const track = el.parentElement;
   if (!track) return;
   const dist = track.clientWidth - el.offsetWidth;
-  el.animate(
+  el.getAnimations().forEach((a) => a.cancel());
+  const anim = el.animate(
     [{ transform: "translateX(0)" }, { transform: `translateX(${dist}px)` }],
     { duration, easing, fill: "forwards" },
   );
+  anim.finished
+    .then(() => {
+      setTimeout(() => anim.cancel(), HOLD_MS); // cancel drops the fill → snaps home
+    })
+    .catch(() => {}); // superseded by a newer press — nothing to do
 };
 
 function PlayButton({ onPlay, name }: { onPlay: () => void; name: string }) {
