@@ -841,7 +841,7 @@ h2.eyebrow,
   margin: var(--primitive-space-2xl) 0 var(--spacing-element);
 }
 .blocks h3 {
-  font: var(--font-title-medium);
+  font: var(--font-title-small);
   letter-spacing: var(--letter-spacing-title);
   color: var(--color-foreground-default);
   margin: var(--primitive-space-xl) 0 var(--spacing-tight);
