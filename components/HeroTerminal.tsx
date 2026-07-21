@@ -109,7 +109,9 @@ export default function HeroTerminal() {
 
       <div aria-hidden="true">
         {LINES.map((line, i) => {
-          const showCaret = !reduced && (done ? i === LINES.length - 1 : i === active);
+          // Caret only while the boot sequence is typing. Once settled it goes
+          // away — the nav brand's cursor stays the page's only blinking caret.
+          const showCaret = !reduced && !done && i === active;
           return (
             <div key={i} className="hero__term-row">
               {line.prompt && (
