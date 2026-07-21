@@ -19,6 +19,7 @@
  */
 
 import { useEffect, useRef } from "react";
+import { firstSentence } from "@/lib/firstSentence";
 
 type Tok = { name: string; value: string; description: string };
 
@@ -127,11 +128,9 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
   return (
     <div className="tokens-motion">
       <p className="tokens-motion__note">
-        Two registers, from the same tokens. <strong>Productive</strong> motion —
-        instant/standard durations, the enter and move curves — is for UI that
-        responds: hovers, dropdowns, tab switches. <strong>Expressive</strong>{" "}
-        motion — the emphasized duration — is reserved for layer-shifting moments:
-        modals, drawers, route changes.
+        Two registers, one token set: <strong>productive</strong> motion for UI
+        that responds; <strong>expressive</strong> motion for layer-shifting
+        moments.
       </p>
 
       {/* ── Duration ── */}
@@ -145,7 +144,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
             <div className="tokens-motion__meta">
               <code className="tokens-row__token">{d.name}</code>
               <code className="tokens-row__value">{d.value}</code>
-              <span className="tokens-row__role">{d.description}</span>
+              <span className="tokens-row__role">{firstSentence(d.description)}</span>
             </div>
             <div className="tokens-motion__anim">
               <div className="tokens-motion__track" aria-hidden="true">
@@ -199,7 +198,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
               <div className="tokens-motion__meta">
                 <code className="tokens-row__token">{e.name}</code>
                 <code className="tokens-row__value">{e.value}</code>
-                <span className="tokens-row__role">{e.description}</span>
+                <span className="tokens-row__role">{firstSentence(e.description)}</span>
               </div>
               <div className="tokens-motion__anim">
                 <div className="tokens-motion__track" aria-hidden="true">
@@ -232,7 +231,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
               <div key={t.name} className="tokens-compact__row">
                 <code className="tokens-row__token">{t.name}</code>
                 <code className="tokens-row__value">{t.value}</code>
-                <div className="tokens-row__role">{t.description}</div>
+                <div className="tokens-row__role">{firstSentence(t.description)}</div>
               </div>
             ))}
           </div>
