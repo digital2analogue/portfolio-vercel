@@ -958,6 +958,44 @@ h2.eyebrow,
   letter-spacing: var(--letter-spacing-body);
 }
 
+/* Outcome stats strip — the case's headline numbers, phosphor-lit.
+   Values render in mono with tabular numerals; accent green is intentional
+   emphasis here (the numbers are the point), mirroring .case__idx. */
+.blocks .block-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-element) var(--spacing-component);
+  list-style: none;
+  margin: var(--spacing-component) 0;
+  padding: 0;
+}
+.blocks .block-stats li {
+  margin: 0;
+  padding-top: var(--spacing-tight);
+  border-top: 1px solid var(--color-border-alt);
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-2xs);
+}
+.blocks .block-stats li::before {
+  content: none;
+}
+.block-stats__value {
+  font-family: var(--primitive-font-family-mono);
+  font-size: var(--primitive-font-size-lg);
+  font-weight: var(--primitive-font-weight-regular);
+  line-height: var(--primitive-font-line-height-tight);
+  color: var(--color-foreground-action);
+  text-shadow: var(--phosphor-bloom-sm);
+  font-variant-numeric: tabular-nums;
+}
+.block-stats__label {
+  font: var(--font-code);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+}
+
 /* Figure / image blocks */
 .blocks figure {
   margin: var(--primitive-space-xl) 0;

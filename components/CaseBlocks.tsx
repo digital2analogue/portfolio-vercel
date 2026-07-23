@@ -88,6 +88,17 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
             return <OutcomeToggleDemo key={i} caption={b.caption} />;
           case "hr":
             return <hr key={i} />;
+          case "stats":
+            return (
+              <ul key={i} className="block-stats">
+                {b.items.map((s) => (
+                  <li key={s.label} className="block-stats__item">
+                    <span className="block-stats__value">{s.value}</span>
+                    <span className="block-stats__label">{s.label}</span>
+                  </li>
+                ))}
+              </ul>
+            );
           case "meta":
             return (
               <div key={i} className="block-meta">

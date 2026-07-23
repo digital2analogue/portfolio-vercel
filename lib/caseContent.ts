@@ -13,6 +13,7 @@ export type Block =
   | { type: "note"; text: string }
   | { type: "hr" }
   | { type: "meta"; rows: [string, string][] }
+  | { type: "stats"; items: Array<{ value: string; label: string }> }
   | { type: "demo"; demo: DemoKey; caption?: string; frameLabel?: string; surface?: "light" | "dark" };
 
 export type CaseContent = {
@@ -47,6 +48,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           ["Scope", "System strategy, component architecture, governance"],
           ["Team", "2 designers, 2 PMs, engineering leads"],
           ["Timeline", "5 months"],
+        ],
+      },
+      { type: "hr" },
+      {
+        type: "stats",
+        items: [
+          { value: "8 → 3", label: "Clicks to a saved rule" },
+          { value: "63%", label: "Shorter rule-creation path" },
+          { value: "~30%", label: "Accessibility compliance lift" },
         ],
       },
       { type: "hr" },
@@ -294,6 +304,16 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           ["Scope", "iOS, Android, Web"],
           ["Team", "6 product teams"],
           ["Timeline", "~1 year focused engagement"],
+        ],
+      },
+      { type: "hr" },
+      {
+        type: "stats",
+        items: [
+          { value: "25%", label: "Less QA time" },
+          { value: "≈$59K/yr", label: "Developer time reclaimed" },
+          { value: "+2.19%", label: "Diner bookings, dynamic type" },
+          { value: "6", label: "Teams on one system" },
         ],
       },
       { type: "hr" },
@@ -714,6 +734,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       { type: "hr" },
+      {
+        type: "stats",
+        items: [
+          { value: "0", label: "Data loss or regressions" },
+          { value: "10 wks", label: "Kickoff to shipped" },
+          { value: "Web + native", label: "Shared component coverage" },
+        ],
+      },
+      { type: "hr" },
       { type: "h2", text: "The Problem" },
       {
         type: "p",
@@ -916,6 +945,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "**Browse the live token catalog:** [the full token reference is here](/tokens). **Follow the roadmap:** [GitHub milestones](https://github.com/digital2analogue/parsimony/milestones) show what's shipping next.",
+      },
+      { type: "hr" },
+      {
+        type: "stats",
+        items: [
+          { value: "21", label: "Framework-agnostic components" },
+          { value: "4", label: "Brands from one source" },
+          { value: "2", label: "Token tiers — primitives → semantic" },
+        ],
       },
       { type: "hr" },
       { type: "h2", text: "The Problem" },

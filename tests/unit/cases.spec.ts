@@ -64,4 +64,20 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
       expect(caseSlugs.has(key), `CASE_CONTENT "${key}" has no CASES entry`).toBe(true)
     }
   })
+
+  // The stats strip is the outcome headline for every case — a case body
+  // without one regresses to numbers buried in prose.
+  it('every case body carries a stats block with value + label pairs', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      const stats = content.blocks.filter((b) => b.type === 'stats')
+      expect(stats.length, `${key} stats blocks`).toBeGreaterThan(0)
+      for (const block of stats) {
+        expect(block.items.length, `${key} stats items`).toBeGreaterThan(0)
+        for (const item of block.items) {
+          expect(item.value.trim(), `${key} stat value`).not.toBe('')
+          expect(item.label.trim(), `${key} stat label`).not.toBe('')
+        }
+      }
+    }
+  })
 })
