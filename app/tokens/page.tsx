@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { catalog, tokenVersion, semanticCount, type CatToken } from "@/lib/tokenValues";
 import TokensMotion from "@/components/TokensMotion";
+import { firstSentence } from "@/lib/firstSentence";
 
 export const metadata: Metadata = {
   title: "Design Tokens",
@@ -100,7 +101,7 @@ function ColorRow({ row }: { row: CatToken }) {
       />
       <div className="tokens-row__body">
         <code className="tokens-row__token">{row.name}</code>
-        <div className="tokens-row__role">{row.description}</div>
+        <div className="tokens-row__role">{firstSentence(row.description)}</div>
       </div>
       <code className="tokens-row__value">{row.value}</code>
     </div>
@@ -197,7 +198,7 @@ function CompactSection({
           <div key={t.name} className="tokens-compact__row">
             <code className="tokens-row__token">{t.name}</code>
             <code className="tokens-row__value">{t.value}</code>
-            <div className="tokens-row__role">{t.description}</div>
+            <div className="tokens-row__role">{firstSentence(t.description)}</div>
           </div>
         ))}
       </div>
@@ -295,7 +296,7 @@ export default function TokensPage() {
                 <div key={t.name} className="tokens-type__row">
                   <div className="tokens-type__meta">
                     <code className="tokens-row__token">{t.name}</code>
-                    <div className="tokens-type__size">{t.description}</div>
+                    <div className="tokens-type__size">{firstSentence(t.description)}</div>
                   </div>
                   <div
                     className="tokens-type__sample"
@@ -317,7 +318,7 @@ export default function TokensPage() {
             <div key={t.name} className="tokens-compact__row">
               <code className="tokens-row__token">{t.name}</code>
               <code className="tokens-row__value">{t.value}</code>
-              <div className="tokens-row__role">{t.description}</div>
+              <div className="tokens-row__role">{firstSentence(t.description)}</div>
             </div>
           ))}
         </div>
@@ -332,7 +333,7 @@ export default function TokensPage() {
           <div key={s.name} className="tokens-spacing__row">
             <div className="tokens-spacing__meta">
               <code className="tokens-row__token">{s.name}</code>
-              <div className="tokens-row__role">{s.description}</div>
+              <div className="tokens-row__role">{firstSentence(s.description)}</div>
             </div>
             <div
               className="tokens-spacing__bar"
@@ -358,7 +359,7 @@ export default function TokensPage() {
             />
             <div className="tokens-radius__body">
               <code className="tokens-row__token">{r.name}</code>
-              <div className="tokens-row__role">{r.description}</div>
+              <div className="tokens-row__role">{firstSentence(r.description)}</div>
             </div>
             <code className="tokens-row__value">{r.value}</code>
           </div>

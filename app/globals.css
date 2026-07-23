@@ -2269,25 +2269,31 @@ h2.eyebrow,
   padding: var(--primitive-space-sm) 0;
   border-bottom: 1px solid var(--color-border-muted);
 }
-.tokens-motion__drow { grid-template-columns: minmax(0, 1fr) minmax(120px, 200px); }
+.tokens-motion__drow { grid-template-columns: minmax(0, 1fr) minmax(140px, 220px); }
 .tokens-motion__erow {
-  grid-template-columns: 60px minmax(0, 1fr) minmax(120px, 200px);
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: background var(--motion-transition-micro);
+  grid-template-columns: 60px minmax(0, 1fr) minmax(140px, 220px);
 }
-.tokens-motion__erow:hover,
-.tokens-motion__erow:focus-visible {
-  background: color-mix(in srgb, var(--color-foreground-action) 5%, transparent);
-  outline: none;
+/* Track with its own ▶ button underneath — one animation, one control. */
+.tokens-motion__anim {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-xs);
+  align-items: flex-start;
 }
+.tokens-motion__anim .tokens-motion__track { width: 100%; }
 .tokens-motion__meta {
   display: flex;
   flex-direction: column;
   gap: var(--primitive-space-3xs);
   min-width: 0;
 }
-.tokens-motion__meta .tokens-row__value { color: var(--color-foreground-muted); }
+.tokens-motion__meta .tokens-row__value {
+  color: var(--color-foreground-muted);
+  /* The base value style is nowrap; in this narrow column a long
+     cubic-bezier() must wrap rather than overflow under the track. */
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 .tokens-motion__track {
   position: relative;
   height: 10px;
@@ -2316,6 +2322,15 @@ h2.eyebrow,
   will-change: transform;
 }
 .tokens-motion__curve { display: block; }
+/* Mobile: stack the rows — meta (with the curve beside it for easings) on
+   top, the track + ▶ on its own full-width line below. Prevents the anim
+   column from colliding with wrapped token/value text. */
+@media (max-width: 700px) {
+  .tokens-motion__drow { grid-template-columns: 1fr; }
+  .tokens-motion__erow { grid-template-columns: 60px minmax(0, 1fr); }
+  .tokens-motion__erow .tokens-motion__anim,
+  .tokens-motion__drow .tokens-motion__anim { grid-column: 1 / -1; }
+}
 .tokens-motion__axis { stroke: var(--color-border-alt); stroke-width: 1; }
 .tokens-motion__curveline {
   stroke: var(--color-foreground-action);
