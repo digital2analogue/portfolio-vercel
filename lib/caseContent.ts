@@ -5,7 +5,7 @@ export type Block =
   | { type: "h3"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string }
+  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string; dither?: boolean }
   | { type: "video"; src: string; alt: string; caption?: string; poster?: string; naturalSize?: boolean }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
@@ -97,6 +97,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Before: spreadsheet workflow used prior to the decision engine",
         src: "/projects/images/c1-decision-engine-before.png",
         naturalSize: true,
+        dither: true,
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -312,6 +313,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "OTKit Design System hero: overview of the design system River built at OpenTable spanning iOS, Android, and web",
         src: "/projects/images/otkit-ds-hero.png",
+        dither: true,
       },
       { type: "h2", text: "Overview" },
       {
@@ -755,6 +757,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Reservation Details, before-and-after comparison. Legacy flat layout on the left; the redesigned card-based hierarchy on the right.",
         caption: "iPad → iPhone. Reverse-engineering OpenTable's Front of House iPad app to iPhone and Android.",
         src: "/projects/images/ot-reservations-native-ios-android.png",
+        dither: true,
       },
       { type: "hr" },
       {

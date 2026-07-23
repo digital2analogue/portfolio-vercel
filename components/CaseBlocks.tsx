@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
 import { DEMO_REGISTRY } from "@/components/demos/registry";
+import DitherOverlay from "@/components/DitherImage";
 
 /**
  * Renders a case-study content stream as typed React blocks.
@@ -80,7 +81,7 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
             );
           case "image":
             return (
-              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} />
+              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} dither={b.dither} />
             );
           case "video":
             return (
@@ -204,12 +205,14 @@ function CaseImage({
   src,
   naturalSize,
   frame,
+  dither,
 }: {
   alt: string;
   caption?: string;
   src?: string;
   naturalSize?: boolean;
   frame?: string;
+  dither?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -221,11 +224,12 @@ function CaseImage({
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    if (dither) return; // the dither reveal owns this image's entrance
     const img = imgRef.current;
     if (!img || img.complete) return;
     const t = setTimeout(() => setDeveloping(true), 0);
     return () => clearTimeout(t);
-  }, []);
+  }, [dither]);
 
   const openLightbox = () => setOpen(true);
   const closeLightbox = () => {
@@ -265,6 +269,7 @@ function CaseImage({
             className={developing ? (loaded ? "img-develop img-develop--in" : "img-develop") : undefined}
             onLoad={() => setLoaded(true)}
           />
+          {dither && <DitherOverlay imgRef={imgRef} />}
           <div className="block-image__zoom-icon" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 5V1H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

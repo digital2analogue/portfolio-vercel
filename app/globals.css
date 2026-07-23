@@ -1041,6 +1041,23 @@ h2.eyebrow,
   }
 }
 
+/* Dither reveal — canvas overlay that resolves a flagship image from a
+   coarse phosphor 1-bit dither into the real picture (see DitherImage.tsx).
+   Pointer events pass through so the lightbox trigger keeps working. */
+.blocks .dither-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 450ms var(--motion-easing-exit);
+}
+.blocks .dither-overlay--fade {
+  opacity: 0;
+}
+
 /* Figure / image blocks */
 .blocks figure {
   margin: var(--primitive-space-xl) 0;
