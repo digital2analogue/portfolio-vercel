@@ -132,6 +132,11 @@ export default async function CaseStudyPage({
               <div className="case-detail__pager-title">
                 <em>{prev.title}</em>
               </div>
+              {!prev.href && (
+                <div className="case-detail__pager-path" aria-hidden="true">
+                  ./work/{prev.slug}.md
+                </div>
+              )}
             </Link>
           )}
         </div>
@@ -147,6 +152,11 @@ export default async function CaseStudyPage({
               <div className="case-detail__pager-title">
                 <em>{next.title}</em>
               </div>
+              {!next.href && (
+                <div className="case-detail__pager-path" aria-hidden="true">
+                  ./work/{next.slug}.md
+                </div>
+              )}
             </Link>
           )}
         </div>
