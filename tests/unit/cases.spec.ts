@@ -78,6 +78,8 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
           for (const img of b.images) if (img.src) paths.push({ where: key, src: img.src })
         if (b.type === 'video') {
           paths.push({ where: key, src: b.src })
+          // CaseVideo derives a WebM sibling for open-codec browsers
+          paths.push({ where: key, src: b.src.replace(/\.mp4$/, '.webm') })
           if (b.poster) paths.push({ where: key, src: b.poster })
         }
         if (b.type === 'embed' && b.poster) paths.push({ where: key, src: b.poster })

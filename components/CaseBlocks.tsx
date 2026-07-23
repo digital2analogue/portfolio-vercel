@@ -334,16 +334,23 @@ function CaseVideo({
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
-    if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const v = videoRef.current;
-    if (v) {
+    if (!v) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
       v.pause();
       v.removeAttribute("autoplay");
+      // Deferred (not sync in the effect body) to avoid a cascading render —
+      // same pattern as HeroTerminal's reduced-motion fill.
+      const t = setTimeout(() => setReduced(true), 0);
+      return () => clearTimeout(t);
     }
-    // Deferred (not sync in the effect body) to avoid a cascading render —
-    // same pattern as HeroTerminal's reduced-motion fill.
-    const t = setTimeout(() => setReduced(true), 0);
-    return () => clearTimeout(t);
+    // React doesn't serialize the muted attribute into server HTML
+    // (facebook/react#10389), so the browser sees an unmuted video and blocks
+    // autoplay. Re-assert muted and kick playback explicitly post-hydration.
+    v.muted = true;
+    v.play().catch(() => {
+      /* autoplay denied — the poster stays, which is an acceptable rest state */
+    });
   }, []);
 
   return (
@@ -351,7 +358,6 @@ function CaseVideo({
       <video
         ref={videoRef}
         className="block-video"
-        src={src}
         poster={poster}
         muted
         loop
@@ -360,7 +366,12 @@ function CaseVideo({
         controls={reduced}
         preload="metadata"
         aria-label={alt}
-      />
+      >
+        {/* WebM/VP9 first (smaller, plays on open-codec Chromium builds);
+            H.264 MP4 second for Safari/iOS and everything else. */}
+        <source src={src.replace(/\.mp4$/, ".webm")} type="video/webm" />
+        <source src={src} type="video/mp4" />
+      </video>
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
