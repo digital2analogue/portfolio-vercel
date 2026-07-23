@@ -6,6 +6,7 @@ export type Block =
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string }
+  | { type: "video"; src: string; alt: string; caption?: string; poster?: string; naturalSize?: boolean }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
   | { type: "outcome-demo"; caption?: string }
@@ -521,10 +522,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "A/B testing showed a **+2.19% increase in diner bookings** (+600 weekly net bookers) on pages using dynamic type.",
       },
       {
-        type: "image",
-        alt: "Animated gif of dynamic text sizing from small to large on iOS iPhone based on user accessibility settings",
+        type: "video",
+        alt: "Dynamic text sizing from small to large on an iOS iPhone, driven by the user's accessibility settings",
         caption: "Animation of dynamic text sizing implemented on iOS",
-        src: "/projects/images/casestudy-otkit-dynamic-text.gif",
+        src: "/projects/images/casestudy-otkit-dynamic-text.mp4",
+        poster: "/projects/images/casestudy-otkit-dynamic-text-poster.jpg",
       },
       {
         type: "image",
@@ -582,15 +584,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "OpenTable operates in an industry dominated by red and orange. Partnering closely with Brand, we translated a premium direction into a **tokenized theming architecture** rather than one-off visual treatments.",
       },
       {
-        type: "image",
-        alt: "Animation showing updated OTKit brand and theme on iPhone app",
-        src: "/projects/images/casestudy-otkit-opentable-new-brand-app.gif",
+        type: "video",
+        alt: "Updated OTKit brand and theme animating through the OpenTable iPhone app",
+        src: "/projects/images/casestudy-otkit-opentable-new-brand-app.mp4",
+        poster: "/projects/images/casestudy-otkit-opentable-new-brand-app-poster.jpg",
         naturalSize: true,
       },
       {
-        type: "image",
-        alt: "Animation showing updated OTKit iconography shared by Debby on LinkedIn",
-        src: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin.gif",
+        type: "video",
+        alt: "Updated OTKit iconography animation, as shared by Debby on LinkedIn",
+        src: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin.mp4",
+        poster: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin-poster.jpg",
         naturalSize: true,
       },
       { type: "p", text: "This allowed brand evolution without breaking product consistency. Namely:" },

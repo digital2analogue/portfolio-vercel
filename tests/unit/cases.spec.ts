@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { CASES } from '@/lib/cases'
 import { CASE_CONTENT } from '@/lib/caseContent'
@@ -62,6 +64,41 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
     const caseSlugs = new Set(CASES.map((c) => c.slug))
     for (const key of Object.keys(CASE_CONTENT)) {
       expect(caseSlugs.has(key), `CASE_CONTENT "${key}" has no CASES entry`).toBe(true)
+    }
+  })
+
+  // Every local media path in a case body must exist in public/ — a renamed
+  // or deleted asset would otherwise ship as a silent 404.
+  it('every referenced local media asset exists on disk', () => {
+    const paths: Array<{ where: string; src: string }> = []
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type === 'image' && b.src) paths.push({ where: key, src: b.src })
+        if (b.type === 'image-pair')
+          for (const img of b.images) if (img.src) paths.push({ where: key, src: img.src })
+        if (b.type === 'video') {
+          paths.push({ where: key, src: b.src })
+          if (b.poster) paths.push({ where: key, src: b.poster })
+        }
+        if (b.type === 'embed' && b.poster) paths.push({ where: key, src: b.poster })
+      }
+    }
+    expect(paths.length).toBeGreaterThan(0)
+    for (const { where, src } of paths) {
+      if (!src.startsWith('/')) continue // external URLs are out of scope
+      expect(existsSync(join(process.cwd(), 'public', src)), `${where}: missing ${src}`).toBe(true)
+    }
+  })
+
+  // Video blocks replaced multi-megabyte GIFs — each must ship as mp4 with a
+  // poster frame so reduced-motion users get a meaningful still.
+  it('video blocks are mp4 and carry a poster', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type !== 'video') continue
+        expect(b.src, `${key} video src`).toMatch(/\.mp4$/)
+        expect(b.poster, `${key} video poster`).toBeTruthy()
+      }
     }
   })
 

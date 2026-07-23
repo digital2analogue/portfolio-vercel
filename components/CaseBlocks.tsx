@@ -82,6 +82,17 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
             return (
               <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} />
             );
+          case "video":
+            return (
+              <CaseVideo
+                key={i}
+                src={b.src}
+                alt={b.alt}
+                caption={b.caption}
+                poster={b.poster}
+                naturalSize={b.naturalSize}
+              />
+            );
           case "image-pair":
             return (
               <div key={i} className="block-image-pair">
@@ -211,7 +222,9 @@ function CaseImage({
 
   useEffect(() => {
     const img = imgRef.current;
-    if (img && !img.complete) setDeveloping(true);
+    if (!img || img.complete) return;
+    const t = setTimeout(() => setDeveloping(true), 0);
+    return () => clearTimeout(t);
   }, []);
 
   const openLightbox = () => setOpen(true);
@@ -275,6 +288,61 @@ function CaseImage({
       {open && src && (
         <Lightbox src={src} alt={alt} onClose={closeLightbox} />
       )}
+    </figure>
+  );
+}
+
+/**
+ * Video block — short product motion clips, encoded as mp4 (replacing the
+ * multi-megabyte GIFs they started life as). Autoplays muted + looped like a
+ * GIF would; under prefers-reduced-motion the clip stays paused on its poster
+ * frame with controls exposed so playback is a deliberate choice.
+ */
+function CaseVideo({
+  src,
+  alt,
+  caption,
+  poster,
+  naturalSize,
+}: {
+  src: string;
+  alt: string;
+  caption?: string;
+  poster?: string;
+  naturalSize?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      v.removeAttribute("autoplay");
+    }
+    // Deferred (not sync in the effect body) to avoid a cascading render —
+    // same pattern as HeroTerminal's reduced-motion fill.
+    const t = setTimeout(() => setReduced(true), 0);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <figure className={naturalSize ? "block-image--natural-size" : undefined}>
+      <video
+        ref={videoRef}
+        className="block-video"
+        src={src}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        autoPlay
+        controls={reduced}
+        preload="metadata"
+        aria-label={alt}
+      />
+      {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
 }

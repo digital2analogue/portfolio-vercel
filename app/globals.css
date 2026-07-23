@@ -1114,6 +1114,20 @@ h2.eyebrow,
   padding: var(--primitive-space-md);
 }
 
+/* Video block — mp4 motion clips styled like the image figures */
+.blocks figure video.block-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--color-border-alt);
+  background: var(--color-background-alt);
+  border-radius: var(--radius-sm);
+}
+.blocks figure.block-image--natural-size video.block-video {
+  width: auto;
+  max-width: 100%;
+}
+
 /* Live embed block — an interactive iframe framed like the other figures */
 .blocks figure.block-embed {
   margin: var(--primitive-space-xl) 0;
