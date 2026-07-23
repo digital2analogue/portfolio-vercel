@@ -7,6 +7,10 @@ export type Block =
   | { type: "ul"; items: string[] }
   | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string; dither?: boolean }
   | { type: "video"; src: string; alt: string; caption?: string; poster?: string; naturalSize?: boolean }
+  /** Hand-authored SVG diagram, inlined server-side (lib/diagrams.ts) and
+   *  animated on scroll-in by DiagramBlock. `svg` is populated at render
+   *  time — content authors only set `src` (the .svg under public/). */
+  | { type: "diagram"; src: string; alt: string; caption?: string; svg?: string }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
   | { type: "outcome-demo"; caption?: string }
@@ -948,12 +952,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     timeline: "2026 (ongoing)",
     blocks: [
       {
-        type: "image",
+        type: "diagram",
         alt: "Architecture diagram of the Parsimony agentic design system: tokens flow through Style Dictionary build, into Lit web components and a merged metadata artifact, then out to humans (Figma, docs) and agents (MCP server), consumed by every site, with a drift-detection feedback loop back to the source",
         caption:
           "The whole system in one view: one source of truth, read by both people and agents. Green is shipped; dashed amber is planned.",
-        src: "/projects/images/ds-architecture.png",
-        naturalSize: true,
+        src: "/projects/images/ds-architecture.svg",
       },
       {
         type: "quote",
@@ -1031,20 +1034,20 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
-        type: "image",
+        type: "diagram",
         alt: "Token resolution diagram: a semantic token (background.success-alt) resolves to a primitive (color.green.chip = #0F2016), rendering as a success badge. A footer rule states UI references semantic roles, never primitives, and brand overrides re-point the semantic role without touching components.",
         caption:
           "Two tiers, one value — UI writes against named semantic roles, and each role resolves to exactly one raw primitive. Brand overrides re-point the semantic role; the components never change.",
-        src: "/projects/images/ds-token-tiers.png",
+        src: "/projects/images/ds-token-tiers.svg",
       },
       { type: "hr" },
       { type: "h2", text: "One Source of Truth, Four Brands" },
       {
-        type: "image",
+        type: "diagram",
         alt: "Four brand panels: base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading). Each shows the same UI rendered in its own canvas, surface, text, and accent token values.",
         caption:
           "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
-        src: "/projects/images/ds-brands.png",
+        src: "/projects/images/ds-brands.svg",
       },
       {
         type: "p",
@@ -1053,12 +1056,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
       {
-        type: "image",
+        type: "diagram",
         alt: "A rendered badge.meta.json file with callouts highlighting tokensUsed (which tokens the component may touch), rules (the constraints it must obey), and accessibility (the ARIA pattern and WCAG criteria it implements)",
         caption:
           "badge.meta.json: the component's machine-readable rulebook. get_component() returns it verbatim.",
-        src: "/projects/images/ds-meta-json.png",
-        naturalSize: true,
+        src: "/projects/images/ds-meta-json.svg",
       },
       {
         type: "p",
@@ -1071,11 +1073,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       { type: "h2", text: "Docs That Can't Drift" },
       {
-        type: "image",
+        type: "diagram",
         alt: "The documentation pipeline: metadata (design-system.json, meta.json, token store) feeds a deterministic DocGen pass that emits one MDX file per component. Each file splits into GEN regions (properties, tokens, accessibility) that regenerate every run and AUTHORED regions (overview, usage) that are preserved. Output is released to a shipped CI freshness gate and a planned human docs site.",
         caption:
           "Component docs are generated from the same metadata the agent reads. GEN regions regenerate; AUTHORED prose is preserved; a CI gate blocks a stale doc from merging.",
-        src: "/projects/images/ds-docs-pipeline.png",
+        src: "/projects/images/ds-docs-pipeline.svg",
       },
       {
         type: "p",
@@ -1084,11 +1086,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
       {
-        type: "image",
+        type: "diagram",
         alt: "The check_usage MCP tool: an input panel of agent-proposed CSS containing a hardcoded hex and a primitive-token reference (both flagged red), feeding into an output panel listing the two rule violations returned by the system",
         caption:
           "Paste a snippet, get back every violation. Catch the mistake before it ships, not after.",
-        src: "/projects/images/ds-check-usage.png",
+        src: "/projects/images/ds-check-usage.svg",
       },
       {
         type: "p",
@@ -1113,12 +1115,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       { type: "h2", text: "An Agent, Self-Correcting" },
       {
-        type: "image",
+        type: "diagram",
         alt: "A terminal-style agent session. The agent calls get_component(\"rr-badge\") and gets back the contract (props, 31 semantic tokens, rules, a11y). It drafts a badge with hardcoded hex values, calls check_usage, and gets two no-hex violations quoting the verbatim rule message. It then revises to <rr-badge variant=\"success\">Active</rr-badge> and re-runs check_usage, which returns no violations.",
         caption:
           "One session, four steps: get_component, a hand-rolled draft, check_usage, a fix. The violation text is the literal output of the shared rule set, not a mockup.",
-        src: "/projects/images/ds-agent-loop.png",
-        naturalSize: true,
+        src: "/projects/images/ds-agent-loop.svg",
       },
       {
         type: "p",

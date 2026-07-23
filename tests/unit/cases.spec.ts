@@ -81,6 +81,11 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
           if (b.poster) paths.push({ where: key, src: b.poster })
         }
         if (b.type === 'embed' && b.poster) paths.push({ where: key, src: b.poster })
+        if (b.type === 'diagram') {
+          paths.push({ where: key, src: b.src })
+          // The rasterized PNG is the declared fallback when the SVG isn't inlined
+          paths.push({ where: key, src: b.src.replace(/\.svg$/, '.png') })
+        }
       }
     }
     expect(paths.length).toBeGreaterThan(0)
@@ -98,6 +103,18 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
         if (b.type !== 'video') continue
         expect(b.src, `${key} video src`).toMatch(/\.mp4$/)
         expect(b.poster, `${key} video poster`).toBeTruthy()
+      }
+    }
+  })
+
+  // Diagram blocks must point at SVG sources — DiagramBlock inlines and
+  // animates the markup; a PNG here would silently skip the treatment.
+  it('diagram blocks reference .svg sources', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type !== 'diagram') continue
+        expect(b.src, `${key} diagram src`).toMatch(/\.svg$/)
+        expect(b.alt.trim(), `${key} diagram alt`).not.toBe('')
       }
     }
   })

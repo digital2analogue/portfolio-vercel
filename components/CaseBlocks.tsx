@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
 import { DEMO_REGISTRY } from "@/components/demos/registry";
 import DitherOverlay from "@/components/DitherImage";
+import DiagramBlock from "@/components/DiagramBlock";
 
 /**
  * Renders a case-study content stream as typed React blocks.
@@ -82,6 +83,19 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
           case "image":
             return (
               <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} dither={b.dither} />
+            );
+          case "diagram":
+            // Falls back to the rasterized PNG when the SVG wasn't inlined
+            // (e.g. a consumer that skipped lib/diagrams.ts).
+            return b.svg ? (
+              <DiagramBlock key={i} svg={b.svg} caption={b.caption} />
+            ) : (
+              <CaseImage
+                key={i}
+                alt={b.alt}
+                caption={b.caption}
+                src={b.src.replace(/\.svg$/, ".png")}
+              />
             );
           case "video":
             return (

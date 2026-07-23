@@ -5,6 +5,7 @@ import { CASES, getCase } from "@/lib/cases";
 import { CASE_CONTENT } from "@/lib/caseContent";
 import CaseBlocks from "@/components/CaseBlocks";
 import TerminalEcho from "@/components/TerminalEcho";
+import { inlineDiagrams } from "@/lib/diagrams";
 
 type Params = { slug: string };
 
@@ -112,7 +113,7 @@ export default async function CaseStudyPage({
 
       <div className="dot-rule rise d5" aria-hidden="true" />
 
-      <CaseBlocks blocks={content.blocks} reveal />
+      <CaseBlocks blocks={inlineDiagrams(content.blocks)} reveal />
 
       <nav
         className="case-detail__pager"

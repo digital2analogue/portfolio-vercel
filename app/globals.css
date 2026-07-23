@@ -1131,6 +1131,17 @@ h2.eyebrow,
   padding: var(--primitive-space-md);
 }
 
+/* Diagram block — inline SVG diagrams (DiagramBlock), framed like images.
+   The SVG carries its own dark canvas; the border matches figure chrome. */
+.blocks .block-diagram__host svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border-alt);
+  border-radius: var(--radius-sm);
+  background: var(--color-background-alt);
+}
+
 /* Video block — mp4 motion clips styled like the image figures */
 .blocks figure video.block-video {
   width: 100%;
