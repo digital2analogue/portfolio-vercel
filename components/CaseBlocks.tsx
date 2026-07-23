@@ -8,10 +8,42 @@ import { DEMO_REGISTRY } from "@/components/demos/registry";
  * Styling lives in globals.css under the `.blocks` scope — CaseBlocks
  * renders semantic HTML; all typography, spacing, and color comes from
  * Parsimony tokens via CSS classes.
+ *
+ * With `reveal`, each top-level block fades up as it scrolls into view —
+ * the body-stream counterpart to the hero's `.rise` stagger. The hidden
+ * state is applied from JS only (progressive enhancement: no JS, no
+ * hiding), and skipped entirely under prefers-reduced-motion.
  */
-export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
+export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal?: boolean }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!reveal) return;
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    const children = Array.from(root.children) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("blk-reveal--in");
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+    );
+    for (const child of children) {
+      child.classList.add("blk-reveal");
+      io.observe(child);
+    }
+    return () => io.disconnect();
+  }, [reveal]);
+
   return (
-    <div className="blocks">
+    <div className="blocks" ref={rootRef}>
       {blocks.map((b, i) => {
         switch (b.type) {
           case "h2":
@@ -170,6 +202,17 @@ function CaseImage({
 }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
+  // Develop-in: images that are still loading at hydration fade/sharpen in on
+  // load. Server HTML and cached images render visible immediately (no-JS and
+  // fast-path safe); only genuinely in-flight images get the treatment.
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [developing, setDeveloping] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && !img.complete) setDeveloping(true);
+  }, []);
 
   const openLightbox = () => setOpen(true);
   const closeLightbox = () => {
@@ -202,7 +245,13 @@ function CaseImage({
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(); } }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={alt} />
+          <img
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            className={developing ? (loaded ? "img-develop img-develop--in" : "img-develop") : undefined}
+            onLoad={() => setLoaded(true)}
+          />
           <div className="block-image__zoom-icon" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 5V1H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

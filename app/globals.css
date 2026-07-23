@@ -996,6 +996,51 @@ h2.eyebrow,
   text-transform: uppercase;
 }
 
+/* Scroll reveal — body blocks fade up as they enter the viewport, the
+   stream counterpart to the hero's .rise stagger. `.blk-reveal` is added
+   from JS only (no JS → nothing hides) and never under reduced motion. */
+.blocks .blk-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 640ms var(--motion-easing-enter),
+    transform 640ms var(--motion-easing-enter);
+}
+.blocks .blk-reveal--in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Develop-in — an image still loading at hydration resolves from a dim,
+   desaturated state into full fidelity, like a phosphor display warming up.
+   Applied from JS only; cached/complete images never get the class. */
+.blocks img.img-develop {
+  opacity: 0;
+  filter: saturate(0.15) brightness(1.35) contrast(0.85);
+}
+.blocks img.img-develop--in {
+  opacity: 1;
+  filter: none;
+  transition:
+    opacity 400ms var(--motion-easing-enter),
+    filter 700ms var(--motion-easing-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blocks .blk-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .blocks img.img-develop {
+    opacity: 1;
+    filter: none;
+  }
+  .blocks img.img-develop--in {
+    transition: none;
+  }
+}
+
 /* Figure / image blocks */
 .blocks figure {
   margin: var(--primitive-space-xl) 0;

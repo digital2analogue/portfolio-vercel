@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { CASES, getCase } from "@/lib/cases";
 import { CASE_CONTENT } from "@/lib/caseContent";
 import CaseBlocks from "@/components/CaseBlocks";
+import TerminalEcho from "@/components/TerminalEcho";
 
 type Params = { slug: string };
 
@@ -76,11 +77,8 @@ export default async function CaseStudyPage({
           §&nbsp;<span className="accent">{meta.index}</span>&nbsp;/&nbsp;CASE
         </span>
 
-        <div className="hero__term rise d1">
-          <div>
-            <span className="accent" aria-hidden="true">~</span> $ cat ./work/
-            {meta.slug}.md
-          </div>
+        <div className="rise d1">
+          <TerminalEcho text={`cat ./work/${meta.slug}.md`} />
         </div>
 
         <h1 className="display rise d2">{content.title}</h1>
@@ -114,7 +112,7 @@ export default async function CaseStudyPage({
 
       <div className="dot-rule rise d5" aria-hidden="true" />
 
-      <CaseBlocks blocks={content.blocks} />
+      <CaseBlocks blocks={content.blocks} reveal />
 
       <nav
         className="case-detail__pager"
