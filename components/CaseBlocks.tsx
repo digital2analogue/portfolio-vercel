@@ -48,7 +48,7 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "image":
             return (
-              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} />
+              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} />
             );
           case "image-pair":
             return (
@@ -160,11 +160,13 @@ function CaseImage({
   caption,
   src,
   naturalSize,
+  frame,
 }: {
   alt: string;
   caption?: string;
   src?: string;
   naturalSize?: boolean;
+  frame?: string;
 }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
@@ -176,8 +178,19 @@ function CaseImage({
     setTimeout(() => triggerRef.current?.focus(), 0);
   };
 
+  const figureClass =
+    [naturalSize ? "block-image--natural-size" : "", frame && src ? "block-image--framed" : ""]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   return (
-    <figure className={naturalSize ? "block-image--natural-size" : undefined}>
+    <figure className={figureClass}>
+      {frame && src && (
+        <div className="demo-frame__chrome" aria-hidden="true">
+          <span className="demo-frame__dot" />
+          <span className="demo-frame__label">{frame}</span>
+        </div>
+      )}
       {src ? (
         <div
           ref={triggerRef}

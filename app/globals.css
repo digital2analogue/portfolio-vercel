@@ -1046,6 +1046,29 @@ h2.eyebrow,
   color: var(--color-foreground-muted);
   margin-top: var(--spacing-tight);
 }
+/* Framed screenshot — a static image wrapped in the same product-surface
+   chrome as the live demos (.demo-frame), so key screenshots read as
+   surfaces rather than pasted pictures. */
+.blocks figure.block-image--framed {
+  border: 1px solid var(--color-border-alt);
+  border-radius: var(--radius-lg);
+  background: var(--color-background-alt);
+  overflow: hidden;
+}
+.blocks figure.block-image--framed img {
+  border: none;
+  border-radius: 0;
+}
+.blocks figure.block-image--framed figcaption {
+  padding: 0 var(--primitive-space-md) var(--primitive-space-md);
+  margin-top: var(--spacing-tight);
+}
+/* Natural-size images inside a frame get breathing room so the artwork
+   doesn't touch the bezel. */
+.blocks figure.block-image--framed.block-image--natural-size .block-image__wrap {
+  padding: var(--primitive-space-md);
+}
+
 /* Live embed block — an interactive iframe framed like the other figures */
 .blocks figure.block-embed {
   margin: var(--primitive-space-xl) 0;

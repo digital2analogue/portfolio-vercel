@@ -5,7 +5,7 @@ export type Block =
   | { type: "h3"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean }
+  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
   | { type: "outcome-demo"; caption?: string }
@@ -118,6 +118,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "After: the decision engine table interface",
         src: "/projects/images/c1-decision-engine-after.png",
+        frame: "Decision engine · Rules table",
       },
       { type: "p", text: "The approach:" },
       {
@@ -156,6 +157,27 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-engine-deliverables.png",
       },
       { type: "hr" },
+      { type: "h2", text: "Component Deep Dive: Rule Cell (Conceptual)" },
+      {
+        type: "p",
+        text: "One critical interaction pattern encapsulated complex decision logic into a single, reusable unit.",
+      },
+      {
+        type: "image",
+        alt: "Component system sheet for the rule cell: data-attribute badges (Income, Expense, Asset, Liability), Approve and Deny outcome badges, comparison-operator chips, and the rule row's default, hover, and selected states",
+        caption:
+          "The rule cell's vocabulary: attribute badges, outcome badges, operators, and row states — every rule composes from these parts.",
+        src: "/projects/images/04_component_system_dark.png",
+        frame: "Decision engine · Component system",
+      },
+      {
+        type: "image",
+        alt: "Create-a-new-decision-model flow: step 1 assigns the ruleset's outcome from six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit); step 2 names the model",
+        caption:
+          "Upstream of the cell: each ruleset is scoped to a single outcome before any rule is authored, so a rule cell never has to express conflicting outcomes.",
+        src: "/projects/images/c1-decision-engine-data-element-selector.png",
+        frame: "Decision engine · New model flow",
+      },
       { type: "h3", text: "Design goals" },
       {
         type: "ul",
@@ -186,18 +208,21 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Rather than dropping users into an empty editor, the prototype opens with a guided three-step setup: pick an outcome type, name the model, then choose the data the model is allowed to evaluate. Each step is scoped to a single decision, and the whole flow lives on a single scrollable page so the model's shape stays visible while you build it.",
       },
       {
-        type: "image",
-        alt: "Step 1 of the onboarding flow: Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
-        caption:
-          "Step 1: outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
-        src: "/projects/images/decisioning-table-onboarding-step1.png",
-      },
-      {
-        type: "image",
-        alt: "Step 3 of the onboarding flow: Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
-        caption:
-          "Step 3: categorized data elements. The right pane previews details for the selected element before you commit to it.",
-        src: "/projects/images/decisioning-table-onboarding-step3.png",
+        type: "image-pair",
+        images: [
+          {
+            alt: "Step 1 of the onboarding flow: Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
+            caption:
+              "Step 1: outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
+            src: "/projects/images/decisioning-table-onboarding-step1.png",
+          },
+          {
+            alt: "Step 3 of the onboarding flow: Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
+            caption:
+              "Step 3: categorized data elements. The right pane previews details for the selected element before you commit to it.",
+            src: "/projects/images/decisioning-table-onboarding-step3.png",
+          },
+        ],
       },
       { type: "h3", text: "The rule table" },
       {
@@ -226,6 +251,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Split-button. One-click default, one-click-and-pick for the secondary action.",
         src: "/projects/images/decisioning-table-split-button.png",
         naturalSize: true,
+        frame: "Decision engine · Split button",
       },
       { type: "hr" },
       { type: "h2", text: "Accessibility as a System Lever" },
@@ -540,6 +566,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Screenshot of searchable icon library on documentation site",
         src: "/projects/images/casestudy-otkit-icon-library.png",
+        frame: "OTKit docs · Icon library",
       },
       {
         type: "image",
@@ -594,6 +621,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Mass Theme: functional editorial restaurant detail with hero section, two-column layout, and booking flow",
         src: "/projects/images/ot-brand-refresh-mass-theme.png",
+        frame: "OpenTable.com · Mass theme",
       },
       { type: "h3", text: "Iconic Theme" },
       {
@@ -604,6 +632,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Iconic Theme: premium experience with full-bleed imagery, icon badges, and dark-wine timeslots",
         src: "/projects/images/ot-brand-refresh-iconic-theme.png",
+        frame: "OpenTable.com · Iconic theme",
       },
       {
         type: "p",
@@ -825,15 +854,19 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/ot-reservations-modularity.png",
       },
       {
-        type: "image",
-        alt: "Screenshot of the redesigned Guest Profile component in the Back of House web view",
-        src: "/projects/images/ot-reservations-guest-profile-boh.png",
-      },
-      {
-        type: "image",
-        alt: "Close-up screenshot of the Guest Profile component showing structured guest data in Back of House",
-        caption: "The new Guest Profile component made guest data easily viewable in Back of House",
-        src: "/projects/images/ot-reservations-guest-profile-boh-detail.png",
+        type: "image-pair",
+        images: [
+          {
+            alt: "Screenshot of the redesigned Guest Profile component in the Back of House web view",
+            caption: "The Guest Profile component in the Back of House web view.",
+            src: "/projects/images/ot-reservations-guest-profile-boh.png",
+          },
+          {
+            alt: "Close-up screenshot of the Guest Profile component showing structured guest data in Back of House",
+            caption: "Close-up: structured guest data, easily scannable in Back of House.",
+            src: "/projects/images/ot-reservations-guest-profile-boh-detail.png",
+          },
+        ],
       },
       {
         type: "image",
