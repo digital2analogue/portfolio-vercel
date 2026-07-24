@@ -1,10 +1,17 @@
 import { test, expect, type Page } from '@playwright/test'
 
-// Reduced motion is set globally in playwright.config.ts, so entrance
-// animations (.rise), the blinking cursor and the status-dot pulse are all
-// settled by the time we capture. Waiting on document.fonts.ready keeps
-// web-font swap from racing the screenshot.
+// Reduced motion settles all entrance motion (.rise, the case-body scroll
+// reveal, typewriters, dither reveals) into deterministic final states.
+// NOTE: the config-level `use.reducedMotion: 'reduce'` is silently ignored
+// by the test runner in the pinned Playwright version (verified 2026-07:
+// window.matchMedia reports no-preference inside tests, while a manually
+// created context honors the same option) — so emulate it explicitly per
+// page, before navigation, or JS-guarded motion sees the wrong preference
+// and full-page captures freeze scroll-revealed content in its hidden state.
+// Waiting on document.fonts.ready keeps web-font swap from racing the
+// screenshot.
 async function settle(page: Page, path: string) {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto(path)
   await page.waitForLoadState('networkidle')
   await page.evaluate(() => document.fonts.ready)
