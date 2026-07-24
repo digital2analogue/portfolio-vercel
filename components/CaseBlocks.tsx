@@ -441,12 +441,12 @@ function CaseEmbed({
 /** Outcome = a binary Approve/Deny decision, mirroring the prototype's model. */
 type Outcome = "Approve" | "Deny";
 
-/** The example ruleset shown in the demo — echoes the live table's rows. */
+/** The example ruleset shown in the demo — echoes the live table's rows.
+    Two rows only: one of each initial outcome shows the semantic pair
+    without restating the table. */
 const OUTCOME_DEMO_ROWS: Array<{ name: string; cond: string; initial: Outcome }> = [
   { name: "Annual income", cond: "is greater than $50,000", initial: "Approve" },
-  { name: "Existing account", cond: "equals true", initial: "Approve" },
   { name: "Credit score", cond: "is less than 600", initial: "Deny" },
-  { name: "Flagged for review", cond: "equals true", initial: "Deny" },
 ];
 
 /**
