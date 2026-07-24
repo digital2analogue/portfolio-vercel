@@ -146,15 +146,19 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
           case "hr":
             return <hr key={i} />;
           case "stats":
+            // Renders with the same classes as the meta block so outcome
+            // numbers read as one system with the metadata rows above them.
             return (
-              <ul key={i} className="block-stats">
+              <div key={i} className="block-meta">
                 {b.items.map((s) => (
-                  <li key={s.label} className="block-stats__item">
-                    <span className="block-stats__value">{s.value}</span>
-                    <span className="block-stats__label">{s.label}</span>
-                  </li>
+                  <div key={s.label} className="block-meta__row">
+                    <div className="k">
+                      {s.label} <span aria-hidden="true">//</span>
+                    </div>
+                    <div className="v">{s.value}</div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             );
           case "meta":
             return (

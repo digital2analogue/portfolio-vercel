@@ -49,10 +49,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "meta",
         rows: [
-          ["Role", "Design Systems Lead"],
           ["Scope", "System strategy, component architecture, governance"],
           ["Team", "2 designers, 2 PMs, engineering leads"],
-          ["Timeline", "5 months"],
         ],
       },
       { type: "hr" },
@@ -205,21 +203,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Instead of an empty editor, a guided three-step setup: pick an outcome, name the model, choose the data it may evaluate — each step one decision, all on one scrollable page.",
       },
       {
-        type: "image-pair",
-        images: [
-          {
-            alt: "Step 1 of the onboarding flow: Assign an outcome for ruleset, with six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit)",
-            caption:
-              "Step 1: outcome picker. Six mutually exclusive outcomes, each with a one-line description.",
-            src: "/projects/images/decisioning-table-onboarding-step1.png",
-          },
-          {
-            alt: "Step 3 of the onboarding flow: Create your first rule, showing a categorized data-element picker (FINANCIAL, EMPLOYMENT) with checkboxes and a type badge for each element",
-            caption:
-              "Step 3: categorized data elements. The right pane previews details for the selected element before you commit to it.",
-            src: "/projects/images/decisioning-table-onboarding-step3.png",
-          },
-        ],
+        type: "embed",
+        src: "https://decisioning-table.vercel.app/",
+        title: "Live onboarding flow — assign an outcome, name the model, pick its data elements",
+        poster: "/projects/images/decisioning-table-onboarding-step1.png",
+        aspectRatio: "16 / 10",
+        caption:
+          "The live onboarding flow — pick an outcome, name the model, choose its data elements, and land in the table.",
       },
       { type: "h3", text: "The rule table" },
       {
@@ -287,7 +277,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     slug: "ot-design-system",
     title: "Building OTKit: From Drift to Discipline",
     scope: "iOS, Android, Web",
-    timeline: "2022–2024",
+    timeline: "~1 year focused engagement",
     blocks: [
       {
         type: "image",
@@ -303,10 +293,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "meta",
         rows: [
-          ["Role", "Design Systems Lead"],
           ["Scope", "iOS, Android, Web"],
           ["Team", "6 product teams"],
-          ["Timeline", "~1 year focused engagement"],
         ],
       },
       { type: "hr" },
@@ -316,7 +304,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           { value: "25%", label: "Less QA time" },
           { value: "≈$59K/yr", label: "Developer time reclaimed" },
           { value: "+2.19%", label: "Diner bookings, dynamic type" },
-          { value: "6", label: "Teams on one system" },
         ],
       },
       { type: "hr" },
@@ -702,10 +689,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "meta",
         rows: [
-          ["Role", "Design Systems Lead, Product Partner"],
           ["Scope", "UX strategy, system alignment, component modeling"],
           ["Team", "3 designers, 6 engineers, 2 PMs"],
-          ["Timeline", "10 weeks"],
         ],
       },
       { type: "hr" },
@@ -713,7 +698,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "stats",
         items: [
           { value: "0", label: "Data loss or regressions" },
-          { value: "10 wks", label: "Kickoff to shipped" },
           { value: "Web + native", label: "Shared component coverage" },
         ],
       },
@@ -869,7 +853,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
     slug: "system",
     title: "Building Parsimony, an Agentic Design System",
     scope: "Token architecture, component library, agent tooling",
-    timeline: "2026 (ongoing)",
+    timeline: "Ongoing",
     blocks: [
       {
         type: "diagram",
@@ -899,7 +883,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "meta",
         rows: [
-          ["Role", "Designer & Design Engineer"],
           ["Scope", "Token architecture, components, agent tooling"],
           ["Stack", "DTCG · Style Dictionary · Lit · MCP · Figma Code Connect"],
           ["Status", "Live and evolving"],
