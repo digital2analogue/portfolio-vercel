@@ -152,18 +152,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/c1-decision-engine-deliverables.png",
       },
       { type: "hr" },
-      { type: "h2", text: "Component Deep Dive: Rule Cell (Conceptual)" },
+      { type: "h2", text: "Component Deep Dive: Rule Cell" },
       {
         type: "p",
         text: "One critical interaction pattern encapsulated complex decision logic into a single, reusable unit.",
       },
       {
-        type: "image",
-        alt: "Component system sheet for the rule cell: data-attribute badges (Income, Expense, Asset, Liability), Approve and Deny outcome badges, comparison-operator chips, and the rule row's default, hover, and selected states",
+        type: "demo",
+        demo: "rule-cell",
+        frameLabel: "Decision engine · Live component",
         caption:
-          "The rule cell's vocabulary: attribute badges, outcome badges, operators, and row states.",
-        src: "/projects/images/04_component_system_dark.png",
-        frame: "Decision engine · Component system",
+          "The rule cell's vocabulary, live instead of a component sheet: swap the attribute badge, pick an operator, edit the value, flip the outcome — hover the row or tick the checkbox for its hover and selected states.",
       },
       {
         type: "image",
