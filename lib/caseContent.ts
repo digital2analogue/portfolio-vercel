@@ -5,7 +5,7 @@ export type Block =
   | { type: "h3"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string; dither?: boolean }
+  | { type: "image"; alt: string; caption?: string; src?: string; naturalSize?: boolean; frame?: string }
   | { type: "video"; src: string; alt: string; caption?: string; poster?: string; naturalSize?: boolean }
   /** Hand-authored SVG diagram, inlined server-side (lib/diagrams.ts) and
    *  animated on scroll-in by DiagramBlock. `svg` is populated at render
@@ -39,7 +39,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "Policy analysts at Capital One were building complex decision logic in spreadsheets — copy-pasting rules between tabs, manually cross-referencing compliance constraints, hoping nothing broke downstream. I led design systems strategy to replace that fragile workflow with a modular, system-aligned interface for high-stakes, compliance-sensitive environments.",
+        text: "Policy analysts at Capital One built complex decision logic in spreadsheets — rules copy-pasted between tabs, compliance constraints cross-referenced by hand. I led the design systems strategy that replaced that workflow with a modular, compliance-ready rules interface.",
       },
       {
         type: "note",
@@ -67,7 +67,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "hr" },
       {
         type: "p",
-        text: "Before the write-up — the actual thing. A public-safe, runnable prototype of the decision engine: drag a rule to reorder, flip an outcome, edit any cell. Open the [full onboarding flow](https://decisioning-table.vercel.app) or [skip straight to the table](https://decisioning-table.vercel.app?demo=1).",
+        text: "The actual thing, before the write-up: a public-safe, runnable prototype. Drag a rule to reorder, flip an outcome, edit any cell — or open the [full onboarding flow](https://decisioning-table.vercel.app).",
       },
       {
         type: "embed",
@@ -81,15 +81,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Analysts relied on a patchwork of spreadsheets and inconsistent UI patterns to define and manage complex decision logic. The cost was real:",
+        text: "A patchwork of spreadsheets and inconsistent UI patterns made complex logic risky to author:",
       },
       {
         type: "ul",
         items: [
           "High cognitive load during rule creation",
-          "Increased risk of error in critical workflows",
+          "Error-prone in critical workflows",
           "Inconsistent accessibility support",
-          "Slow onboarding and poor pattern reuse across teams",
+          "Slow onboarding, little pattern reuse",
         ],
       },
       {
@@ -101,7 +101,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "Before: spreadsheet workflow used prior to the decision engine",
         src: "/projects/images/c1-decision-engine-before.png",
         naturalSize: true,
-        dither: true,
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -109,9 +108,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "ul",
         items: [
           "Compliance-sensitive domain with low tolerance for error",
-          "Legacy interaction patterns deeply embedded in daily workflows",
-          "Code base was using open-source Ant Design System instead of Capital One's Gravity Design System",
-          "Need for incremental migration rather than a full rebuild",
+          "Legacy interaction patterns embedded in daily workflows",
+          "Codebase used open-source Ant Design rather than Capital One's Gravity system",
+          "Incremental migration, not a full rebuild",
         ],
       },
       { type: "hr" },
@@ -130,14 +129,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Define a progression from tokens → core components → reusable patterns",
+          "Tokens → core components → reusable patterns",
           "Encapsulate complexity rather than exposing it",
           "Treat adoption and governance as design problems, not enforcement problems",
         ],
-      },
-      {
-        type: "p",
-        text: "Teams could reason about complex logic consistently — without sacrificing flexibility.",
       },
       { type: "hr" },
       { type: "h2", text: "From Fragmentation to Modular Workflows" },
@@ -148,14 +143,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Centralized a shared component library (Figma and Storybook) as the single source of truth",
-          "Defined repeatable interaction patterns for common analyst tasks",
-          "Created a migration roadmap aligned to system maturity",
+          "One shared component library (Figma + Storybook) as the source of truth",
+          "Repeatable interaction patterns for common analyst tasks",
+          "A migration roadmap aligned to system maturity",
         ],
-      },
-      {
-        type: "p",
-        text: "The onboarding flow walked analysts through a three-step setup on a single page: choosing an outcome type, naming the model, and selecting the data elements it could evaluate. Each step was scoped to a single decision, reducing cognitive load before reaching the main interface.",
       },
       {
         type: "image",
@@ -172,7 +163,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Component system sheet for the rule cell: data-attribute badges (Income, Expense, Asset, Liability), Approve and Deny outcome badges, comparison-operator chips, and the rule row's default, hover, and selected states",
         caption:
-          "The rule cell's vocabulary: attribute badges, outcome badges, operators, and row states — every rule composes from these parts.",
+          "The rule cell's vocabulary: attribute badges, outcome badges, operators, and row states.",
         src: "/projects/images/04_component_system_dark.png",
         frame: "Decision engine · Component system",
       },
@@ -180,7 +171,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "Create-a-new-decision-model flow: step 1 assigns the ruleset's outcome from six options (Decline, Assign Credit Limit, Require Action, Award Rewards, Accumulate Rewards, Assign Minimum Credit Limit); step 2 names the model",
         caption:
-          "Upstream of the cell: each ruleset is scoped to a single outcome before any rule is authored, so a rule cell never has to express conflicting outcomes.",
+          "Upstream of the cell: each ruleset is scoped to a single outcome before any rule is authored.",
         src: "/projects/images/c1-decision-engine-data-element-selector.png",
         frame: "Decision engine · New model flow",
       },
@@ -195,23 +186,23 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each rule row maps a data attribute to an operator, a threshold value, and a decision outcome. The inline edit model (badge tap to swap attribute, dropdown for operator, direct input for value) eliminated the modal-heavy workflows analysts had been tolerating, cutting the path to a saved rule from eight clicks down to three (a 63% reduction).",
+        text: "Each row maps a data attribute to an operator, a value, and an outcome. Inline editing — badge tap, dropdown, direct input — replaced the modal-heavy workflow, cutting the path to a saved rule from eight clicks to three.",
       },
       { type: "h3", text: "Impact" },
       {
         type: "p",
-        text: "In discovery testing, analysts completed 12 of 13 tasks against the new model, with markedly lower error rates during rule creation than the spreadsheet baseline.",
+        text: "In discovery testing, analysts completed 12 of 13 tasks, with markedly lower rule-creation error rates than the spreadsheet baseline.",
       },
       { type: "hr" },
       { type: "h2", text: "Inside the Prototype" },
       {
         type: "p",
-        text: "The prototype above is an open-source extraction of the rule-row pattern, rebuilt in React, TypeScript, and Vite. It strips out the proprietary domain logic, keeps the interaction model intact, and ships the result as a reference implementation for the same class of decisioning interface. A few interactions worth calling out:",
+        text: "The prototype above is an open-source extraction of the rule-row pattern — React, TypeScript, Vite — with the proprietary domain logic stripped and the interaction model intact. A few interactions worth calling out:",
       },
       { type: "h3", text: "Onboarding: three decisions, one page" },
       {
         type: "p",
-        text: "Rather than dropping users into an empty editor, the prototype opens with a guided three-step setup: pick an outcome type, name the model, then choose the data the model is allowed to evaluate. Each step is scoped to a single decision, and the whole flow lives on a single scrollable page so the model's shape stays visible while you build it.",
+        text: "Instead of an empty editor, a guided three-step setup: pick an outcome, name the model, choose the data it may evaluate — each step one decision, all on one scrollable page.",
       },
       {
         type: "image-pair",
@@ -233,12 +224,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "The rule table" },
       {
         type: "p",
-        text: "Once setup is done, the model opens into the main editor shown at the top of this page: a five-row example ruleset with each rule on a single line — name, data attribute, operator, value, optional companion attributes, and the outcome.",
+        text: "Setup done, the model opens into the editor shown at the top of this page: one rule per line — name, attribute, operator, value, outcome.",
       },
       { type: "h3", text: "Segmented Approve / Deny outcome" },
       {
         type: "p",
-        text: "Each row's outcome is a segmented two-state control: green Approve on the left, red Deny on the right, with the unselected side rendered as a muted ghost. It's faster than a dropdown for binary outcomes and reads at a glance when scanning a ruleset.",
+        text: "Each row's outcome is a two-state segmented control — green Approve, red Deny, the unselected side a muted ghost. Faster than a dropdown, readable at a glance.",
       },
       {
         type: "outcome-demo",
@@ -248,7 +239,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Split-button progressive disclosure" },
       {
         type: "p",
-        text: "The primary CTA is a split button: the main face is **+ Add rule** (the common path), and a chevron beside it opens a small menu with the secondary action, Add existing rule. The split keeps the default action one click away while making the alternative discoverable rather than buried in a kebab menu.",
+        text: "The primary CTA is a split button: **+ Add rule** on the main face, a chevron for the secondary Add existing rule — the default stays one click away without burying the alternative.",
       },
       {
         type: "image",
@@ -263,9 +254,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Accessibility as a System Lever" },
       {
         type: "p",
-        text: "Accessibility improvements were embedded at the system level rather than treated as retrofits.",
+        text: "Accessibility was built in at the system level, not retrofitted:",
       },
-      { type: "p", text: "The results:" },
       {
         type: "ul",
         items: [
@@ -274,10 +264,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "More predictable interaction behavior across components",
         ],
       },
-      {
-        type: "p",
-        text: "Accessibility became a forcing function for better structure and clarity.",
-      },
       { type: "hr" },
       { type: "h2", text: "Outcomes & Impact" },
       {
@@ -285,25 +271,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           "Unified interaction patterns across a critical enterprise workflow",
           "Faster analyst task completion in usability testing",
-          "Reduced design and QA overhead through shared tokens and components",
-          "Established a scalable foundation for future platform growth",
-        ],
-      },
-      { type: "hr" },
-      { type: "h2", text: "Next Iterations" },
-      {
-        type: "ul",
-        items: [
-          "Expand the component library to support new data interaction models",
-          "Refine token architecture for faster theming and dark mode support",
-          "Deepen async contribution rituals to scale governance sustainably",
+          "Lower design and QA overhead through shared tokens and components",
+          "A scalable foundation for future platform growth",
         ],
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "In complex enterprise systems, clarity is a performance feature. This work reinforced that scalable UX isn't about simplifying problems. It's about **making complexity legible**.",
+        text: "In complex enterprise systems, clarity is a performance feature. Scalable UX isn't about simplifying problems — it's about **making complexity legible**.",
       },
     ],
   },
@@ -317,17 +293,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "OTKit Design System hero: overview of the design system River built at OpenTable spanning iOS, Android, and web",
         src: "/projects/images/otkit-ds-hero.png",
-        dither: true,
       },
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "When I took ownership of OTKit — OpenTable's design system spanning iOS, Android, and web — the system existed on paper. In practice, it lacked cohesion, governance, and trust. Design drift, fragmented sources of truth, and inconsistent adoption were slowing teams down and introducing costly QA issues.",
-      },
-      { type: "p", text: "My mandate was not just to redesign components." },
-      {
-        type: "p",
-        text: "It was to **turn a drifting system into an operational platform** teams actually relied on.",
+        text: "When I took ownership of OTKit — OpenTable's design system across iOS, Android, and web — it existed on paper but lacked cohesion, governance, and trust. The mandate: **turn a drifting system into an operational platform** teams actually relied on.",
       },
       { type: "hr" },
       {
@@ -351,8 +321,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       { type: "h2", text: "The Problem" },
-      { type: "p", text: "Design system drift was expensive and invisible." },
-      { type: "p", text: "Research through user surveys and 1:1 interviews revealed:" },
+      { type: "p", text: "Design system drift was expensive and invisible. Surveys and 1:1 interviews revealed:" },
       {
         type: "ul",
         items: [
@@ -375,12 +344,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "User Research" },
       {
         type: "p",
-        text: "A survey of 37 respondents across design, product, and engineering revealed the depth of the problem:",
+        text: "A 37-person survey across design, product, and engineering put numbers on it:",
       },
       { type: "h3", text: "One-off component creation" },
       {
         type: "p",
-        text: "**100%** of iOS designers said they were creating new or one-off components often or occasionally, compared to **60%** of web designers across both Restaurant and Diner teams. iOS teams suffered the most, which made sense given we had a much more mature web component library (Buffet) but nothing comparable for native.",
+        text: "**100%** of iOS designers were creating one-off components often or occasionally, vs **60%** on web — unsurprising, given a mature web library (Buffet) and nothing comparable for native.",
       },
       {
         type: "quote",
@@ -389,16 +358,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Time spent clarifying styling during release" },
       {
         type: "p",
-        text: "**75% of Restaurant web designers** reported spending **4–8 rounds** clarifying styling with engineering during each release cycle. Meanwhile, **100% of Diner web designers** reported only **0–3 rounds**. Cross-functional Restaurant teams were spending significantly more time reconciling their style guide with designers and developers.",
+        text: "**75% of Restaurant web designers** spent **4–8 rounds** per release clarifying styling with engineering; **100% of Diner web designers** needed **0–3**.",
       },
-      { type: "h3", text: "Consolidating research" },
       {
         type: "p",
-        text: "We ran 1:1 interviews and remote collaborative brainstorms using FigJam and Dovetail. The main insight was clear: designers and engineers often had the **same problem**, namely unclear documentation, scattered sources of truth, and no shared language for components. Most folks knew what colors and styles to use, but much of the style guide lived in designers' heads rather than in a system.",
-      },
-      {
-        type: "quote",
-        text: "We have a ton of legacy styles and pages on our iOS apps and it's always a push and pull on when and how to update those. (Cris, designer on Restaurant product)",
+        text: "Interviews surfaced the same insight from both sides: unclear documentation, scattered sources of truth, no shared component language — much of the style guide lived in designers' heads.",
       },
       { type: "hr" },
       { type: "h2", text: "Constraints" },
@@ -435,7 +399,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Foundations: Tokens, Type, Icons" },
       {
         type: "p",
-        text: "These foundational changes made consistency possible without forcing large rewrites — adoption could happen across active codebases, not instead of them.",
+        text: "Foundations made consistency possible without rewrites — adoption could happen across active codebases.",
       },
       { type: "h3", text: "Color tokens" },
       {
@@ -449,7 +413,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "This resolved cases where critical actions appeared disabled, improved cross-platform parity, and allowed teams to adopt the system without rewriting existing UI.",
+        text: "This fixed actions that read as disabled, improved platform parity, and let teams adopt without rewriting UI.",
       },
       {
         type: "image",
@@ -472,7 +436,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "System thinking in action: Table Statuses" },
       {
         type: "p",
-        text: "A real product use case validated the color system early. The Table Statuses feature needed color-coded indicators for reservation states — and the product team initially proposed 21+ new colors. By collaborating with the design system team, we satisfied the project requirements using the existing accent palette, reducing color sprawl while shipping on time. The product got what it needed. The system stayed coherent.",
+        text: "Table Statuses validated the color system early: the feature needed color-coded reservation states, and the product team proposed 21+ new colors. We met the requirement with the existing accent palette — shipped on time, zero new colors, system coherent.",
       },
       {
         type: "demo",
@@ -488,7 +452,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "The same system, denser: table-status tiles" },
       {
         type: "p",
-        text: "The reservation button is one half of the floor screen. The other half is the **floor plan** — a grid of table tiles, each a table number plus a course icon, color-coded by the same semantic palette. Here the label and icon sit *on* the color, so each tile pairs its fill with its own `foreground/on-*` token to stay legible.",
+        text: "The **floor plan** is the denser half of the same screen — table tiles color-coded by the same palette. Labels sit *on* the color, so each tile pairs its fill with its own `foreground/on-*` token to stay legible.",
       },
       {
         type: "demo",
@@ -587,7 +551,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: 'Brand Evolution: "Black Is the New Red"' },
       {
         type: "p",
-        text: "OpenTable operates in an industry dominated by red and orange. Partnering closely with Brand, we translated a premium direction into a **tokenized theming architecture** rather than one-off visual treatments.",
+        text: "OpenTable competes in an industry drenched in red and orange. Partnering with Brand, we translated a premium direction into **tokenized theming** rather than one-off visual treatments.",
       },
       {
         type: "video",
@@ -603,7 +567,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         poster: "/projects/images/casestudy-otkit-opentable-icons-debby-linkedin-poster.jpg",
         naturalSize: true,
       },
-      { type: "p", text: "This allowed brand evolution without breaking product consistency. Namely:" },
+      { type: "p", text: "The refresh carried:" },
       {
         type: "ul",
         items: [
@@ -614,18 +578,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The key insight: by encoding brand decisions as token values rather than hardcoded styles, the system could absorb a major brand shift without requiring teams to rewrite their components.",
+        text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components.",
       },
       { type: "hr" },
       { type: "h2", text: "Theming in Practice" },
-      {
-        type: "p",
-        text: "The tokenized architecture made it possible to deliver two visually distinct experiences from a single component library.",
-      },
       { type: "h3", text: "Mass Theme" },
       {
         type: "p",
-        text: "The Mass theme serves OpenTable's core restaurant audience. Editorial in feel, it uses a two-column structure inspired by e-commerce: booking surfaced immediately, decisions guided with minimal visual noise. Every component follows the same token-driven pattern, so new features land consistently without bespoke design decisions at the component level.",
+        text: "Mass serves the core audience: editorial in feel, two-column, booking surfaced immediately, minimal visual noise.",
       },
       {
         type: "image",
@@ -636,7 +596,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Iconic Theme" },
       {
         type: "p",
-        text: "For OpenTable's premium Iconic restaurant tier, the system delivered a distinct but coherent experience. Full-bleed photography, dark wine-inspired time slot styling, and sticky booking flows communicated prestige without sacrificing usability. The same underlying tokens and components powered both themes. No fork required, just a different set of token values.",
+        text: "Iconic, the premium tier: full-bleed photography, dark wine-toned time slots, sticky booking. Same tokens, same components — no fork, just different values.",
       },
       {
         type: "image",
@@ -663,17 +623,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Designers and engineers also reported a **27% lift in clarity around Figma component sources** in our follow-up survey. The consolidation work made it easier to find authoritative components without hunting through legacy Storybooks and one-off libraries.",
-      },
-      {
-        type: "quote",
-        text: "OTKit scaled across 6 product teams, supporting iOS, Android, and web simultaneously.",
+        text: "Follow-up surveys also showed a **27% lift in clarity around Figma component sources**.",
       },
       { type: "hr" },
       { type: "h2", text: "What Made This Work" },
       {
         type: "p",
-        text: "OTKit's adoption didn't happen through enforcement. We built a network of **design ambassadors**: designers embedded in product teams who championed the system locally and surfaced friction back to the core team. This created a feedback loop that made the system more useful over time.",
+        text: "Adoption came through advocacy, not enforcement: **design ambassadors** embedded in product teams championed the system locally and surfaced friction back to the core team.",
       },
       {
         type: "image",
@@ -683,7 +639,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Documentation was treated as a **first-class deliverable**, not an afterthought. Component specs, token definitions, and usage guidelines were kept in sync with engineering. We ran regular office hours, live demos, and shipped a system newsletter to keep teams informed and engaged.",
+        text: "Documentation was a **first-class deliverable**, kept in sync with engineering — backed by office hours, live demos, and a system newsletter.",
       },
       {
         type: "image",
@@ -693,44 +649,28 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "quote",
-        text: "I wanted to directly reach out and thank you for your feedback in today's session. All of the links and resources you shared were incredibly helpful. (Stephanie, Restaurant Design Ambassador)",
-      },
-      {
-        type: "quote",
         text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team. (Jordon, Restaurant Design Ambassador)",
       },
       {
         type: "p",
-        text: "Trust was built through follow-through. When teams reported issues, we responded quickly. When we made breaking changes, we migrated them. That responsiveness turned skeptics into advocates.",
+        text: "Trust came from follow-through: issues answered fast, breaking changes migrated for teams. That turned skeptics into advocates.",
       },
       { type: "hr" },
       { type: "h2", text: "Learnings" },
       { type: "h3", text: "Challenge: Lack of native Figma support for design tokens" },
       {
         type: "p",
-        text: "We started work on the foundations before Figma released Variables. This meant we initially had to manage tokens through workarounds: naming conventions, separate documentation, and manual syncing. When Variables shipped, we migrated quickly, but the gap cost us early momentum.",
-      },
-      {
-        type: "p",
-        text: "**What I'd do next time:** More upfront communication around the limitations of tooling and clearer expectations about what would change once better tooling arrived. Teams need to understand the 'why' behind interim solutions.",
+        text: "We started before Figma shipped Variables, managing tokens through naming conventions and manual syncing. We migrated fast when Variables arrived, but the gap cost early momentum — next time, clearer expectations about interim tooling from the start.",
       },
       { type: "h3", text: "Challenge: Communicating with remote teams" },
       {
         type: "p",
-        text: "Working in a remote setting with teams distributed across North America, Europe, and Asia created real communication challenges. Updates got lost, context didn't travel well across time zones, and synchronous meetings couldn't cover everyone.",
-      },
-      {
-        type: "p",
-        text: "**What I'd do next time:** Lean harder into async from the start, with more recorded video demos, tech talks, dedicated Slack Q&A channels, and newsletters. The newsletter ended up being one of our most effective tools, and I wish we'd started it earlier.",
+        text: "With teams across North America, Europe, and Asia, updates got lost and context didn't travel. The newsletter became our most effective channel — I'd start it, and the async-first habits, much earlier.",
       },
       { type: "h3", text: "Challenge: Scaling myself" },
       {
         type: "p",
-        text: "Design systems work often got sidelined into supporting feature work that needed system alignment. The constant pull between system-level thinking and product-level support was real, and without clear boundaries, it was easy to become a bottleneck.",
-      },
-      {
-        type: "p",
-        text: "**What I'd do next time:** Be clearer upfront about the design system team's role and responsibility relative to product work. The Ambassadorship model helped with this, but establishing those boundaries earlier would have preserved more time for foundational work.",
+        text: "System work kept getting pulled into feature support, and without clear boundaries it was easy to become a bottleneck. The ambassador model helped; drawing that line earlier would have protected more foundational time.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
@@ -750,18 +690,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "OpenTable's reservation details view had become the most legacy-styled screen in the product — dense, visually fragmented, and expensive to maintain. Restaurant operators used it every shift, but years of accumulated features had buried the information hierarchy. I led the redesign to modernize the experience while preserving the density operators depended on.",
-      },
-      {
-        type: "p",
-        text: "Design systems driving **practical product outcomes** — not just visual consistency.",
+        text: "OpenTable's reservation details view was the most legacy-styled screen in the product — dense, fragmented, expensive to maintain, and used by operators every shift. I led the redesign: modernize the experience, **keep the density operators depend on**.",
       },
       {
         type: "image",
         alt: "Reservation Details, before-and-after comparison. Legacy flat layout on the left; the redesigned card-based hierarchy on the right.",
         caption: "iPad → iPhone. Reverse-engineering OpenTable's Front of House iPad app to iPhone and Android.",
         src: "/projects/images/ot-reservations-native-ios-android.png",
-        dither: true,
       },
       { type: "hr" },
       {
@@ -786,21 +721,16 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Reservation details had become a dumping ground for years of accumulated features.",
+        text: "Years of accumulated features had made the view:",
       },
-      { type: "p", text: "The experience was:" },
       {
         type: "ul",
         items: [
           "Dense and visually fragmented",
           "Difficult to scan under time pressure",
           "Inconsistent across platforms",
-          "Costly to maintain due to distributed ownership across engineering teams",
+          "Costly to maintain across distributed engineering teams",
         ],
-      },
-      {
-        type: "p",
-        text: "Despite its importance, it had the **most legacy styling** in the product, making UX improvements slow and risky.",
       },
       {
         type: "image",
@@ -825,7 +755,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Rather than redesigning the page wholesale, we treated the reservation view as a **modular system problem**.",
       },
-      { type: "p", text: "Key principles:" },
       {
         type: "ul",
         items: [
@@ -833,10 +762,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Replace bespoke layouts with reusable system components",
           "Design once, scale across platforms",
         ],
-      },
-      {
-        type: "p",
-        text: "Modernize the experience without disrupting established workflows.",
       },
       { type: "hr" },
       { type: "h2", text: "Solution: Modular, Card-Based Architecture" },
@@ -897,8 +822,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       { type: "h2", text: "System Alignment" },
-      { type: "p", text: "This work became a proving ground for OTKit in real product conditions." },
-      { type: "p", text: "We:" },
+      { type: "p", text: "This work became OTKit's proving ground in real product conditions:" },
       {
         type: "ul",
         items: [
@@ -939,10 +863,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Designing for restaurant operators reinforced that usability isn't about simplification. It's about **clarity under pressure**.",
       },
-      {
-        type: "p",
-        text: "This work showed how design systems can enable meaningful product improvements without disrupting workflows that teams depend on daily.",
-      },
     ],
   },
   "system": {
@@ -965,7 +885,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "Interfaces are increasingly assembled by agents rather than typed by hand, and design systems were never written for that reader. Most of my own work now happens through AI agents, in chat windows where I rarely see the whole codebase at once, so I built a design system for that setup. Instead of rules written for a person to read and remember, the rules are encoded so a machine can read them, build against them, and catch its own mistakes.",
+        text: "Interfaces are increasingly assembled by agents, and design systems were never written for that reader. Most of my own work now happens through AI agents, so I built a system whose rules a machine can read, build against, and self-check.",
       },
       {
         type: "p",
@@ -973,7 +893,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "note",
-        text: "Note: This is a personal project, not a team product. It runs across my own sites (.com, .design, .art, .blog) plus an enterprise UI sub-brand, and it's a work in progress — I've marked what's shipped versus what's deferred throughout, and the [public roadmap on GitHub](https://github.com/digital2analogue/parsimony/milestones) tracks what's in flight next.",
+        text: "Note: A personal project, live across my own sites plus an enterprise UI sub-brand. Shipped vs deferred is marked throughout; the [public roadmap](https://github.com/digital2analogue/parsimony/milestones) tracks what's next.",
       },
       { type: "hr" },
       {
@@ -987,7 +907,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "**Browse the live token catalog:** [the full token reference is here](/tokens). **Follow the roadmap:** [GitHub milestones](https://github.com/digital2analogue/parsimony/milestones) show what's shipping next.",
+        text: "**Browse the [live token catalog](/tokens)** — this site consumes the system it documents.",
       },
       { type: "hr" },
       {
@@ -1002,15 +922,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Design systems are written for people. Documentation sites, Figma libraries, \"use this, not that.\" All of it assumes a human who reads and remembers. But more and more, the thing building my UI is an agent, and an agent doesn't read your docs site.",
-      },
-      {
-        type: "ul",
-        items: [
-          "Documentation assumes a human reader who remembers the rules",
-          "The agent building your UI never visits your docs site",
-          "Without the system as data, every agent reinvents, and drift spreads across every repo that consumes it",
-        ],
+        text: "Design systems are written for people — docs sites, Figma libraries, \"use this, not that.\" But the thing building my UI now is an agent, and an agent doesn't read your docs site. Without the system as data, every agent reinvents, and drift spreads to every repo that consumes it.",
       },
       {
         type: "p",
@@ -1020,7 +932,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Architecture" },
       {
         type: "p",
-        text: "One repo, one direction of flow. The diagram above is the entire system. The decision that holds it together: **tokens and components version together.** A token rename is a breaking change to every component that uses it, by design, so there's no version skew to chase across separately published packages.",
+        text: "One repo, one direction of flow — the diagram above is the entire system. The decision that holds it together: **tokens and components version together**, so a token rename is a breaking change by design and there's no version skew across packages.",
       },
       {
         type: "ul",
@@ -1064,11 +976,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each component ships its own rulebook. badge.meta.json spells out which tokens the component may touch, which rules apply to it, and which ARIA pattern and WCAG criteria it implements. That file is the spec, and it's the same file the agent reads.",
-      },
-      {
-        type: "p",
-        text: "All 21 components carry an auto-generated Custom Elements Manifest, the basic API an agent needs to use one. Every one adds a hand-written meta.json on top, with the token, rule, and accessibility contract — and prop descriptions are single-sourced from the code's JSDoc, so the contract can't drift from the implementation.",
+        text: "Each component ships its own rulebook: the tokens it may touch, the rules that bind it, the ARIA pattern and WCAG criteria it implements. That file is the spec — and the same file the agent reads, with prop descriptions single-sourced from the code's JSDoc so the contract can't drift from the implementation.",
       },
       { type: "hr" },
       { type: "h2", text: "Docs That Can't Drift" },
@@ -1081,7 +989,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The docs are generated from the same metadata, not hand-written. One deterministic pass turns each component's meta.json into an MDX page: the mechanical parts — props, tokens, accessibility — regenerate on every run, while the hand-written overview and usage prose stay preserved in place. A CI gate regenerates and diffs them, so a component change that didn't update its docs fails the build instead of quietly going stale.",
+        text: "Docs are generated from the same metadata the agent reads: the mechanical sections regenerate on every run, hand-written prose is preserved, and a CI gate fails the build if a component change leaves its docs stale.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -1094,7 +1002,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Most design-system checks happen after the fact: a linter in CI, or a reviewer catching drift in a pull request. **check_usage moves that earlier.** Before an agent settles on a pattern, it can hand the system a snippet and get back every violation: the hardcoded hex, the primitive reference, the deprecated token.",
+        text: "Design-system checks usually happen after the fact — a linter in CI, a reviewer in a PR. **check_usage moves that earlier**: hand the system a snippet before the code exists, get back every violation.",
       },
       {
         type: "demo",
@@ -1108,10 +1016,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
       },
-      {
-        type: "quote",
-        text: "Before, drift surfaced in code review, after the code was already written. Now the agent checks the same rules before the line exists, turning a review-cycle catch into a single tool call.",
-      },
       { type: "hr" },
       { type: "h2", text: "An Agent, Self-Correcting" },
       {
@@ -1123,7 +1027,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Here is the whole argument in one session. The agent asks the system what a badge is, drafts the markup the quick way with raw hex, and runs check_usage before it commits to that. The system hands back the exact violations the build would later reject, so the agent drops the hand-rolled version and uses the component instead. Same tools, same rules, one loop. None of it is staged: the messages come straight from the shared rule set, and the fix is the component's own documented usage.",
+        text: "The whole argument in one session: the agent asks what a badge is, drafts it the quick way with raw hex, runs check_usage, gets back the exact violations the build would reject, and ships the component instead. None of it is staged.",
       },
       { type: "hr" },
       { type: "h2", text: "Decisions & Tradeoffs" },
@@ -1134,23 +1038,23 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Distribution: public npm over GitHub Packages" },
       {
         type: "p",
-        text: "I wanted people to install the tokens instead of copy-pasting a block of CSS. GitHub Packages seemed natural, since it sits right next to the repo. But it makes you log in to install a package, even a public one, so every site and every build would need a token just to download tokens. That's the friction I was trying to remove. With public npm, anyone installs with no login. And there was nothing to hide anyway. Tokens are just CSS that ships to the browser on every page.",
+        text: "GitHub Packages requires a login even for public installs — every build would need a token just to download tokens. Public npm installs with none, and tokens are just CSS that ships to the browser anyway.",
       },
       { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
       {
         type: "p",
-        text: "How should an agent read the system? Plain docs won't do, since agents don't open your docs site. A REST API would work, but it needs a server, a login, and the agent has to know it's there. MCP is the format agents already speak, so the same session writing the code can ask the system what it needs with no setup. Its one downside is that MCP is new, and mine runs on my machine rather than as a public service, which is fine while I'm the main user.",
+        text: "Docs don't work (agents don't read them); a REST API needs a server, a login, and discovery. MCP is what agents already speak — the session writing the code can just ask. The cost: it's new, and mine runs locally, which is fine while I'm the main user.",
       },
       { type: "h3", text: "Components: Web Components over React" },
       {
         type: "p",
-        text: "I built the components as Web Components (using Lit) instead of React. They're a bit clunkier inside React, which is the real cost. But one version of each then works everywhere (React, plain HTML, or a Figma mapping), instead of building the same button three times and keeping them in sync. I'd rather maintain one source than the smoother React-only version.",
+        text: "Lit Web Components are clunkier inside React — the real cost. But one version works everywhere (React, plain HTML, Figma mapping) instead of three synchronized buttons. One source beats the smoother React-only version.",
       },
       { type: "hr" },
       { type: "h2", text: "Honest Status" },
       {
         type: "p",
-        text: "Part of the work was deciding what to leave unbuilt for now. Here's where things stand.",
+        text: "Part of the work was deciding what to leave unbuilt. Where things stand:",
       },
       { type: "h3", text: "Shipped" },
       {
@@ -1158,11 +1062,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           "Two-layer token architecture (primitives → semantic) across four brands",
           "21 Lit web components, wired to Figma via Code Connect",
-          "MCP server with 17 tools: component contracts, token lookup, design rules and the decision log, brand diffs, WCAG contrast checks, and consumer-repo linting",
-          "One shared rule set behind every checker: the build gate, the MCP's check_usage, and the consumer drift scan all import the same rules, so they can't disagree",
-          "A CI gate on every change: schema checks, lint rules, token-reference resolution, a stale-artifact check, and a full test suite",
-          "Distribution: the token build ships as a versioned npm package, and this very site already consumes it as a dependency instead of hand-copying the CSS",
-          "A scheduled drift scan that checks a consumer against the same rules and opens a tracked issue when it finds drift, closing it again when the consumer comes back clean",
+          "MCP server with 17 tools: contracts, tokens, rules, decisions, brand diffs, contrast checks, consumer linting",
+          "One shared rule set behind every checker — the build gate, check_usage, and the drift scan can't disagree",
+          "CI on every change: schema checks, lint rules, token-reference resolution, stale-artifact check, full test suite",
+          "Tokens ship as a versioned npm package — this site already consumes it",
+          "A scheduled drift scan opens a tracked issue on drift, closes it when the consumer comes back clean",
           "WCAG AA contrast verified across every token pairing",
         ],
       },
@@ -1170,28 +1074,16 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Publishing the component library itself to npm (the token package ships today; the Lit components and the MCP server are next)",
-          "Migrating the remaining sites onto the package (this portfolio, the decision-engine prototype, and the intro page consume it today; .art and .blog follow as they come online)",
-          "Auto-fixing drift: the scheduled scan detects it and files an issue today; having it open a fix PR (a codemod) is the remaining step",
+          "Publishing the component library and MCP server to npm (the token package ships today)",
+          "Migrating the remaining sites (.art, .blog) onto the package",
+          "Auto-fixing drift: the scan detects and files issues today; opening a fix PR is next",
         ],
-      },
-      {
-        type: "p",
-        text: "The drift scan now runs on a schedule and opens a tracked issue when a consumer drifts; auto-opening a PR that fixes it is the part I've left for later. That order is deliberate, not a backlog.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
       {
         type: "p",
-        text: "Every design system I'd built before was about making things clear to people. This one started from a different question: what does a system look like when its main reader is a machine?",
-      },
-      {
-        type: "p",
-        text: "The answer wasn't more documentation. It was **structure**: tokens stored as data, components that carry their own rules, and a system an agent can query.",
-      },
-      {
-        type: "p",
-        text: "There's no settled playbook for this yet. What an AI-native design system should be is still being worked out across the industry, so I'm treating Parsimony as a moving target: as conventions for tokens, component contracts, and agent interfaces solidify, it will adopt them. I'd rather keep iterating toward the standards as they form than freeze around today's best guess.",
+        text: "Every system I'd built before made things clear to people. This one asks what a system looks like when its main reader is a machine — and the answer wasn't more documentation, it was **structure**: tokens as data, components that carry their own rules, a system an agent can query.",
       },
       {
         type: "p",
