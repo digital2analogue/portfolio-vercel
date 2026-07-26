@@ -6,4 +6,4 @@
 
 ## Work Page
 
-- [ ] **Work row UX (#1 from design critique)** — Resolve whether `.work-row` elements are navigation links or accordions. CSS has `work-row[aria-expanded="true"]` hooks suggesting accordion was originally intended. Decide on one pattern and remove the other.
+- [x] **Work row UX (#1 from design critique)** — Resolved: `.work-row` elements are navigation links. The dead `work-row[aria-expanded="true"]` accordion CSS hooks were removed (they could never match — the rows render as plain `<Link>`s).

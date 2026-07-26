@@ -380,7 +380,7 @@ export default function TokensPage() {
         <CompactSection
           title="Icon size"
           italic="under construction"
-          note="Provisional — the icon system isn't finalized yet, so these sizes are placeholders and may change."
+          note="Provisional: the icon system isn't finalized yet, so these sizes are placeholders and may change."
           tokens={ICON}
         />
       </div>

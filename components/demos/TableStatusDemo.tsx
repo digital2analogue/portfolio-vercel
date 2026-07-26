@@ -50,7 +50,7 @@ export default function TableStatusDemo() {
   return (
     <div className="rr-tiles">
       <div className="rr-tiles-head">
-        <div className="rr-tiles-title">Floor plan — table status</div>
+        <div className="rr-tiles-title">Floor plan · table status</div>
       </div>
 
       {/* \u2500\u2500 Tile floor \u2500\u2500 */}

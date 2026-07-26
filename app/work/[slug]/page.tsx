@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { CASES, getCase } from "@/lib/cases";
 import { CASE_CONTENT } from "@/lib/caseContent";
 import CaseBlocks from "@/components/CaseBlocks";
+import TerminalEcho from "@/components/TerminalEcho";
+import { inlineDiagrams } from "@/lib/diagrams";
 
 type Params = { slug: string };
 
@@ -76,11 +78,8 @@ export default async function CaseStudyPage({
           §&nbsp;<span className="accent">{meta.index}</span>&nbsp;/&nbsp;CASE
         </span>
 
-        <div className="hero__term rise d1">
-          <div>
-            <span className="accent" aria-hidden="true">~</span> $ cat ./work/
-            {meta.slug}.md
-          </div>
+        <div className="rise d1">
+          <TerminalEcho text={`cat ./work/${meta.slug}.md`} />
         </div>
 
         <h1 className="display rise d2">{content.title}</h1>
@@ -114,7 +113,7 @@ export default async function CaseStudyPage({
 
       <div className="dot-rule rise d5" aria-hidden="true" />
 
-      <CaseBlocks blocks={content.blocks} />
+      <CaseBlocks blocks={inlineDiagrams(content.blocks)} reveal />
 
       <nav
         className="case-detail__pager"
@@ -132,6 +131,11 @@ export default async function CaseStudyPage({
               <div className="case-detail__pager-title">
                 <em>{prev.title}</em>
               </div>
+              {!prev.href && (
+                <div className="case-detail__pager-path" aria-hidden="true">
+                  ./work/{prev.slug}.md
+                </div>
+              )}
             </Link>
           )}
         </div>
@@ -147,6 +151,11 @@ export default async function CaseStudyPage({
               <div className="case-detail__pager-title">
                 <em>{next.title}</em>
               </div>
+              {!next.href && (
+                <div className="case-detail__pager-path" aria-hidden="true">
+                  ./work/{next.slug}.md
+                </div>
+              )}
             </Link>
           )}
         </div>

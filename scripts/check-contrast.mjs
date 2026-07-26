@@ -164,6 +164,24 @@ const PAIRINGS = [
   { text: '#1A1A2E', bg: '#FFFFFF', label: 'Outcome demo: rule name on device row surface' },
   { text: '#5E6E88', bg: '#FFFFFF', label: 'Outcome demo: rule condition (muted) on device row surface' },
   { text: '#5E6E88', bg: '#F5F8FC', label: 'Outcome demo: card title on device canvas' },
+
+  // Rule-cell demo — the full decision-engine rule row, live (`.rcd` in
+  // globals.css, same scoped arctic palette as the outcome demo). Pairings are
+  // resolved hex from the --rcd-* custom properties. The segment recipe is
+  // shared with the outcome demo (labels on pill base already registered
+  // above); the inactive-ghost segment label (#A8B0BE) stays WCAG-exempt by
+  // design, same as there.
+  { text: '#5E6E88', bg: '#F5F8FC', label: 'Rule-cell demo: title/sentence/hint (muted) on card canvas' },
+  { text: '#1A1A2E', bg: '#F5F8FC', label: 'Rule-cell demo: sentence strong (ink) on card canvas' },
+  { text: '#15803d', bg: '#F5F8FC', label: 'Rule-cell demo: sentence Approve readback on card canvas' },
+  { text: '#C8002E', bg: '#F5F8FC', label: 'Rule-cell demo: sentence Deny readback on card canvas' },
+  { text: '#1A1A2E', bg: '#FFFFFF', label: 'Rule-cell demo: rule name / operator / value on row surface' },
+  { text: '#5E6E88', bg: '#FFFFFF', label: 'Rule-cell demo: row number / value prefix (muted) on row surface' },
+  { text: '#2456E4', bg: '#E5EBFC', label: 'Rule-cell demo: blue attribute badge label on tint fill' },
+  { text: '#C8002E', bg: '#FBEBEE', label: 'Rule-cell demo: red attribute badge label on tint fill' },
+  { text: '#1A1A2E', bg: '#EBF0F8', label: 'Rule-cell demo: gray attribute badge label on tint fill' },
+  { text: '#1A1A2E', bg: '#F2F5FD', label: 'Rule-cell demo: ink on selected-row tint (6% action over white)' },
+  { text: '#2456E4', bg: '#E5EBFC', label: 'Rule-cell demo: active listbox option on accent tint' },
 ]
 
 // ─── Run ───────────────────────────────────────────────────────────────────────

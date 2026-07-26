@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { describe, it, expect } from 'vitest'
 import { CASES } from '@/lib/cases'
 import { CASE_CONTENT } from '@/lib/caseContent'
@@ -62,6 +64,76 @@ describe('CASES ↔ CASE_CONTENT linkage', () => {
     const caseSlugs = new Set(CASES.map((c) => c.slug))
     for (const key of Object.keys(CASE_CONTENT)) {
       expect(caseSlugs.has(key), `CASE_CONTENT "${key}" has no CASES entry`).toBe(true)
+    }
+  })
+
+  // Every local media path in a case body must exist in public/ — a renamed
+  // or deleted asset would otherwise ship as a silent 404.
+  it('every referenced local media asset exists on disk', () => {
+    const paths: Array<{ where: string; src: string }> = []
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type === 'image' && b.src) paths.push({ where: key, src: b.src })
+        if (b.type === 'image-pair')
+          for (const img of b.images) if (img.src) paths.push({ where: key, src: img.src })
+        if (b.type === 'video') {
+          paths.push({ where: key, src: b.src })
+          // CaseVideo derives a WebM sibling for open-codec browsers
+          paths.push({ where: key, src: b.src.replace(/\.mp4$/, '.webm') })
+          if (b.poster) paths.push({ where: key, src: b.poster })
+        }
+        if (b.type === 'embed' && b.poster) paths.push({ where: key, src: b.poster })
+        if (b.type === 'diagram') {
+          paths.push({ where: key, src: b.src })
+          // The rasterized PNG is the declared fallback when the SVG isn't inlined
+          paths.push({ where: key, src: b.src.replace(/\.svg$/, '.png') })
+        }
+      }
+    }
+    expect(paths.length).toBeGreaterThan(0)
+    for (const { where, src } of paths) {
+      if (!src.startsWith('/')) continue // external URLs are out of scope
+      expect(existsSync(join(process.cwd(), 'public', src)), `${where}: missing ${src}`).toBe(true)
+    }
+  })
+
+  // Video blocks replaced multi-megabyte GIFs — each must ship as mp4 with a
+  // poster frame so reduced-motion users get a meaningful still.
+  it('video blocks are mp4 and carry a poster', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type !== 'video') continue
+        expect(b.src, `${key} video src`).toMatch(/\.mp4$/)
+        expect(b.poster, `${key} video poster`).toBeTruthy()
+      }
+    }
+  })
+
+  // Diagram blocks must point at SVG sources — DiagramBlock inlines and
+  // animates the markup; a PNG here would silently skip the treatment.
+  it('diagram blocks reference .svg sources', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      for (const b of content.blocks) {
+        if (b.type !== 'diagram') continue
+        expect(b.src, `${key} diagram src`).toMatch(/\.svg$/)
+        expect(b.alt.trim(), `${key} diagram alt`).not.toBe('')
+      }
+    }
+  })
+
+  // The stats strip is the outcome headline for every case — a case body
+  // without one regresses to numbers buried in prose.
+  it('every case body carries a stats block with value + label pairs', () => {
+    for (const [key, content] of Object.entries(CASE_CONTENT)) {
+      const stats = content.blocks.filter((b) => b.type === 'stats')
+      expect(stats.length, `${key} stats blocks`).toBeGreaterThan(0)
+      for (const block of stats) {
+        expect(block.items.length, `${key} stats items`).toBeGreaterThan(0)
+        for (const item of block.items) {
+          expect(item.value.trim(), `${key} stat value`).not.toBe('')
+          expect(item.label.trim(), `${key} stat label`).not.toBe('')
+        }
+      }
     }
   })
 })

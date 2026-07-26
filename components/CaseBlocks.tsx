@@ -2,16 +2,49 @@
 import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
 import { DEMO_REGISTRY } from "@/components/demos/registry";
+import DiagramBlock from "@/components/DiagramBlock";
 
 /**
  * Renders a case-study content stream as typed React blocks.
  * Styling lives in globals.css under the `.blocks` scope — CaseBlocks
  * renders semantic HTML; all typography, spacing, and color comes from
  * Parsimony tokens via CSS classes.
+ *
+ * With `reveal`, each top-level block fades up as it scrolls into view —
+ * the body-stream counterpart to the hero's `.rise` stagger. The hidden
+ * state is applied from JS only (progressive enhancement: no JS, no
+ * hiding), and skipped entirely under prefers-reduced-motion.
  */
-export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
+export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal?: boolean }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!reveal) return;
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
+    const children = Array.from(root.children) as HTMLElement[];
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).classList.add("blk-reveal--in");
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+    );
+    for (const child of children) {
+      child.classList.add("blk-reveal");
+      io.observe(child);
+    }
+    return () => io.disconnect();
+  }, [reveal]);
+
   return (
-    <div className="blocks">
+    <div className="blocks" ref={rootRef}>
       {blocks.map((b, i) => {
         switch (b.type) {
           case "h2":
@@ -48,7 +81,31 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
             );
           case "image":
             return (
-              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} />
+              <CaseImage key={i} alt={b.alt} caption={b.caption} src={b.src} naturalSize={b.naturalSize} frame={b.frame} />
+            );
+          case "diagram":
+            // Falls back to the rasterized PNG when the SVG wasn't inlined
+            // (e.g. a consumer that skipped lib/diagrams.ts).
+            return b.svg ? (
+              <DiagramBlock key={i} svg={b.svg} caption={b.caption} />
+            ) : (
+              <CaseImage
+                key={i}
+                alt={b.alt}
+                caption={b.caption}
+                src={b.src.replace(/\.svg$/, ".png")}
+              />
+            );
+          case "video":
+            return (
+              <CaseVideo
+                key={i}
+                src={b.src}
+                alt={b.alt}
+                caption={b.caption}
+                poster={b.poster}
+                naturalSize={b.naturalSize}
+              />
             );
           case "image-pair":
             return (
@@ -88,6 +145,21 @@ export default function CaseBlocks({ blocks }: { blocks: Block[] }) {
             return <OutcomeToggleDemo key={i} caption={b.caption} />;
           case "hr":
             return <hr key={i} />;
+          case "stats":
+            // Renders with the same classes as the meta block so outcome
+            // numbers read as one system with the metadata rows above them.
+            return (
+              <div key={i} className="block-meta">
+                {b.items.map((s) => (
+                  <div key={s.label} className="block-meta__row">
+                    <div className="k">
+                      {s.label} <span aria-hidden="true">//</span>
+                    </div>
+                    <div className="v">{s.value}</div>
+                  </div>
+                ))}
+              </div>
+            );
           case "meta":
             return (
               <div key={i} className="block-meta">
@@ -149,14 +221,29 @@ function CaseImage({
   caption,
   src,
   naturalSize,
+  frame,
 }: {
   alt: string;
   caption?: string;
   src?: string;
   naturalSize?: boolean;
+  frame?: string;
 }) {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLDivElement>(null);
+  // Develop-in: images that are still loading at hydration fade/sharpen in on
+  // load. Server HTML and cached images render visible immediately (no-JS and
+  // fast-path safe); only genuinely in-flight images get the treatment.
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [developing, setDeveloping] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = imgRef.current;
+    if (!img || img.complete) return;
+    const t = setTimeout(() => setDeveloping(true), 0);
+    return () => clearTimeout(t);
+  }, []);
 
   const openLightbox = () => setOpen(true);
   const closeLightbox = () => {
@@ -165,8 +252,19 @@ function CaseImage({
     setTimeout(() => triggerRef.current?.focus(), 0);
   };
 
+  const figureClass =
+    [naturalSize ? "block-image--natural-size" : "", frame && src ? "block-image--framed" : ""]
+      .filter(Boolean)
+      .join(" ") || undefined;
+
   return (
-    <figure className={naturalSize ? "block-image--natural-size" : undefined}>
+    <figure className={figureClass}>
+      {frame && src && (
+        <div className="demo-frame__chrome" aria-hidden="true">
+          <span className="demo-frame__dot" />
+          <span className="demo-frame__label">{frame}</span>
+        </div>
+      )}
       {src ? (
         <div
           ref={triggerRef}
@@ -178,7 +276,13 @@ function CaseImage({
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLightbox(); } }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={src} alt={alt} />
+          <img
+            ref={imgRef}
+            src={src}
+            alt={alt}
+            className={developing ? (loaded ? "img-develop img-develop--in" : "img-develop") : undefined}
+            onLoad={() => setLoaded(true)}
+          />
           <div className="block-image__zoom-icon" aria-hidden="true">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M1 5V1H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -202,6 +306,72 @@ function CaseImage({
       {open && src && (
         <Lightbox src={src} alt={alt} onClose={closeLightbox} />
       )}
+    </figure>
+  );
+}
+
+/**
+ * Video block — short product motion clips, encoded as mp4 (replacing the
+ * multi-megabyte GIFs they started life as). Autoplays muted + looped like a
+ * GIF would; under prefers-reduced-motion the clip stays paused on its poster
+ * frame with controls exposed so playback is a deliberate choice.
+ */
+function CaseVideo({
+  src,
+  alt,
+  caption,
+  poster,
+  naturalSize,
+}: {
+  src: string;
+  alt: string;
+  caption?: string;
+  poster?: string;
+  naturalSize?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      v.pause();
+      v.removeAttribute("autoplay");
+      // Deferred (not sync in the effect body) to avoid a cascading render —
+      // same pattern as HeroTerminal's reduced-motion fill.
+      const t = setTimeout(() => setReduced(true), 0);
+      return () => clearTimeout(t);
+    }
+    // React doesn't serialize the muted attribute into server HTML
+    // (facebook/react#10389), so the browser sees an unmuted video and blocks
+    // autoplay. Re-assert muted and kick playback explicitly post-hydration.
+    v.muted = true;
+    v.play().catch(() => {
+      /* autoplay denied — the poster stays, which is an acceptable rest state */
+    });
+  }, []);
+
+  return (
+    <figure className={naturalSize ? "block-image--natural-size" : undefined}>
+      <video
+        ref={videoRef}
+        className="block-video"
+        poster={poster}
+        muted
+        loop
+        playsInline
+        autoPlay
+        controls={reduced}
+        preload="metadata"
+        aria-label={alt}
+      >
+        {/* WebM/VP9 first (smaller, plays on open-codec Chromium builds);
+            H.264 MP4 second for Safari/iOS and everything else. */}
+        <source src={src.replace(/\.mp4$/, ".webm")} type="video/webm" />
+        <source src={src} type="video/mp4" />
+      </video>
+      {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
 }
@@ -271,12 +441,12 @@ function CaseEmbed({
 /** Outcome = a binary Approve/Deny decision, mirroring the prototype's model. */
 type Outcome = "Approve" | "Deny";
 
-/** The example ruleset shown in the demo — echoes the live table's rows. */
+/** The example ruleset shown in the demo — echoes the live table's rows.
+    Two rows only: one of each initial outcome shows the semantic pair
+    without restating the table. */
 const OUTCOME_DEMO_ROWS: Array<{ name: string; cond: string; initial: Outcome }> = [
   { name: "Annual income", cond: "is greater than $50,000", initial: "Approve" },
-  { name: "Existing account", cond: "equals true", initial: "Approve" },
   { name: "Credit score", cond: "is less than 600", initial: "Deny" },
-  { name: "Flagged for review", cond: "equals true", initial: "Deny" },
 ];
 
 /**
@@ -299,7 +469,7 @@ function OutcomeToggleDemo({ caption }: { caption?: string }) {
   return (
     <figure className="block-outcome-demo">
       <div className="block-outcome-demo__device">
-        <div className="block-outcome-demo__title">Decision Model — Outcome</div>
+        <div className="block-outcome-demo__title">Decision Model · Outcome</div>
         {OUTCOME_DEMO_ROWS.map((row, i) => (
           <div className="block-outcome-demo__row" key={row.name}>
             <div className="block-outcome-demo__rule">

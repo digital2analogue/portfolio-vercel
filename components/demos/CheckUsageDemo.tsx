@@ -43,7 +43,7 @@ export default function CheckUsageDemo() {
     <div className="cu">
       <div className="cu__toolbar">
         <span className="cu__title">check_usage</span>
-        <span className="cu__playground-tag">playground — edit the CSS below</span>
+        <span className="cu__playground-tag">playground: edit the CSS below</span>
         <span className="cu__toolbar-spacer" />
         <button
           type="button"
@@ -94,7 +94,7 @@ export default function CheckUsageDemo() {
               {clean ? (
                 <>
                   <span className="cu__verdict-mark" aria-hidden="true">✓</span>
-                  Compliant — 0 violations
+                  Compliant: 0 violations
                 </>
               ) : (
                 <>
