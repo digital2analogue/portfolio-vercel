@@ -136,7 +136,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
       {/* ── Duration ── */}
       <div className="tokens-motion__sublabel">
         <span>Duration</span>
-        <span className="tokens-motion__hint">real time — instant is over in a blink by design</span>
+        <span className="tokens-motion__hint">real time: instant is over in a blink by design</span>
       </div>
       <div className="tokens-motion__durations" ref={durSection}>
         {durations.map((d, i) => (
@@ -167,7 +167,7 @@ export default function TokensMotion({ tokens }: { tokens: Tok[] }) {
       {/* ── Easing ── */}
       <div className="tokens-motion__sublabel">
         <span>Easing</span>
-        <span className="tokens-motion__hint">same distance, same time — only the curve changes</span>
+        <span className="tokens-motion__hint">same distance, same time; only the curve changes</span>
       </div>
       <div className="tokens-motion__easings">
         {easings.map((e) => {

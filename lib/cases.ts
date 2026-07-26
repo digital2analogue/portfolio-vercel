@@ -25,7 +25,7 @@ export const CASES: CaseStudy[] = [
     role: "Principal UI/UX Designer, Design Systems",
     tags: ["Design Systems", "Fintech", "Compliance"],
     summary:
-      "Replaced spreadsheet-driven policy workflows with a modular, compliance-ready decision engine — enabling non-technical stakeholders to own complex rule logic without engineering support.",
+      "Replaced spreadsheet-driven policy workflows with a modular, compliance-ready decision engine, so non-technical stakeholders can own complex rule logic without engineering support.",
     metrics: ["~30% improvement in accessibility compliance"],
     status: "COMPLETE",
   },
@@ -38,7 +38,7 @@ export const CASES: CaseStudy[] = [
     role: "Lead Product Designer, Design Systems - Product Owner",
     tags: ["Design Systems", "Tokens", "Multi-platform"],
     summary:
-      "Built and scaled OpenTable's design system — establishing shared tokens, component patterns, and contribution workflows across web and native platforms.",
+      "Built and scaled OpenTable's design system: shared tokens, component patterns, and contribution workflows across web and native platforms.",
     metrics: ["1 system → web + native", "Cross-platform token adoption", "Reduced design/eng drift"],
     status: "COMPLETE",
   },
@@ -51,7 +51,7 @@ export const CASES: CaseStudy[] = [
     role: "Design Systems Lead & Product Partner",
     tags: ["Product Design", "Design Systems", "Enterprise UX"],
     summary:
-      "Improved the restaurant reservation workflow — better hierarchy and scannability without sacrificing the information density power users depend on.",
+      "Improved the restaurant reservation workflow: better hierarchy and scannability without sacrificing the information density power users depend on.",
     metrics: [
       "Modular card-based architecture",
       "Shared components across web + native",

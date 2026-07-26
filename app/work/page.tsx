@@ -5,7 +5,7 @@ import { CASES } from "@/lib/cases";
 export const metadata: Metadata = {
   title: "Selected Work",
   description:
-    "Selected case studies on design systems, decision tooling, and compliance-heavy B2B — most recently at Capital One and OpenTable.",
+    "Selected case studies on design systems, decision tooling, and compliance-heavy B2B, most recently at Capital One and OpenTable.",
   alternates: { canonical: "/work" },
   openGraph: {
     title: "Selected Work · River Romney",

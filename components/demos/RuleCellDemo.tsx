@@ -178,7 +178,7 @@ export default function RuleCellDemo() {
 
   return (
     <div className="rcd">
-      <div className="rcd-title">Decision Model — Rule cell</div>
+      <div className="rcd-title">Decision Model · Rule cell</div>
 
       <div className={`rcd-row${selected ? " is-selected" : ""}`}>
         <input
@@ -261,7 +261,7 @@ export default function RuleCellDemo() {
       </p>
 
       <p className="rcd-hint">
-        Every part is live — swap the attribute, pick an operator, edit the
+        Every part is live: swap the attribute, pick an operator, edit the
         value, flip the outcome. Hover the row or tick the checkbox for its
         hover and selected states.
       </p>

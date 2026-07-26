@@ -469,7 +469,7 @@ function OutcomeToggleDemo({ caption }: { caption?: string }) {
   return (
     <figure className="block-outcome-demo">
       <div className="block-outcome-demo__device">
-        <div className="block-outcome-demo__title">Decision Model — Outcome</div>
+        <div className="block-outcome-demo__title">Decision Model · Outcome</div>
         {OUTCOME_DEMO_ROWS.map((row, i) => (
           <div className="block-outcome-demo__row" key={row.name}>
             <div className="block-outcome-demo__rule">
