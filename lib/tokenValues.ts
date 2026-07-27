@@ -65,11 +65,9 @@ export function tokenValue(name: string): string {
 
 export type CatToken = { name: string; value: string; description: string };
 
-// Every semantic token (excludes raw primitives and component-scoped tokens),
-// in source order.
-const SEMANTIC = Object.keys(RAW).filter(
-  (n) => !n.startsWith("--primitive-") && !n.startsWith("--component-"),
-);
+// Every semantic token (excludes raw primitives), in source order. The
+// component tier no longer exists upstream (parsimony#114) — two tiers only.
+const SEMANTIC = Object.keys(RAW).filter((n) => !n.startsWith("--primitive-"));
 
 /**
  * All semantic tokens in a category (by `--{prefix}-` name), with resolved value
