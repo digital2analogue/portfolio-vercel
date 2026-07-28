@@ -18,6 +18,13 @@ updates:
       # them; minors/patches within 6.x still flow through the group.
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
+      # ESLint 10 drops context.getFilename(), which the eslint-plugin-react
+      # bundled by eslint-config-next@16 still calls — the group builds on
+      # Vercel but fails CI's lint job (diagnosed in #40/#41; this codifies
+      # that fix). Take ESLint majors manually alongside an eslint-config-next
+      # release that supports them.
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
 
   # Keep the actions used in .github/workflows fresh too.
   - package-ecosystem: github-actions
