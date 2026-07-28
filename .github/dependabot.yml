@@ -11,6 +11,13 @@ updates:
       npm-dependencies:
         patterns:
           - "*"
+    ignore:
+      # TypeScript 7 (the Go-based compiler) doesn't provide the compiler API
+      # Next.js needs — its presence in the weekly group makes every preview
+      # build fail at `next build`. Take TS majors manually once Next supports
+      # them; minors/patches within 6.x still flow through the group.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   # Keep the actions used in .github/workflows fresh too.
   - package-ecosystem: github-actions
