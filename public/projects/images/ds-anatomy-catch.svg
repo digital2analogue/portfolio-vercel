@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="560" viewBox="0 0 1240 560" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<rect width="1240" height="560" fill="#0A0D0A"/>
+<g>
+  <rect x="48" y="48" width="400" height="440" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="72" y="86" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#A0A89A" letter-spacing="1">SHIPPED &#183; ENTERPRISE LIGHT BRAND</text>
+  <text x="72" y="108" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">in production, unnoticed</text>
+  <rect x="72" y="128" width="352" height="104" rx="8" fill="#FFFFFF"/>
+  <rect x="152" y="162" width="192" height="36" rx="18" fill="#FFFBEB" stroke="#F1E9D2" stroke-width="1"/>
+  <text x="248" y="185" font-size="14" font-weight="500" fill="#FCD34D" text-anchor="middle">Pending review</text>
+  <text x="72" y="272" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">fill&#160;&#160;&#160;#FFFBEB &#183; amber tint</text>
+  <text x="72" y="296" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">label&#160;#FCD34D &#183; base leak</text>
+  <text x="72" y="366" font-size="44" font-weight="300" fill="#E73027">1.39:1</text>
+  <text x="72" y="394" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#E73027">requires 4.5:1 &#183; FAIL</text>
+  <text x="72" y="444" font-size="14" fill="#A0A89A">The pairing sat on a brand exclusion list.</text>
+  <text x="72" y="466" font-size="14" fill="#A0A89A">No one had ever looked.</text>
+</g>
+<path d="M448,268 L504,268" fill="none" stroke="#4ADE6E" stroke-width="1.6"/>
+<path d="M508,268 l-9,-6 l0,12 Z" fill="#4ADE6E"/>
+<g>
+  <rect x="512" y="180" width="216" height="176" rx="12" fill="#0F2016" stroke="#4ADE6E" stroke-width="1.5"/>
+  <text x="620" y="216" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="500" fill="#4ADE6E" text-anchor="middle">"anatomy"</text>
+  <text x="620" y="248" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#C8CFC4" text-anchor="middle">part: label</text>
+  <text x="620" y="272" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#C8CFC4" text-anchor="middle">fg on bg &#183; every state</text>
+  <text x="620" y="296" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#C8CFC4" text-anchor="middle">&#183; every brand</text>
+  <text x="620" y="332" font-size="13" fill="#8B9683" text-anchor="middle">the pair the badge</text>
+  <text x="620" y="350" font-size="13" fill="#8B9683" text-anchor="middle">actually renders</text>
+</g>
+<path d="M728,268 L784,268" fill="none" stroke="#4ADE6E" stroke-width="1.6"/>
+<path d="M788,268 l-9,-6 l0,12 Z" fill="#4ADE6E"/>
+<g>
+  <rect x="792" y="48" width="400" height="440" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="816" y="86" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="500" fill="#A0A89A" letter-spacing="1">PATCHED &#183; SAME DAY</text>
+  <text x="816" y="108" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">rolled to 3 production sites</text>
+  <rect x="816" y="128" width="352" height="104" rx="8" fill="#FFFFFF"/>
+  <rect x="896" y="162" width="192" height="36" rx="18" fill="#FFFBEB" stroke="#F1E9D2" stroke-width="1"/>
+  <text x="992" y="185" font-size="14" font-weight="500" fill="#92400E" text-anchor="middle">Pending review</text>
+  <text x="816" y="272" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">fill&#160;&#160;&#160;#FFFBEB &#183; unchanged</text>
+  <text x="816" y="296" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">label&#160;#92400E &#183; brand override</text>
+  <text x="816" y="366" font-size="44" font-weight="300" fill="#4ADE6E">6.84:1</text>
+  <text x="816" y="394" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#4ADE6E">WCAG AA &#183; PASS</text>
+  <text x="816" y="444" font-size="14" fill="#A0A89A">Exclusion list deleted. The gate now holds</text>
+  <text x="816" y="466" font-size="14" fill="#A0A89A">this pairing against every brand, forever.</text>
+</g>
+</svg>

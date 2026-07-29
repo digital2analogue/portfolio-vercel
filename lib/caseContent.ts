@@ -871,6 +871,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "**Parsimony is a design system with an API for agents.** One source of truth runs from DTCG tokens, through framework-agnostic Web Components, to an MCP server an agent can query and lint against before it writes any UI.",
       },
       {
+        type: "p",
+        text: "It's also a sequel. [OTKit](/work/ot-design-system) was this discipline built for people: documentation humans read, governance by hand, code and Figma maintained in parallel. Parsimony inverts each of those — a contract machines build from, the schema as the source of truth, and the committed end state that code and Figma are both generated from it.",
+      },
+      {
         type: "note",
         text: "Note: A personal project, live across my own sites plus an enterprise UI sub-brand. Shipped vs deferred is marked throughout; the [public roadmap](https://github.com/digital2analogue/parsimony/milestones) tracks what's next.",
       },
@@ -906,8 +910,19 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "The problem was never missing tokens. It was that nothing in the system was **readable by a machine**.",
       },
+      {
+        type: "diagram",
+        alt: "Four agent runs of the same prompt — add a confirm button, use the design system — each producing a different wrong button: one uses the near-miss hex #22C55E instead of a token, one invents a gradient fill and adds an emoji, one sets font-family cursive, one renames the action and renders it as a link. Kicker: not hallucinations — every agent had read the docs. Prose doesn't govern.",
+        caption:
+          "What that looks like in practice: the same prompt, four ungoverned runs, four different opinions. This is drift, not hallucination — and it's the failure mode the rest of this system targets.",
+        src: "/projects/images/ds-ungoverned.svg",
+      },
       { type: "hr" },
       { type: "h2", text: "The Architecture" },
+      {
+        type: "p",
+        text: "**Primitives hold values. Semantics name roles. Components render decisions. UI code never touches a hex.** That's the whole layer model — the rest is enforcement.",
+      },
       {
         type: "p",
         text: "One repo, one direction of flow: the diagram above is the entire system. The decision that holds it together: **tokens and components version together**, so a token rename is a breaking change by design and there's no version skew across packages.",
@@ -1036,9 +1051,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "The first pass over three components found a real defect. The badge's accent variants had shipped unreadable under the light enterprise brand, as low as 1.39:1 against the 4.5:1 requirement, because the brand re-tinted the fills without re-tinting the text. No person had caught it, and the contrast gate had those exact pairings on a brand exclusion list, so nothing ever looked. The anatomy declaration named the pair the badge actually renders, and the gate failed it immediately.",
       },
       {
-        type: "p",
-        text: "The fix took one evening: three brand-side token overrides, each verified at 4.76:1 or better, the exclusion list deleted so the gate holds those pairings against every brand forever, and a patch release published and rolled to all three consumer sites the same day. A system that only promises correctness is a docs site. This one found its own bug, proved the fix, and shipped it.",
+        type: "diagram",
+        alt: "Three-panel before-and-after of the badge contrast bug. Left: the shipped amber badge under the enterprise light brand — label #FCD34D on an #FFFBEB fill, 1.39:1 against the 4.5:1 requirement, failing, with the pairing sitting on a brand exclusion list. Middle: the anatomy declaration — part: label, foreground on background, every state, every brand — the pair the badge actually renders. Right: the patched badge, label overridden to #92400E on the unchanged fill, 6.84:1, WCAG AA pass, exclusion list deleted, rolled to three production sites the same day.",
+        caption:
+          "The amber accent variant, before and after. The values in the figure are the real ones: the base theme's label leaked through the brand at 1.39:1 until the anatomy contract named the pairing; the override lifted it to 6.84:1 the same day.",
+        src: "/projects/images/ds-anatomy-catch.svg",
       },
+      {
+        type: "p",
+        text: "The fix took one evening: three brand-side token overrides, each verified at 4.76:1 or better, the exclusion list deleted so the gate holds those pairings against every brand forever, and a patch release published and rolled to all three consumer sites the same day.",
+      },
+      { type: "quote", text: "A docs site promises. A contract catches." },
       { type: "hr" },
       { type: "h2", text: "Decisions & Tradeoffs" },
       {
@@ -1092,6 +1115,23 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Auto-fixing drift: the scan detects and files issues today; opening a fix PR is next",
           "Generating the Figma library and the component code from the contract. The direction is committed: the contract owns each component's definition, and both surfaces are generated from it",
         ],
+      },
+      { type: "h3", text: "Scored against an external yardstick" },
+      {
+        type: "p",
+        text: "Self-assessment is cheap, so the system is also graded against Brad Frost's ten-station design-system inspection — a public framework built for auditing systems like this one. First pass scored 71; three re-inspection rounds closed the gaps.",
+      },
+      {
+        type: "stats",
+        items: [
+          { value: "76/80", label: "Across the 8 stations scored so far" },
+          { value: "3", label: "Perfect stations: accessibility, machine-readable docs, agent access" },
+          { value: "9/10", label: "Every remaining scored station" },
+        ],
+      },
+      {
+        type: "p",
+        text: "Still open, honestly: one borderline 4.38:1 pairing awaiting an owner call, and the two process stations — governance and feedback loops — deliberately unscored until they've run long enough to judge, re-scoring in October.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="600" viewBox="0 0 1240 600" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<rect width="1240" height="600" fill="#0A0D0A"/>
+<defs><linearGradient id="ug-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ADE6E"/><stop offset="1" stop-color="#2456E4"/></linearGradient></defs>
+<g>
+  <rect x="48" y="40" width="1144" height="64" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <circle cx="72" cy="72" r="4.5" fill="#2b3a2b"/><circle cx="88" cy="72" r="4.5" fill="#8B9683"/><circle cx="104" cy="72" r="4.5" fill="#FCD34D"/>
+  <text x="128" y="77" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="15" fill="#8B9683">~ $</text>
+  <text x="168" y="77" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="15" fill="#C8CFC4">"Add a confirm button. Use the design system."</text>
+  <text x="1168" y="77" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683" text-anchor="end">same prompt &#183; four ungoverned runs</text>
+</g>
+<g>
+  <rect x="48" y="144" width="268" height="304" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="72" y="176" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">run 1</text>
+  <rect x="72" y="196" width="220" height="128" rx="8" fill="#0E120D"/>
+  <rect x="118" y="238" width="128" height="44" rx="8" fill="#22C55E"/>
+  <text x="182" y="265" font-size="15" font-weight="500" fill="#0A0D0A" text-anchor="middle">Confirm</text>
+  <text x="72" y="366" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#E73027">&#10007; #22C55E</text>
+  <text x="72" y="390" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">close, but not a token</text>
+</g>
+<g>
+  <rect x="340" y="144" width="268" height="304" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="364" y="176" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">run 2</text>
+  <rect x="364" y="196" width="220" height="128" rx="8" fill="#0E120D"/>
+  <rect x="398" y="238" width="152" height="44" rx="8" fill="url(#ug-grad)"/>
+  <text x="474" y="265" font-size="14" font-weight="500" fill="#FFFFFF" text-anchor="middle">&#10003; CONFIRM &#127881;</text>
+  <text x="364" y="366" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#E73027">&#10007; invented a gradient</text>
+  <text x="364" y="390" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">and an emoji</text>
+</g>
+<g>
+  <rect x="632" y="144" width="268" height="304" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="656" y="176" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">run 3</text>
+  <rect x="656" y="196" width="220" height="128" rx="8" fill="#0E120D"/>
+  <rect x="698" y="238" width="136" height="44" rx="8" fill="none" stroke="#C8CFC4" stroke-width="1.5"/>
+  <text x="766" y="266" font-family="cursive" font-size="17" fill="#C8CFC4" text-anchor="middle">Confirm!</text>
+  <text x="656" y="366" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#E73027">&#10007; font-family: cursive</text>
+  <text x="656" y="390" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">no notes</text>
+</g>
+<g>
+  <rect x="924" y="144" width="268" height="304" rx="12" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5"/>
+  <text x="948" y="176" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" fill="#8B9683">run 4</text>
+  <rect x="948" y="196" width="220" height="128" rx="8" fill="#0E120D"/>
+  <text x="1058" y="265" font-size="15" fill="#4ADE6E" text-anchor="middle" text-decoration="underline">Submit &#8594;</text>
+  <text x="948" y="366" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#E73027">&#10007; renamed the action</text>
+  <text x="948" y="390" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" fill="#8B9683">now it's a link</text>
+</g>
+<text x="620" y="512" font-size="17" fill="#A0A89A" text-anchor="middle">Not hallucinations: every agent had read the docs.</text>
+<text x="620" y="548" font-size="19" font-weight="500" fill="#C8CFC4" text-anchor="middle">Prose doesn't govern.</text>
+</svg>
