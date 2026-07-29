@@ -80,6 +80,8 @@ The Parsimony (`/work/system`) case-study diagrams are **hand-authored SVGs**. T
 
 **Code/docs gap — RESOLVED (2026-07-27):** the case study + diagrams present Parsimony's token model as **two-tier, semantic-only** (primitives → semantic). From 2026-07-14 to 2026-07-27 this deliberately *led* the code; **parsimony#114 has since landed** (component tier deleted, `@digital2analogue2/parsimony@0.6.0`), so the case study now simply matches reality. Keep the two-tier framing. (History in `parsimony/docs/decisions.md`, 2026-07-14 and 2026-07-27 entries.)
 
+**Diagrams carry live upstream counts (2026-07-29, PR #56):** `ds-architecture`'s component band states the parsimony census as literal text — **27 Lit web components · meta.json contract 27/27 · Figma Code Connect 22/27** — and its amber rail reads *drift + parity audits → auto-fix PR* (detection shipped, auto-fix planned); `ds-meta-json` shows an `anatomy` block in the contract excerpt. These figures go stale when parsimony's component count, Code Connect coverage, or contract shape changes — verify against the parsimony repo and re-edit the SVGs + re-run `render-diagrams` when touching this surface.
+
 ### Interactive Case Demos (in-page live components)
 
 Case bodies render a **closed, typed block union** (`Block` in `lib/caseContent.ts`) via `components/CaseBlocks.tsx` — data, not MDX/JSX. Three block variants embed live/interactive content:
