@@ -872,7 +872,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "It's also a sequel. [OTKit](/work/ot-design-system) was this discipline built for people: documentation humans read, governance by hand, code and Figma maintained in parallel. Parsimony inverts each of those — a contract machines build from, the schema as the source of truth, and the committed end state that code and Figma are both generated from it.",
+        text: "It's also a sequel. [OTKit](/work/ot-design-system) was this discipline built for people: docs humans read, governance by hand. Parsimony inverts it — a contract machines build from, with code and Figma generated from it as the committed end state.",
       },
       {
         type: "note",
@@ -904,7 +904,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "The Problem" },
       {
         type: "p",
-        text: "Design systems are written for people: docs sites, Figma libraries, \"use this, not that.\" But the thing building my UI now is an agent, and an agent doesn't read your docs site. Without the system as data, every agent reinvents, and drift spreads to every repo that consumes it.",
+        text: "Design systems are written for people: docs sites, Figma libraries, \"use this, not that.\" But the thing building my UI now is an agent, and an agent doesn't read your docs site.",
       },
       {
         type: "p",
@@ -914,7 +914,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "diagram",
         alt: "Four agent runs of the same prompt — add a confirm button, use the design system — each producing a different wrong button: one uses the near-miss hex #22C55E instead of a token, one invents a gradient fill and adds an emoji, one sets font-family cursive, one renames the action and renders it as a link. Kicker: not hallucinations — every agent had read the docs. Prose doesn't govern.",
         caption:
-          "What that looks like in practice: the same prompt, four ungoverned runs, four different opinions. This is drift, not hallucination — and it's the failure mode the rest of this system targets.",
+          "Same prompt, four ungoverned runs, four opinions. Drift, not hallucination — the failure mode this system targets.",
         src: "/projects/images/ds-ungoverned.svg",
       },
       { type: "hr" },
@@ -925,17 +925,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "One repo, one direction of flow: the diagram above is the entire system. The decision that holds it together: **tokens and components version together**, so a token rename is a breaking change by design and there's no version skew across packages.",
+        text: "One repo, one direction of flow. Tokens and components version together, so a token rename is a breaking change by design.",
       },
       {
         type: "ul",
         items: [
-          "**Author.** DTCG tokens in two layers: primitives (raw values) → semantic (named roles UI writes against). Brand overrides re-point the same semantic roles.",
-          "**Build.** Style Dictionary compiles every brand to CSS. A validation gate rejects hardcoded hex, primitive references, and dangling token aliases, so a rename that wasn't propagated fails the build, not production.",
+          "**Author.** DTCG tokens: primitives → semantic roles. Brands re-point the roles.",
+          "**Build.** Style Dictionary compiles every brand to CSS. A gate rejects hex, primitive refs, and dangling aliases — a bad rename fails the build, not production.",
           "**Components.** 27 framework-agnostic Lit web components, wired to Figma via Code Connect.",
-          "**Artifact.** Each component's hand-authored metadata merges with its auto-generated Custom Elements Manifest into a single design-system.json.",
-          "**Interfaces.** Humans read Figma and Markdown docs; agents read an MCP server.",
-          "**Consumers.** Every site and product repo pulls from one source, now as an installable token package.",
+          "**Artifact.** Hand-authored metadata + generated manifest merge into one design-system.json.",
+          "**Interfaces.** Humans read Figma and docs; agents read an MCP server.",
+          "**Consumers.** Every site pulls from one source, as an installable package.",
         ],
       },
       {
@@ -949,14 +949,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "One Source of Truth, Four Brands" },
       {
         type: "diagram",
-        alt: "Four brand panels: base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading). Each shows the same UI rendered in its own canvas, surface, text, and accent token values.",
+        alt: "Four brand panels: base (dark, phosphor green accent), decision-engine (light inversion, blue accent), dot-art (pure-black canvas), and dot-blog (18px reading). Each shows the same UI rendered in its own canvas, surface, text, and action token values, with the filled Action button labeled background-action and foreground-on-action.",
         caption:
           "Every brand is the same token graph with a thin override layer. No forks; the difference is data.",
         src: "/projects/images/ds-brands.svg",
       },
       {
         type: "p",
-        text: "Decision-engine flips it to a light enterprise theme with a blue primary. dot-art swaps the canvas to pure black for photos. dot-blog bumps up the reading size. None of this forks a component. Each brand is just a small override file on top of the same tokens.",
+        text: "Decision-engine flips to a light enterprise theme with a blue primary; dot-art goes pure black for photos; dot-blog bumps the reading size. None of it forks a component — each brand is a small override file.",
       },
       { type: "hr" },
       { type: "h2", text: "Components as Contracts" },
@@ -969,7 +969,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Each component ships its own rulebook: the tokens it may touch, the rules that bind it, the ARIA pattern and WCAG criteria it implements. That file is the spec, and the same file the agent reads, with prop descriptions single-sourced from the code's JSDoc so the contract can't drift from the implementation.",
+        text: "Each component ships its own rulebook: the tokens it may touch, the rules that bind it, the ARIA pattern it implements. The spec and what the agent reads are the same file — prop descriptions come from the code's JSDoc, so the contract can't drift from the implementation.",
       },
       { type: "hr" },
       { type: "h2", text: "Docs That Can't Drift" },
@@ -982,7 +982,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Docs are generated from the same metadata the agent reads: the mechanical sections regenerate on every run, hand-written prose is preserved, and a CI gate fails the build if a component change leaves its docs stale.",
+        text: "Docs generate from the same metadata the agent reads. Mechanical sections regenerate, hand-written prose is preserved, and CI fails the build if a change leaves its docs stale.",
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
@@ -995,7 +995,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Design-system checks usually happen after the fact: a linter in CI, a reviewer in a PR. **check_usage moves that earlier**: hand the system a snippet before the code exists, get back every violation.",
+        text: "Design-system checks usually happen after the fact. **check_usage moves them earlier**: hand the system a snippet before the code ships, get back every violation.",
       },
       {
         type: "demo",
@@ -1003,11 +1003,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         surface: "dark",
         frameLabel: "Parsimony · check_usage · Playground",
         caption:
-          "Live: edit the snippet and watch the violations update. A faithful port of the static rules: hardcoded hex, primitive references, hardcoded type. The deployed MCP tool runs the same rule set plus deprecated-token checks against the live registry.",
+          "Live: edit the snippet and watch the violations update. A faithful port of the static rules — the deployed MCP tool runs the same set against the live registry.",
       },
       {
         type: "p",
-        text: "The same rules run in three places: this check, the build gate, and the drift scan. So the answer an agent gets here is the one the build will enforce later.",
+        text: "The same rules run in three places — this check, the build gate, the drift scan — so the answer an agent gets here is the one the build enforces later.",
       },
       { type: "hr" },
       { type: "h2", text: "An Agent, Self-Correcting" },
@@ -1020,13 +1020,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The whole argument in one session: the agent asks what a badge is, drafts it the quick way with raw hex, runs check_usage, gets back the exact violations the build would reject, and ships the component instead. None of it is staged.",
+        text: "The whole argument in one session: the agent asks what a badge is, drafts it with raw hex, gets back the exact violations the build would reject, and ships the fix instead. None of it is staged.",
       },
       { type: "hr" },
       { type: "h2", text: "Governance, Measured" },
       {
         type: "p",
-        text: "\"Agents follow the system better when the system is data\" was an assertion until I measured it. The experiment: 20 realistic UI prompts, two arms, one isolated fresh agent per prompt per arm. The governed arm received the system's compiled context packs and nothing else, no MCP, no repo access. The ungoverned arm received the prompt plus the sentence \"Use the design system.\" Same model, same day, and every output scored mechanically by the same rule set that gates the build. No hand grading anywhere.",
+        text: "\"Agents follow the system better when the system is data\" was an assertion until I measured it. Twenty realistic UI prompts, two arms, a fresh agent per run. The governed arm got the compiled context packs; the ungoverned arm got \"Use the design system.\" Every output scored by the same rule set that gates the build — no hand grading.",
       },
       {
         type: "stats",
@@ -1038,28 +1038,28 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Ungoverned agents hardcoded hex values, raw font sizes, and off-scale spacing at 5.5 times the rate. Neither arm invented a token or a prop that doesn't exist, which is its own finding: fabrication wasn't the failure mode, drift was. The one dirty governed run exposed two gaps in how the packs deliver context, and both were filed as issues the next day. The eval is a committed, re-runnable harness, so the number gets measured again as the system grows.",
+        text: "Neither arm invented a token that doesn't exist — the failure mode was drift, not fabrication. The one dirty governed run exposed two gaps in the packs; both became issues the next day. The eval is committed and re-runnable, so the number gets measured again as the system grows.",
       },
       { type: "hr" },
       { type: "h2", text: "The Contract Caught a Shipped Bug" },
       {
         type: "p",
-        text: "The newest layer of the contract is **anatomy**: each component declares its named parts and which foreground token sits on which background token in every state. That turns contrast from a convention the system hopes holds into a pairing the gate checks against what actually renders.",
+        text: "The newest layer of the contract is **anatomy**: each component declares which foreground token sits on which background token, in every state. Contrast stops being a convention the system hopes holds and becomes a pairing the gate checks against what actually renders.",
       },
       {
         type: "p",
-        text: "The first pass over three components found a real defect. The badge's accent variants had shipped unreadable under the light enterprise brand, as low as 1.39:1 against the 4.5:1 requirement, because the brand re-tinted the fills without re-tinting the text. No person had caught it, and the contrast gate had those exact pairings on a brand exclusion list, so nothing ever looked. The anatomy declaration named the pair the badge actually renders, and the gate failed it immediately.",
+        text: "The first pass found a real defect. The badge's accent variants had shipped unreadable under the light enterprise brand — as low as 1.39:1 — because the brand re-tinted the fills without re-tinting the text. The gate had those pairings on an exclusion list, so nothing ever looked. Anatomy named the pair the badge actually renders, and the gate failed it immediately.",
       },
       {
         type: "diagram",
         alt: "Three-panel before-and-after of the badge contrast bug. Left: the shipped amber badge under the enterprise light brand — label #FCD34D on an #FFFBEB fill, 1.39:1 against the 4.5:1 requirement, failing, with the pairing sitting on a brand exclusion list. Middle: the anatomy declaration — part: label, foreground on background, every state, every brand — the pair the badge actually renders. Right: the patched badge, label overridden to #92400E on the unchanged fill, 6.84:1, WCAG AA pass, exclusion list deleted, rolled to three production sites the same day.",
         caption:
-          "The amber accent variant, before and after. The values in the figure are the real ones: the base theme's label leaked through the brand at 1.39:1 until the anatomy contract named the pairing; the override lifted it to 6.84:1 the same day.",
+          "The amber accent variant, before and after — real values, not a mockup.",
         src: "/projects/images/ds-anatomy-catch.svg",
       },
       {
         type: "p",
-        text: "The fix took one evening: three brand-side token overrides, each verified at 4.76:1 or better, the exclusion list deleted so the gate holds those pairings against every brand forever, and a patch release published and rolled to all three consumer sites the same day.",
+        text: "The fix took one evening: three brand-side overrides, the exclusion list deleted, a patch release rolled to all three consumer sites the same day.",
       },
       { type: "quote", text: "A docs site promises. A contract catches." },
       { type: "hr" },
@@ -1071,17 +1071,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Distribution: public npm over GitHub Packages" },
       {
         type: "p",
-        text: "GitHub Packages requires a login even for public installs: every build would need a token just to download tokens. Public npm installs with none, and tokens are just CSS that ships to the browser anyway.",
+        text: "GitHub Packages needs a login even for public installs — a token just to download tokens. Public npm needs none, and tokens are CSS that ships to the browser anyway.",
       },
       { type: "h3", text: "The agent interface: MCP over docs or a REST API" },
       {
         type: "p",
-        text: "Docs don't work (agents don't read them); a REST API needs a server, a login, and discovery. MCP is what agents already speak: the session writing the code can just ask. The cost: it's new, and mine runs locally, which is fine while I'm the main user.",
+        text: "Docs don't work; a REST API needs a server, a login, discovery. MCP is what agents already speak — the session writing the code can just ask. The cost: it's new, and mine runs locally.",
       },
       { type: "h3", text: "Components: Web Components over React" },
       {
         type: "p",
-        text: "Lit Web Components are clunkier inside React, the real cost. But one version works everywhere (React, plain HTML, Figma mapping) instead of three synchronized buttons. One source beats the smoother React-only version.",
+        text: "Lit is clunkier inside React — the real cost. But one version works everywhere instead of three synchronized buttons. One source beats the smoother React-only version.",
       },
       { type: "hr" },
       { type: "h2", text: "Honest Status" },
@@ -1093,17 +1093,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Two-layer token architecture (primitives → semantic) across four brands",
+          "Two-layer token architecture across four brands",
           "27 Lit web components, wired to Figma via Code Connect",
-          "MCP server with 17 tools: contracts, tokens, rules, decisions, brand diffs, contrast checks, consumer linting",
-          "One shared rule set behind every checker: the build gate, check_usage, and the drift scan can't disagree",
-          "CI on every change: schema checks, lint rules, token-reference resolution, stale-artifact check, golden-CSS and determinism gates, full test suite",
-          "Tokens ship as a versioned npm package with compiled agent context packs inside, so any agent can be governed with no MCP and no repo checkout; this site already consumes it",
-          "Per-prop code↔Figma bindings and a parity differ that classifies drift as ahead, behind, or mismatched",
-          "Two weekly audits on schedules: a consumer drift scan and a code↔Figma parity check, each opening a tracked issue on drift and closing it on clean",
-          "Anatomy contracts on the three deepest components, with batch rollout to the rest underway",
-          "The governance eval harness behind the 95/70 number above, committed and re-runnable",
-          "WCAG AA contrast verified across every intended token pairing, in every brand",
+          "MCP server with 17 tools: contracts, tokens, rules, contrast, consumer linting",
+          "One rule set behind every checker — the gates can't disagree",
+          "CI on every change: schema, lint, reference resolution, staleness, golden-CSS, tests",
+          "Tokens ship as an npm package with agent context packs inside — this site consumes it",
+          "Per-prop code↔Figma bindings, plus a parity differ that classifies drift",
+          "Weekly automated audits: consumer drift + code↔Figma parity, filing issues on drift",
+          "Anatomy contracts on the three deepest components; batch rollout underway",
+          "The governance eval harness behind the 95/70 number",
+          "WCAG AA verified across every intended pairing, in every brand",
         ],
       },
       { type: "h3", text: "Deliberately deferred" },
@@ -1113,13 +1113,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Publishing the component library and MCP server to npm (the token package ships today)",
           "Migrating the remaining sites (.art, .blog) onto the package",
           "Auto-fixing drift: the scan detects and files issues today; opening a fix PR is next",
-          "Generating the Figma library and the component code from the contract. The direction is committed: the contract owns each component's definition, and both surfaces are generated from it",
+          "Generating Figma and component code from the contract — the committed end state",
         ],
       },
       { type: "h3", text: "Scored against an external yardstick" },
       {
         type: "p",
-        text: "Self-assessment is cheap, so the system is also graded against Brad Frost's ten-station design-system inspection — a public framework built for auditing systems like this one. First pass scored 71; three re-inspection rounds closed the gaps.",
+        text: "Self-assessment is cheap, so the system is also graded against Brad Frost's ten-station design-system inspection. First pass: 71. Three re-inspections closed the gaps.",
       },
       {
         type: "stats",
@@ -1131,7 +1131,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Still open, honestly: one borderline 4.38:1 pairing awaiting an owner call, and the two process stations — governance and feedback loops — deliberately unscored until they've run long enough to judge, re-scoring in October.",
+        text: "Still open: one borderline 4.38:1 pairing, and the two process stations unscored until they've run long enough to judge — re-score in October.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
