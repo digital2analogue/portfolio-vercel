@@ -1,0 +1,1223 @@
+/* ============================================================================
+   Master case-study deck — design layer
+   ----------------------------------------------------------------------------
+   The four master decks are built from this one stylesheet. Slide layouts are
+   declared, not hand-styled: a slide sets data-layout and inherits the whole
+   composition. That is deliberate — the deck is itself a design-system
+   consumer, and the consistency across 60+ slides is the argument.
+
+   Token block below is a VENDORED SNAPSHOT of the Parsimony base dark theme
+   (@digital2analogue2/parsimony/base.css), pinned here so the decks are
+   self-contained artifacts that present without a build step. Values are
+   copied, never invented — source of truth stays parsimony/ai/DESIGN.md.
+   ========================================================================= */
+
+:root {
+  /* --- Color: background ------------------------------------------------ */
+  --color-background-default: #0a0d0a;
+  --color-background-alt: #1e241e;
+  --color-background-action: #4ade6e;
+  --color-background-success-alt: #0f2016;
+  --color-background-warning-alt: #221b08;
+  --color-background-info-alt: #0d1830;
+  --color-background-danger-alt: #2a0a0a;
+
+  /* --- Color: foreground ------------------------------------------------ */
+  --color-foreground-default: #c8cfc4;
+  --color-foreground-alt: #a0a89a;
+  --color-foreground-muted: #8b9683;
+  --color-foreground-action: #4ade6e;
+  --color-foreground-on-action: #0a0d0a;
+  --color-foreground-warning: #fcd34d;
+  --color-foreground-info: #93c5fd;
+  --color-foreground-danger: #f87171;
+
+  /* --- Color: border ---------------------------------------------------- */
+  --color-border-default: #5c685a;
+  --color-border-alt: #1e241e;
+  --color-border-muted: #0f2016;
+  --color-border-elevated: #2e3a2e;
+  --color-border-focus: #4ade6e;
+
+  /* --- Type ------------------------------------------------------------- */
+  --font-family-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-family-serif: "Spectral", Georgia, "Times New Roman", serif;
+  --font-family-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --letter-spacing-display: -0.01em;
+  --letter-spacing-title: -0.025em;
+  --letter-spacing-label: 0.03em;
+  --letter-spacing-all-caps: 0.1em;
+
+  /* --- Spacing ---------------------------------------------------------- */
+  --spacing-micro: 4px;
+  --spacing-tight: 8px;
+  --spacing-inline: 12px;
+  --spacing-element: 16px;
+  --spacing-component: 24px;
+  --spacing-group: 32px;
+  --spacing-layout: 48px;
+  --spacing-block: 64px;
+
+  /* --- Motion ----------------------------------------------------------- */
+  --motion-duration-instant: 120ms;
+  --motion-duration-standard: 200ms;
+  --motion-duration-emphasized: 350ms;
+  --motion-easing-enter: cubic-bezier(0, 0, 0.58, 1);
+  --motion-easing-move: cubic-bezier(0.42, 0, 0.58, 1);
+  --motion-easing-default: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  --radius-sm: 4px;
+
+  /* --- Deck-local layout (not brand material) --------------------------- */
+  --stage-w: 1280px;
+  --stage-h: 720px;
+  --rail-w: 92px;
+  --pad-x: 72px;
+  --pad-y: 56px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-instant: 0ms;
+    --motion-duration-standard: 0ms;
+    --motion-duration-emphasized: 0ms;
+  }
+}
+
+/* ============================================================================
+   Reset + shell
+   ========================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-background-default);
+  color: var(--color-foreground-default);
+  font-family: var(--font-family-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+/* The viewport the stage is scaled into. */
+.deck {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* Fixed-dimension stage — every slide is authored at exactly 1280×720 and the
+   whole thing is scaled to fit. Layout is therefore pixel-deterministic
+   instead of reflowing per screen, which is what keeps 60 slides consistent. */
+.stage {
+  position: relative;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  flex: none;
+  transform-origin: center center;
+  background: var(--color-background-default);
+  overflow: hidden;
+}
+
+/* ============================================================================
+   Slide base
+   ========================================================================= */
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: var(--rail-w) 1fr;
+  padding: var(--pad-y) var(--pad-x) var(--pad-y) 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.slide[data-active] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* --- Left rail: section marker + slide index ----------------------------- */
+
+.rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-left: var(--pad-x);
+  border-right: 1px solid var(--color-border-alt);
+  margin-right: var(--spacing-layout);
+}
+
+.rail__num {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-all-caps);
+  color: var(--color-foreground-action);
+  font-variant-numeric: tabular-nums;
+}
+
+.rail__section {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  margin-bottom: auto;
+  margin-top: var(--spacing-component);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ============================================================================
+   Typographic primitives
+   ========================================================================= */
+
+.eyebrow {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-action);
+  margin: 0 0 var(--spacing-component);
+}
+
+.eyebrow--quiet {
+  color: var(--color-foreground-muted);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-family-sans);
+  font-weight: 300;
+  letter-spacing: var(--letter-spacing-title);
+  line-height: 1.12;
+  color: var(--color-foreground-default);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 62px;
+  letter-spacing: var(--letter-spacing-display);
+}
+h2 {
+  font-size: 44px;
+}
+h3 {
+  font-size: 26px;
+}
+
+.lede {
+  font-family: var(--font-family-serif);
+  font-size: 19px;
+  line-height: 1.62;
+  color: var(--color-foreground-alt);
+  max-width: 62ch;
+  margin: var(--spacing-component) 0 0;
+  text-wrap: pretty;
+}
+
+.lede strong {
+  color: var(--color-foreground-default);
+  font-weight: 600;
+}
+
+.lede em {
+  color: var(--color-foreground-muted);
+  font-style: italic;
+}
+
+.caption {
+  font-family: var(--font-family-sans);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-foreground-muted);
+  margin: var(--spacing-inline) 0 0;
+  max-width: 74ch;
+}
+
+.mono {
+  font-family: var(--font-family-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.accent {
+  color: var(--color-foreground-action);
+}
+
+/* ============================================================================
+   Layout: cover
+   ========================================================================= */
+
+.slide[data-layout="cover"] .body {
+  justify-content: space-between;
+}
+
+.cover__top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-inline);
+}
+
+.cover__mark {
+  width: 9px;
+  height: 9px;
+  background: var(--color-background-action);
+  flex: none;
+  align-self: center;
+}
+
+.cover__title {
+  font-size: 78px;
+  line-height: 1.02;
+  max-width: 17ch;
+}
+
+.cover__sub {
+  font-family: var(--font-family-serif);
+  font-size: 21px;
+  line-height: 1.55;
+  color: var(--color-foreground-alt);
+  max-width: 56ch;
+  margin: var(--spacing-component) 0 0;
+}
+
+.cover__meta {
+  display: flex;
+  gap: var(--spacing-block);
+  border-top: 1px solid var(--color-border-elevated);
+  padding-top: var(--spacing-component);
+}
+
+.cover__meta dt {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin: 0 0 var(--spacing-tight);
+}
+
+.cover__meta dd {
+  font-size: 14px;
+  color: var(--color-foreground-default);
+  margin: 0;
+}
+
+/* ============================================================================
+   Layout: statement — one sentence owns the slide
+   ========================================================================= */
+
+.slide[data-layout="statement"] .body {
+  justify-content: center;
+}
+
+.statement {
+  font-size: 52px;
+  font-weight: 300;
+  line-height: 1.16;
+  letter-spacing: var(--letter-spacing-title);
+  max-width: 21ch;
+  margin: 0;
+}
+
+.statement em {
+  font-style: normal;
+  color: var(--color-foreground-action);
+}
+
+.statement__after {
+  font-family: var(--font-family-serif);
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-foreground-muted);
+  max-width: 58ch;
+  margin: var(--spacing-group) 0 0;
+  padding-top: var(--spacing-component);
+  border-top: 1px solid var(--color-border-elevated);
+}
+
+/* ============================================================================
+   Layout: metric — one dominant number
+   ========================================================================= */
+
+.slide[data-layout="metric"] .body {
+  justify-content: center;
+}
+
+.metric__value {
+  font-family: var(--font-family-sans);
+  font-size: 168px;
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--color-foreground-action);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+.metric__label {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: var(--letter-spacing-title);
+  color: var(--color-foreground-default);
+  margin: var(--spacing-component) 0 0;
+  max-width: 26ch;
+}
+
+.metric__note {
+  font-family: var(--font-family-serif);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-foreground-muted);
+  max-width: 54ch;
+  margin: var(--spacing-component) 0 0;
+}
+
+/* ============================================================================
+   Layout: metrics — tabular row, editorial not card-grid
+   ========================================================================= */
+
+.stat-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  border-top: 1px solid var(--color-border-elevated);
+  margin-top: var(--spacing-layout);
+}
+
+.stat {
+  padding: var(--spacing-component) var(--spacing-component) 0 0;
+  border-right: 1px solid var(--color-border-alt);
+}
+
+.stat:last-child {
+  border-right: 0;
+}
+
+.stat + .stat {
+  padding-left: var(--spacing-component);
+}
+
+.stat__value {
+  font-size: 52px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-foreground-action);
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+.stat__value--neutral {
+  color: var(--color-foreground-default);
+}
+
+.stat__label {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--color-foreground-alt);
+  display: block;
+  margin-top: var(--spacing-inline);
+  max-width: 20ch;
+}
+
+.stat__sub {
+  font-family: var(--font-family-mono);
+  font-size: 10.5px;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+  display: block;
+  margin-top: var(--spacing-tight);
+}
+
+/* ============================================================================
+   Layout: list — numbered points, mono index as structure
+   ========================================================================= */
+
+.slide[data-layout="list"] .body {
+  justify-content: center;
+}
+
+.points {
+  list-style: none;
+  margin: var(--spacing-layout) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--color-border-alt);
+  border-block: 1px solid var(--color-border-alt);
+}
+
+.point {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: var(--spacing-component);
+  align-items: baseline;
+  background: var(--color-background-default);
+  padding: var(--spacing-element) 0;
+}
+
+.point__idx {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-action);
+  font-variant-numeric: tabular-nums;
+}
+
+.point__body {
+  min-width: 0;
+}
+
+.point__lead {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-foreground-default);
+  letter-spacing: -0.01em;
+}
+
+.point__text {
+  font-family: var(--font-family-serif);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-foreground-alt);
+  margin: var(--spacing-micro) 0 0;
+  max-width: 72ch;
+}
+
+.points--tight .point {
+  padding: var(--spacing-inline) 0;
+}
+
+/* ============================================================================
+   Layout: split — argument left, evidence right
+   ========================================================================= */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  gap: var(--spacing-block);
+  align-items: center;
+  flex: 1;
+  min-height: 0;
+}
+
+.split--wide {
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+}
+
+.split--even {
+  grid-template-columns: 1fr 1fr;
+}
+
+.split__text {
+  min-width: 0;
+}
+
+.split__text h2 {
+  font-size: 38px;
+}
+
+.split__text .lede {
+  font-size: 17px;
+  max-width: 46ch;
+}
+
+.split__visual {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ============================================================================
+   Figures — borders over shadows, one frame style
+   ========================================================================= */
+
+.frame {
+  border: 1px solid var(--color-border-elevated);
+  background: var(--color-background-alt);
+  overflow: hidden;
+  position: relative;
+}
+
+.frame__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-tight);
+  padding: 7px var(--spacing-inline);
+  border-bottom: 1px solid var(--color-border-elevated);
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+  background: var(--color-background-default);
+}
+
+.frame__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-border-default);
+  flex: none;
+}
+
+.frame img,
+.frame video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.frame--fit img,
+.frame--fit video {
+  max-height: 100%;
+  object-fit: contain;
+  background: var(--color-background-default);
+}
+
+/* Full-bleed figure slide */
+.slide[data-layout="figure"] .body {
+  justify-content: center;
+}
+
+.figure {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+}
+
+.figure .frame {
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.figure .frame__media {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.figure .frame__media img,
+.figure .frame__media video {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.figure__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-component);
+  margin-bottom: var(--spacing-component);
+}
+
+.figure__head h2 {
+  font-size: 32px;
+}
+
+/* Two figures side by side */
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-component);
+  min-height: 0;
+  flex: 1;
+}
+
+.pair > figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.pair .frame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================================
+   Layout: decision — the slide type that carries the interview
+   ========================================================================= */
+
+.slide[data-layout="decision"] .body {
+  justify-content: center;
+}
+
+.decision {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--color-border-elevated);
+  margin-top: var(--spacing-layout);
+}
+
+.decision__cell {
+  padding: var(--spacing-component) var(--spacing-component) 0 0;
+  border-right: 1px solid var(--color-border-alt);
+}
+
+.decision__cell:last-child {
+  border-right: 0;
+}
+
+.decision__cell + .decision__cell {
+  padding-left: var(--spacing-component);
+}
+
+.decision__cell--call {
+  background: var(--color-background-success-alt);
+  padding-bottom: var(--spacing-component);
+  margin-top: -1px;
+  border-top: 1px solid var(--color-foreground-action);
+}
+
+.decision__k {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin: 0 0 var(--spacing-inline);
+}
+
+.decision__cell--call .decision__k {
+  color: var(--color-foreground-action);
+}
+
+.decision__v {
+  font-family: var(--font-family-serif);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--color-foreground-alt);
+  margin: 0;
+}
+
+.decision__cell--call .decision__v {
+  color: var(--color-foreground-default);
+}
+
+/* ============================================================================
+   Quote
+   ========================================================================= */
+
+.slide[data-layout="quote"] .body {
+  justify-content: center;
+}
+
+.pullquote {
+  margin: 0;
+  max-width: 24ch;
+}
+
+.pullquote p {
+  font-family: var(--font-family-serif);
+  font-size: 40px;
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--color-foreground-default);
+  margin: 0;
+  /* hanging punctuation on the opening quote */
+  text-indent: -0.42em;
+  max-width: 26ch;
+}
+
+.pullquote--wide p {
+  font-size: 32px;
+  max-width: 34ch;
+}
+
+.pullquote cite {
+  display: block;
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  font-style: normal;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+  margin-top: var(--spacing-group);
+  padding-top: var(--spacing-element);
+  border-top: 1px solid var(--color-border-elevated);
+  max-width: 40ch;
+}
+
+/* ============================================================================
+   Inline data devices — used inside split/list slides
+   ========================================================================= */
+
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-tight) var(--spacing-component);
+  font-family: var(--font-family-mono);
+  font-size: 12px;
+  margin: var(--spacing-component) 0 0;
+}
+
+.kv dt {
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--letter-spacing-label);
+}
+
+.kv dd {
+  color: var(--color-foreground-default);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  border: 1px solid var(--color-border-elevated);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.tag--live {
+  color: var(--color-foreground-action);
+  border-color: color-mix(in srgb, var(--color-foreground-action) 42%, transparent);
+}
+
+.tag--live::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-background-action);
+  animation: pulse 2.4s var(--motion-easing-default) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tag--live::before {
+    animation: none;
+  }
+}
+
+.taglist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-tight);
+  margin-top: var(--spacing-component);
+}
+
+/* Terminal / code device */
+.term {
+  font-family: var(--font-family-mono);
+  font-size: 12.5px;
+  line-height: 1.72;
+  background: var(--color-background-default);
+  border: 1px solid var(--color-border-elevated);
+  padding: var(--spacing-element);
+  color: var(--color-foreground-alt);
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.term .c-dim {
+  color: var(--color-foreground-muted);
+}
+.term .c-ok {
+  color: var(--color-foreground-action);
+}
+.term .c-bad {
+  color: var(--color-foreground-danger);
+}
+.term .c-warn {
+  color: var(--color-foreground-warning);
+}
+.term .c-info {
+  color: var(--color-foreground-info);
+}
+.term .c-fg {
+  color: var(--color-foreground-default);
+}
+
+/* Before → after comparison bar */
+.ba {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--spacing-component);
+  margin-top: var(--spacing-group);
+}
+
+.ba__side {
+  border: 1px solid var(--color-border-elevated);
+  padding: var(--spacing-element);
+}
+
+.ba__side--after {
+  border-color: color-mix(in srgb, var(--color-foreground-action) 40%, transparent);
+  background: var(--color-background-success-alt);
+}
+
+.ba__k {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  display: block;
+  margin-bottom: var(--spacing-tight);
+}
+
+.ba__side--after .ba__k {
+  color: var(--color-foreground-action);
+}
+
+.ba__v {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--color-foreground-default);
+  font-variant-numeric: tabular-nums;
+}
+
+.ba__arrow {
+  font-family: var(--font-family-mono);
+  color: var(--color-foreground-action);
+  font-size: 16px;
+}
+
+/* ============================================================================
+   Entrance motion — staggered, structural, reduced-motion safe
+   ========================================================================= */
+
+.slide[data-active] [data-rise] {
+  animation: rise var(--motion-duration-emphasized) var(--motion-easing-enter) backwards;
+}
+
+.slide[data-active] [data-rise="1"] {
+  animation-delay: 40ms;
+}
+.slide[data-active] [data-rise="2"] {
+  animation-delay: 110ms;
+}
+.slide[data-active] [data-rise="3"] {
+  animation-delay: 180ms;
+}
+.slide[data-active] [data-rise="4"] {
+  animation-delay: 250ms;
+}
+.slide[data-active] [data-rise="5"] {
+  animation-delay: 320ms;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide[data-active] [data-rise] {
+    animation: none;
+  }
+}
+
+/* ============================================================================
+   Chrome — progress, counter, help. Deliberately quiet.
+   ========================================================================= */
+
+.chrome {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--color-border-alt);
+  z-index: 40;
+}
+
+.chrome__fill {
+  height: 100%;
+  width: 0;
+  background: var(--color-background-action);
+  transition: width var(--motion-duration-standard) var(--motion-easing-move);
+}
+
+.hud {
+  position: fixed;
+  right: 16px;
+  bottom: 14px;
+  z-index: 41;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-inline);
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.55;
+  transition: opacity var(--motion-duration-standard) var(--motion-easing-default);
+}
+
+.hud:hover {
+  opacity: 1;
+}
+
+.hud__deck {
+  color: var(--color-foreground-muted);
+}
+
+.hud__count {
+  color: var(--color-foreground-alt);
+}
+
+.hud kbd {
+  font-family: inherit;
+  border: 1px solid var(--color-border-elevated);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  color: var(--color-foreground-muted);
+}
+
+/* ============================================================================
+   Speaker notes drawer
+   ========================================================================= */
+
+.notes {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-height: 42vh;
+  overflow: auto;
+  background: var(--color-background-alt);
+  border-top: 1px solid var(--color-border-default);
+  padding: var(--spacing-component) var(--spacing-group);
+  z-index: 50;
+  transform: translateY(101%);
+  transition: transform var(--motion-duration-emphasized) var(--motion-easing-move);
+}
+
+.notes[data-open] {
+  transform: none;
+}
+
+.notes__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--spacing-component);
+  border-bottom: 1px solid var(--color-border-elevated);
+  padding-bottom: var(--spacing-inline);
+  margin-bottom: var(--spacing-element);
+}
+
+.notes__title {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  letter-spacing: var(--letter-spacing-all-caps);
+  text-transform: uppercase;
+  color: var(--color-foreground-action);
+}
+
+.notes__timer {
+  font-family: var(--font-family-mono);
+  font-size: 11px;
+  color: var(--color-foreground-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes__body {
+  font-family: var(--font-family-serif);
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--color-foreground-default);
+  max-width: 100ch;
+}
+
+.notes__body p {
+  margin: 0 0 var(--spacing-inline);
+}
+
+.notes__body strong {
+  color: var(--color-foreground-action);
+  font-weight: 600;
+}
+
+/* ============================================================================
+   Overview grid (press O)
+   ========================================================================= */
+
+.overview {
+  position: fixed;
+  inset: 0;
+  background: var(--color-background-default);
+  z-index: 60;
+  overflow: auto;
+  padding: var(--spacing-group);
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--spacing-element);
+  align-content: start;
+}
+
+.overview[data-open] {
+  display: grid;
+}
+
+.ov-card {
+  border: 1px solid var(--color-border-elevated);
+  background: var(--color-background-alt);
+  padding: var(--spacing-inline);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-tight);
+  transition: border-color var(--motion-duration-instant) var(--motion-easing-default);
+}
+
+.ov-card:hover,
+.ov-card:focus-visible {
+  border-color: var(--color-border-default);
+  outline: none;
+}
+
+.ov-card[data-current] {
+  border-color: var(--color-foreground-action);
+}
+
+.ov-card__n {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-action);
+  font-variant-numeric: tabular-nums;
+}
+
+.ov-card__t {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--color-foreground-default);
+}
+
+.ov-card__s {
+  font-family: var(--font-family-mono);
+  font-size: 9.5px;
+  letter-spacing: var(--letter-spacing-label);
+  text-transform: uppercase;
+  color: var(--color-foreground-muted);
+  margin-top: auto;
+}
+
+/* ============================================================================
+   Print → PDF (landscape, one slide per page)
+   ========================================================================= */
+
+@page {
+  size: 1280px 720px;
+  margin: 0;
+}
+
+@media print {
+  body {
+    overflow: visible;
+    background: #fff;
+  }
+
+  .deck {
+    position: static;
+    display: block;
+  }
+
+  .stage {
+    transform: none !important;
+  }
+
+  .chrome,
+  .hud,
+  .notes,
+  .overview {
+    display: none !important;
+  }
+
+  .stage {
+    width: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .slide {
+    position: relative;
+    inset: auto;
+    width: 1280px;
+    height: 720px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .slide [data-rise] {
+    animation: none !important;
+  }
+}
