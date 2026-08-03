@@ -2368,6 +2368,431 @@ h2.eyebrow,
   .rr-tile:hover { transform: none; }
 }
 
+/* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
+   A device frame around the redesigned reservation-detail screen. Same OTKit
+   light palette as the other demos (--otk-*); the device chrome is neutral
+   hardware, not OTKit. Everything text-bearing sits on --otk-bg (white) —
+   muted --otk-alt on the grey --otk-surface is only 4.25:1, so grey surfaces
+   here carry ink or nothing. */
+.rd {
+  display: block;
+  --rd-hairline: #e4e6e8;
+}
+/* The demo renders inside .blocks, whose case-body typography styles bare
+   h3/h4/p/ul (serif body, light titles, ::before bullets) — foreign to this
+   product surface. Every heading/paragraph/list below therefore carries a class
+   AND is selected at .rr-demo.rd level (0,3,0), which outranks `.blocks h3`
+   (0,1,1) without depending on source order. Deliberately no blanket
+   `.rd h3 {}` reset: a type-selector reset would outrank these same classes. */
+.rr-demo.rd .rd-reset {
+  font: inherit;
+  letter-spacing: normal;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rr-demo.rd .rd-reset::before { content: none; }
+.rd-device {
+  width: 100%;
+  max-width: 348px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  height: 660px;
+  background: var(--otk-bg);
+  border: 1px solid #23262b;
+  border-radius: 34px;
+  box-shadow: 0 0 0 5px #101215, 0 18px 44px rgba(10, 13, 10, 0.42);
+  overflow: hidden;
+}
+.rd-icon { flex: none; }
+.rd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Device chrome ── */
+.rd-status {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding: 0 20px 0 24px;
+  color: var(--otk-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.rd-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 116px;
+  height: 24px;
+  background: #101215;
+  border-radius: 0 0 14px 14px;
+}
+.rd-status__right { display: inline-flex; align-items: center; gap: 5px; }
+.rd-homebar {
+  flex: none;
+  width: 118px;
+  height: 4px;
+  margin: 6px auto 8px;
+  border-radius: var(--radius-full);
+  background: #c2c5c9;
+}
+
+/* ── Header: chip row ⇄ compact title ── */
+.rd-header {
+  position: relative;
+  flex: none;
+  border-bottom: 1px solid var(--rd-hairline);
+  height: 52px;
+}
+.rd-chiprow,
+.rd-titlebar {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  transition:
+    opacity var(--motion-duration-standard, 200ms) var(--otk-ease),
+    transform var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rd-header[data-collapsed="false"] .rd-titlebar,
+.rd-header[data-collapsed="true"] .rd-chiprow {
+  opacity: 0;
+  pointer-events: none;
+}
+.rd-header[data-collapsed="false"] .rd-titlebar { transform: translateY(4px); }
+.rd-header[data-collapsed="true"] .rd-chiprow { transform: translateY(-4px); }
+
+.rd-chip {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 8px;
+  background: var(--otk-bg);
+  border: 0;
+  border-right: 1px solid var(--rd-hairline);
+  color: var(--otk-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.rd-chip--icon { flex: 0 0 44px; font-weight: 400; }
+.rd-chip:last-child { border-right: 0; }
+.rd-chip:hover { background: var(--otk-surface); }
+.rd-chip:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--otk-focus);
+}
+
+.rd-titlebar { justify-content: center; }
+.rd-titlebar__back {
+  position: absolute;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 100%;
+  background: none;
+  border: 0;
+  color: var(--otk-ink);
+  cursor: pointer;
+}
+.rd-titlebar__back:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rd-titlebar__name { font-size: 16px; font-weight: 600; color: var(--otk-ink); }
+
+/* ── Scroll body ── */
+.rd-scroll {
+  /* Positioned so section offsetTop is measured from THIS box — the scroll spy
+     and the tab jumps both read offsetTop, and an unpositioned scroller would
+     hand them page-level coordinates and clamp every jump to max scroll. */
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--otk-bg);
+}
+.rd-scroll:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
+
+/* The repeating zone: one row = icon + label (+ trailing affordance). Every
+   pattern on this screen is a variation of it — that IS the modularity claim. */
+.rd-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  background: var(--otk-bg);
+  border: 0;
+  border-bottom: 1px solid var(--rd-hairline);
+  color: var(--otk-ink);
+  font: inherit;
+  text-align: left;
+}
+.rd-row--action { cursor: pointer; }
+.rd-row--action:hover { background: var(--otk-surface); }
+.rd-row--action:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rd-row .rd-icon { color: var(--otk-ink); }
+.rd-placeholder { flex: 1 1 auto; font-size: 15px; color: var(--otk-alt); }
+
+.rd-row--guest { min-height: 64px; }
+.rd-avatar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: var(--otk-surface);
+  color: var(--otk-ink);
+}
+.rr-demo.rd .rd-guest { flex: 1 1 auto; margin: 0; font-size: 19px; font-weight: 700; color: var(--otk-ink); }
+.rd-iconbtn {
+  flex: none;
+  display: inline-flex;
+  padding: 4px;
+  background: none;
+  border: 0;
+  color: var(--otk-ink);
+  cursor: pointer;
+}
+.rd-iconbtn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); border-radius: var(--otk-radius); }
+
+/* ── Note strip: sticky scroll anchors over the sections below ── */
+.rd-strip {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  background: var(--otk-bg);
+  border-bottom: 1px solid var(--rd-hairline);
+}
+.rd-strip__tab {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--otk-ink);
+  cursor: pointer;
+  transition:
+    border-color var(--motion-duration-instant, 120ms) var(--otk-ease),
+    color var(--motion-duration-instant, 120ms) var(--otk-ease);
+}
+.rd-strip__tab:hover { background: var(--otk-surface); }
+.rd-strip__tab[data-active="true"] { border-bottom-color: var(--otk-action); color: var(--otk-action); }
+.rd-strip__tab:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+
+.rd-section { scroll-margin-top: 46px; }
+/* Reserve a screenful under the last section so its anchor can actually reach
+   the strip — otherwise the History tab never becomes active by scrolling. */
+.rd-section--history { padding-bottom: 96px; }
+
+.rr-demo.rd .rd-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 18px 16px 10px;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--otk-ink);
+}
+
+/* ── History stats ── */
+.rr-demo.rd .rd-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin: 0;
+  padding: 6px 12px 18px;
+  list-style: none;
+}
+.rr-demo.rd .rd-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.rd-stat__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-full);
+  background: var(--otk-surface);
+  color: var(--otk-ink);
+  font-size: 19px;
+  font-weight: 600;
+}
+.rd-stat__label { font-size: 12px; font-weight: 500; color: var(--otk-ink); }
+.rd-stat__sub { font-size: 11px; color: var(--otk-alt); }
+
+/* ── Visit scope segmented control ── */
+.rd-seg {
+  display: flex;
+  margin: 0 16px;
+  padding: 2px;
+  background: var(--otk-surface);
+  border-radius: var(--otk-radius);
+}
+.rd-seg__btn {
+  flex: 1 1 0;
+  padding: 8px 10px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--otk-ink);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--motion-duration-instant, 120ms) var(--otk-ease);
+}
+.rd-seg__btn[data-active="true"] { background: var(--otk-bg); border-color: var(--otk-border); }
+.rd-seg__btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); }
+
+/* ── Visit log ── */
+.rd-visits { padding: 16px; }
+.rd-visits:focus { outline: none; }
+.rd-visit + .rd-visit { margin-top: 20px; }
+.rr-demo.rd .rd-visit__heading { margin: 0 0 8px; font-size: 15px; font-weight: 700; color: var(--otk-ink); }
+.rd-event { display: flex; align-items: flex-start; gap: 8px; }
+.rd-event .rd-icon { margin-top: 1px; color: var(--otk-ink); }
+.rd-event__time { flex: none; font-size: 13px; color: var(--otk-alt); }
+.rd-event__body { flex: 1 1 auto; min-width: 0; }
+.rr-demo.rd .rd-event__text { margin: 0; font-size: 14px; line-height: 1.4; color: var(--otk-ink); }
+.rr-demo.rd .rd-event__meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 3px 0 0;
+  font-size: 13px;
+  color: var(--otk-alt);
+}
+.rd-event__table {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: var(--otk-ink);
+}
+
+/* ── Pacing switch ── */
+.rd-row--switch { border-top: 1px solid var(--rd-hairline); }
+.rd-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  cursor: pointer;
+}
+.rd-switch__label { font-size: 15px; font-weight: 600; color: var(--otk-ink); }
+.rd-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.rd-switch__track {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  width: 50px;
+  height: 30px;
+  padding: 2px;
+  border-radius: var(--radius-full);
+  background: var(--otk-border);
+  transition: background-color var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rd-switch__thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-full);
+  background: var(--otk-bg);
+  box-shadow: 0 1px 3px rgba(20, 26, 38, 0.28);
+  transition: transform var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rd-switch input:checked ~ .rd-switch__track { background: var(--otk-action); }
+.rd-switch input:checked ~ .rd-switch__track .rd-switch__thumb { transform: translateX(20px); }
+.rd-switch input:focus-visible ~ .rd-switch__track {
+  box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
+}
+
+.rd-row--referral { border-bottom: 0; }
+.rd-referral { flex: 1 1 auto; font-size: 15px; font-weight: 600; color: var(--otk-ink); }
+
+/* ── Bottom action bar ── */
+.rd-actionbar {
+  flex: none;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px 4px;
+  border-top: 1px solid var(--rd-hairline);
+  background: var(--otk-bg);
+}
+.rd-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter var(--motion-duration-instant, 120ms) var(--otk-ease);
+}
+.rd-action:hover { filter: brightness(0.94); }
+.rd-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
+}
+.rd-action--primary { flex: 1 1 58%; background: var(--otk-action); color: var(--otk-bg); }
+/* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
+.rd-action--secondary { flex: 1 1 42%; flex-direction: column; gap: 0; background: var(--otk-border); color: var(--otk-ink); }
+.rd-action__table { font-size: 11px; line-height: 1.1; }
+
+@media (max-width: 420px) {
+  .rd-device { height: 600px; border-radius: 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rd-scroll { scroll-behavior: auto; }
+  .rd-chiprow,
+  .rd-titlebar,
+  .rd-strip__tab,
+  .rd-seg__btn,
+  .rd-switch__track,
+  .rd-switch__thumb,
+  .rd-action {
+    transition: none;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    Case-detail page (/work/[slug])
    ═══════════════════════════════════════════════════════════════════ */

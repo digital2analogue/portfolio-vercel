@@ -129,6 +129,13 @@ const PAIRINGS = [
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 
+  // ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
+  // Reuses the OTKit palette above; only the pairings unique to this screen are
+  // listed. Note the constraint that shapes it: muted #6f737b on the grey
+  // surface #f1f2f4 is 4.25:1 and FAILS, so every grey surface here (stat
+  // circles, inactive segment, secondary action) carries ink, never muted.
+  { text: '#2d333f', bg: '#d8d9db', label: 'Demo/detail: table number on secondary action fill (AA-repaired from muted grey)' },
+
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
   // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills
