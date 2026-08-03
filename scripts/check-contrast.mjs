@@ -154,7 +154,7 @@ const PAIRINGS = [
   // #63666d — 5.75 / 5.13 / 4.81 across white, hover and press.
   { text: '#63666d', bg: '#e9ebee', label: 'Demo/detail: muted row text on pressed row tint' },
   { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: ink row text on pressed row tint' },
-  { text: '#2d333f', bg: '#d8d9db', label: 'Demo/detail: table number on secondary action fill (AA-repaired from muted grey)' },
+  { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: secondary action label on its pressed fill' },
   { text: '#ffffff', bg: '#247f9e', label: 'Demo/detail: Completed label on primary action' },
   // Interactive text in every state a row actually reaches.
   { text: '#2d333f', bg: '#f1f2f4', label: 'Demo/detail: chip + row label on hovered row' },

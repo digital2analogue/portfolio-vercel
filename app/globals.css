@@ -2578,7 +2578,9 @@ h2.eyebrow,
   flex: none;
   width: 132px;
   height: 5px;
-  margin: 8px auto 9px;
+  /* Home-indicator zone. Together with the action bar's bottom padding this
+     leaves ~30px under the buttons — the iOS safe area, not a stray gap. */
+  margin: 10px auto 10px;
   border-radius: var(--radius-full);
   background: #1c1f24;
   opacity: 0.32;
@@ -3092,7 +3094,7 @@ h2.eyebrow,
   flex: none;
   display: flex;
   gap: 8px;
-  padding: 10px 12px 4px;
+  padding: 12px 20px 20px;
   background: var(--otk-bg);
   box-shadow: 0 -1px 0 var(--rd-hairline);
   transition: box-shadow var(--rd-dur) var(--rd-ease);
@@ -3126,17 +3128,23 @@ h2.eyebrow,
 .rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
 .rd-action__label { font: var(--rd-label-md); letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
-/* Fill alone is 1.41:1 against the action bar, so the button's own edge is what
-   identifies it — ringed to 3.65:1. The primary needs no ring: its teal fill is
-   already 4.56:1. */
+/* Secondary is an OUTLINED button: background/default fill, so the edge is the
+   only thing that identifies it and has to carry SC 1.4.11 on its own. OTKit's
+   border/default #D8D9DB is 1.41:1 on white and cannot, so this uses --rd-edge
+   (3.65:1) — the same repair the switch and segment make. The tag chips keep the
+   plain #D8D9DB ring on purpose: they are content, not controls, so their edge
+   is decorative and the criterion does not apply. The primary needs no ring at
+   all — its teal fill is already 4.56:1. */
 .rd-action--secondary {
   flex: 1 1 42%;
   flex-direction: column;
   gap: 0;
-  background: var(--otk-border);
+  background: var(--otk-bg);
   box-shadow: inset 0 0 0 1px var(--rd-edge);
   color: var(--otk-ink);
 }
+.rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
+.rd-action--secondary:active { background: var(--rd-press); filter: none; }
 .rd-action__table { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
 
 /* ── Entrance ──
