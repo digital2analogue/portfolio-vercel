@@ -2466,6 +2466,12 @@ h2.eyebrow,
   /* background/alt #F1F2F4 darkened one step for the pressed state. OTKit's own
      pressed token is not in the set this file exposes. */
   --rd-press: #e9ebee;
+  /* One elevation recipe, two directions. Every "content passes under this
+     edge" shadow on both shells uses it — the sticky note strip and the tablet's
+     dock had separately-invented values, which is how an interface ends up with
+     three shadow languages and no one able to say what any of them means. */
+  --rd-edge-down: 0 8px 18px -10px rgba(20, 26, 38, 0.34);
+  --rd-edge-up: 0 -8px 18px -10px rgba(0, 0, 0, 0.72);
 }
 
 /* The demo renders inside .blocks, whose case-body typography styles bare
@@ -2871,7 +2877,7 @@ h2.eyebrow,
   z-index: 2;
 }
 .rd-select--sticky[data-stuck="true"] {
-  box-shadow: 0 1px 0 var(--rd-hairline), 0 8px 18px -10px rgba(20, 26, 38, 0.3);
+  box-shadow: 0 1px 0 var(--rd-hairline), var(--rd-edge-down);
 }
 .rd-select__item {
   position: relative;
@@ -3393,7 +3399,7 @@ h2.eyebrow,
   content: "";
   position: absolute;
   background: var(--otk-action);
-  border-radius: 0 3px 3px 0;
+  border-radius: 0 var(--otk-radius) var(--otk-radius) 0;
 }
 
 /* ── Sections rail ── */
@@ -3606,7 +3612,7 @@ h2.eyebrow,
   flex: none;
   display: flex;
   background: var(--rdp-chrome);
-  box-shadow: 0 -10px 18px -12px rgba(0, 0, 0, 0.9);
+  box-shadow: var(--rd-edge-up);
 }
 .rdp-dockbtn {
   position: relative;
@@ -3694,10 +3700,9 @@ h2.eyebrow,
 .rdp .rd-section--history { padding-bottom: 40px; }
 .rdp-facts { display: flex; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rd-hairline); }
 .rdp-fact {
-  flex: 1 1 0;
+  flex: none;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 6px;
   min-height: 34px;
   padding: 0 8px;
@@ -4052,11 +4057,13 @@ h2.eyebrow,
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: none; }
 }
-.rd-screen[data-entered="true"] .rd-zone {
+.rd-screen[data-entered="true"] .rd-zone,
+.rdp-screen[data-entered="true"] .rd-zone {
   animation: rd-zone-in var(--rd-dur-emph) var(--rd-ease) backwards;
   animation-delay: calc(var(--rd-i, 0) * 55ms);
 }
-.rd-screen[data-entered="false"] .rd-zone { opacity: 0; }
+.rd-screen[data-entered="false"] .rd-zone,
+.rdp-screen[data-entered="false"] .rd-zone { opacity: 0; }
 
 @media (max-width: 420px) {
   .rd-screen { height: 640px; }
@@ -4080,7 +4087,9 @@ h2.eyebrow,
      rather than sped up. Same for the icon pop and the panel slide: the state
      change still lands, it just doesn't travel to get there. */
   .rd-screen[data-entered] .rd-zone,
-  .rd-screen[data-entered="false"] .rd-zone {
+  .rd-screen[data-entered="false"] .rd-zone,
+  .rdp-screen[data-entered] .rd-zone,
+  .rdp-screen[data-entered="false"] .rd-zone {
     animation: none;
     opacity: 1;
   }

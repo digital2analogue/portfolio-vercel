@@ -192,7 +192,7 @@ export default function ReservationDetailIPad() {
                 section is marked by an accent edge rather than a fill: a raised
                 fill on this panel is 1.31:1 and would be the only difference
                 between the current section and its neighbours. */}
-            <nav className="rdp-rail" aria-label="Sections">
+            <nav className="rdp-rail rd-zone" style={zone(0)} aria-label="Sections">
               {IPAD.rail.map((r) => (
                 <button
                   key={r.label}
@@ -214,7 +214,7 @@ export default function ReservationDetailIPad() {
               ))}
             </nav>
 
-            <aside className="rdp-sidebar" aria-label="Service lists">
+            <aside className="rdp-sidebar rd-zone" style={zone(1)} aria-label="Service lists">
               <div className="rdp-lists">
                 {IPAD.lists.map((list) => (
                   <section key={list.id} aria-labelledby={`${baseId}-${list.id}`}>
@@ -332,7 +332,7 @@ export default function ReservationDetailIPad() {
 
             {/* The record. Same zones and the same classes as the phone. */}
             <main className="rdp-main">
-              <div className="rdp-facts rd-zone" style={zone(0)}>
+              <div className="rdp-facts rd-zone" style={zone(2)}>
                 <span className="rdp-fact">
                   <Icon name="clock" size={16} />
                   {RESERVATION.time}
@@ -347,7 +347,7 @@ export default function ReservationDetailIPad() {
                 </span>
               </div>
 
-              <div className="rd-row rd-row--guest rd-zone" style={zone(1)}>
+              <div className="rd-row rd-row--guest rd-zone" style={zone(3)}>
                 <span className="rd-avatar" aria-hidden="true">
                   {RESERVATION.initials}
                 </span>
@@ -358,7 +358,7 @@ export default function ReservationDetailIPad() {
                 </button>
               </div>
 
-              <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(2)}>
+              <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(4)}>
                 <Icon name="tag" size={24} />
                 <span className="rd-tags">
                   {RESERVATION.tags.map((tag) => {
@@ -382,7 +382,7 @@ export default function ReservationDetailIPad() {
                   leaves the screen. Same control, same sections, more room. */}
               <div
                 className="rdp-notes rd-zone"
-                style={zone(3)}
+                style={zone(5)}
                 ref={scrollRef}
                 onScroll={onScroll}
                 tabIndex={0}
@@ -508,7 +508,7 @@ export default function ReservationDetailIPad() {
                 actions as full-width rows with a leading glyph. Two carry the
                 thing they would actually send on a second line, because "Send"
                 and "Re-send" are not distinguishable without it. */}
-            <aside className="rdp-side" aria-label="Reservation actions">
+            <aside className="rdp-side rd-zone" style={zone(6)} aria-label="Reservation actions">
               <button
                 type="button"
                 className="rdp-status"

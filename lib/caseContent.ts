@@ -787,7 +787,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "demo",
         demo: "reservation-detail-ipad",
         frameLabel: "OTKit · iPad Back of House — as shipped",
-        caption: "Same zones, re-composed. Nothing re-authored for tablet.",
+        caption: "Same record, re-composed. The tablet adds chrome, not content.",
       },
       {
         type: "demo",
