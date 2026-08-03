@@ -2403,17 +2403,24 @@ h2.eyebrow,
        border/default       #D8D9DB   → --otk-border    (hairlines, switch-off track)
        border/action        #247F9E   → --otk-focus
        foreground/accent-yellow #FDAF08 → tag glyph, darkened (see below)
-       Label/Medium/Semibold  SF Pro 14  → row + note body, chips, primary
-                                             action, avatar initials
-       Label/Small/Semibold   SF Pro 12  → metadata, bylines, segment, tag
-                                             labels, stat labels + sub-counts
+     TYPE — the full OTKit scale, from the typography file
+     (FafCOBM6da0G6VUXEpiyvJ, node 306:78). That file documents the scale in
+     Brandon Text for mobile WEB; the iOS library renders the same steps in
+     SF Pro, which is what the system font stack on .rr-demo resolves to here.
+     Sizes and leading are the system's; only the family differs by platform.
 
-     The label tier is entirely on those two steps — nothing sits at 11, 13 or
-     15px any more. The title tier (guest name 20px, section + nav title 17px)
-     is NOT on a confirmed OTKit step: this file exposes only the two Label
-     styles above, and 17px is simply the iOS nav-title convention. Those two
-     want a node link to the OTKit type page before they can be called
-     system-accurate. Device chrome (status bar 13px) is hardware, not OTKit.
+       Title/Small/Bold      18 / 24  -> guest name, history stat figures
+       Body/Large/Bold       16 / 24  -> section heading, compact nav title
+       Body/Medium/Regular   14 / 20  -> note body, placeholders
+       Body/Medium/Semibold  14 / 20  -> switch + referral row labels
+       Body/Small/Regular    12 / 16  -> bylines, event times, stat sub-counts
+       Label/Medium/Semibold 14 / 14  -> chips, primary action, avatar initials
+       Label/Small/Semibold  12 / 12  -> segment, tag labels, stat labels
+
+     Every step above is on the scale — nothing sits at 11, 13, 15, 17 or 20px
+     any more, and Label styles carry single-line leading (lh == size) while
+     Body styles carry their own. Device chrome (status bar 13px) is hardware,
+     not OTKit.
 
      DERIVED — each is an OTKit token that fails a WCAG AA criterion in the
      context this screen actually renders it in. Recorded rather than hidden:
@@ -2599,6 +2606,7 @@ h2.eyebrow,
   color: var(--otk-ink);
   font: inherit;
   font-size: 14px;
+  line-height: 14px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -2633,8 +2641,9 @@ h2.eyebrow,
 .rd-titlebar__back:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-titlebar__back:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
 .rd-titlebar__name {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--otk-ink);
 }
@@ -2687,7 +2696,7 @@ h2.eyebrow,
 .rd-row > .rd-icon:first-child,
 .rd-event > .rd-icon:first-child { color: var(--rd-glyph); }
 .rd-row .rd-icon { color: var(--otk-ink); }
-.rd-placeholder { flex: 1 1 auto; font-size: 14px; color: var(--rd-muted); }
+.rd-placeholder { flex: 1 1 auto; font-size: 14px; line-height: 20px; color: var(--rd-muted); }
 
 /* ── Populated rows ──
    The screen is a guest record, so most rows carry content; the "Add a …"
@@ -2738,8 +2747,8 @@ h2.eyebrow,
 .rd-row--note { align-items: flex-start; }
 .rd-row--note .rd-icon { margin-top: 1px; }
 .rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.rd-notetext { flex: 1 1 auto; font-size: 14px; line-height: 1.4; color: var(--otk-ink); }
-.rd-noteby { font-size: 12px; color: var(--rd-muted); }
+.rd-notetext { flex: 1 1 auto; font-size: 14px; line-height: 20px; color: var(--otk-ink); }
+.rd-noteby { font-size: 12px; line-height: 16px; color: var(--rd-muted); }
 
 
 .rd-row--tags { gap: 12px; padding-left: 16px; padding-right: 16px; }
@@ -2761,7 +2770,8 @@ h2.eyebrow,
 .rr-demo.rd .rd-guest {
   flex: 1 1 auto;
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 24px;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: var(--otk-ink);
@@ -2817,8 +2827,10 @@ h2.eyebrow,
 .rd-strip__tab .rd-icon {
   transition: transform var(--rd-dur) var(--rd-ease);
 }
-.rd-strip__tab:hover { background: var(--rd-hover); }
-.rd-strip__tab:active { background: var(--rd-press); transition-duration: 40ms; }
+/* Press tints to background/alt and nothing else does. No hover fill: the tab
+   must be back on background/default the moment it lands, so the ONLY persistent
+   mark of the active tab is the border/action underline. */
+.rd-strip__tab:active { background: var(--otk-surface); transition-duration: 40ms; }
 .rd-strip__tab[data-active="true"] { color: var(--otk-action); }
 /* The active icon sits a hair larger — enough to feel selected, not enough to
    shift the row — and pops once as the indicator arrives under it. */
@@ -2864,7 +2876,8 @@ h2.eyebrow,
   gap: 12px;
   margin: 0;
   padding: 16px 20px 8px;
-  font-size: 17px;
+  font-size: 16px;
+  line-height: 24px;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--otk-ink);
@@ -2895,8 +2908,8 @@ h2.eyebrow,
   border-radius: var(--radius-full);
   background: var(--rd-hover);
   color: var(--otk-ink);
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 .rd-stat__label { font-size: 12px; font-weight: 600; color: var(--otk-ink); }
@@ -2983,7 +2996,7 @@ h2.eyebrow,
 .rr-demo.rd .rd-event__text {
   margin: 0;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 20px;
   color: var(--otk-ink);
 }
 .rr-demo.rd .rd-event__meta {
@@ -3015,7 +3028,7 @@ h2.eyebrow,
   width: 100%;
   cursor: pointer;
 }
-.rd-switch__label { font-size: 14px; font-weight: 600; color: var(--otk-ink); }
+.rd-switch__label { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--otk-ink); }
 .rd-switch input {
   position: absolute;
   width: 1px;
@@ -3054,7 +3067,7 @@ h2.eyebrow,
 }
 
 .rd-row--referral { border-bottom: 0; }
-.rd-referral { flex: 1 1 auto; font-size: 14px; font-weight: 600; color: var(--otk-ink); }
+.rd-referral { flex: 1 1 auto; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--otk-ink); }
 .rd-row--referral .rd-chevron { color: var(--rd-muted); }
 
 /* ── Bottom action bar ── */
@@ -3096,7 +3109,7 @@ h2.eyebrow,
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
 }
 .rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
-.rd-action__label { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.rd-action__label { font-size: 14px; line-height: 14px; font-weight: 600; letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
 /* Fill alone is 1.41:1 against the action bar, so the button's own edge is what
    identifies it — ringed to 3.65:1. The primary needs no ring: its teal fill is

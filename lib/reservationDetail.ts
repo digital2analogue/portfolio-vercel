@@ -39,40 +39,57 @@ export const NOTE_SECTIONS: NoteSection[] = [
     label: "General notes",
     icon: "receipt",
     placeholder: "Add a general note",
-    // In practice the free text all lands here — the specialised note types
-    // exist, but staff classify with tags and write the detail in one place.
     notes: [
       {
         id: "gen-1",
-        text: "Severe shellfish allergy — no cross-contact. Kitchen must be told on seating.",
-        author: "Priya N.",
-        date: "Oct 24",
-      },
-      {
-        id: "gen-2",
-        text: "Friend of the owner. Comp the first round; do not present a check for dessert.",
-        author: "M. Alvarez",
-        date: "Aug 12",
-      },
-      {
-        id: "gen-3",
         text: "Celebrating a 10th anniversary. Wife\u2019s name is Dana — greet by name at the door.",
         author: "Priya N.",
         date: "Oct 24",
       },
+    ],
+  },
+  {
+    id: "special",
+    label: "Special relationship",
+    icon: "star",
+    placeholder: "Add a special relationship note",
+    notes: [
       {
-        id: "gen-4",
+        id: "sp-1",
+        text: "Friend of the owner. Comp the first round; do not present a check for dessert.",
+        author: "M. Alvarez",
+        date: "Aug 12",
+      },
+    ],
+  },
+  {
+    id: "food",
+    label: "Food & drink preferences",
+    icon: "utensils",
+    placeholder: "Add a food & drink note",
+    notes: [
+      {
+        id: "food-1",
+        text: "Severe shellfish allergy — no cross-contact. Kitchen must be told on seating.",
+        author: "Priya N.",
+        date: "Oct 24",
+      },
+    ],
+  },
+  {
+    id: "seating",
+    label: "Seating preferences",
+    icon: "seat",
+    placeholder: "Add a seating note",
+    notes: [
+      {
+        id: "seat-1",
         text: "Prefers a banquette away from the kitchen pass. Has declined table 6 twice.",
         author: "Dev R.",
         date: "May 4",
       },
     ],
   },
-  // The remaining note types ship empty far more often than not, so they show
-  // the empty affordance — which is the pattern's other half, not a gap.
-  { id: "special", label: "Special relationship", icon: "star", placeholder: "Add a special relationship note" },
-  { id: "food", label: "Food & drink preferences", icon: "utensils", placeholder: "Add a food & drink note" },
-  { id: "seating", label: "Seating preferences", icon: "seat", placeholder: "Add a seating note" },
   { id: "history", label: "History", icon: "history", placeholder: "" },
 ];
 
