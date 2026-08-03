@@ -53,10 +53,7 @@ export default function ReservationDetailPreview() {
           <div className="demo-frame__surface" data-surface="light">
             <Demo />
           </div>
-          <figcaption>
-            As shipped — the redesigned iOS reservation detail. Every zone is a repeatable
-            pattern, and the note strip is a scroll anchor over sections that all stay mounted.
-          </figcaption>
+          <figcaption>Live, not filmed. Every zone is a repeatable pattern.</figcaption>
         </figure>
 
         <figure className="demo-frame" data-surface="light">
@@ -67,11 +64,7 @@ export default function ReservationDetailPreview() {
           <div className="demo-frame__surface" data-surface="light">
             <Editorial />
           </div>
-          <figcaption>
-            The same component and data with a different type and surface treatment — one
-            display moment, hairlines instead of fills, no device chrome. The action teal
-            stays: this is range within OTKit, not a different brand.
-          </figcaption>
+          <figcaption>Same component and data. Different type and surface.</figcaption>
         </figure>
       </div>
     </div>
