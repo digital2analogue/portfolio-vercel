@@ -3588,19 +3588,24 @@ h2.eyebrow,
   background: #f6f7f8;
 }
 .rdp-side .rd-row { background: transparent; }
+/* Square, glyph-only. The label used to be set beside the check, which made a
+   180px panel's loudest element a word the record states again two rows down.
+   The state survives on three channels without it: the check, the action fill,
+   and the button's accessible name. */
 .rdp-status {
-  display: flex;
+  align-self: flex-start;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 10px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   border: 0;
   border-radius: var(--otk-radius);
   background: var(--otk-action);
   color: var(--otk-bg);
-  font: var(--rd-label-sm);
   cursor: pointer;
+  transition: filter var(--rd-dur) var(--rd-ease);
 }
-.rdp-status__chev { margin-left: auto; transform: rotate(90deg); }
 .rdp-status:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
 .rdp-table {
   display: flex;

@@ -380,10 +380,12 @@ export default function ReservationDetailIPad() {
 
             {/* Zones that sit UNDER the record on the phone sit beside it here. */}
             <aside className="rdp-side" aria-label="Reservation status">
+              {/* Reservation status. Icon-only, as it ships — the glyph and the
+                  fill carry the state, and the accessible name carries the word
+                  so it is never colour-alone. */}
               <button type="button" className="rdp-status">
-                <Icon name="check" size={16} />
-                <span>{IPAD.status.label}</span>
-                <Icon name="chevron-right" size={16} className="rdp-status__chev" />
+                <Icon name="check" size={24} />
+                <span className="rd-sr">{IPAD.status.label} — change reservation status</span>
               </button>
               <button type="button" className="rdp-table">
                 <Icon name="seat" size={16} />
