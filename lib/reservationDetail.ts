@@ -390,12 +390,12 @@ export const IPAD = {
    *  bell and the panel ends at its last row. */
   rail: [
     { icon: "bars", label: "Shift overview" },
-    { icon: "seat", label: "Reservations", active: true },
+    { icon: "table-outline", label: "Reservations", active: true },
     { icon: "sliders", label: "Pacing" },
     { icon: "presentation", label: "Reports" },
     { icon: "contact-card", label: "Guestbook" },
-    { icon: "menu", label: "Menus" },
-    { icon: "bell", label: "Alerts" },
+    { icon: "book-alert", label: "Manual" },
+    { icon: "cloche", label: "Server requests" },
   ] as { icon: string; label: string; active?: boolean }[],
   /** Utility glyphs pinned to the foot of the rail. Sign-out is the last of
    *  them and sits level with the dock, in the rail's own column. */
@@ -425,11 +425,11 @@ export const IPAD = {
   },
   /** Utility dock under the service lists — five tools, no more. */
   dock: [
-    { icon: "receipt", label: "Shift notes", dot: true },
+    { icon: "page", label: "Shift notes", dot: true },
     { icon: "bell", label: "Alerts", badge: 2 },
-    { icon: "menu", label: "Manual" },
+    { icon: "book-alert", label: "Manual" },
     { icon: "cloche", label: "Server requests" },
-    { icon: "cancelled", label: "No-shows" },
+    { icon: "bag-minus", label: "No-shows" },
   ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
   /** The record’s own status, same taxonomy as the list rows. */
   status: { id: "confirmed", table: "Table 24", tableState: "Assigned" },

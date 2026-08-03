@@ -56,7 +56,11 @@ export function Icon({ name, size = 20, className }: { name: string; size?: numb
       height={size}
       viewBox={g.viewBox}
       aria-hidden="true"
-      fill="currentColor"
+      fill={g.stroke ? "none" : "currentColor"}
+      stroke={g.stroke ? "currentColor" : undefined}
+      strokeWidth={g.stroke ? 1.7 : undefined}
+      strokeLinecap={g.stroke ? "round" : undefined}
+      strokeLinejoin={g.stroke ? "round" : undefined}
     >
       {g.paths.map((pth, i) => (
         <path key={i} d={pth.d} fillRule={pth.fillRule} clipRule={pth.clipRule} />

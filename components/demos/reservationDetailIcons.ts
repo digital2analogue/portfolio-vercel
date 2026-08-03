@@ -20,7 +20,20 @@ import { OTKIT_ICONS, type OtkitIcon } from "./otkitIcons";
  * `stroke` mode here for two glyphs (utensils, history) and it is deliberately
  * gone rather than merely unused, so the mixed set cannot return by accident.
  */
-export type DemoIcon = OtkitIcon;
+export type DemoIcon = OtkitIcon & {
+  /**
+   * Render as a STROKED outline instead of a filled silhouette.
+   *
+   * The blanket "everything is filled" rule above still holds where filled and
+   * supplementary glyphs share a row — that is what it was written for, and a
+   * lone stroked glyph among filled ones does read as a second icon set. The
+   * NAV RAIL is a different case: in the source comp the entire rail is a light
+   * stroked set, top to bottom, with no filled glyph anywhere in the column. A
+   * whole surface in one weight is a deliberate treatment, not a mixture — so
+   * the rail is stroked and every glyph that appears in it is authored that way.
+   */
+  stroke?: boolean;
+};
 
 const EXTRA_ICONS: Record<string, DemoIcon> = {
   "chevron-left": {
@@ -50,76 +63,137 @@ const EXTRA_ICONS: Record<string, DemoIcon> = {
       { d: "M3 17.25C3 16.8358 3.33579 16.5 3.75 16.5H20.25C20.6642 16.5 21 16.8358 21 17.25C21 17.6642 20.6642 18 20.25 18H3.75C3.33579 18 3 17.6642 3 17.25Z" },
     ],
   },
-  /** Rail: shift overview — three columns. */
+  /* ── Nav rail ──────────────────────────────────────────────────────────
+     Stroked, per the comp: the whole rail is one light outline weight, top to
+     bottom, with no filled glyph in the column. Authored on the same 24px grid
+     as the filled set so the two never disagree about size.               */
+  /** Rail: shift overview — three hollow columns. */
   "bars": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M4 5.5C4 5.22386 4.22386 5 4.5 5H7.5C7.77614 5 8 5.22386 8 5.5V18.5C8 18.7761 7.77614 19 7.5 19H4.5C4.22386 19 4 18.7761 4 18.5V5.5Z" },
-      { d: "M10 5.5C10 5.22386 10.2239 5 10.5 5H13.5C13.7761 5 14 5.22386 14 5.5V18.5C14 18.7761 13.7761 19 13.5 19H10.5C10.2239 19 10 18.7761 10 18.5V5.5Z" },
-      { d: "M16 5.5C16 5.22386 16.2239 5 16.5 5H19.5C19.7761 5 20 5.22386 20 5.5V18.5C20 18.7761 19.7761 19 19.5 19H16.5C16.2239 19 16 18.7761 16 18.5V5.5Z" },
+      { d: "M4.75 8.5h3.5v7h-3.5zM10.25 8.5h3.5v7h-3.5zM15.75 8.5h3.5v7h-3.5z" },
     ],
   },
-  /** Rail: pacing — two tracks with handles. */
+  /** Rail: reservations — the table glyph, stroked to match its column. The
+   *  filled OTKit `seat` is authoritative everywhere else on the screen; in the
+   *  rail it would be the one solid mark in a stroked set. */
+  "table-outline": {
+    viewBox: "0 0 24 24",
+    stroke: true,
+    paths: [
+      { d: "M8.25 7.25h7.5v9.5h-7.5z" },
+      { d: "M4.75 9.75v4.5M19.25 9.75v4.5" },
+      { d: "M9.75 4.75h4.5M9.75 19.25h4.5" },
+    ],
+  },
+  /** Rail: pacing — a track with end stops and a centre control. */
   "sliders": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M3 8.25C3 7.83579 3.33579 7.5 3.75 7.5H20.25C20.6642 7.5 21 7.83579 21 8.25C21 8.66421 20.6642 9 20.25 9H3.75C3.33579 9 3 8.66421 3 8.25Z" },
-      { d: "M3 15.75C3 15.3358 3.33579 15 3.75 15H20.25C20.6642 15 21 15.3358 21 15.75C21 16.1642 20.6642 16.5 20.25 16.5H3.75C3.33579 16.5 3 16.1642 3 15.75Z" },
-      { d: "M8 5C8.55228 5 9 5.44772 9 6V10.5C9 11.0523 8.55228 11.5 8 11.5C7.44772 11.5 7 11.0523 7 10.5V6C7 5.44772 7.44772 5 8 5Z" },
-      { d: "M16 12.5C16.5523 12.5 17 12.9477 17 13.5V18C17 18.5523 16.5523 19 16 19C15.4477 19 15 18.5523 15 18V13.5C15 12.9477 15.4477 12.5 16 12.5Z" },
+      { d: "M4 8.5v7M20 8.5v7" },
+      { d: "M4 12h16" },
+      { d: "M10 9.5v5M14 9.5v5" },
     ],
   },
-  /** Rail: reports — a screen on a stand. */
+  /** Rail: reports — a screen with a chart, on legs. */
   "presentation": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M3.5 4C3.22386 4 3 4.22386 3 4.5V15.5C3 15.7761 3.22386 16 3.5 16H11.25V18.19L8.72 20.72C8.43 21.01 8.43 21.49 8.72 21.78C9.01 22.07 9.49 22.07 9.78 21.78L12 19.56L14.22 21.78C14.51 22.07 14.99 22.07 15.28 21.78C15.57 21.49 15.57 21.01 15.28 20.72L12.75 18.19V16H20.5C20.7761 16 21 15.7761 21 15.5V4.5C21 4.22386 20.7761 4 20.5 4H3.5ZM7.75 12.5C7.33579 12.5 7 12.1642 7 11.75V9.25C7 8.83579 7.33579 8.5 7.75 8.5C8.16421 8.5 8.5 8.83579 8.5 9.25V11.75C8.5 12.1642 8.16421 12.5 7.75 12.5ZM11.25 12.5C10.8358 12.5 10.5 12.1642 10.5 11.75V7.25C10.5 6.83579 10.8358 6.5 11.25 6.5C11.6642 6.5 12 6.83579 12 7.25V11.75C12 12.1642 11.6642 12.5 11.25 12.5ZM14.75 12.5C14.3358 12.5 14 12.1642 14 11.75V10.25C14 9.83579 14.3358 9.5 14.75 9.5C15.1642 9.5 15.5 9.83579 15.5 10.25V11.75C15.5 12.1642 15.1642 12.5 14.75 12.5Z", fillRule: "evenodd", clipRule: "evenodd" },
+      { d: "M4.75 6.5h14.5v9H4.75z" },
+      { d: "M8 13v-2M11 13v-3.5M14 13v-1.5M16.5 13v-3" },
+      { d: "M9.5 19l2.5-3.5 2.5 3.5" },
     ],
   },
-  /** Rail: guestbook — a card with a person on it. */
+  /** Rail: guestbook — a bound card with a person and lines. */
   "contact-card": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M3 6.5C3 5.67157 3.67157 5 4.5 5H19.5C20.3284 5 21 5.67157 21 6.5V17.5C21 18.3284 20.3284 19 19.5 19H4.5C3.67157 19 3 18.3284 3 17.5V6.5ZM9 12C10.1046 12 11 11.1046 11 10C11 8.89543 10.1046 8 9 8C7.89543 8 7 8.89543 7 10C7 11.1046 7.89543 12 9 12ZM6 15.5C6 14.3954 7.34315 13.5 9 13.5C10.6569 13.5 12 14.3954 12 15.5V16H6V15.5ZM14.75 9.5C14.3358 9.5 14 9.83579 14 10.25C14 10.6642 14.3358 11 14.75 11H18.25C18.6642 11 19 10.6642 19 10.25C19 9.83579 18.6642 9.5 18.25 9.5H14.75ZM14 13.25C14 12.8358 14.3358 12.5 14.75 12.5H18.25C18.6642 12.5 19 12.8358 19 13.25C19 13.6642 18.6642 14 18.25 14H14.75C14.3358 14 14 13.6642 14 13.25Z", fillRule: "evenodd", clipRule: "evenodd" },
+      { d: "M6.5 5.25h12.75v13.5H6.5z" },
+      { d: "M4.75 8h1.75M4.75 12h1.75M4.75 16h1.75" },
+      { d: "M11.75 11.25a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" },
+      { d: "M9.5 15.25c0-1.24 1.01-2 2.25-2s2.25.76 2.25 2" },
+      { d: "M15.75 10h1.75M15.75 13.5h1.75" },
     ],
   },
-  /** Rail: alerts. */
-  "bell": {
+  /** Rail: manual — an open book with an exclamation. */
+  "book-alert": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M12 2.5C12.5523 2.5 13 2.94772 13 3.5V4.08C16.06 4.56 18.25 7.2 18.25 10.31V15.25L19.78 17.03C20.05 17.35 19.82 17.84 19.4 17.84H4.6C4.18 17.84 3.95 17.35 4.22 17.03L5.75 15.25V10.31C5.75 7.2 7.94 4.56 11 4.08V3.5C11 2.94772 11.4477 2.5 12 2.5Z" },
-      { d: "M9.5 19.34C9.5 19.34 10.19 21.5 12 21.5C13.81 21.5 14.5 19.34 14.5 19.34H9.5Z" },
+      { d: "M4.75 5.5h14.5v10.25c-2.6 0-4.4.6-7.25 2.75-2.85-2.15-4.65-2.75-7.25-2.75z" },
+      { d: "M12 8v3.75" },
+      { d: "M12 14.1h.01" },
+    ],
+  },
+  /** Rail + dock: server requests — a cloche. */
+  "cloche": {
+    viewBox: "0 0 24 24",
+    stroke: true,
+    paths: [
+      { d: "M4 15.5a8 8 0 0 1 16 0z" },
+      { d: "M3 18.25h18" },
+      { d: "M12 7.5V6" },
     ],
   },
   /** Rail footer: settings. */
   "gear": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M10.6 2.5a1 1 0 0 0-.98.8l-.28 1.4a7.5 7.5 0 0 0-1.6.93l-1.35-.47a1 1 0 0 0-1.19.45l-1.4 2.42a1 1 0 0 0 .21 1.25l1.07.93a7.6 7.6 0 0 0 0 1.86l-1.07.93a1 1 0 0 0-.21 1.25l1.4 2.42a1 1 0 0 0 1.19.45l1.35-.47c.5.37 1.03.68 1.6.93l.28 1.4a1 1 0 0 0 .98.8h2.8a1 1 0 0 0 .98-.8l.28-1.4c.57-.25 1.1-.56 1.6-.93l1.35.47a1 1 0 0 0 1.19-.45l1.4-2.42a1 1 0 0 0-.21-1.25l-1.07-.93a7.6 7.6 0 0 0 0-1.86l1.07-.93a1 1 0 0 0 .21-1.25l-1.4-2.42a1 1 0 0 0-1.19-.45l-1.35.47a7.5 7.5 0 0 0-1.6-.93l-.28-1.4a1 1 0 0 0-.98-.8h-2.8ZM12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z", fillRule: "evenodd", clipRule: "evenodd" },
+      { d: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" },
+      { d: "M18.9 14.5a1.5 1.5 0 0 0 .3 1.65l.06.06a1.8 1.8 0 1 1-2.55 2.55l-.06-.06a1.5 1.5 0 0 0-2.55 1.07v.17a1.8 1.8 0 1 1-3.6 0v-.09a1.5 1.5 0 0 0-2.6-1.02l-.06.06a1.8 1.8 0 1 1-2.55-2.55l.06-.06a1.5 1.5 0 0 0-1.07-2.55h-.17a1.8 1.8 0 1 1 0-3.6h.09a1.5 1.5 0 0 0 1.02-2.6l-.06-.06a1.8 1.8 0 1 1 2.55-2.55l.06.06a1.5 1.5 0 0 0 1.65.3h.08a1.5 1.5 0 0 0 .9-1.37v-.17a1.8 1.8 0 1 1 3.6 0v.09a1.5 1.5 0 0 0 2.6 1.02l.06-.06a1.8 1.8 0 1 1 2.55 2.55l-.06.06a1.5 1.5 0 0 0-.3 1.65v.08a1.5 1.5 0 0 0 1.37.9h.17a1.8 1.8 0 1 1 0 3.6h-.09a1.5 1.5 0 0 0-1.37.9Z" },
     ],
   },
   /** Rail footer: about. */
   "info": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M12 2.75a9.25 9.25 0 1 0 0 18.5 9.25 9.25 0 0 0 0-18.5Zm0 3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Zm-.02 4a1 1 0 0 1 1 1v5.5a1 1 0 1 1-2 0v-5.5a1 1 0 0 1 1-1Z", fillRule: "evenodd", clipRule: "evenodd" },
+      { d: "M12 20.5a8.5 8.5 0 1 0 0-17 8.5 8.5 0 0 0 0 17Z" },
+      { d: "M12 16.25v-4.5" },
+      { d: "M12 8.25h.01" },
     ],
   },
-  /** Dock: service bell / cloche. */
-  "cloche": {
-    viewBox: "0 0 24 24",
-    paths: [
-      { d: "M12 4.5a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Z" },
-      { d: "M12 5.5c-4.42 0-8 3.36-8 7.5v1.25h16V13c0-4.14-3.58-7.5-8-7.5Z" },
-      { d: "M2.75 16.25a.75.75 0 0 0 0 1.5h18.5a.75.75 0 0 0 0-1.5H2.75Z" },
-    ],
-  },
-  /** Dock: sign out. */
+  /** Rail footer: sign out. */
   "exit": {
     viewBox: "0 0 24 24",
+    stroke: true,
     paths: [
-      { d: "M4 4.5C4 3.94772 4.44772 3.5 5 3.5H11.5C12.0523 3.5 12.5 3.94772 12.5 4.5C12.5 5.05228 12.0523 5.5 11.5 5.5H6V18.5H11.5C12.0523 18.5 12.5 18.9477 12.5 19.5C12.5 20.0523 12.0523 20.5 11.5 20.5H5C4.44772 20.5 4 20.0523 4 19.5V4.5Z" },
-      { d: "M15.7929 7.29289C16.1834 6.90237 16.8166 6.90237 17.2071 7.29289L21.2071 11.2929C21.5976 11.6834 21.5976 12.3166 21.2071 12.7071L17.2071 16.7071C16.8166 17.0976 16.1834 17.0976 15.7929 16.7071C15.4024 16.3166 15.4024 15.6834 15.7929 15.2929L18.0858 13H10.5C9.94772 13 9.5 12.5523 9.5 12C9.5 11.4477 9.94772 11 10.5 11H18.0858L15.7929 8.70711C15.4024 8.31658 15.4024 7.68342 15.7929 7.29289Z" },
+      { d: "M14.5 4.75h4.75v14.5H14.5" },
+      { d: "M9.75 15.5 6.25 12l3.5-3.5" },
+      { d: "M6.25 12h9" },
+    ],
+  },
+  /** Dock: a page with a folded corner. */
+  "page": {
+    viewBox: "0 0 24 24",
+    stroke: true,
+    paths: [
+      { d: "M6.25 3.75h7l4.5 4.5v12h-11.5z" },
+      { d: "M13.25 3.75v4.5h4.5" },
+    ],
+  },
+  /** Dock: alerts. */
+  "bell": {
+    viewBox: "0 0 24 24",
+    stroke: true,
+    paths: [
+      { d: "M12 3.5a5.75 5.75 0 0 0-5.75 5.75v3.5L4.75 16.5h14.5l-1.5-3.75v-3.5A5.75 5.75 0 0 0 12 3.5Z" },
+      { d: "M10 19a2.1 2.1 0 0 0 4 0" },
+    ],
+  },
+  /** Dock: no-shows. */
+  "bag-minus": {
+    viewBox: "0 0 24 24",
+    stroke: true,
+    paths: [
+      { d: "M5.75 8.25h9.5l1.25 11.5h-12z" },
+      { d: "M8.5 8.25V6.5a2 2 0 0 1 4 0v1.75" },
+      { d: "M16.25 9.5h4.5" },
     ],
   },
   "overflow": {

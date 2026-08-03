@@ -38,6 +38,8 @@ import { stateById } from "@/lib/reservationStates";
 const SHELL_WIDTH = 848;
 /** Shell height in px (screen + device padding), for the teaser's stage box. */
 const SHELL_HEIGHT = 596;
+/** Left offset of the record column — rail 40 + lists 232 + device padding. */
+const RECORD_OFFSET = 280;
 
 const SCOPES: { id: string; label: string; visits: Visit[] }[] = [
   { id: "current", label: "Current visit", visits: CURRENT_VISIT },
@@ -72,6 +74,7 @@ export default function ReservationDetailIPad() {
    * height follows from the same number — no dead band, no crop.
    */
   const rootRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const [fit, setFit] = useState<number | null>(null);
   useLayoutEffect(() => {
     const el = rootRef.current;
@@ -82,6 +85,16 @@ export default function ReservationDetailIPad() {
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  /** Opening the full-screen stage lands on the RECORD, not on the rail. The
+   *  shell is 848px against a ~390px phone, so whatever is at scrollLeft 0 is
+   *  what the reader is told the prototype is — and that should be the guest
+   *  record, not two columns of chrome. */
+  useLayoutEffect(() => {
+    const el = stageRef.current;
+    if (!el || !expanded) return;
+    el.scrollLeft = RECORD_OFFSET;
+  }, [expanded]);
 
   const zone = (i: number) => ({ "--rd-i": i }) as React.CSSProperties;
   const recordState = stateById(IPAD.status.id);
@@ -106,6 +119,7 @@ export default function ReservationDetailIPad() {
       </button>
       <div
         className="rdp-stage"
+        ref={stageRef}
         style={fit === null ? undefined : ({ "--rdp-fit-h": `${Math.round(SHELL_HEIGHT * fit)}px` } as React.CSSProperties)}
       >
         <button
@@ -116,6 +130,9 @@ export default function ReservationDetailIPad() {
         >
           <Icon name="plus" size={20} />
         </button>
+        <span className="rdp-pan" aria-hidden="true">
+          Swipe to pan
+        </span>
       <div className="rdp-device">
         <div className="rdp-screen" ref={screenRef}>
           {/* Service bar. Faithful to OTKit's iPad top navigation: an iOS status

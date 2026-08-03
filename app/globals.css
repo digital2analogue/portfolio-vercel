@@ -3877,9 +3877,10 @@ h2.eyebrow,
   }
   .rdp { position: relative; }
 
-  /* Opened. The stage takes the viewport, the shell returns to full size, and
-     panning is horizontal within it — which is what you do with a tablet
-     screenshot anyway. */
+  /* Opened — a lightbox, not a void. The shell keeps its true 848px width and
+     pans horizontally, which is what you do with a tablet screenshot anyway;
+     what it must NOT do is float in a black field with no edge and no hint that
+     there is more to the right of it. */
   .rdp[data-expanded="true"] { overflow: visible; }
   .rdp[data-expanded="true"] .rdp-tap { display: none; }
   .rdp[data-expanded="true"] .rdp-stage {
@@ -3889,23 +3890,36 @@ h2.eyebrow,
     height: auto;
     display: flex;
     align-items: center;
-    padding: 44px 0 0;
+    padding: 0;
     overflow-x: auto;
     overscroll-behavior: contain;
-    background: var(--color-background-default);
+    /* Opaque. At 94% the page bled through top and bottom and the stage read
+       as a rendering fault rather than as a layer over the page. */
+    background: #060806;
     border-radius: 0;
+    /* Edge fades, painted on the viewport rather than the scrolling content, so
+       they mark "there is more this way" at both ends. */
+    box-shadow:
+      inset 26px 0 22px -22px #060806,
+      inset -26px 0 22px -22px #060806;
   }
-  .rdp[data-expanded="true"] .rdp-device { transform: none; pointer-events: auto; }
+  .rdp[data-expanded="true"] .rdp-device {
+    transform: none;
+    pointer-events: auto;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 24px 60px -18px rgba(0, 0, 0, 0.85);
+  }
   .rdp[data-expanded="true"] .rdp-close {
     position: fixed;
-    top: 8px;
-    right: 8px;
+    top: max(10px, env(safe-area-inset-top));
+    right: 10px;
     z-index: 61;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-full);
     background: var(--color-background-alt);
@@ -3913,8 +3927,28 @@ h2.eyebrow,
   }
   /* The glyph is a plus; a close is the same mark turned. */
   .rdp[data-expanded="true"] .rdp-close .rd-icon { transform: rotate(45deg); }
+  /* The shell is wider than the phone, and nothing else says so. */
+  .rdp[data-expanded="true"] .rdp-pan {
+    position: fixed;
+    left: 50%;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 61;
+    display: block;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-background-alt);
+    border: 1px solid var(--color-border-alt);
+    color: var(--color-foreground-muted);
+    font: var(--font-label-small);
+    white-space: nowrap;
+  }
+  /* Taller here than at desktop: the phone has the height to spend, and a
+     460px shell left two thirds of the viewport empty. */
+  .rdp[data-expanded="true"] .rdp-screen { height: min(660px, 82dvh); }
   .rdp-screen { height: 460px; }
 }
+.rdp-pan { display: none; }
 
 /* ═══════════════════════════════════════════════════════════════════
    Editorial variant (.rd--editorial)
