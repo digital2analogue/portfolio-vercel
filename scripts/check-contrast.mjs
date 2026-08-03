@@ -177,12 +177,32 @@ const PAIRINGS = [
   { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
   // ── iPad / Back of House shell (components/demos/ReservationDetailIPad) ──
-  // Two dark chrome surfaces the phone has no use for — the rail/sidebar and the
-  // raised chips inside them. The record itself reuses the light pairings above.
-  { text: '#ffffff', bg: '#1c1f26', label: 'Demo/iPad: sidebar + rail text on BOH chrome' },
-  { text: '#a9b0bd', bg: '#1c1f26', label: 'Demo/iPad: sidebar sort/count text on BOH chrome' },
-  { text: '#ffffff', bg: '#262a33', label: 'Demo/iPad: selected row + date chips on raised chrome' },
-  { text: '#a9b0bd', bg: '#262a33', label: 'Demo/iPad: muted text on raised chrome' },
+  // The shell adds three surfaces the phone has no use for: two near-black
+  // panels (rail/sidebar #0d0e12, service bar #111114), one raised step inside
+  // them (#252833) and one tinted light panel beside the record (#f6f7f8). All
+  // four are sampled from the source clip. The record column itself is the same
+  // white surface as the phone and reuses every pairing above.
+  //
+  // SC 1.4.3 — text.
+  { text: '#ffffff', bg: '#0d0e12', label: 'Demo/iPad: sidebar + rail text on BOH chrome' },
+  { text: '#a9b0bd', bg: '#0d0e12', label: 'Demo/iPad: sidebar sort/count text on BOH chrome' },
+  { text: '#ffffff', bg: '#111114', label: 'Demo/iPad: service-bar text on the date bar' },
+  { text: '#a9b0bd', bg: '#111114', label: 'Demo/iPad: service-bar secondary text' },
+  { text: '#ffffff', bg: '#252833', label: 'Demo/iPad: selected row + date chips on raised chrome' },
+  { text: '#a9b0bd', bg: '#252833', label: 'Demo/iPad: muted text on raised chrome' },
+  { text: '#2d333f', bg: '#f6f7f8', label: 'Demo/iPad: side-panel ink (table label, switch, referral)' },
+  { text: '#63666d', bg: '#f6f7f8', label: 'Demo/iPad: side-panel muted text (table state)' },
+  //
+  // SC 1.4.11 — non-text. The rail glyphs are the ONLY label a rail button
+  // carries, and the focus ring is the only keyboard affordance on a dark panel,
+  // so both are held to 3:1 against every surface they land on.
+  { text: '#a9b0bd', bg: '#0d0e12', min: NON_TEXT, label: 'Demo/iPad: rail glyphs on chrome' },
+  { text: '#247f9e', bg: '#0d0e12', min: NON_TEXT, label: 'Demo/iPad: focus ring on rail + sidebar' },
+  { text: '#247f9e', bg: '#111114', min: NON_TEXT, label: 'Demo/iPad: focus ring on the service bar' },
+  { text: '#247f9e', bg: '#252833', min: NON_TEXT, label: 'Demo/iPad: focus ring on a raised chip / selected row' },
+  { text: '#247f9e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: status-button fill on the side panel' },
+  { text: '#82868e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: side-panel glyphs + control boundary rings' },
+  { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/iPad: side-panel glyph on a hovered row' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair

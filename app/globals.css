@@ -3162,6 +3162,16 @@ h2.eyebrow,
   .rd-select__item:not([data-active="true"]):hover { background: var(--otk-surface); }
   .rd-action:hover { filter: brightness(0.96); }
   .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
+  /* Back-of-House chrome. Gated with everything else: on touch, hover latches
+     after a tap and leaves a rail button or a list row stuck lit — which on a
+     SELECTION control reads as a second selection. */
+  .rdp-railbtn:hover,
+  .rdp-icon:hover,
+  .rdp-step:hover,
+  .rdp-quote:hover { background: var(--rdp-hairline); }
+  .rdp-resv:not([data-selected="true"]):hover { background: var(--rdp-chrome-alt); }
+  .rdp-status:hover { filter: brightness(0.96); }
+  .rdp-table:hover { background: var(--otk-surface); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -3173,12 +3183,41 @@ h2.eyebrow,
    That is the case study's claim, enforced by the stylesheet rather than
    asserted in a caption.
 
-   Two dark surfaces here that the phone has no use for. They are OTKit's
-   own BOH chrome values, and they carry white text at 13.9:1 and 6.8:1.
+   The dark chrome values are SAMPLED from the source clip rather than
+   invented, so this reads as the same product as the floor-plan demos on
+   the sibling case study: near-black panels (#0d0e12 sidebar/rail,
+   #111114 service bar) with one raised step (#252833) for selected rows,
+   quote chips and list separators. White clears 19:1 on the panels and
+   14.7:1 on the raised step; the secondary tone 8.9:1 and 6.7:1.
+
+   The tablet does NOT get a squashed phone. Below ~860px the shell keeps
+   its true proportions and scrolls sideways instead of collapsing four
+   columns into slivers — a 114px-wide "record" column is not evidence of
+   anything.
    ═══════════════════════════════════════════════════════════════════ */
-.rdp { --rdp-chrome: #1c1f26; --rdp-chrome-alt: #262a33; --rdp-on-chrome: #ffffff; --rdp-on-chrome-alt: #a9b0bd; }
+.rdp {
+  --rdp-chrome: #0d0e12;
+  --rdp-bar: #111114;
+  --rdp-chrome-alt: #252833;
+  /* Separator WITHIN the dark panels. The raised step doubled as this and
+     measured 1.31:1 against the panel — invisible. This is the decorative rung
+     (1.75:1), which SC 1.4.11 does not reach because it bounds no control, but
+     which now actually divides the lists it is drawn between. */
+  --rdp-hairline: #383c47;
+  /* Boundary tone for CONTROLS on the dark panels — 3.32:1 on the panel and
+     3.24:1 on the service bar. The raised step is a surface, not an edge: a
+     quote chip whose only affordance was its 1.31:1 fill was, to low vision, a
+     number floating in a void. Same repair the phone's controls needed. */
+  --rdp-edge: #606574;
+  --rdp-on-chrome: #ffffff;
+  --rdp-on-chrome-alt: #a9b0bd;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
 .rdp-device {
   width: 100%;
+  min-width: 860px;
   margin: 0 auto;
   padding: 10px;
   border-radius: 22px;
@@ -3202,7 +3241,7 @@ h2.eyebrow,
   gap: 12px;
   height: 40px;
   padding: 0 10px;
-  background: var(--rdp-chrome);
+  background: var(--rdp-bar);
   color: var(--rdp-on-chrome);
   font: var(--rd-label-sm);
 }
@@ -3218,7 +3257,28 @@ h2.eyebrow,
   color: var(--rdp-on-chrome);
   cursor: pointer;
 }
-.rdp-icon[data-active="true"] { background: var(--rdp-chrome-alt); }
+/* Selection on dark chrome, stated once.
+   The raised fill alone is 1.31:1 against the panel beside it — which means the
+   ONLY difference between the selected rail section, the selected view and the
+   selected reservation and their neighbours was invisible to low vision. SC
+   1.4.11 covers a state indicator, not just a boundary, so every selected
+   control here carries an accent bar at 4.23:1 as well as the fill. The fill is
+   now reinforcement; the bar is the signal. */
+.rdp-sel { position: relative; }
+.rdp-sel[data-active="true"],
+.rdp-sel[data-selected="true"] { background: var(--rdp-chrome-alt); }
+.rdp-sel[data-active="true"]::after,
+.rdp-sel[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  background: var(--otk-action);
+  border-radius: var(--radius-full);
+}
+/* Direction of travel differs per rail: the vertical rail marks its edge, the
+   horizontal view group underlines, the list marks its leading edge. */
+.rdp-railbtn::after { inset: 4px auto 4px -6px; width: 2px; }
+.rdp-icon::after { inset: auto 5px -3px 5px; height: 2px; }
+.rdp-resv::after { inset: 6px auto 6px 0; width: 2px; }
 .rdp-icon:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: 1px; }
 .rdp-covers { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
 .rdp-datebar {
@@ -3237,9 +3297,12 @@ h2.eyebrow,
   border: 0;
   border-radius: var(--otk-radius);
   background: var(--rdp-chrome-alt);
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
   color: var(--rdp-on-chrome);
   cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
+.rdp-step:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: 1px; }
 .rdp-date, .rdp-shift {
   padding: 4px 14px;
   border-radius: var(--otk-radius);
@@ -3273,7 +3336,7 @@ h2.eyebrow,
   color: var(--rdp-on-chrome-alt);
   cursor: pointer;
 }
-.rdp-railbtn[data-active="true"] { background: var(--rdp-chrome-alt); color: var(--rdp-on-chrome); }
+.rdp-railbtn[data-active="true"] { color: var(--rdp-on-chrome); }
 .rdp-railbtn:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: 1px; }
 
 .rdp-sidebar {
@@ -3291,7 +3354,7 @@ h2.eyebrow,
   align-items: flex-start;
   justify-content: space-between;
   padding: 8px 6px 6px;
-  border-top: 1px solid var(--rdp-chrome-alt);
+  border-top: 1px solid var(--rdp-hairline);
 }
 .rdp-listhead:first-child { border-top: 0; }
 .rdp-listhead b { display: block; font: var(--rd-label-sm); }
@@ -3314,10 +3377,12 @@ h2.eyebrow,
   border: 0;
   border-radius: 3px;
   background: var(--rdp-chrome-alt);
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
   color: var(--rdp-on-chrome);
   font: var(--rd-body-sm);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
 .rdp-quote:focus-visible { outline: 2px solid var(--otk-focus); }
 .rdp-resv {
@@ -3332,8 +3397,8 @@ h2.eyebrow,
   color: var(--rdp-on-chrome);
   text-align: left;
   cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
-.rdp-resv[data-selected="true"] { background: var(--rdp-chrome-alt); }
 .rdp-resv:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
 .rdp-resv__size { font: var(--rd-body-sm); font-variant-numeric: tabular-nums; color: var(--rdp-on-chrome-alt); }
 .rdp-resv__body { flex: 1 1 auto; min-width: 0; }
@@ -3341,9 +3406,34 @@ h2.eyebrow,
 .rdp-resv__name { display: block; font: var(--rd-label-sm); }
 .rdp-resv__table { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
 
-/* The record. Zones keep their .rd-* classes; only the container is new. */
-.rdp-main { flex: 1 1 auto; min-width: 0; overflow-y: auto; background: var(--otk-bg); scrollbar-width: none; }
-.rdp-main::-webkit-scrollbar { display: none; }
+/* The record. Zones keep their .rd-* classes; only the container is new.
+   The column splits: identity zones are FIXED at the top and only the notes
+   scroll. That is the one thing the tablet can do that the phone cannot — the
+   guest you are annotating stays on screen the whole way down the guestbook. */
+.rdp-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--otk-bg);
+}
+.rdp-main > .rdp-chips,
+.rdp-main > .rd-row { flex: none; }
+.rdp-notes {
+  /* Positioned for the same reason .rd-scroll is: the strip and the spy both
+     read section offsetTop, and an unpositioned scroller hands them page-level
+     coordinates and clamps every jump to max scroll. */
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.rdp-notes::-webkit-scrollbar { display: none; }
+.rdp-notes:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
+/* Sized to the shorter scope so History can still scroll its top up to the
+   strip — same rule as the phone, different scroller height. */
+.rdp .rd-section--history { padding-bottom: 40px; }
 .rdp-chips { display: flex; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--rd-hairline); }
 .rdp-chip {
   display: inline-flex;
@@ -3354,7 +3444,6 @@ h2.eyebrow,
   color: var(--otk-ink);
 }
 .rdp-chip .rd-icon { color: var(--rd-glyph); }
-.rdp-panelbody { padding-bottom: 16px; }
 
 /* Zones that sit UNDER the record on the phone sit BESIDE it here. */
 .rdp-side {
@@ -3365,8 +3454,9 @@ h2.eyebrow,
   flex-direction: column;
   gap: 8px;
   border-left: 1px solid var(--rd-hairline);
-  background: var(--otk-bg);
+  background: #f6f7f8;
 }
+.rdp-side .rd-row { background: transparent; }
 .rdp-status {
   display: flex;
   align-items: center;
@@ -3407,10 +3497,11 @@ h2.eyebrow,
 .rdp .rd-row--switch { border-top: 0; }
 .rdp .rd-switch__label { font: var(--rd-body-sm); }
 
+/* Only the HEIGHT flexes on small viewports. The columns do not: the shell
+   scrolls sideways at its true width (see .rdp above), because the composition
+   IS the artefact and a collapsed one shows nothing. */
 @media (max-width: 720px) {
   .rdp-screen { height: 460px; }
-  .rdp-sidebar { display: none; }
-  .rdp-side { width: 150px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -3489,7 +3580,16 @@ h2.eyebrow,
 }
 .rr-demo.rd--editorial .rd-seclabel { padding: 22px 20px 6px; }
 .rd--editorial .rd-stat__label { margin-top: 2px; }
-.rd--editorial .rd-seclabel .rd-icon { display: none; }
+/* The category glyph STAYS in the editorial variant. It was dropped once, on the
+   argument that wide-tracked caps are structure enough — but the glyph is the
+   only channel shared with the tag chips above and the strip below, so removing
+   it left the editorial screen naming its categories in one place and drawing
+   them in another. It reads at the label's weight, not the strip's: 16px on the
+   glyph tone, with the gap tightened so it sits inside the label rather than
+   beside it. No opacity on it: --rd-glyph is already the lightest tone that
+   holds SC 1.4.11's 3:1, and fading it would put it under. */
+.rd--editorial .rd-seclabel { gap: 7px; }
+.rd--editorial .rd-seclabel .rd-icon { flex: none; }
 
 /* A little air, bought from chrome rather than from content. */
 .rd--editorial .rd-select--sticky .rd-select__item { padding: 16px 10px; }

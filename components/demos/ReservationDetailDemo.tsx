@@ -102,6 +102,8 @@ export function SelectStrip({
   stripRef,
   itemRefs,
   onKeyDown,
+  className,
+  style,
 }: {
   items: { id: string; content: React.ReactNode; label: string }[];
   active: number;
@@ -114,6 +116,11 @@ export function SelectStrip({
   stripRef?: React.RefObject<HTMLDivElement | null>;
   itemRefs?: React.RefObject<(HTMLButtonElement | null)[]>;
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  /** Extra classes ON the strip element. A sticky strip must not be wrapped —
+   *  its containing block would become the wrapper and it would never stick —
+   *  so anything the caller wants to add (the entrance zone) lands here. */
+  className?: string;
+  style?: React.CSSProperties;
 }) {
   const localRef = useRef<HTMLDivElement>(null);
   const root = stripRef ?? localRef;
@@ -137,7 +144,8 @@ export function SelectStrip({
   const Tag = mode === "nav" ? "nav" : "div";
   return (
     <Tag
-      className={sticky ? "rd-select rd-select--sticky" : "rd-select"}
+      className={["rd-select", sticky && "rd-select--sticky", className].filter(Boolean).join(" ")}
+      style={style}
       ref={root as React.RefObject<HTMLDivElement & HTMLElement>}
       aria-label={ariaLabel}
       role={mode === "tabs" ? "tablist" : undefined}
@@ -173,34 +181,25 @@ export function SelectStrip({
   );
 }
 
-/** Render order of the zones the entrance reveal walks down. */
-const ZONE = { guest: 0, tag: 1, strip: 2, sections: 3 };
-
-export default function ReservationDetailDemo({ variant }: { variant?: "editorial" } = {}) {
+/**
+ * The note strip's behaviour: sections stay mounted, scrolling moves the strip,
+ * the strip moves the scroll. Extracted because the tablet composition needs the
+ * identical behaviour over the identical sections — and a second hand-rolled copy
+ * is exactly how the two selection strips drifted apart the first time.
+ *
+ * The caller owns the scroll handler (each shell tracks its own extra state off
+ * the same scroll event) and calls `spy(scrollTop)` from inside it.
+ */
+export function useSectionSpy(count: number) {
   const [active, setActive] = useState(0);
-  const [collapsed, setCollapsed] = useState(false);
-  const [stuck, setStuck] = useState(false);
-  const [floating, setFloating] = useState(true);
-  // Direction travels with the index so the visit panel can enter from the side
-  // the user moved from, rather than always fading in place.
-  const [scopeState, setScopeState] = useState({ i: 0, dir: 1 });
-  const scope = scopeState.i;
-  const setScope = useCallback(
-    (i: number) => setScopeState((s) => (i === s.i ? s : { i, dir: i > s.i ? 1 : -1 })),
-    [],
-  );
-  const [excluded, setExcluded] = useState(false);
-
-  const screenRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const stripRef = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   /** Set while a tab-initiated smooth scroll is in flight, so the spy doesn't
    *  fight the animation and flicker through intermediate sections. */
   const jumping = useRef(false);
   const jumpTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const baseId = useId();
 
   const sectionOffsets = useCallback(() => {
     const scroller = scrollRef.current;
@@ -211,18 +210,13 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
     return sectionRefs.current.map((el) => (el ? el.offsetTop - stripH : 0));
   }, []);
 
-  const onScroll = useCallback(() => {
-    const scroller = scrollRef.current;
-    if (!scroller) return;
-    const top = scroller.scrollTop;
-    setCollapsed(top > COLLAPSE_AT);
-    // The strip earns its shadow only once it is genuinely pinned, and the
-    // action bar keeps its own only while content still runs beneath it.
-    setStuck(top >= (stripRef.current?.offsetTop ?? Infinity));
-    setFloating(top + scroller.clientHeight < scroller.scrollHeight - 2);
-    if (jumping.current) return;
-    setActive(activeSectionAt(top, sectionOffsets()));
-  }, [sectionOffsets]);
+  const spy = useCallback(
+    (top: number) => {
+      if (jumping.current) return;
+      setActive(activeSectionAt(top, sectionOffsets()));
+    },
+    [sectionOffsets],
+  );
 
   const goToSection = useCallback(
     (index: number) => {
@@ -246,18 +240,49 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
     [sectionOffsets],
   );
 
-  /** One-shot entrance when the device scrolls into view.
-   *
-   *  Driven straight onto the DOM node rather than through React state: the
-   *  reveal is presentation with no bearing on what the component renders, and
-   *  routing it through state would re-render the whole screen twice for an
-   *  opacity ramp. It also makes the markup fail safe — the hidden-then-reveal
-   *  styles key off `data-entered`, which only ever gets set once an observer
-   *  is actually armed, so a browser without IntersectionObserver (or a reader
-   *  who asked for reduced motion) simply renders the finished screen.
-   *  useLayoutEffect so arming lands before paint and nothing flashes. */
+  /** Roving arrow-key movement across the strip, per the tabs keyboard pattern. */
+  const onStripKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const last = count - 1;
+      let next: number | null = null;
+      if (e.key === "ArrowRight") next = active === last ? 0 : active + 1;
+      else if (e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = last;
+      if (next === null) return;
+      e.preventDefault();
+      goToSection(next);
+      tabRefs.current[next]?.focus();
+    },
+    [active, count, goToSection],
+  );
+
+  useEffect(
+    () => () => {
+      if (jumpTimer.current) clearTimeout(jumpTimer.current);
+    },
+    [],
+  );
+
+  return { active, scrollRef, sectionRefs, stripRef, tabRefs, spy, goToSection, onStripKeyDown };
+}
+
+/**
+ * One-shot entrance when the device scrolls into view.
+ *
+ * Driven straight onto the DOM node rather than through React state: the reveal
+ * is presentation with no bearing on what the component renders, and routing it
+ * through state would re-render the whole screen twice for an opacity ramp. It
+ * also makes the markup fail safe — the hidden-then-reveal styles key off
+ * `data-entered`, which only ever gets set once an observer is actually armed,
+ * so a browser without IntersectionObserver (or a reader who asked for reduced
+ * motion) simply renders the finished screen. useLayoutEffect so arming lands
+ * before paint and nothing flashes.
+ */
+export function useEntrance<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
   useLayoutEffect(() => {
-    const el = screenRef.current;
+    const el = ref.current;
     if (!el) return;
     if (prefersReducedMotion() || typeof IntersectionObserver === "undefined") return;
     el.dataset.entered = "false";
@@ -272,27 +297,42 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
     io.observe(el);
     return () => io.disconnect();
   }, []);
+  return ref;
+}
 
-  useEffect(
-    () => () => {
-      if (jumpTimer.current) clearTimeout(jumpTimer.current);
-    },
+/** Render order of the zones the entrance reveal walks down. */
+const ZONE = { guest: 0, tag: 1, strip: 2, sections: 3 };
+
+export default function ReservationDetailDemo({ variant }: { variant?: "editorial" } = {}) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [stuck, setStuck] = useState(false);
+  const [floating, setFloating] = useState(true);
+  // Direction travels with the index so the visit panel can enter from the side
+  // the user moved from, rather than always fading in place.
+  const [scopeState, setScopeState] = useState({ i: 0, dir: 1 });
+  const scope = scopeState.i;
+  const setScope = useCallback(
+    (i: number) => setScopeState((s) => (i === s.i ? s : { i, dir: i > s.i ? 1 : -1 })),
     [],
   );
+  const [excluded, setExcluded] = useState(false);
 
-  /** Roving arrow-key movement across the strip, per the tabs keyboard pattern. */
-  const onStripKeyDown = (e: React.KeyboardEvent) => {
-    const last = NOTE_SECTIONS.length - 1;
-    let next: number | null = null;
-    if (e.key === "ArrowRight") next = active === last ? 0 : active + 1;
-    else if (e.key === "ArrowLeft") next = active === 0 ? last : active - 1;
-    else if (e.key === "Home") next = 0;
-    else if (e.key === "End") next = last;
-    if (next === null) return;
-    e.preventDefault();
-    goToSection(next);
-    tabRefs.current[next]?.focus();
-  };
+  const screenRef = useEntrance<HTMLDivElement>();
+  const baseId = useId();
+  const { active, scrollRef, sectionRefs, stripRef, tabRefs, spy, goToSection, onStripKeyDown } =
+    useSectionSpy(NOTE_SECTIONS.length);
+
+  const onScroll = useCallback(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const top = scroller.scrollTop;
+    setCollapsed(top > COLLAPSE_AT);
+    // The strip earns its shadow only once it is genuinely pinned, and the
+    // action bar keeps its own only while content still runs beneath it.
+    setStuck(top >= (stripRef.current?.offsetTop ?? Infinity));
+    setFloating(top + scroller.clientHeight < scroller.scrollHeight - 2);
+    spy(top);
+  }, [scrollRef, stripRef, spy]);
 
   const visits = VISIT_SCOPES[scope].visits;
   const zone = (i: number) => ({ "--rd-i": i }) as React.CSSProperties;
@@ -392,26 +432,32 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
             </button>
 
             {/* Scroll anchors, not tabs: all five sections stay mounted below, so
-                this is navigation within one document, marked with aria-current. */}
-            <div className="rd-zone" style={zone(ZONE.strip)}>
-              <SelectStrip
-                mode="nav"
-                sticky
-                stuck={stuck}
-                ariaLabel="Jump to note section"
-                stripRef={stripRef}
-                itemRefs={tabRefs}
-                onKeyDown={onStripKeyDown}
-                active={active}
-                onSelect={goToSection}
-                items={NOTE_SECTIONS.map((section) => ({
-                  id: section.id,
-                  label: section.label,
-                  content: <Icon name={section.icon} size={24} />,
-                }))}
-                itemAttrs={(i) => ({ "aria-current": i === active ? "true" : undefined })}
-              />
-            </div>
+                this is navigation within one document, marked with aria-current.
+
+                NOT wrapped in an .rd-zone div. It was, for the entrance cascade,
+                and that silently disabled the sticky: a sticky element sticks
+                within its PARENT, and the wrapper was exactly as tall as the
+                strip, so it scrolled away with it and never pinned. The zone
+                class goes on the strip itself. */}
+            <SelectStrip
+              mode="nav"
+              sticky
+              stuck={stuck}
+              className="rd-zone"
+              style={zone(ZONE.strip)}
+              ariaLabel="Jump to note section"
+              stripRef={stripRef}
+              itemRefs={tabRefs}
+              onKeyDown={onStripKeyDown}
+              active={active}
+              onSelect={goToSection}
+              items={NOTE_SECTIONS.map((section) => ({
+                id: section.id,
+                label: section.label,
+                content: <Icon name={section.icon} size={24} />,
+              }))}
+              itemAttrs={(i) => ({ "aria-current": i === active ? "true" : undefined })}
+            />
 
             {NOTE_SECTIONS.map((section, i) => {
               const isHistory = section.id === "history";

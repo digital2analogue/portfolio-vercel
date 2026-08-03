@@ -20,8 +20,8 @@
  * rearranged everything, which is a worse abstraction than two compositions.
  */
 
-import { useState } from "react";
-import { Icon, SelectStrip } from "./ReservationDetailDemo";
+import { useCallback, useId, useState } from "react";
+import { Icon, SelectStrip, useEntrance, useSectionSpy } from "./ReservationDetailDemo";
 import {
   NOTE_SECTIONS,
   HISTORY_STATS,
@@ -39,19 +39,32 @@ const SCOPES: { id: string; label: string; visits: Visit[] }[] = [
 ];
 
 export default function ReservationDetailIPad() {
-  const [note, setNote] = useState(0);
   const [scope, setScope] = useState(0);
   const [excluded, setExcluded] = useState(false);
-  const section = NOTE_SECTIONS[note];
+  const [stuck, setStuck] = useState(false);
+  const baseId = useId();
+  const screenRef = useEntrance<HTMLDivElement>();
+  const { active, scrollRef, sectionRefs, stripRef, tabRefs, spy, goToSection, onStripKeyDown } =
+    useSectionSpy(NOTE_SECTIONS.length);
+
+  const onScroll = useCallback(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const top = scroller.scrollTop;
+    setStuck(top >= (stripRef.current?.offsetTop ?? Infinity));
+    spy(top);
+  }, [scrollRef, stripRef, spy]);
+
+  const zone = (i: number) => ({ "--rd-i": i }) as React.CSSProperties;
 
   return (
     <div className="rr-demo rd rdp">
       <div className="rdp-device">
-        <div className="rdp-screen">
+        <div className="rdp-screen" ref={screenRef}>
           {/* Service bar — the date and shift the whole floor is working. */}
           <div className="rdp-topbar">
-            <button type="button" className="rdp-icon" aria-label="Menu">
-              <Icon name="menu" size={16} />
+            <button type="button" className="rdp-icon" aria-label="Open navigation">
+              <Icon name="hamburger" size={16} />
             </button>
             <span className="rdp-covers">
               <Icon name="person" size={16} />
@@ -70,7 +83,7 @@ export default function ReservationDetailIPad() {
             </div>
             <div className="rdp-views" role="group" aria-label="Change view">
               {["seat", "receipt", "menu"].map((v, i) => (
-                <button key={v} type="button" className="rdp-icon" data-active={i === 2} aria-label={`View ${i + 1}`}>
+                <button key={v} type="button" className="rdp-icon rdp-sel" data-active={i === 2} aria-label={`View ${i + 1}`}>
                   <Icon name={v} size={16} />
                 </button>
               ))}
@@ -80,7 +93,7 @@ export default function ReservationDetailIPad() {
           <div className="rdp-body">
             <nav className="rdp-rail" aria-label="Sections">
               {IPAD.rail.map((g, i) => (
-                <button key={g} type="button" className="rdp-railbtn" data-active={i === 0} aria-label={`Section ${i + 1}`}>
+                <button key={g} type="button" className="rdp-railbtn rdp-sel" data-active={i === 0} aria-label={`Section ${i + 1}`}>
                   <Icon name={g} size={16} />
                 </button>
               ))}
@@ -130,7 +143,7 @@ export default function ReservationDetailIPad() {
                 </span>
               </div>
               {IPAD.list.map((r) => (
-                <button key={r.id} type="button" className="rdp-resv" data-selected={r.selected}>
+                <button key={r.id} type="button" className="rdp-resv rdp-sel" data-selected={r.selected}>
                   <Icon name="check" size={16} />
                   <span className="rdp-resv__size">{r.size}</span>
                   <span className="rdp-resv__body">
@@ -144,7 +157,7 @@ export default function ReservationDetailIPad() {
 
             {/* The record. Same zones and the same classes as the phone. */}
             <main className="rdp-main">
-              <div className="rdp-chips">
+              <div className="rdp-chips rd-zone" style={zone(0)}>
                 <span className="rdp-chip">
                   <Icon name="clock" size={16} />
                   {RESERVATION.time}
@@ -159,7 +172,7 @@ export default function ReservationDetailIPad() {
                 </span>
               </div>
 
-              <div className="rd-row rd-row--guest">
+              <div className="rd-row rd-row--guest rd-zone" style={zone(1)}>
                 <span className="rd-avatar" aria-hidden="true">
                   {RESERVATION.initials}
                 </span>
@@ -170,7 +183,7 @@ export default function ReservationDetailIPad() {
                 </button>
               </div>
 
-              <button type="button" className="rd-row rd-row--action rd-row--tags">
+              <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(2)}>
                 <Icon name="tag" size={24} />
                 <span className="rd-tags">
                   {RESERVATION.tags.map((tag) => {
@@ -187,87 +200,131 @@ export default function ReservationDetailIPad() {
                 <span className="rd-sr">Edit tags</span>
               </button>
 
-              {/* On tablet the strip SWITCHES panels rather than scroll-spying:
-                  there is room to show one category at a time without the user
-                  losing their place, so it is a real tablist here. Same control,
-                  different job — which is the point. */}
-              <SelectStrip
-                mode="tabs"
-                ariaLabel="Note category"
-                active={note}
-                onSelect={setNote}
-                items={NOTE_SECTIONS.map((sc) => ({
-                  id: sc.id,
-                  label: sc.label,
-                  content: <Icon name={sc.icon} size={24} />,
-                }))}
-                itemAttrs={(i) => ({ role: "tab", "aria-selected": i === note })}
-              />
+              {/* Every section is present and scrolled, exactly as on the phone —
+                  the strip is a scroll anchor, not a panel switch. The tablet's
+                  contribution is that the identity zones above stay put while the
+                  notes move under them, so the record you are annotating never
+                  leaves the screen. Same control, same sections, more room. */}
+              <div
+                className="rdp-notes rd-zone"
+                style={zone(3)}
+                ref={scrollRef}
+                onScroll={onScroll}
+                tabIndex={0}
+                role="group"
+                aria-label={`Notes and history for ${RESERVATION.guest}`}
+              >
+                <SelectStrip
+                  mode="nav"
+                  sticky
+                  stuck={stuck}
+                  ariaLabel="Jump to note section"
+                  stripRef={stripRef}
+                  itemRefs={tabRefs}
+                  onKeyDown={onStripKeyDown}
+                  active={active}
+                  onSelect={goToSection}
+                  items={NOTE_SECTIONS.map((sc) => ({
+                    id: sc.id,
+                    label: sc.label,
+                    content: <Icon name={sc.icon} size={24} />,
+                  }))}
+                  itemAttrs={(i) => ({ "aria-current": i === active ? "true" : undefined })}
+                />
 
-              <div className="rdp-panelbody">
-                {section.id === "history" ? (
-                  <>
-                    <ul className="rd-reset rd-stats">
-                      {HISTORY_STATS.map((stat) => (
-                        <li key={stat.id} className="rd-reset rd-stat">
-                          <span className="rd-stat__value">{stat.value}</span>
-                          <span className="rd-stat__label">{stat.label}</span>
-                          <span className="rd-stat__sub">{stat.sub}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <SelectStrip
-                      mode="tabs"
-                      ariaLabel="Visit scope"
-                      active={scope}
-                      onSelect={setScope}
-                      items={SCOPES.map((sc) => ({
-                        id: sc.id,
-                        label: sc.label,
-                        content: <span aria-hidden="true">{sc.label}</span>,
-                      }))}
-                      itemAttrs={(i) => ({ role: "tab", "aria-selected": i === scope })}
-                    />
-                    <div className="rd-visits">
-                      {SCOPES[scope].visits.map((visit) => (
-                        <div key={visit.id} className="rd-visit">
-                          <h4 className="rd-reset rd-visit__heading">{visit.heading}</h4>
-                          {visit.events.map((event) => (
-                            <div key={event.id} className="rd-event">
-                              <Icon name={event.icon} size={16} />
-                              <span className="rd-event__time">{event.time}</span>
-                              <div className="rd-event__body">
-                                <p className="rd-reset rd-event__text">{event.text}</p>
-                                {event.meta && <p className="rd-reset rd-event__meta">{event.meta}</p>}
+                {NOTE_SECTIONS.map((section, i) => {
+                  const isHistory = section.id === "history";
+                  return (
+                    <section
+                      key={section.id}
+                      id={`${baseId}-${section.id}`}
+                      aria-labelledby={`${baseId}-${section.id}-label`}
+                      ref={(el) => {
+                        sectionRefs.current[i] = el;
+                      }}
+                      className={`rd-section${isHistory ? " rd-section--history" : ""}`}
+                    >
+                      <h3 className="rd-reset rd-seclabel" id={`${baseId}-${section.id}-label`}>
+                        <Icon name={section.icon} size={16} />
+                        {section.label}
+                      </h3>
+                      {isHistory ? (
+                        <>
+                          <ul className="rd-reset rd-stats">
+                            {HISTORY_STATS.map((stat) => (
+                              <li key={stat.id} className="rd-reset rd-stat">
+                                <span className="rd-stat__value">{stat.value}</span>
+                                <span className="rd-stat__label">{stat.label}</span>
+                                <span className="rd-stat__sub">{stat.sub}</span>
+                              </li>
+                            ))}
+                          </ul>
+                          <SelectStrip
+                            mode="tabs"
+                            ariaLabel="Visit scope"
+                            active={scope}
+                            onSelect={setScope}
+                            items={SCOPES.map((sc) => ({
+                              id: sc.id,
+                              label: sc.label,
+                              content: <span aria-hidden="true">{sc.label}</span>,
+                            }))}
+                            itemAttrs={(i2) => ({
+                              role: "tab",
+                              id: `${baseId}-scope-${SCOPES[i2].id}`,
+                              "aria-selected": i2 === scope,
+                              "aria-controls": `${baseId}-visits`,
+                            })}
+                          />
+                          <div
+                            className="rd-visits"
+                            id={`${baseId}-visits`}
+                            role="tabpanel"
+                            aria-labelledby={`${baseId}-scope-${SCOPES[scope].id}`}
+                            tabIndex={-1}
+                          >
+                            {SCOPES[scope].visits.map((visit) => (
+                              <div key={visit.id} className="rd-visit">
+                                <h4 className="rd-reset rd-visit__heading">{visit.heading}</h4>
+                                {visit.events.map((event) => (
+                                  <div key={event.id} className="rd-event">
+                                    <Icon name={event.icon} size={16} />
+                                    <span className="rd-event__time">{event.time}</span>
+                                    <div className="rd-event__body">
+                                      <p className="rd-reset rd-event__text">{event.text}</p>
+                                      {event.meta && <p className="rd-reset rd-event__meta">{event.meta}</p>}
+                                    </div>
+                                    {event.table && (
+                                      <span className="rd-event__table">
+                                        <Icon name="seat" size={16} />
+                                        {event.table}
+                                      </span>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                              {event.table && (
-                                <span className="rd-event__table">
-                                  <Icon name="seat" size={16} />
-                                  {event.table}
-                                </span>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                ) : section.notes?.length ? (
-                  section.notes.map((n) => (
-                    <button type="button" key={n.id} className="rd-row rd-row--action rd-row--note">
-                      <span className="rd-note">
-                        <span className="rd-notetext">{n.text}</span>
-                        <span className="rd-noteby">
-                          {n.author} · {n.date}
-                        </span>
-                      </span>
-                    </button>
-                  ))
-                ) : (
-                  <button type="button" className="rd-row rd-row--action">
-                    <span className="rd-placeholder">{section.placeholder}</span>
-                  </button>
-                )}
+                            ))}
+                          </div>
+                        </>
+                      ) : section.notes?.length ? (
+                        section.notes.map((n) => (
+                          <button type="button" key={n.id} className="rd-row rd-row--action rd-row--note">
+                            <span className="rd-note">
+                              <span className="rd-notetext">{n.text}</span>
+                              <span className="rd-noteby">
+                                {n.author} · {n.date}
+                              </span>
+                            </span>
+                          </button>
+                        ))
+                      ) : (
+                        <button type="button" className="rd-row rd-row--action">
+                          <span className="rd-placeholder">{section.placeholder}</span>
+                        </button>
+                      )}
+                    </section>
+                  );
+                })}
               </div>
             </main>
 
