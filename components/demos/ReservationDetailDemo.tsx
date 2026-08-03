@@ -295,12 +295,12 @@ export default function ReservationDetailDemo() {
               </button>
             </div>
 
-            <button type="button" className="rd-row rd-row--action rd-zone" style={zone(ZONE.tag)}>
+            <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(ZONE.tag)}>
               <Icon name="tag" />
               <span className="rd-tags">
                 {RESERVATION.tags.map((tag) => (
                   <span key={tag.label} className="rd-tag" data-tone={tag.tone}>
-                    <Icon name={tag.icon} size={13} />
+                    <Icon name={tag.icon} size={12} />
                     {tag.label}
                   </span>
                 ))}

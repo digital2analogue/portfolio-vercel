@@ -2648,25 +2648,28 @@ h2.eyebrow,
    filled grey one. Values read from the component's own variables —
    background/default #FFFFFF, border/default #D8D9DB (= --otk-border),
    foreground/default #2D333F (= --otk-ink), radius full. Uses the component's
-   SMALL variant — Label/Small/Semibold at 12px, 28px tall — because these
-   labels are real category names ("Shellfish allergy"), and at the 14px medium
-   size four of them stack one per line and swallow the screen. The component
+   SMALL variant — Label/Small/Semibold at 12px — because these labels are real
+   category names ("Shellfish allergy") and at the 14px medium size four of them
+   stack one per line and swallow the screen. This row wants density, so the box
+   is tightened (26px tall, 8px sides, 6px gaps) and the row's own padding pulls
+   in with it. 12px is the floor and stays the floor: below it a category label
+   stops being readable at arm's length on a host stand. The component
    also offers a leading star and a
    trailing ×; both are omitted here — the × belongs to an edit mode this screen
    isn't in, and the star's #FDAF08 on white is under 3:1, so it would need a
    repair to carry meaning it isn't carrying. */
-.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
 .rd-tag {
   display: inline-flex;
   align-items: center;
-  height: 28px;
-  padding: 0 10px;
+  height: 26px;
+  padding: 0 8px;
   border-radius: var(--radius-full);
   background: var(--otk-bg);
   /* Inset so the ring never adds to the chip's box — the component is spec'd at
      exactly 32px tall, border included. */
   box-shadow: inset 0 0 0 1px var(--otk-border);
-  gap: 5px;
+  gap: 4px;
   color: var(--otk-ink);
   font-size: 12px;
   font-weight: 600;
@@ -2690,6 +2693,7 @@ h2.eyebrow,
 .rd-noteby { font-size: 12px; color: var(--rd-muted); }
 
 
+.rd-row--tags { gap: 12px; padding-left: 16px; padding-right: 16px; }
 .rd-row--guest { min-height: 72px; gap: 14px; }
 .rd-avatar {
   flex: none;
