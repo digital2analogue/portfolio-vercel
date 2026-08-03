@@ -210,17 +210,19 @@ const PAIRINGS = [
   //
   // The trailing control on every list row is the reservation STATUS, resolved
   // through lib/reservationStates — the same 22-state taxonomy the status
-  // dropdown on /work/ot-design-system edits. Its glyph-on-fill pairings are
-  // already registered above (that demo renders them); what is new here is each
-  // fill against the DARK panel it now sits on, and the ring that keeps the chip
-  // bounded on the selected row, where the row fill drops the weakest chip
-  // (accent-teal) to 1.48:1.
-  { text: '#20738f', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — weakest fill (accent-teal) on chrome' },
-  { text: '#cc3b48', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — danger fill on chrome' },
-  { text: '#2f864d', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — success fill on chrome' },
-  { text: '#ad4cc3', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — accent-purple fill on chrome' },
-  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-chip ring on chrome' },
-  { text: '#ffffff', bg: '#4a5162', min: NON_TEXT, label: 'Demo/iPad: status-chip ring on the selected row' },
+  // dropdown on /work/ot-design-system edits. Here it is an OUTLINED icon
+  // button: no fill, the status carried by the GLYPH's colour. So each of the
+  // eleven token colours has to clear 3:1 as a glyph, and the button keeps the
+  // panel as its own surface rather than inheriting the row's — on the selected
+  // row (#4a5162) the weakest (accent-teal) would fall to 1.48:1 and the status
+  // would be unreadable on exactly the row whose record is open.
+  { text: '#20738f', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — weakest tone (accent-teal) on chrome' },
+  { text: '#cc3b48', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — danger on chrome' },
+  { text: '#2f864d', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — success on chrome' },
+  { text: '#ad4cc3', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — accent-purple on chrome' },
+  { text: '#247f9e', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — action (Booked) on chrome' },
+  { text: '#fdaf08', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — warning (Running late) on chrome' },
+  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-button outline on chrome' },
   { text: '#d8d9db', bg: '#4a5162', label: 'Demo/iPad: table number + time on the selected row' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──

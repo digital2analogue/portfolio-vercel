@@ -3552,33 +3552,40 @@ h2.eyebrow,
 /* Trailing column: the table number, then the status control under it. The
    status is the affordance — its fill and glyph come from the same 22-state
    taxonomy the status-dropdown demo edits, so the two cannot drift. */
+/* Trailing column: the table number, then the status control under it, which
+   runs the full height of the row. */
 .rdp-trail {
   flex: none;
+  align-self: stretch;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  min-width: 34px;
+  gap: 2px;
+  min-width: 36px;
 }
 .rdp-trail__table {
   font: var(--rd-label-sm);
   font-variant-numeric: tabular-nums;
   color: var(--rdp-on-chrome-alt);
 }
+/* An OUTLINED icon button — no fill. The status is carried by the glyph's
+   colour, from the same taxonomy the status-dropdown demo edits; a filled chip
+   made every row a block of colour and buried the guest name under it.
+   It keeps the PANEL as its own surface rather than inheriting the row's,
+   because on the selected row (#4a5162) the weakest glyph (accent-teal) falls
+   to 1.48:1 — the status becomes unreadable on exactly the row whose record is
+   open. Against the panel every one of the eleven fills clears 3:1. */
 .rdp-statechip {
+  flex: 1 1 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  min-height: 30px;
   border-radius: var(--otk-radius);
-  /* Every state fill clears 3:1 against the panel, but on the SELECTED row the
-     row's own fill sits behind it and the weakest chip (accent-teal) falls to
-     1.48:1 — the chip stops reading as a control on exactly the row whose
-     record is open. A ring restores the boundary on both surfaces. */
-  box-shadow: 0 0 0 1px var(--rdp-edge);
+  background: var(--rdp-chrome);
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
 }
-.rdp-resv[data-selected="true"] .rdp-statechip { box-shadow: 0 0 0 1px #ffffff; }
 
 /* Utility dock — the other half of navigation, and the reason there is no rail. */
 .rdp-dock {

@@ -262,11 +262,8 @@ export default function ReservationDetailIPad() {
                             rides above it, as it does in the source panel. */}
                         <span className="rdp-trail">
                           {r.table && <span className="rdp-trail__table">{r.table}</span>}
-                          <span
-                            className="rdp-statechip"
-                            style={{ background: stateById(r.status).fill, color: stateById(r.status).on }}
-                          >
-                            <Icon name={stateById(r.status).icon} size={16} />
+                          <span className="rdp-statechip" style={{ color: stateById(r.status).fill }}>
+                            <Icon name={stateById(r.status).icon} size={20} />
                             <span className="rd-sr">{stateById(r.status).label}</span>
                           </span>
                         </span>
