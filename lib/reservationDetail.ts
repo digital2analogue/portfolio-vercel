@@ -17,8 +17,8 @@
  * Sample guest data is fictional and matches the demo footage.
  */
 
-/** One recorded guestbook note. `flag` marks the ones service has to act on. */
-export type Note = { id: string; text: string; author: string; date: string; flag?: boolean };
+/** One recorded guestbook note. */
+export type Note = { id: string; text: string; author: string; date: string };
 
 /** A note section: one tab in the strip, one anchored block in the scroll body. */
 export type NoteSection = {
@@ -39,70 +39,41 @@ export const NOTE_SECTIONS: NoteSection[] = [
     label: "General notes",
     icon: "receipt",
     placeholder: "Add a general note",
+    // In practice the free text all lands here — the specialised note types
+    // exist, but staff classify with tags and write the detail in one place.
     notes: [
       {
         id: "gen-1",
-        text: "Celebrating a 10th anniversary. Wife’s name is Dana — greet by name at the door.",
+        text: "Severe shellfish allergy — no cross-contact. Kitchen must be told on seating.",
         author: "Priya N.",
         date: "Oct 24",
       },
-    ],
-  },
-  {
-    id: "special",
-    label: "Special relationship",
-    icon: "star",
-    placeholder: "Add a special relationship note",
-    notes: [
       {
-        id: "sp-1",
+        id: "gen-2",
         text: "Friend of the owner. Comp the first round; do not present a check for dessert.",
         author: "M. Alvarez",
         date: "Aug 12",
       },
-    ],
-  },
-  {
-    id: "food",
-    label: "Food & drink preferences",
-    icon: "utensils",
-    placeholder: "Add a food & drink note",
-    notes: [
       {
-        id: "food-1",
-        text: "Severe shellfish allergy — no cross-contact. Kitchen must be told on seating.",
+        id: "gen-3",
+        text: "Celebrating a 10th anniversary. Wife\u2019s name is Dana — greet by name at the door.",
         author: "Priya N.",
         date: "Oct 24",
-        flag: true,
       },
       {
-        id: "food-2",
-        text: "Drinks Sancerre by the glass. Usually starts with the oysters — offer the crudo instead.",
-        author: "Dev R.",
-        date: "May 4",
-      },
-    ],
-  },
-  {
-    id: "seating",
-    label: "Seating preferences",
-    icon: "seat",
-    placeholder: "Add a seating note",
-    notes: [
-      {
-        id: "seat-1",
+        id: "gen-4",
         text: "Prefers a banquette away from the kitchen pass. Has declined table 6 twice.",
         author: "Dev R.",
         date: "May 4",
       },
     ],
   },
-  {
-    id: "history",
-    label: "History",
-    icon: "history",
-    placeholder: "",
-  },
+  // The remaining note types ship empty far more often than not, so they show
+  // the empty affordance — which is the pattern's other half, not a gap.
+  { id: "special", label: "Special relationship", icon: "star", placeholder: "Add a special relationship note" },
+  { id: "food", label: "Food & drink preferences", icon: "utensils", placeholder: "Add a food & drink note" },
+  { id: "seating", label: "Seating preferences", icon: "seat", placeholder: "Add a seating note" },
+  { id: "history", label: "History", icon: "history", placeholder: "" },
 ];
 
 /** The four history counters, each rendered as a circle + label + group sub-count. */
@@ -190,8 +161,16 @@ export const RESERVATION = {
   time: "6:45 am",
   partySize: 4,
   table: "24",
-  /** Guest tags, shown as chips on the tag row. */
-  tags: ["VIP", "Anniversary", "Wine club"],
+  /** Guest tags, shown as chips on the tag row. Tags are how staff classify a
+   *  guest — allergies and relationships are tags, not note types. Each carries
+   *  a category glyph + tone so the row is scannable before it is read; the
+   *  label always states the category too, so colour is never the only channel. */
+  tags: [
+    { label: "VIP", icon: "star", tone: "vip" },
+    { label: "Shellfish allergy", icon: "flag", tone: "alert" },
+    { label: "Friend of owner", icon: "person", tone: "relationship" },
+    { label: "Anniversary", icon: "cocktail", tone: "occasion" },
+  ],
   /** Note attached to this visit specifically, not the guest's guestbook. */
   visitNote: "Requested the corner banquette when booking. Confirmed by phone.",
   tagPlaceholder: "Add a tag…",

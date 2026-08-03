@@ -2399,10 +2399,6 @@ h2.eyebrow,
   --rd-hover: #f1f2f4;
   --rd-press: #e9ebee;
   --rd-muted: #63666d;
-  /* Darkened from the OTKit danger fill #cc3b48, which is built to sit BEHIND
-     white text; as text it needs to clear AA on white and on both row tints —
-     6.54 / 5.84 / 5.47. */
-  --rd-flag: #b3261e;
 }
 
 /* The demo renders inside .blocks, whose case-body typography styles bare
@@ -2647,19 +2643,45 @@ h2.eyebrow,
 /* ── Populated rows ──
    The screen is a guest record, so most rows carry content; the "Add a …"
    placeholder is the empty state, not the resting state. */
-.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+/* Tag chips match OTKit's `iOS-tags` component (Rest iOS library, node
+   10085:29238) rather than being invented: an OUTLINED pill on white, not a
+   filled grey one. Values read from the component's own variables —
+   background/default #FFFFFF, border/default #D8D9DB (= --otk-border),
+   foreground/default #2D333F (= --otk-ink), radius full. Uses the component's
+   SMALL variant — Label/Small/Semibold at 12px, 28px tall — because these
+   labels are real category names ("Shellfish allergy"), and at the 14px medium
+   size four of them stack one per line and swallow the screen. The component
+   also offers a leading star and a
+   trailing ×; both are omitted here — the × belongs to an edit mode this screen
+   isn't in, and the star's #FDAF08 on white is under 3:1, so it would need a
+   repair to carry meaning it isn't carrying. */
+.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .rd-tag {
-  padding: 3px 9px;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
   border-radius: var(--radius-full);
-  background: var(--rd-hover);
-  /* Inset rather than a border so the chip stays legible against the row's own
-     hover and press tints, which are in the same neighbourhood as its fill. */
-  box-shadow: inset 0 0 0 1px var(--rd-hairline);
+  background: var(--otk-bg);
+  /* Inset so the ring never adds to the chip's box — the component is spec'd at
+     exactly 32px tall, border included. */
+  box-shadow: inset 0 0 0 1px var(--otk-border);
+  gap: 5px;
   color: var(--otk-ink);
   font-size: 12px;
   font-weight: 600;
+  line-height: 1;
   white-space: nowrap;
 }
+/* Category glyph tones, from the OTKit accent family. Each clears 3:1 on white
+   so the glyph is legible as a UI mark, not just decoration — accent-yellow
+   #FDAF08 is 1.86:1 and had to be darkened to #A97405 (4.05:1) for that. The
+   label always names the category, so colour is reinforcement, never the signal. */
+.rd-tag .rd-icon { opacity: 0.95; }
+.rd-tag[data-tone="vip"] .rd-icon { color: #a97405; }
+.rd-tag[data-tone="alert"] .rd-icon { color: #cc3b48; }
+.rd-tag[data-tone="relationship"] .rd-icon { color: #ad4cc3; }
+.rd-tag[data-tone="occasion"] .rd-icon { color: #d82c82; }
 
 .rd-row--note { align-items: flex-start; }
 .rd-row--note .rd-icon { margin-top: 1px; }
@@ -2667,20 +2689,6 @@ h2.eyebrow,
 .rd-notetext { flex: 1 1 auto; font-size: 15px; line-height: 1.4; color: var(--otk-ink); }
 .rd-noteby { font-size: 12px; color: var(--rd-muted); }
 
-/* Flagged notes — allergies, comp instructions. The only place this screen
-   raises its voice, and the one accent besides the action teal. Colour is never
-   the sole channel: the glyph changes to a warning triangle and the text takes
-   weight, so the flag survives greyscale and colour-blindness alike. */
-.rd-row--note[data-flag="true"] {
-  box-shadow: inset 3px 0 0 var(--rd-flag);
-}
-/* Focus must not erase the flag — a single box-shadow property would, so the
-   focused flagged row draws both the ring and the rail. */
-.rd-row--note[data-flag="true"]:focus-visible {
-  box-shadow: inset 3px 0 0 var(--rd-flag), inset 0 0 0 2px var(--otk-focus);
-}
-.rd-row--note[data-flag="true"] .rd-notetext { font-weight: 600; }
-.rd-flagicon { color: var(--rd-flag); }
 
 .rd-row--guest { min-height: 72px; gap: 14px; }
 .rd-avatar {
@@ -2758,8 +2766,16 @@ h2.eyebrow,
 .rd-strip__tab:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-strip__tab[data-active="true"] { color: var(--otk-action); }
 /* The active icon sits a hair larger — enough to feel selected, not enough to
-   shift the row. Pairs with the indicator rather than duplicating its job. */
-.rd-strip__tab[data-active="true"] .rd-icon { transform: scale(1.08); }
+   shift the row — and pops once as the indicator arrives under it. */
+@keyframes rd-icon-pop {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.24); }
+  100% { transform: scale(1.08); }
+}
+.rd-strip__tab[data-active="true"] .rd-icon {
+  transform: scale(1.08);
+  animation: rd-icon-pop var(--rd-dur-emph) var(--rd-ease);
+}
 .rd-strip__tab:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
 
 /* One indicator that travels, instead of five that blink on and off. Position
@@ -2773,7 +2789,9 @@ h2.eyebrow,
   transform-origin: left center;
   background: var(--otk-action);
   border-radius: 2px 2px 0 0;
-  transition: transform var(--rd-dur-emph) var(--rd-ease);
+  /* Overshoots a few percent and settles — the difference between "moved" and
+     "arrived". Same curve as the segment thumb so the two read as one system. */
+  transition: transform var(--rd-dur-emph) cubic-bezier(0.34, 1.32, 0.64, 1);
   will-change: transform;
 }
 .rd-strip[data-ready="false"] .rd-strip__indicator { opacity: 0; }
@@ -2848,7 +2866,7 @@ h2.eyebrow,
   background: var(--otk-bg);
   border-radius: calc(var(--rd-r) - 2px);
   box-shadow: 0 1px 2px rgba(20, 26, 38, 0.16);
-  transition: transform var(--rd-dur) var(--rd-ease);
+  transition: transform var(--rd-dur-emph) cubic-bezier(0.34, 1.32, 0.64, 1);
 }
 .rd-seg__btn {
   position: relative;
@@ -2869,7 +2887,20 @@ h2.eyebrow,
 .rd-seg__btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); }
 
 /* ── Visit log ── */
+/* Switching scope is a lateral move, so the panel says so: it enters from the
+   direction of travel instead of fading in place. Keyed on scope in the
+   component, which remounts the panel and replays this on every switch. */
+@keyframes rd-panel-fwd {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rd-panel-back {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: none; }
+}
 .rd-visits { padding: 20px; }
+.rd-visits[data-dir="1"] { animation: rd-panel-fwd var(--rd-dur) var(--rd-ease); }
+.rd-visits[data-dir="-1"] { animation: rd-panel-back var(--rd-dur) var(--rd-ease); }
 .rd-visits:focus { outline: none; }
 .rd-visit + .rd-visit { margin-top: 24px; }
 .rr-demo.rd .rd-visit__heading {
@@ -2997,7 +3028,8 @@ h2.eyebrow,
   outline: none;
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
 }
-.rd-action--primary { flex: 1 1 58%; background: var(--otk-action); color: var(--otk-bg); }
+.rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
+.rd-action__label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
 .rd-action--secondary {
   flex: 1 1 42%;
@@ -3046,11 +3078,17 @@ h2.eyebrow,
     transition: none;
   }
   /* Zones render finished — the reveal is ambient, so it is dropped entirely
-     rather than sped up. */
+     rather than sped up. Same for the icon pop and the panel slide: the state
+     change still lands, it just doesn't travel to get there. */
   .rd-screen[data-entered] .rd-zone,
   .rd-screen[data-entered="false"] .rd-zone {
     animation: none;
     opacity: 1;
+  }
+  .rd-strip__tab[data-active="true"] .rd-icon,
+  .rd-visits[data-dir="1"],
+  .rd-visits[data-dir="-1"] {
+    animation: none;
   }
 }
 

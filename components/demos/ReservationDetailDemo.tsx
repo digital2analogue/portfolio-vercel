@@ -87,7 +87,14 @@ export default function ReservationDetailDemo() {
   const [collapsed, setCollapsed] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [floating, setFloating] = useState(true);
-  const [scope, setScope] = useState(0);
+  // Direction travels with the index so the visit panel can enter from the side
+  // the user moved from, rather than always fading in place.
+  const [scopeState, setScopeState] = useState({ i: 0, dir: 1 });
+  const scope = scopeState.i;
+  const setScope = useCallback(
+    (i: number) => setScopeState((s) => (i === s.i ? s : { i, dir: i > s.i ? 1 : -1 })),
+    [],
+  );
   const [excluded, setExcluded] = useState(false);
   const [indicator, setIndicator] = useState<{ x: number; w: number } | null>(null);
 
@@ -292,8 +299,9 @@ export default function ReservationDetailDemo() {
               <Icon name="tag" />
               <span className="rd-tags">
                 {RESERVATION.tags.map((tag) => (
-                  <span key={tag} className="rd-tag">
-                    {tag}
+                  <span key={tag.label} className="rd-tag" data-tone={tag.tone}>
+                    <Icon name={tag.icon} size={13} />
+                    {tag.label}
                   </span>
                 ))}
               </span>
@@ -396,7 +404,7 @@ export default function ReservationDetailDemo() {
                             onKeyDown={(e) => {
                               if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
                               e.preventDefault();
-                              setScope((c) => (c === 0 ? 1 : 0));
+                              setScope(scope === 0 ? 1 : 0);
                             }}
                           >
                             {s.label}
@@ -406,6 +414,8 @@ export default function ReservationDetailDemo() {
 
                       <div
                         className="rd-visits"
+                        key={scope}
+                        data-dir={scopeState.dir}
                         id={`${baseId}-visits`}
                         role="tabpanel"
                         aria-labelledby={`${baseId}-scope-${VISIT_SCOPES[scope].id}`}
@@ -464,13 +474,8 @@ export default function ReservationDetailDemo() {
                     </>
                   ) : section.notes?.length ? (
                     section.notes.map((note) => (
-                      <button
-                        type="button"
-                        key={note.id}
-                        className="rd-row rd-row--action rd-row--note"
-                        data-flag={note.flag}
-                      >
-                        <Icon name={note.flag ? "alert" : section.icon} className={note.flag ? "rd-flagicon" : undefined} />
+                      <button type="button" key={note.id} className="rd-row rd-row--action rd-row--note">
+                        <Icon name={section.icon} />
                         <span className="rd-note">
                           <span className="rd-notetext">{note.text}</span>
                           {/* Attribution is what makes a guestbook note actionable
@@ -495,7 +500,7 @@ export default function ReservationDetailDemo() {
           <div className="rd-actionbar" data-floating={floating}>
             <button type="button" className="rd-action rd-action--primary">
               <Icon name="check" size={22} />
-              <span className="rd-sr">Confirm reservation</span>
+              <span className="rd-action__label">Completed</span>
             </button>
             <button type="button" className="rd-action rd-action--secondary">
               <Icon name="seat" />

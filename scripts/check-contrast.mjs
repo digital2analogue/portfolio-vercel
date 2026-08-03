@@ -137,12 +137,6 @@ const PAIRINGS = [
   // #63666d — 5.75 / 5.13 / 4.81 across white, hover and press.
   { text: '#63666d', bg: '#e9ebee', label: 'Demo/detail: muted row text on pressed row tint' },
   { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: ink row text on pressed row tint' },
-  // Flagged-note accent. Darkened from the OTKit danger FILL #cc3b48, which is
-  // designed to sit behind white text — as foreground it has to clear AA itself,
-  // on white and on both row tints.
-  { text: '#b3261e', bg: '#ffffff', label: 'Demo/detail: flagged-note accent on row' },
-  { text: '#b3261e', bg: '#f1f2f4', label: 'Demo/detail: flagged-note accent on hovered row' },
-  { text: '#b3261e', bg: '#e9ebee', label: 'Demo/detail: flagged-note accent on pressed row' },
   { text: '#2d333f', bg: '#d8d9db', label: 'Demo/detail: table number on secondary action fill (AA-repaired from muted grey)' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──

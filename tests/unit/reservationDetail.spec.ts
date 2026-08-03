@@ -63,8 +63,8 @@ describe('reservation-detail data', () => {
   })
 
   it('gives every non-history section an empty-state placeholder', () => {
-    // Notes are populated, but the placeholder is the section's empty state and
-    // has to survive a section whose notes are later emptied out.
+    // Most sections ship empty and render this; it also has to survive a
+    // populated section later being emptied out.
     for (const section of NOTE_SECTIONS.filter((s) => s.id !== 'history')) {
       expect(section.placeholder).not.toBe('')
     }

@@ -96,18 +96,6 @@ const EXTRA_ICONS: Record<string, DemoIcon> = {
       { d: "M12 7.5V12L15.25 14" },
     ],
   },
-  // Flagged guestbook notes (allergy, comp instruction) — the one place this
-  // screen raises its voice, so the glyph is a solid triangle, not an outline.
-  "alert": {
-    viewBox: "0 0 24 24",
-    paths: [
-      {
-        d: "M10.6314 3.09482C11.2413 2.02673 12.7587 2.02673 13.3686 3.09482L21.8006 17.8564C22.4062 18.9166 21.6405 20.2353 20.4319 20.2353H3.5681C2.35953 20.2353 1.59378 18.9166 2.19937 17.8564L10.6314 3.09482ZM12 8C11.4477 8 11 8.44772 11 9V13C11 13.5523 11.4477 14 12 14C12.5523 14 13 13.5523 13 13V9C13 8.44772 12.5523 8 12 8ZM12 15.25C11.4477 15.25 11 15.6977 11 16.25C11 16.8023 11.4477 17.25 12 17.25C12.5523 17.25 13 16.8023 13 16.25C13 15.6977 12.5523 15.25 12 15.25Z",
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-      },
-    ],
-  },
   "plus": {
     viewBox: "0 0 24 24",
     paths: [
