@@ -298,9 +298,6 @@ export default function ReservationDetailIPad() {
               </div>
 
               <div className="rdp-dock" role="group" aria-label="Service tools">
-                <button type="button" className="rdp-dockbtn rdp-dockbtn--lead" aria-label={IPAD.dockLead.label}>
-                  <Icon name={IPAD.dockLead.icon} size={20} />
-                </button>
                 {IPAD.dock.map((d) => (
                   <button key={d.icon} type="button" className="rdp-dockbtn" aria-label={d.label}>
                     <Icon name={d.icon} size={20} />

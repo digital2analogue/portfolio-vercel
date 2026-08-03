@@ -3405,9 +3405,7 @@ h2.eyebrow,
   align-items: center;
   gap: 4px;
   width: 40px;
-  /* Bottom padding clears the list panel's dock, so the rail's own footer reads
-     as the foot of the RAIL rather than as another dock button. */
-  padding: 6px 0 52px;
+  padding: 6px 0 8px;
   background: var(--rdp-chrome);
 }
 .rdp-railbtn {
@@ -3608,7 +3606,6 @@ h2.eyebrow,
   flex: none;
   display: flex;
   background: var(--rdp-chrome);
-  border-top: 1px solid var(--rdp-chrome-alt);
   box-shadow: 0 -10px 18px -12px rgba(0, 0, 0, 0.9);
 }
 .rdp-dockbtn {
@@ -3624,9 +3621,9 @@ h2.eyebrow,
   cursor: pointer;
   transition: background-color var(--rd-dur) var(--rd-ease);
 }
-/* Sign-out is not a tool; it gets the rail's width and its own gutter. */
-.rdp-dockbtn--lead { flex: none; width: 40px; margin-right: 6px; }
-.rdp-dockbtn:not(.rdp-dockbtn--lead) + .rdp-dockbtn { box-shadow: inset 1px 0 0 var(--rdp-chrome-alt); }
+/* Raised tiles with a hairline between, as in the comp — not a flat strip. */
+.rdp-dockbtn { background: var(--rdp-chrome-alt); }
+.rdp-dockbtn + .rdp-dockbtn { box-shadow: inset 1px 0 0 var(--rdp-chrome); }
 .rdp-dockbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: -2px; }
 /* The dock has no gutter above it to hang badges in, so they sit inside. */
 .rdp-dockbtn .rdp-badge { top: 6px; right: 50%; margin-right: -18px; }

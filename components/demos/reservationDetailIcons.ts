@@ -105,6 +105,15 @@ const EXTRA_ICONS: Record<string, DemoIcon> = {
       { d: "M12 2.75a9.25 9.25 0 1 0 0 18.5 9.25 9.25 0 0 0 0-18.5Zm0 3.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Zm-.02 4a1 1 0 0 1 1 1v5.5a1 1 0 1 1-2 0v-5.5a1 1 0 0 1 1-1Z", fillRule: "evenodd", clipRule: "evenodd" },
     ],
   },
+  /** Dock: service bell / cloche. */
+  "cloche": {
+    viewBox: "0 0 24 24",
+    paths: [
+      { d: "M12 4.5a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5Z" },
+      { d: "M12 5.5c-4.42 0-8 3.36-8 7.5v1.25h16V13c0-4.14-3.58-7.5-8-7.5Z" },
+      { d: "M2.75 16.25a.75.75 0 0 0 0 1.5h18.5a.75.75 0 0 0 0-1.5H2.75Z" },
+    ],
+  },
   /** Dock: sign out. */
   "exit": {
     viewBox: "0 0 24 24",

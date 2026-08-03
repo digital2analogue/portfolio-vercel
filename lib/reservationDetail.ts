@@ -397,10 +397,12 @@ export const IPAD = {
     { icon: "menu", label: "Menus" },
     { icon: "bell", label: "Alerts" },
   ] as { icon: string; label: string; active?: boolean }[],
-  /** Utility glyphs pinned to the foot of the rail. */
+  /** Utility glyphs pinned to the foot of the rail. Sign-out is the last of
+   *  them and sits level with the dock, in the rail's own column. */
   railFooter: [
     { icon: "gear", label: "Settings" },
     { icon: "info", label: "About" },
+    { icon: "exit", label: "Sign out" },
   ] as { icon: string; label: string }[],
   /**
    * Side panel — the reservation's actions, as full-width rows with a leading
@@ -421,15 +423,13 @@ export const IPAD = {
     qty: "1 x",
     items: ["1 x Aloha Maid Juice", "1 x Side of hot sauce"],
   },
-  /** Utility dock under the service lists. The sign-out sits apart from the
-   *  tools, as in the comp. */
-  dockLead: { icon: "exit", label: "Sign out" },
+  /** Utility dock under the service lists — five tools, no more. */
   dock: [
-    { icon: "receipt", label: "Reports", dot: true },
+    { icon: "receipt", label: "Shift notes", dot: true },
     { icon: "bell", label: "Alerts", badge: 2 },
-    { icon: "menu", label: "Menus" },
-    { icon: "presentation", label: "Shift notes" },
-    { icon: "contact-card", label: "Guestbook" },
+    { icon: "menu", label: "Manual" },
+    { icon: "cloche", label: "Server requests" },
+    { icon: "cancelled", label: "No-shows" },
   ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
   /** The record’s own status, same taxonomy as the list rows. */
   status: { id: "confirmed", table: "Table 24", tableState: "Assigned" },
