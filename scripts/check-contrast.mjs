@@ -1,10 +1,24 @@
 /**
  * scripts/check-contrast.mjs
  *
- * Validates every text/background color pairing in the UI against WCAG AA (4.5:1).
+ * Validates every colour pairing in the UI against WCAG AA. Two criteria, because
+ * AA has two:
+ *
+ *   • 1.4.3 Contrast (Minimum) — TEXT needs 4.5:1. The default here.
+ *   • 1.4.11 Non-text Contrast — the visual information required to identify a
+ *     UI COMPONENT or its STATE needs 3:1. A button's fill, a switch's track, a
+ *     selected-segment indicator: without these at 3:1 the control is invisible
+ *     to low-vision users even when its label passes 1.4.3.
+ *
  * Wired into `npm run build` — the build fails if any pair fails.
  *
- * To add a new check: add an entry to PAIRINGS at the bottom of this file.
+ * To add a new check: add an entry to PAIRINGS at the bottom of this file. Pass
+ * `min: NON_TEXT` for anything that is not text; leave it off for text.
+ *
+ * Exempt, deliberately: decorative edges that are NOT required to identify a
+ * control — row hairlines, card frames, the header chip dividers. Each chip is
+ * identified by its own label and icon, both of which clear 1.4.3; the rule
+ * between them is separation, not identification.
  */
 
 import fs from 'fs'
@@ -85,6 +99,9 @@ const BG_ACTION  = tok('--color-background-action')   // #4ADE6E
 // Add a new entry here whenever you introduce a new text/background combination.
 // Format: { text, bg, label }
 
+// SC 1.4.11 — UI component boundaries and state indicators.
+const NON_TEXT = 3.0
+
 const PAIRINGS = [
   // Default surface
   { text: '--color-foreground-default', bg: BG,        label: 'Body text / headings on page canvas' },
@@ -138,6 +155,27 @@ const PAIRINGS = [
   { text: '#63666d', bg: '#e9ebee', label: 'Demo/detail: muted row text on pressed row tint' },
   { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: ink row text on pressed row tint' },
   { text: '#2d333f', bg: '#d8d9db', label: 'Demo/detail: table number on secondary action fill (AA-repaired from muted grey)' },
+  { text: '#ffffff', bg: '#247f9e', label: 'Demo/detail: Completed label on primary action' },
+  // Interactive text in every state a row actually reaches.
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo/detail: chip + row label on hovered row' },
+  { text: '#63666d', bg: '#ffffff', label: 'Demo/detail: note byline / inactive segment on white' },
+  //
+  // ── SC 1.4.11, non-text (3:1) ──
+  // Controls whose fill or indicator IS the affordance. Each of the first three
+  // measured 1.1–1.5:1 before the boundary ring was added: the switch was
+  // invisible until turned on, the secondary action had no edge, and neither the
+  // segmented track nor its selected thumb could be made out.
+  { text: '#82868e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: control boundary ring on white (switch, action, segment)' },
+  { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/detail: segment thumb ring on its track' },
+  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: focus ring + tab indicator + switch-on fill' },
+  { text: '#247f9e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/detail: active tab glyph on hovered tab' },
+  // Leading row glyphs — orientation marks, held to 3:1 in every row state.
+  { text: '#82868e', bg: '#e9ebee', min: NON_TEXT, label: 'Demo/detail: leading row glyph on pressed row' },
+  // Tag category glyphs. accent-yellow #FDAF08 is 1.86:1 and is darkened here.
+  { text: '#a97405', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — VIP (accent-yellow darkened for 1.4.11)' },
+  { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — alert' },
+  { text: '#ad4cc3', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — relationship' },
+  { text: '#d82c82', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — occasion' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
@@ -199,11 +237,11 @@ const PAIRINGS = [
 const MIN_RATIO = 4.5
 let failed = 0
 
-console.log('\n  Contrast check — WCAG AA (4.5:1 minimum)\n')
-console.log(`  ${'Pair'.padEnd(52)} ${'Ratio'.padStart(7)}  Status`)
+console.log('\n  Contrast check — WCAG AA (1.4.3 text 4.5:1 · 1.4.11 non-text 3:1)\n')
+console.log(`  ${'Pair'.padEnd(52)} ${'Ratio'.padStart(7)} ${'Min'.padStart(4)}  Status`)
 console.log(`  ${'─'.repeat(72)}`)
 
-for (const { text, bg, label } of PAIRINGS) {
+for (const { text, bg, label, min } of PAIRINGS) {
   const textHex = typeof text === 'string' && text.startsWith('--') ? tok(text) : text
   const bgHex   = typeof bg   === 'string' && bg.startsWith('--')   ? tok(bg)   : bg
 
@@ -213,9 +251,11 @@ for (const { text, bg, label } of PAIRINGS) {
   }
 
   const ratio = contrastRatio(textHex, bgHex)
-  const pass  = ratio >= MIN_RATIO
+  const floor = min ?? MIN_RATIO
+  const pass  = ratio >= floor
   if (!pass) failed++
-  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1  ${pass ? '✅' : '❌ FAIL'}`)
+  const need = floor === MIN_RATIO ? '    ' : ` ${floor.toFixed(1)}`
+  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1 ${need}  ${pass ? '✅' : '❌ FAIL'}`)
 }
 
 console.log()
@@ -224,5 +264,6 @@ if (failed > 0) {
   console.error(`  ❌ ${failed} contrast failure(s). Fix token values or pairing CSS before shipping.\n`)
   process.exit(1)
 } else {
-  console.log(`  ✅ All ${PAIRINGS.length} pairs pass WCAG AA\n`)
+  const nonText = PAIRINGS.filter(p => p.min).length
+  console.log(`  ✅ All ${PAIRINGS.length} pairs pass WCAG AA (${PAIRINGS.length - nonText} text · ${nonText} non-text)\n`)
 }

@@ -2400,6 +2400,9 @@ h2.eyebrow,
   --rd-press: #e9ebee;
   --rd-muted: #63666d;
   --rd-glyph: #82868e;
+  /* Boundary grey for controls whose FILL is their only affordance (SC 1.4.11).
+     Lightest value that clears 3:1 on white — 3.65:1. */
+  --rd-edge: #82868e;
 }
 
 /* The demo renders inside .blocks, whose case-body typography styles bare
@@ -2730,8 +2733,10 @@ h2.eyebrow,
 .rd-iconbtn {
   flex: none;
   display: inline-flex;
-  padding: 8px;
-  margin: -8px;
+  /* 20px glyph + 12px each side = a 44px target. The negative margin gives the
+     hit area back to the row, so the target grows without the layout moving. */
+  padding: 12px;
+  margin: -12px;
   background: none;
   border: 0;
   border-radius: var(--rd-r);
@@ -2869,6 +2874,9 @@ h2.eyebrow,
   padding: 3px;
   background: var(--rd-hover);
   border-radius: var(--rd-r);
+  /* Track is 1.12:1 on white and the thumb 1.12:1 on the track — neither the
+     control nor its selected state was identifiable. Both now ring at 3.65:1. */
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
 }
 /* A thumb that slides, matching the strip indicator's language. */
 .rd-seg__thumb {
@@ -2879,14 +2887,14 @@ h2.eyebrow,
   width: calc(50% - 3px);
   background: var(--otk-bg);
   border-radius: calc(var(--rd-r) - 2px);
-  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.16);
+  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.16), inset 0 0 0 1px var(--rd-edge);
   transition: transform var(--rd-dur-emph) cubic-bezier(0.34, 1.32, 0.64, 1);
 }
 .rd-seg__btn {
   position: relative;
   z-index: 1;
   flex: 1 1 0;
-  padding: 9px 10px;
+  padding: 12px 10px;
   background: none;
   border: 0;
   border-radius: calc(var(--rd-r) - 2px);
@@ -2984,7 +2992,13 @@ h2.eyebrow,
   padding: 2px;
   border-radius: var(--radius-full);
   background: #d3d5d8;
-  transition: background-color var(--rd-dur) var(--rd-ease);
+  /* Off, the fill alone is 1.47:1 on the row — the switch would be invisible to
+     low vision until turned on. The ring gives it a 3.65:1 boundary; the on
+     state carries its own (teal fill, 4.56:1) and drops the ring. */
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  transition:
+    background-color var(--rd-dur) var(--rd-ease),
+    box-shadow var(--rd-dur) var(--rd-ease);
 }
 .rd-switch__thumb {
   width: 27px;
@@ -2994,7 +3008,7 @@ h2.eyebrow,
   box-shadow: 0 2px 4px rgba(20, 26, 38, 0.24), 0 0 0 0.5px rgba(20, 26, 38, 0.06);
   transition: transform var(--rd-dur) var(--rd-ease);
 }
-.rd-switch input:checked ~ .rd-switch__track { background: var(--otk-action); }
+.rd-switch input:checked ~ .rd-switch__track { background: var(--otk-action); box-shadow: none; }
 .rd-switch input:checked ~ .rd-switch__track .rd-switch__thumb { transform: translateX(20px); }
 .rd-switch input:focus-visible ~ .rd-switch__track {
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
@@ -3045,11 +3059,15 @@ h2.eyebrow,
 .rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
 .rd-action__label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
+/* Fill alone is 1.41:1 against the action bar, so the button's own edge is what
+   identifies it — ringed to 3.65:1. The primary needs no ring: its teal fill is
+   already 4.56:1. */
 .rd-action--secondary {
   flex: 1 1 42%;
   flex-direction: column;
   gap: 0;
   background: var(--otk-border);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
   color: var(--otk-ink);
 }
 .rd-action__table { font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
