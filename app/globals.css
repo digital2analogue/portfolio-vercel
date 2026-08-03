@@ -2764,7 +2764,6 @@ h2.eyebrow,
 .rd-tag[data-tone="occasion"] .rd-icon { color: #d82c82; }
 
 .rd-row--note { align-items: flex-start; }
-.rd-row--note .rd-icon { margin-top: 1px; }
 .rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .rd-notetext { flex: 1 1 auto; font: var(--rd-body-md); color: var(--otk-ink); }
 .rd-noteby { font: var(--rd-body-sm); color: var(--rd-muted); }
@@ -2848,15 +2847,16 @@ h2.eyebrow,
    mark of the active tab is the border/action underline. */
 .rd-strip__tab:active { background: var(--otk-surface); transition-duration: 40ms; }
 .rd-strip__tab[data-active="true"] { color: var(--otk-action); }
-/* The active icon sits a hair larger — enough to feel selected, not enough to
-   shift the row — and pops once as the indicator arrives under it. */
+/* The active icon pops once as the indicator arrives under it, then settles back
+   to exactly 24px. It used to rest at scale(1.08), which rendered it at ~26px —
+   off the 16/24 glyph scale. Colour and the indicator carry the resting state;
+   the pop is motion, not size. */
 @keyframes rd-icon-pop {
   0% { transform: scale(1); }
-  55% { transform: scale(1.24); }
-  100% { transform: scale(1.08); }
+  55% { transform: scale(1.18); }
+  100% { transform: scale(1); }
 }
 .rd-strip__tab[data-active="true"] .rd-icon {
-  transform: scale(1.08);
   animation: rd-icon-pop var(--rd-dur-emph) var(--rd-ease);
 }
 .rd-strip__tab:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
@@ -2886,16 +2886,24 @@ h2.eyebrow,
    slab of dead white at max scroll. */
 .rd-section--history { padding-bottom: 88px; }
 
-.rr-demo.rd .rd-heading {
+/* Every section opens with the same small label — glyph + category, once. It
+   replaces the glyph that used to repeat on every note row: the strip already
+   names the section, so restating it per row was redundant, cost ~34px of
+   horizontal on each note, and rendered one category two ways (coloured in a tag
+   chip, grey in a row). Stating it once also answers a question the old design
+   could not: which category am I reading, when scrolled into the middle of one. */
+.rr-demo.rd .rd-seclabel {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   margin: 0;
-  padding: 16px 20px 8px;
-  font: var(--rd-body-lg-bold);
-  letter-spacing: -0.01em;
-  color: var(--otk-ink);
+  padding: 14px 20px 6px;
+  font: var(--rd-label-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rd-muted);
 }
+.rd-seclabel .rd-icon { color: var(--rd-glyph); }
 
 /* ── History stats ── */
 .rr-demo.rd .rd-stats {
@@ -2928,41 +2936,38 @@ h2.eyebrow,
 .rd-stat__label { font: var(--rd-label-sm); color: var(--otk-ink); }
 .rd-stat__sub { font: var(--rd-body-sm); color: var(--rd-muted); font-variant-numeric: tabular-nums; }
 
-/* ── Visit scope segmented control ── */
+/* ── Visit scope segmented control ──
+   Selected state uses the pair OTKit already ships for it — background/action-alt
+   #EEF8FB behind border/action #247F9E — instead of the grey outline this used to
+   invent. Three things fall out of that:
+     · border/action is 4.56:1 on the page, so the SELECTED segment identifies the
+       whole control (SC 1.4.11). The track's own ring becomes redundant and the
+       track goes with it — no more two concentric outlines 3px apart.
+     · "selected" now means border/action in both this control and the tab strip.
+       One idea, stated once.
+     · The label stays ink. foreground/action on action-alt is 4.23:1 and FAILS
+       text AA — that token pair is for fill + edge, not fill + text. */
 .rd-seg {
   position: relative;
   display: flex;
   margin: 0 20px;
-  padding: 3px;
-  background: var(--rd-hover);
-  border-radius: var(--rd-r);
-  /* Track is 1.12:1 on white and the thumb 1.12:1 on the track — neither the
-     control nor its selected state was identifiable. Both now ring at 3.65:1. */
-  box-shadow: inset 0 0 0 1px var(--rd-edge);
 }
-/* A thumb that slides, matching the strip indicator's language. */
 .rd-seg__thumb {
   position: absolute;
-  top: 3px;
-  bottom: 3px;
-  left: 3px;
-  width: calc(50% - 3px);
-  background: var(--otk-bg);
-  border-radius: calc(var(--rd-r) - 2px);
-  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.16), inset 0 0 0 1px var(--rd-edge);
+  inset: 0 50% 0 0;
+  background: #eef8fb;
+  border: 1.5px solid var(--otk-action);
+  border-radius: var(--rd-r);
   transition: transform var(--rd-dur-emph) cubic-bezier(0.34, 1.32, 0.64, 1);
 }
 .rd-seg__btn {
   position: relative;
   z-index: 1;
   flex: 1 1 0;
-  /* 30px tall. WCAG AA's target minimum (2.5.8) is 24px — the 44px figure is
-     Apple HIG / AAA, and spending 14px of vertical on it here is the wrong
-     trade on a screen this dense. */
-  padding: 6px 10px;
+  padding: 8px 10px;
   background: none;
   border: 0;
-  border-radius: calc(var(--rd-r) - 2px);
+  border-radius: var(--rd-r);
   color: var(--rd-muted);
   font: var(--rd-label-sm);
   cursor: pointer;

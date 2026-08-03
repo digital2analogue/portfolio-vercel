@@ -27,7 +27,8 @@ export type NoteSection = {
   label: string;
   /** Icon key resolved in the demo component (OTKit set, or supplementary). */
   icon: string;
-  /** Empty-state row, rendered when the section has no notes. */
+  /** Empty-state row, rendered when the section has no notes. The section's own
+   *  label carries the category, so this does not repeat it. */
   placeholder: string;
   /** Recorded notes, newest first. Omitted on `history`, which renders its own. */
   notes?: Note[];
@@ -38,7 +39,7 @@ export const NOTE_SECTIONS: NoteSection[] = [
     id: "general",
     label: "General notes",
     icon: "receipt",
-    placeholder: "Add a general note",
+    placeholder: "Add a note",
     notes: [
       {
         id: "gen-1",
@@ -52,7 +53,7 @@ export const NOTE_SECTIONS: NoteSection[] = [
     id: "special",
     label: "Special relationship",
     icon: "star",
-    placeholder: "Add a special relationship note",
+    placeholder: "Add a note",
     notes: [
       {
         id: "sp-1",
@@ -66,7 +67,7 @@ export const NOTE_SECTIONS: NoteSection[] = [
     id: "food",
     label: "Food & drink preferences",
     icon: "utensils",
-    placeholder: "Add a food & drink note",
+    placeholder: "Add a note",
     notes: [
       {
         id: "food-1",
@@ -80,7 +81,7 @@ export const NOTE_SECTIONS: NoteSection[] = [
     id: "seating",
     label: "Seating preferences",
     icon: "seat",
-    placeholder: "Add a seating note",
+    placeholder: "Add a note",
     notes: [
       {
         id: "seat-1",

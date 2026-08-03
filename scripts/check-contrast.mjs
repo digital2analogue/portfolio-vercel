@@ -159,6 +159,9 @@ const PAIRINGS = [
   // Interactive text in every state a row actually reaches.
   { text: '#2d333f', bg: '#f1f2f4', label: 'Demo/detail: chip + row label on hovered row' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo/detail: note byline / inactive segment on white' },
+  // Selected segment uses OTKit's action-alt fill. The label stays INK, not
+  // foreground/action — teal on this fill is 4.23:1 and fails text AA.
+  { text: '#2d333f', bg: '#eef8fb', label: 'Demo/detail: selected segment label on action-alt fill' },
   //
   // ── SC 1.4.11, non-text (3:1) ──
   // Controls whose fill or indicator IS the affordance. Each of the first three

@@ -249,27 +249,27 @@ export default function ReservationDetailDemo() {
                 buttons inside a hidden subtree. */}
             <div className="rd-chiprow" inert={collapsed}>
               <button type="button" className="rd-chip rd-chip--icon">
-                <Icon name="chevron-left" />
+                <Icon name="chevron-left" size={24} />
                 <span className="rd-sr">Back to floor plan</span>
               </button>
               <button type="button" className="rd-chip">
-                <Icon name="clock" size={17} />
+                <Icon name="clock" size={16} />
                 <span>{RESERVATION.time}</span>
                 <span className="rd-sr">Change reservation time</span>
               </button>
               <button type="button" className="rd-chip">
-                <Icon name="person" size={17} />
+                <Icon name="person" size={16} />
                 <span>{RESERVATION.partySize}</span>
                 <span className="rd-sr">Change party size</span>
               </button>
               <button type="button" className="rd-chip rd-chip--icon">
-                <Icon name="overflow" />
+                <Icon name="overflow" size={24} />
                 <span className="rd-sr">More reservation actions</span>
               </button>
             </div>
             <div className="rd-titlebar" inert={!collapsed}>
               <button type="button" className="rd-titlebar__back">
-                <Icon name="chevron-left" />
+                <Icon name="chevron-left" size={24} />
                 <span className="rd-sr">Back to floor plan</span>
               </button>
               <span className="rd-titlebar__name">{RESERVATION.guest}</span>
@@ -290,27 +290,27 @@ export default function ReservationDetailDemo() {
               </span>
               <h3 className="rd-reset rd-guest">{RESERVATION.guest}</h3>
               <button type="button" className="rd-iconbtn">
-                <Icon name="edit" />
+                <Icon name="edit" size={24} />
                 <span className="rd-sr">Edit guest</span>
               </button>
             </div>
 
             <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(ZONE.tag)}>
-              <Icon name="tag" />
+              <Icon name="tag" size={24} />
               <span className="rd-tags">
                 {RESERVATION.tags.map((tag) => (
                   <span key={tag.label} className="rd-tag" data-tone={tag.tone}>
-                    <Icon name={tag.icon} size={12} />
+                    <Icon name={tag.icon} size={16} />
                     {tag.label}
                   </span>
                 ))}
               </span>
-              <Icon name="edit" />
+              <Icon name="edit" size={24} />
               <span className="rd-sr">Edit tags</span>
             </button>
 
             <button type="button" className="rd-row rd-row--action rd-zone" style={zone(ZONE.note)}>
-              <Icon name="receipt" />
+              <Icon name="receipt" size={24} />
               <span className="rd-notetext">{RESERVATION.visitNote}</span>
             </button>
 
@@ -338,7 +338,7 @@ export default function ReservationDetailDemo() {
                   tabIndex={i === active ? 0 : -1}
                   onClick={() => goToSection(i)}
                 >
-                  <Icon name={section.icon} />
+                  <Icon name={section.icon} size={24} />
                   <span className="rd-sr">{section.label}</span>
                 </button>
               ))}
@@ -359,20 +359,19 @@ export default function ReservationDetailDemo() {
                 <section
                   key={section.id}
                   id={`${baseId}-${section.id}`}
-                  aria-label={section.label}
+                  aria-labelledby={`${baseId}-${section.id}-label`}
                   ref={(el) => {
                     sectionRefs.current[i] = el;
                   }}
                   className={`rd-section rd-zone${isHistory ? " rd-section--history" : ""}`}
                   style={zone(ZONE.sections + i)}
                 >
+                  <h3 className="rd-reset rd-seclabel" id={`${baseId}-${section.id}-label`}>
+                    <Icon name={section.icon} size={16} />
+                    {section.label}
+                  </h3>
                   {isHistory ? (
                     <>
-                      <h3 className="rd-reset rd-heading">
-                        <Icon name="history" />
-                        History
-                      </h3>
-
                       <ul className="rd-reset rd-stats">
                         {HISTORY_STATS.map((stat) => (
                           <li key={stat.id} className="rd-reset rd-stat">
@@ -426,13 +425,13 @@ export default function ReservationDetailDemo() {
                             <h4 className="rd-reset rd-visit__heading">{visit.heading}</h4>
                             {visit.events.map((event) => (
                               <div key={event.id} className="rd-event">
-                                <Icon name={event.icon} />
+                                <Icon name={event.icon} size={16} />
                                 <span className="rd-event__time">{event.time}</span>
                                 <div className="rd-event__body">
                                   <p className="rd-reset rd-event__text">{event.text}</p>
                                   {event.author && (
                                     <p className="rd-reset rd-event__meta">
-                                      <Icon name="edit" size={14} />
+                                      <Icon name="edit" size={16} />
                                       {event.author}
                                     </p>
                                   )}
@@ -467,15 +466,14 @@ export default function ReservationDetailDemo() {
                       </div>
 
                       <button type="button" className="rd-row rd-row--action rd-row--referral">
-                        <Icon name="plus" />
+                        <Icon name="plus" size={24} />
                         <span className="rd-referral">Add a referral</span>
-                        <Icon name="chevron-right" className="rd-chevron" />
+                        <Icon name="chevron-right" size={24} className="rd-chevron" />
                       </button>
                     </>
                   ) : section.notes?.length ? (
                     section.notes.map((note) => (
                       <button type="button" key={note.id} className="rd-row rd-row--action rd-row--note">
-                        <Icon name={section.icon} />
                         <span className="rd-note">
                           <span className="rd-notetext">{note.text}</span>
                           {/* Attribution is what makes a guestbook note actionable
@@ -488,7 +486,6 @@ export default function ReservationDetailDemo() {
                     ))
                   ) : (
                     <button type="button" className="rd-row rd-row--action">
-                      <Icon name={section.icon} />
                       <span className="rd-placeholder">{section.placeholder}</span>
                     </button>
                   )}
@@ -499,11 +496,11 @@ export default function ReservationDetailDemo() {
 
           <div className="rd-actionbar" data-floating={floating}>
             <button type="button" className="rd-action rd-action--primary">
-              <Icon name="check" size={22} />
+              <Icon name="check" size={24} />
               <span className="rd-action__label">Completed</span>
             </button>
             <button type="button" className="rd-action rd-action--secondary">
-              <Icon name="seat" />
+              <Icon name="seat" size={24} />
               <span className="rd-action__table">{RESERVATION.table}</span>
               <span className="rd-sr">Change table assignment</span>
             </button>
