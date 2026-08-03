@@ -17,6 +17,21 @@
  * Sample guest data is fictional and matches the demo footage.
  */
 
+/**
+ * Tag categories — the same taxonomy the note sections use, so a glyph means one
+ * thing across the whole screen. Each carries its own tone; every tone clears
+ * 3:1 on white so the glyph reads as a UI mark rather than decoration (OTKit's
+ * accent-yellow #FDAF08 is 1.86:1, hence the darkened #A97405).
+ */
+export type TagCategory = "relationship" | "food" | "seating" | "general";
+
+export const TAG_CATEGORY: Record<TagCategory, { icon: string; tone: string }> = {
+  relationship: { icon: "star", tone: "relationship" },
+  food: { icon: "utensils", tone: "food" },
+  seating: { icon: "seat", tone: "seating" },
+  general: { icon: "receipt", tone: "general" },
+};
+
 /** One recorded guestbook note. */
 export type Note = { id: string; text: string; author: string; date: string };
 
@@ -185,22 +200,17 @@ export const RESERVATION = {
   time: "6:45 am",
   partySize: 4,
   table: "24",
-  /** Guest tags, shown as chips on the tag row. Tags are how staff classify a
-   *  guest — allergies and relationships are tags, not note types. Each carries
-   *  a category glyph + tone so the row is scannable before it is read; the
-   *  label always states the category too, so colour is never the only channel. */
-  // Glyphs follow OTKit's note-category semantics, so a tag and its matching
-  // note section read as the same thing: star = relationship (VIP, friend of),
-  // utensils = food & drink incl. allergies, seat = seating, history = previous
-  // visits. VIP and Friend of owner share the star and separate on tone.
-  // Anniversary is an occasion, which the category set doesn't name — cocktail
-  // is the closest available glyph and the one call here that isn't specified.
+  /** Guest tags. A tag names a CATEGORY, and the category supplies the glyph and
+   *  the tone — so two tags in one category (VIP and Friend of owner are both
+   *  relationship) cannot drift apart, and a star means the same thing wherever
+   *  it appears. The label always states the category too, so colour is
+   *  reinforcement and never the only channel. */
   tags: [
-    { label: "VIP", icon: "star", tone: "vip" },
-    { label: "Shellfish allergy", icon: "utensils", tone: "alert" },
-    { label: "Friend of owner", icon: "star", tone: "relationship" },
-    { label: "Anniversary", icon: "cocktail", tone: "occasion" },
-  ],
+    { label: "VIP", category: "relationship" },
+    { label: "Friend of owner", category: "relationship" },
+    { label: "Shellfish allergy", category: "food" },
+    { label: "Anniversary", category: "general" },
+  ] as { label: string; category: TagCategory }[],
   tagPlaceholder: "Add a tag…",
 } as const;
 

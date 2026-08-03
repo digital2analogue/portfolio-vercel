@@ -42,6 +42,7 @@ import {
   CURRENT_VISIT,
   ALL_VISITS,
   RESERVATION,
+  TAG_CATEGORY,
   activeSectionAt,
   type Visit,
 } from "@/lib/reservationDetail";
@@ -79,6 +80,102 @@ const VISIT_SCOPES: { id: string; label: string; visits: Visit[] }[] = [
   { id: "all", label: "All visits", visits: ALL_VISITS },
 ];
 
+/**
+ * One selection strip, used twice: the note strip (sticky, glyphs, scroll
+ * anchors) and the visit scope (inline, words, panel swap). They were built as
+ * two components, which is how their active colours drifted apart and how the
+ * scope indicator came to hardcode "exactly two, equal width" while the note
+ * strip measured itself.
+ *
+ * The measuring lives here so the indicator generalises to any count and to
+ * unequal widths. Semantics stay the caller's: the note strip is navigation over
+ * always-mounted sections (aria-current), the scope is a real tablist over a
+ * panel (aria-selected) — same control, different meaning, so the roles differ
+ * while the behaviour does not.
+ */
+function SelectStrip({
+  items,
+  active,
+  onSelect,
+  mode,
+  ariaLabel,
+  sticky = false,
+  stuck = false,
+  itemAttrs,
+  stripRef,
+  itemRefs,
+  onKeyDown,
+}: {
+  items: { id: string; content: React.ReactNode; label: string }[];
+  active: number;
+  onSelect: (i: number) => void;
+  mode: "nav" | "tabs";
+  ariaLabel: string;
+  sticky?: boolean;
+  stuck?: boolean;
+  itemAttrs?: (i: number) => Record<string, unknown>;
+  stripRef?: React.RefObject<HTMLDivElement | null>;
+  itemRefs?: React.RefObject<(HTMLButtonElement | null)[]>;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+}) {
+  const localRef = useRef<HTMLDivElement>(null);
+  const root = stripRef ?? localRef;
+  const localItems = useRef<(HTMLButtonElement | null)[]>([]);
+  const buttons = itemRefs ?? localItems;
+  const [indicator, setIndicator] = useState<{ x: number; w: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = buttons.current[active];
+      if (el) setIndicator({ x: el.offsetLeft, w: el.offsetWidth });
+    };
+    measure();
+    const el = root.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [active, root, buttons]);
+
+  const Tag = mode === "nav" ? "nav" : "div";
+  return (
+    <Tag
+      className={sticky ? "rd-select rd-select--sticky" : "rd-select"}
+      ref={root as React.RefObject<HTMLDivElement & HTMLElement>}
+      aria-label={ariaLabel}
+      role={mode === "tabs" ? "tablist" : undefined}
+      onKeyDown={onKeyDown}
+      data-stuck={sticky ? stuck : undefined}
+      data-ready={indicator !== null}
+    >
+      {items.map((item, i) => (
+        <button
+          key={item.id}
+          type="button"
+          className="rd-select__item"
+          ref={(el) => {
+            buttons.current[i] = el;
+          }}
+          data-active={i === active}
+          tabIndex={i === active ? 0 : -1}
+          onClick={() => onSelect(i)}
+          {...(itemAttrs?.(i) ?? {})}
+        >
+          {item.content}
+          <span className="rd-sr">{item.label}</span>
+        </button>
+      ))}
+      <span
+        className="rd-select__indicator"
+        aria-hidden="true"
+        style={{
+          transform: indicator ? `translateX(${indicator.x}px) scaleX(${indicator.w})` : undefined,
+        }}
+      />
+    </Tag>
+  );
+}
+
 /** Render order of the zones the entrance reveal walks down. */
 const ZONE = { guest: 0, tag: 1, strip: 2, sections: 3 };
 
@@ -96,7 +193,6 @@ export default function ReservationDetailDemo() {
     [],
   );
   const [excluded, setExcluded] = useState(false);
-  const [indicator, setIndicator] = useState<{ x: number; w: number } | null>(null);
 
   const screenRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -152,22 +248,6 @@ export default function ReservationDetailDemo() {
     },
     [sectionOffsets],
   );
-
-  /** Measure the active tab so one indicator can travel instead of five
-   *  blinking. Re-measured on resize, since tab widths are fractional. */
-  useLayoutEffect(() => {
-    const measure = () => {
-      const tab = tabRefs.current[active];
-      if (!tab) return;
-      setIndicator({ x: tab.offsetLeft, w: tab.offsetWidth });
-    };
-    measure();
-    const strip = stripRef.current;
-    if (!strip || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(measure);
-    ro.observe(strip);
-    return () => ro.disconnect();
-  }, [active]);
 
   /** One-shot entrance when the device scrolls into view.
    *
@@ -298,12 +378,15 @@ export default function ReservationDetailDemo() {
             <button type="button" className="rd-row rd-row--action rd-row--tags rd-zone" style={zone(ZONE.tag)}>
               <Icon name="tag" size={24} />
               <span className="rd-tags">
-                {RESERVATION.tags.map((tag) => (
-                  <span key={tag.label} className="rd-tag" data-tone={tag.tone}>
-                    <Icon name={tag.icon} size={16} />
-                    {tag.label}
-                  </span>
-                ))}
+                {RESERVATION.tags.map((tag) => {
+                  const cat = TAG_CATEGORY[tag.category];
+                  return (
+                    <span key={tag.label} className="rd-tag" data-tone={cat.tone}>
+                      <Icon name={cat.icon} size={16} />
+                      {tag.label}
+                    </span>
+                  );
+                })}
               </span>
               <Icon name="edit" size={24} />
               <span className="rd-sr">Edit tags</span>
@@ -311,42 +394,25 @@ export default function ReservationDetailDemo() {
 
             {/* Scroll anchors, not tabs: all five sections stay mounted below, so
                 this is navigation within one document, marked with aria-current. */}
-            <nav
-              className="rd-strip rd-zone"
-              style={zone(ZONE.strip)}
-              ref={stripRef}
-              aria-label="Jump to note section"
-              onKeyDown={onStripKeyDown}
-              data-stuck={stuck}
-              data-ready={indicator !== null}
-            >
-              {NOTE_SECTIONS.map((section, i) => (
-                <button
-                  key={section.id}
-                  type="button"
-                  className="rd-strip__tab"
-                  ref={(el) => {
-                    tabRefs.current[i] = el;
-                  }}
-                  data-active={i === active}
-                  aria-current={i === active ? "true" : undefined}
-                  tabIndex={i === active ? 0 : -1}
-                  onClick={() => goToSection(i)}
-                >
-                  <Icon name={section.icon} size={24} />
-                  <span className="rd-sr">{section.label}</span>
-                </button>
-              ))}
-              <span
-                className="rd-strip__indicator"
-                aria-hidden="true"
-                style={{
-                  transform: indicator
-                    ? `translateX(${indicator.x}px) scaleX(${indicator.w})`
-                    : undefined,
-                }}
+            <div className="rd-zone" style={zone(ZONE.strip)}>
+              <SelectStrip
+                mode="nav"
+                sticky
+                stuck={stuck}
+                ariaLabel="Jump to note section"
+                stripRef={stripRef}
+                itemRefs={tabRefs}
+                onKeyDown={onStripKeyDown}
+                active={active}
+                onSelect={goToSection}
+                items={NOTE_SECTIONS.map((section) => ({
+                  id: section.id,
+                  label: section.label,
+                  content: <Icon name={section.icon} size={24} />,
+                }))}
+                itemAttrs={(i) => ({ "aria-current": i === active ? "true" : undefined })}
               />
-            </nav>
+            </div>
 
             {NOTE_SECTIONS.map((section, i) => {
               const isHistory = section.id === "history";
@@ -377,34 +443,28 @@ export default function ReservationDetailDemo() {
                         ))}
                       </ul>
 
-                      <div className="rd-seg" role="tablist" aria-label="Visit scope">
-                        <span
-                          className="rd-seg__indicator"
-                          aria-hidden="true"
-                          style={{ transform: `translateX(${scope * 100}%)` }}
-                        />
-                        {VISIT_SCOPES.map((s, i2) => (
-                          <button
-                            key={s.id}
-                            type="button"
-                            role="tab"
-                            id={`${baseId}-scope-${s.id}`}
-                            aria-selected={i2 === scope}
-                            aria-controls={`${baseId}-visits`}
-                            tabIndex={i2 === scope ? 0 : -1}
-                            className="rd-seg__btn"
-                            data-active={i2 === scope}
-                            onClick={() => setScope(i2)}
-                            onKeyDown={(e) => {
-                              if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-                              e.preventDefault();
-                              setScope(scope === 0 ? 1 : 0);
-                            }}
-                          >
-                            {s.label}
-                          </button>
-                        ))}
-                      </div>
+                      <SelectStrip
+                        mode="tabs"
+                        ariaLabel="Visit scope"
+                        active={scope}
+                        onSelect={setScope}
+                        items={VISIT_SCOPES.map((sc) => ({
+                          id: sc.id,
+                          label: sc.label,
+                          content: <span aria-hidden="true">{sc.label}</span>,
+                        }))}
+                        itemAttrs={(i2) => ({
+                          role: "tab",
+                          id: `${baseId}-scope-${VISIT_SCOPES[i2].id}`,
+                          "aria-selected": i2 === scope,
+                          "aria-controls": `${baseId}-visits`,
+                          onKeyDown: (e: React.KeyboardEvent) => {
+                            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+                            e.preventDefault();
+                            setScope(scope === 0 ? 1 : 0);
+                          },
+                        })}
+                      />
 
                       <div
                         className="rd-visits"

@@ -5,6 +5,8 @@ import {
   HISTORY_STATS,
   CURRENT_VISIT,
   ALL_VISITS,
+  RESERVATION,
+  TAG_CATEGORY,
 } from '@/lib/reservationDetail'
 
 // Section tops as the demo measures them: relative to the scroll container,
@@ -109,5 +111,30 @@ describe('reservation-detail data', () => {
     expect(new Set(visitIds).size).toBe(visitIds.length)
     const eventIds = ALL_VISITS.flatMap((v) => v.events.map((e) => e.id))
     expect(new Set(eventIds).size).toBe(eventIds.length)
+  })
+})
+
+describe('tag categories', () => {
+  it('derives glyph and tone from the category, never from the tag', () => {
+    // The guard for the real requirement: two tags in one category must be
+    // indistinguishable in treatment. VIP and Friend of owner are both
+    // relationship, so both must resolve to the same star and the same tone.
+    const byCategory = new Map<string, Set<string>>()
+    for (const tag of RESERVATION.tags) {
+      const cat = TAG_CATEGORY[tag.category]
+      const key = `${cat.icon}|${cat.tone}`
+      if (!byCategory.has(tag.category)) byCategory.set(tag.category, new Set())
+      byCategory.get(tag.category)!.add(key)
+    }
+    for (const [, treatments] of byCategory) expect(treatments.size).toBe(1)
+  })
+
+  it('gives every tag a category that exists', () => {
+    for (const tag of RESERVATION.tags) expect(TAG_CATEGORY[tag.category]).toBeDefined()
+  })
+
+  it('gives every category a distinct glyph', () => {
+    const icons = Object.values(TAG_CATEGORY).map((c) => c.icon)
+    expect(new Set(icons).size).toBe(icons.length)
   })
 })

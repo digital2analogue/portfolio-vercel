@@ -172,10 +172,9 @@ const PAIRINGS = [
   // Leading row glyphs — orientation marks, held to 3:1 in every row state.
   { text: '#82868e', bg: '#e9ebee', min: NON_TEXT, label: 'Demo/detail: leading row glyph on pressed row' },
   // Tag category glyphs. accent-yellow #FDAF08 is 1.86:1 and is darkened here.
-  { text: '#a97405', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — VIP (accent-yellow darkened for 1.4.11)' },
-  { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — alert' },
-  { text: '#ad4cc3', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — relationship' },
-  { text: '#d82c82', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag glyph — occasion' },
+  { text: '#a97405', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — relationship (accent-yellow darkened for 1.4.11)' },
+  { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — food & drink' },
+  { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
