@@ -146,7 +146,7 @@ export default function ReservationDetailIPad() {
               <span className="rdp-chip rdp-chip--date">{IPAD.service.date}</span>
               {/* Service is live. A dot alone would be colour-as-only-channel, so
                   it carries a text alternative rather than a tooltip. */}
-              <span className="rdp-live" role="img" aria-label="Service is live">
+              <span className="rdp-chip rdp-chip--live" role="img" aria-label="Service is live">
                 <span className="rdp-live__dot" />
               </span>
               <span className="rdp-chip rdp-chip--date">{IPAD.service.shift}</span>
@@ -254,19 +254,37 @@ export default function ReservationDetailIPad() {
                             </span>
                           ))}
                         </span>
-                        {/* The trailing control is the reservation STATUS, not
-                            the table — same taxonomy as the status-dropdown demo
-                            on the sibling case study, resolved through
-                            stateById so there is one source for the eleven
-                            tokens the 22 states collapse onto. The table number
-                            rides above it, as it does in the source panel. */}
-                        <span className="rdp-trail">
-                          {r.table && <span className="rdp-trail__table">{r.table}</span>}
-                          <span className="rdp-statechip" style={{ color: stateById(r.status).fill }}>
-                            <Icon name={stateById(r.status).icon} size={20} />
-                            <span className="rd-sr">{stateById(r.status).label}</span>
-                          </span>
-                        </span>
+                        {/* The trailing control is the reservation STATUS —
+                            same taxonomy as the status-dropdown demo on the
+                            sibling case study, resolved through stateById. The
+                            table number lives INSIDE it, above the glyph, and is
+                            simply absent when no table is assigned. Its
+                            treatment follows the state's own service phase, as
+                            in the comp: outlined while the party is still
+                            pre-arrival, filled with the status colour once they
+                            are in service. */}
+                        {(() => {
+                          const st = stateById(r.status);
+                          const filled = st.phase === "during-service";
+                          return (
+                            <span
+                              className="rdp-statebtn"
+                              data-filled={filled}
+                              style={
+                                filled
+                                  ? { background: st.fill, color: st.on, boxShadow: "none" }
+                                  : { color: st.fill }
+                              }
+                            >
+                              {r.table && <span className="rdp-statebtn__table">{r.table}</span>}
+                              <Icon name={st.icon} size={20} />
+                              <span className="rd-sr">
+                                {st.label}
+                                {r.table ? `, table ${r.table}` : ", no table assigned"}
+                              </span>
+                            </span>
+                          );
+                        })()}
                       </button>
                     ))}
                   </section>

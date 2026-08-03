@@ -2539,7 +2539,11 @@ h2.eyebrow,
   overflow: hidden;
 }
 
-.rd-icon { flex: none; }
+/* Block, not inline: an inline SVG sits on the text baseline and carries a
+   descender gap, which is why glyph rows drift a pixel or two off centre from
+   each other. flex: none stops a crowded row shrinking one glyph and not its
+   neighbour. */
+.rd-icon { display: block; flex: none; }
 .rd-sr {
   position: absolute;
   width: 1px;
@@ -3294,7 +3298,7 @@ h2.eyebrow,
   align-items: center;
   gap: 6px;
   margin-right: 6px;
-  font: var(--rd-label-md);
+  font: var(--rd-label-sm);
   font-variant-numeric: tabular-nums;
 }
 .rdp-datebar {
@@ -3328,13 +3332,13 @@ h2.eyebrow,
 .rdp-chip--step { width: 38px; padding: 0; }
 .rdp-chip--date { min-width: 116px; cursor: default; }
 .rdp-chip--nav { width: 38px; padding: 0; }
+.rdp-chip--live { width: 38px; padding: 0; cursor: default; }
 .rdp-chip:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 2px; }
 .rdp-views { display: inline-flex; gap: 6px; }
 .rdp-caret { transform: rotate(90deg); }
 
 /* Live-service mark. Green is reinforcement — the element carries its own
    accessible name, so the colour is never the only channel. */
-.rdp-live { display: inline-flex; }
 .rdp-live__dot {
   width: 13px;
   height: 13px;
@@ -3444,6 +3448,7 @@ h2.eyebrow,
   display: flex;
   align-items: center;
   gap: 8px;
+  line-height: 1;
   padding: 8px 8px 8px 12px;
   border-top: 1px solid var(--rdp-chrome-alt);
 }
@@ -3468,6 +3473,7 @@ h2.eyebrow,
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  line-height: 1;
   font: var(--rd-label-sm);
   font-variant-numeric: tabular-nums;
 }
@@ -3509,8 +3515,9 @@ h2.eyebrow,
   cursor: pointer;
   transition: background-color var(--rd-dur) var(--rd-ease);
 }
-/* The leading state chip bleeds to the panel edge, so the list can be read as a
-   colour column down the left before any text is parsed. */
+/* The leading marker. It bleeds to the panel edge only when it is TONED — per
+   the comp, that is reserved for attention states, so the colour column down the
+   left means "these need you" rather than merely "these exist". */
 .rdp-state {
   flex: none;
   display: inline-flex;
@@ -3519,9 +3526,9 @@ h2.eyebrow,
   width: 28px;
   align-self: stretch;
   min-height: 42px;
-  border-radius: 0 var(--otk-radius) var(--otk-radius) 0;
   color: var(--rdp-on-chrome);
 }
+.rdp-state[data-tone] { border-radius: 0 var(--otk-radius) var(--otk-radius) 0; }
 .rdp-state[data-tone="fuchsia"] { background: #d82c82; }
 .rdp-state[data-tone="yellow"] { background: #fdaf08; color: #141a26; }
 .rdp-state[data-tone="green"] { background: #2f864d; }
@@ -3542,8 +3549,19 @@ h2.eyebrow,
   text-overflow: ellipsis;
 }
 /* Attribute marks. Tone is reinforcement only — each mark repeats something the
-   record states in words, so a monochrome reading loses nothing. */
-.rdp-marks { flex: none; display: inline-flex; gap: 2px; }
+   record states in words, so a monochrome reading loses nothing.
+   Every mark gets the SAME square cell and is centred in it. The glyphs are all
+   24×24 artwork but they fill their box differently (a star is edge-to-edge, a
+   voicemail is wide and short), so laying them out on their intrinsic width
+   spaces them unevenly and lands them on different vertical centres. */
+.rdp-marks { flex: none; display: inline-flex; align-items: center; gap: 2px; }
+.rdp-marks > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
 .rdp-marks [data-tone="fuchsia"] { color: #f472b6; }
 .rdp-marks [data-tone="purple"] { color: #bb6acd; }
 .rdp-marks [data-tone="green"] { color: #64c987; }
@@ -3552,40 +3570,43 @@ h2.eyebrow,
 /* Trailing column: the table number, then the status control under it. The
    status is the affordance — its fill and glyph come from the same 22-state
    taxonomy the status-dropdown demo edits, so the two cannot drift. */
-/* Trailing column: the table number, then the status control under it, which
-   runs the full height of the row. */
+/* Trailing control: one button, full row height, table number stacked over the
+   status glyph inside it. */
 .rdp-trail {
   flex: none;
   align-self: stretch;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 36px;
+  min-width: 38px;
 }
-.rdp-trail__table {
-  font: var(--rd-label-sm);
-  font-variant-numeric: tabular-nums;
-  color: var(--rdp-on-chrome-alt);
-}
-/* An OUTLINED icon button — no fill. The status is carried by the glyph's
-   colour, from the same taxonomy the status-dropdown demo edits; a filled chip
-   made every row a block of colour and buried the guest name under it.
-   It keeps the PANEL as its own surface rather than inheriting the row's,
-   because on the selected row (#4a5162) the weakest glyph (accent-teal) falls
-   to 1.48:1 — the status becomes unreadable on exactly the row whose record is
-   open. Against the panel every one of the eleven fills clears 3:1. */
-.rdp-statechip {
+/* Two treatments, chosen by the state's service phase (see the comp):
+     pre-dining   → OUTLINED, the status carried by the glyph's colour
+     during-service → FILLED with the status colour, glyph in its `on` tone
+   The outlined form keeps the PANEL as its own surface rather than inheriting
+   the row's, because on the selected row (#4a5162) the weakest glyph
+   (accent-teal) falls to 1.48:1 — the status becomes unreadable on exactly the
+   row whose record is open. Against the panel all eleven tones clear 3:1. */
+.rdp-statebtn {
   flex: 1 1 auto;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  min-height: 30px;
+  gap: 1px;
+  width: 38px;
+  min-height: 44px;
+  padding: 3px 0;
   border-radius: var(--otk-radius);
   background: var(--rdp-chrome);
   box-shadow: inset 0 0 0 1px var(--rdp-edge);
 }
+/* The number is the guest-facing fact; the glyph is the state. Both live in the
+   control, so "table 31, running late" is one object rather than two. */
+.rdp-statebtn__table {
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--rdp-on-chrome);
+}
+.rdp-statebtn[data-filled="true"] .rdp-statebtn__table { color: inherit; }
 
 /* Utility dock — the other half of navigation, and the reason there is no rail. */
 .rdp-dock {
@@ -3954,7 +3975,11 @@ h2.eyebrow,
    beside it. No opacity on it: --rd-glyph is already the lightest tone that
    holds SC 1.4.11's 3:1, and fading it would put it under. */
 .rd--editorial .rd-seclabel { gap: 7px; }
-.rd--editorial .rd-seclabel .rd-icon { flex: none; }
+.rd--editorial .rd-seclabel /* Block, not inline: an inline SVG sits on the text baseline and carries a
+   descender gap, which is why glyph rows drift a pixel or two off centre from
+   each other. flex: none stops a crowded row shrinking one glyph and not its
+   neighbour. */
+.rd-icon { display: block; flex: none; }
 
 /* A little air, bought from chrome rather than from content. */
 .rd--editorial .rd-select--sticky .rd-select__item { padding: 16px 10px; }

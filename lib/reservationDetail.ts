@@ -245,7 +245,10 @@ export type RowGlyph = { icon: string; tone?: "fuchsia" | "green" | "yellow" | "
 
 export type ServiceRow = {
   id: string;
-  /** Leading state chip — colour-blocked and bled to the panel edge. */
+  /** Leading marker. Per the comp, only ATTENTION states are colour-blocked and
+   *  bled to the panel edge (running late, no show) — everything else is a bare
+   *  white glyph, so the block means "this one needs you" rather than "this one
+   *  exists". Omit `tone` for the bare form. */
   state: RowGlyph;
   /** Reservation status, resolved through lib/reservationStates. The trailing
    *  square on every row IS this control, so the tablet and the status-dropdown
@@ -305,7 +308,7 @@ export const IPAD = {
         {
           id: "r-24",
           status: "confirmed",
-          state: { icon: "tag", tone: "fuchsia" },
+          state: { icon: "star" },
           size: RESERVATION.partySize,
           time: RESERVATION.time,
           guest: RESERVATION.guest,
