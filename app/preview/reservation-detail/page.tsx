@@ -26,6 +26,7 @@ export const metadata: Metadata = {
 export default function ReservationDetailPreview() {
   if (IS_PRODUCTION) notFound();
   const Demo = DEMO_REGISTRY["reservation-detail"];
+  const Editorial = DEMO_REGISTRY["reservation-detail-editorial"];
 
   return (
     // No <main> here — app/layout.tsx already provides it.
@@ -53,8 +54,23 @@ export default function ReservationDetailPreview() {
             <Demo />
           </div>
           <figcaption>
-            The redesigned iOS reservation detail: every zone is a repeatable pattern, and
-            the note strip is a scroll anchor over sections that all stay mounted.
+            As shipped — the redesigned iOS reservation detail. Every zone is a repeatable
+            pattern, and the note strip is a scroll anchor over sections that all stay mounted.
+          </figcaption>
+        </figure>
+
+        <figure className="demo-frame" data-surface="light">
+          <div className="demo-frame__chrome" aria-hidden="true">
+            <span className="demo-frame__dot" />
+            <span className="demo-frame__label">OTKit · Editorial variant</span>
+          </div>
+          <div className="demo-frame__surface" data-surface="light">
+            <Editorial />
+          </div>
+          <figcaption>
+            The same component and data with a different type and surface treatment — one
+            display moment, hairlines instead of fills, no device chrome. The action teal
+            stays: this is range within OTKit, not a different brand.
           </figcaption>
         </figure>
       </div>

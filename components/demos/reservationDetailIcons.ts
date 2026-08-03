@@ -90,15 +90,16 @@ const EXTRA_ICONS: Record<string, DemoIcon> = {
       { d: "M17.5 2.4C18.9 2.4 20 4.9 20 8.6C20 11.6 19.2 13.6 18 14.2V20.6C18 21.15 17.55 21.6 17 21.6H16.6C16.05 21.6 15.6 21.15 15.6 20.6V14.2C14.5 13.7 14 11.9 14.2 9.4C14.5 5.6 16.1 2.4 17.5 2.4Z" },
     ],
   },
-  // Clock disc with the hand knocked out (same construction as the OTKit clock),
-  // plus a solid rewind arrow — "the clock, going back".
-  "history": {
-    viewBox: "0 0 24 24",
-    paths: [
-      { d: "M13 4.5C17.4183 4.5 21 8.0817 21 12.5C21 16.9183 17.4183 20.5 13 20.5C8.5817 20.5 5 16.9183 5 12.5C5 8.0817 8.5817 4.5 13 4.5ZM12 8V13C12 13.2761 12.2239 13.5 12.5 13.5H15.5C15.7761 13.5 16 13.2761 16 13V12C16 11.7239 15.7761 11.5 15.5 11.5H14V8C14 7.7239 13.7761 7.5 13.5 7.5H12.5C12.2239 7.5 12 7.7239 12 8Z" },
-      { d: "M2.2 8.6L7.4 4.6C7.73 4.35 8.2 4.58 8.2 5V13C8.2 13.42 7.73 13.65 7.4 13.4L2.2 9.4C1.93 9.2 1.93 8.8 2.2 8.6Z" },
-    ],
-  },
+  // History → the real OTKit clock vector, deliberately.
+  //
+  // OTKit's own glyph for previous visits is a clock WITH a rewind arrow, but it
+  // is not in the subset exported into otkitIcons.ts. Two hand-drawn attempts at
+  // adding the arrow both read as a blob — a triangle tangent to a circle looks
+  // like a map pin, not a rewind — and an approximation that looks broken is
+  // worse than the system's own clean vector. So this borrows `clock` until the
+  // real glyph is exported, at which point this entry should be deleted and the
+  // OTKit spread below will pick it up automatically.
+  "history": OTKIT_ICONS.clock,
   "plus": {
     viewBox: "0 0 24 24",
     paths: [

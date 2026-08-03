@@ -3156,6 +3156,88 @@ h2.eyebrow,
   .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   Editorial variant (.rd--editorial)
+   ───────────────────────────────────────────────────────────────────
+   The same component and data with a different type and surface
+   treatment. Everything the variant changes lives here, so the two
+   cannot drift apart and a fix to the base is a fix to both.
+
+   The exploration is "what if OTKit had more editorial craft", not
+   "what if this were Resy" — so the action teal STAYS. Swapping the
+   accent would make it a pastiche of a competitor; keeping it makes it
+   range within the brand.
+
+   Three moves, all of which raise craft without spending density:
+     1. Real display/body contrast. The guest name was 18px semibold in
+        the same family as everything else — bigger, not different. As a
+        serif at 26px it stops being a label and becomes the subject.
+     2. Hairlines instead of fills. The stat discs, the avatar disc and
+        the chip fills were the most product-UI things on screen. Figures
+        sitting directly on white under a tracked label read as more
+        considered AND take less room.
+     3. Micro-labels pushed further — wider tracking, lighter weight.
+   Plus: the device bezel goes. A notch and side rails say "mockup";
+   a clean card says "product".
+   ═══════════════════════════════════════════════════════════════════ */
+.rd--editorial {
+  --rd-hairline: #e8e9ea;
+}
+/* Bezel → card. */
+.rd--editorial .rd-device {
+  padding: 0;
+  border-radius: 26px;
+  background: none;
+  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.06), 0 24px 60px -20px rgba(20, 26, 38, 0.22);
+}
+.rd--editorial .rd-device::before,
+.rd--editorial .rd-device::after,
+.rd--editorial .rd-notch { display: none; }
+.rd--editorial .rd-screen { border-radius: 26px; }
+
+/* 1. The name is the subject of the page, so it gets the one display moment. */
+.rr-demo.rd--editorial .rd-guest {
+  font: 400 26px/30px var(--primitive-font-family-serif), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+.rd--editorial .rd-row--guest { min-height: 76px; padding-top: 18px; padding-bottom: 14px; }
+
+/* 2. Fills out, hairlines in. */
+.rr-demo.rd--editorial .rd-stats { padding: 6px 20px 18px; gap: 12px; }
+.rd--editorial .rd-stat__value {
+  width: auto;
+  height: auto;
+  background: none;
+  font: 400 26px/30px var(--primitive-font-family-serif), Georgia, serif;
+}
+.rr-demo.rd--editorial .rd-stat { align-items: flex-start; text-align: left; }
+.rd--editorial .rd-tag { box-shadow: inset 0 0 0 1px var(--rd-hairline); }
+
+/* 3. Micro-labels: wider, lighter, quieter. SECTION labels only — the wide
+   tracking is a structural device. Applying it to the stat labels overflowed the
+   four-column grid ("NO-SHOWS" wrapped and pushed its sub-count onto a third
+   line), which is the reminder that a treatment belongs to a ROLE, not to
+   everything that happens to be small. */
+.rr-demo.rd--editorial .rd-seclabel {
+  font: 500 12px/12px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-glyph);
+}
+.rd--editorial .rd-stat__label {
+  font: var(--rd-body-sm);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--otk-ink);
+}
+.rr-demo.rd--editorial .rd-seclabel { padding: 22px 20px 6px; }
+.rd--editorial .rd-stat__label { margin-top: 2px; }
+.rd--editorial .rd-seclabel .rd-icon { display: none; }
+
+/* A little air, bought from chrome rather than from content. */
+.rd--editorial .rd-select--sticky .rd-select__item { padding: 16px 10px; }
+.rd--editorial .rd-actionbar { padding: 14px 20px 22px; }
+
 /* ── Entrance ──
    One orchestrated reveal on scroll-in: the zones arrive in reading order, so
    the eye is walked down the screen's structure once. Not repeated on scroll. */

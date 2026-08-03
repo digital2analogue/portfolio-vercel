@@ -3,7 +3,7 @@ import ReservationStatusDemo from "./ReservationStatusDemo";
 import TableStatusDemo from "./TableStatusDemo";
 import CheckUsageDemo from "./CheckUsageDemo";
 import RuleCellDemo from "./RuleCellDemo";
-import ReservationDetailDemo from "./ReservationDetailDemo";
+import ReservationDetailDemo, { ReservationDetailEditorial } from "./ReservationDetailDemo";
 
 /**
  * Registry of embeddable case-study demos, keyed by the string used in a
@@ -17,7 +17,8 @@ export type DemoKey =
   | "table-status"
   | "check-usage"
   | "rule-cell"
-  | "reservation-detail";
+  | "reservation-detail"
+  | "reservation-detail-editorial";
 
 export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "reservation-status": ReservationStatusDemo,
@@ -25,4 +26,5 @@ export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "check-usage": CheckUsageDemo,
   "rule-cell": RuleCellDemo,
   "reservation-detail": ReservationDetailDemo,
+  "reservation-detail-editorial": ReservationDetailEditorial,
 };
