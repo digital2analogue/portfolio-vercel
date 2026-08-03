@@ -49,9 +49,6 @@ import {
 
 function Icon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {
   const g = RESERVATION_DETAIL_ICONS[name] ?? RESERVATION_DETAIL_ICONS.receipt;
-  const strokeProps = g.stroke
-    ? { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const }
-    : { fill: "currentColor" };
   return (
     <svg
       className={className ? `rd-icon ${className}` : "rd-icon"}
@@ -59,7 +56,7 @@ function Icon({ name, size = 20, className }: { name: string; size?: number; cla
       height={size}
       viewBox={g.viewBox}
       aria-hidden="true"
-      {...strokeProps}
+      fill="currentColor"
     >
       {g.paths.map((pth, i) => (
         <path key={i} d={pth.d} fillRule={pth.fillRule} clipRule={pth.clipRule} />

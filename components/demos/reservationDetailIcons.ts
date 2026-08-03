@@ -9,17 +9,18 @@
  * match the source screen's weight and 24px grid. If the OTKit export ever
  * gains them, delete the entry here and reference OTKIT_ICONS instead.
  *
- * Two rendering modes, because the source screen mixes them: solid glyphs are
- * filled paths like the OTKit set; ring-based glyphs (history) are stroked,
- * which is how they read on the device at 20px.
  */
 
 import { OTKIT_ICONS, type OtkitIcon } from "./otkitIcons";
 
-export type DemoIcon = OtkitIcon & {
-  /** Render as 2px strokes with no fill, rather than filled paths. */
-  stroke?: boolean;
-};
+/**
+ * Every glyph is a FILLED silhouette — no stroked variants. The OTKit export is
+ * filled, so those vectors are authoritative; a stroked supplementary glyph next
+ * to them reads as a different icon set on the same row. There used to be a
+ * `stroke` mode here for two glyphs (utensils, history) and it is deliberately
+ * gone rather than merely unused, so the mixed set cannot return by accident.
+ */
+export type DemoIcon = OtkitIcon;
 
 const EXTRA_ICONS: Record<string, DemoIcon> = {
   "chevron-left": {
@@ -78,22 +79,24 @@ const EXTRA_ICONS: Record<string, DemoIcon> = {
       },
     ],
   },
+  // Fork (three tines + body) and knife, as solid silhouettes.
   "utensils": {
     viewBox: "0 0 24 24",
-    stroke: true,
     paths: [
-      { d: "M4 2.5V8.5C4 9.60457 4.89543 10.5 6 10.5H7C8.10457 10.5 9 9.60457 9 8.5V2.5" },
-      { d: "M6.5 2.5V21.5" },
-      { d: "M20 15.5V2.5C17.5 2.5 15.5 4.5 15.5 8.5V13.5C15.5 14.6046 16.3954 15.5 17.5 15.5H20ZM20 15.5V21.5" },
+      { d: "M3.7 3C4.09 3 4.4 3.31 4.4 3.7V10H3V3.7C3 3.31 3.31 3 3.7 3Z" },
+      { d: "M6.25 3C6.64 3 6.95 3.31 6.95 3.7V10H5.55V3.7C5.55 3.31 5.86 3 6.25 3Z" },
+      { d: "M8.8 3C9.19 3 9.5 3.31 9.5 3.7V10H8.1V3.7C8.1 3.31 8.41 3 8.8 3Z" },
+      { d: "M3 10H9.5V10.6C9.5 11.85 8.62 12.9 7.45 13.15V20.6C7.45 21.15 7 21.6 6.45 21.6H6.05C5.5 21.6 5.05 21.15 5.05 20.6V13.15C3.88 12.9 3 11.85 3 10.6V10Z" },
+      { d: "M17.5 2.4C18.9 2.4 20 4.9 20 8.6C20 11.6 19.2 13.6 18 14.2V20.6C18 21.15 17.55 21.6 17 21.6H16.6C16.05 21.6 15.6 21.15 15.6 20.6V14.2C14.5 13.7 14 11.9 14.2 9.4C14.5 5.6 16.1 2.4 17.5 2.4Z" },
     ],
   },
+  // Clock disc with the hand knocked out (same construction as the OTKit clock),
+  // plus a solid rewind arrow — "the clock, going back".
   "history": {
     viewBox: "0 0 24 24",
-    stroke: true,
     paths: [
-      { d: "M3.5 11.5A8.5 8.5 0 1 1 5.7 18" },
-      { d: "M3 5.5V11.5H9" },
-      { d: "M12 7.5V12L15.25 14" },
+      { d: "M13 4.5C17.4183 4.5 21 8.0817 21 12.5C21 16.9183 17.4183 20.5 13 20.5C8.5817 20.5 5 16.9183 5 12.5C5 8.0817 8.5817 4.5 13 4.5ZM12 8V13C12 13.2761 12.2239 13.5 12.5 13.5H15.5C15.7761 13.5 16 13.2761 16 13V12C16 11.7239 15.7761 11.5 15.5 11.5H14V8C14 7.7239 13.7761 7.5 13.5 7.5H12.5C12.2239 7.5 12 7.7239 12 8Z" },
+      { d: "M2.2 8.6L7.4 4.6C7.73 4.35 8.2 4.58 8.2 5V13C8.2 13.42 7.73 13.65 7.4 13.4L2.2 9.4C1.93 9.2 1.93 8.8 2.2 8.6Z" },
     ],
   },
   "plus": {
