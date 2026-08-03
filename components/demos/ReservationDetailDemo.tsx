@@ -80,7 +80,7 @@ const VISIT_SCOPES: { id: string; label: string; visits: Visit[] }[] = [
 ];
 
 /** Render order of the zones the entrance reveal walks down. */
-const ZONE = { guest: 0, tag: 1, note: 2, strip: 3, sections: 4 };
+const ZONE = { guest: 0, tag: 1, strip: 2, sections: 3 };
 
 export default function ReservationDetailDemo() {
   const [active, setActive] = useState(0);
@@ -309,11 +309,6 @@ export default function ReservationDetailDemo() {
               <span className="rd-sr">Edit tags</span>
             </button>
 
-            <button type="button" className="rd-row rd-row--action rd-zone" style={zone(ZONE.note)}>
-              <Icon name="receipt" size={24} />
-              <span className="rd-notetext">{RESERVATION.visitNote}</span>
-            </button>
-
             {/* Scroll anchors, not tabs: all five sections stay mounted below, so
                 this is navigation within one document, marked with aria-current. */}
             <nav
@@ -384,7 +379,7 @@ export default function ReservationDetailDemo() {
 
                       <div className="rd-seg" role="tablist" aria-label="Visit scope">
                         <span
-                          className="rd-seg__thumb"
+                          className="rd-seg__indicator"
                           aria-hidden="true"
                           style={{ transform: `translateX(${scope * 100}%)` }}
                         />

@@ -85,6 +85,12 @@ export const NOTE_SECTIONS: NoteSection[] = [
     notes: [
       {
         id: "seat-1",
+        text: "Requested the corner banquette when booking. Confirmed by phone.",
+        author: "Priya N.",
+        date: "Oct 24",
+      },
+      {
+        id: "seat-2",
         text: "Prefers a banquette away from the kitchen pass. Has declined table 6 twice.",
         author: "Dev R.",
         date: "May 4",
@@ -195,10 +201,7 @@ export const RESERVATION = {
     { label: "Friend of owner", icon: "star", tone: "relationship" },
     { label: "Anniversary", icon: "cocktail", tone: "occasion" },
   ],
-  /** Note attached to this visit specifically, not the guest's guestbook. */
-  visitNote: "Requested the corner banquette when booking. Confirmed by phone.",
   tagPlaceholder: "Add a tag…",
-  visitNotePlaceholder: "Add a visit note",
 } as const;
 
 /**
