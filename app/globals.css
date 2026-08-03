@@ -3172,6 +3172,7 @@ h2.eyebrow,
      SELECTION control reads as a second selection. */
   .rdp-icon--bare:hover,
   .rdp-chip:not(.rdp-chip--date):hover,
+  .rdp-dockbtn:hover,
   .rdp-quote:hover { background: var(--rdp-chrome-alt); }
   .rdp-resv:not([data-selected="true"]):hover { background: var(--rdp-chrome-alt); }
   .rdp-status:hover { filter: brightness(0.96); }
@@ -3404,7 +3405,9 @@ h2.eyebrow,
   align-items: center;
   gap: 4px;
   width: 40px;
-  padding: 6px 0 8px;
+  /* Bottom padding clears the list panel's dock, so the rail's own footer reads
+     as the foot of the RAIL rather than as another dock button. */
+  padding: 6px 0 52px;
   background: var(--rdp-chrome);
 }
 .rdp-railbtn {
@@ -3428,6 +3431,7 @@ h2.eyebrow,
    raised fill, per the comp. Both are the legacy primary blue at 8:1. */
 .rdp-railbtn::after { inset: 3px auto 3px -6px; width: 3px; background: var(--rdp-focus); }
 .rdp-resv::after { inset: 0 auto -1px 0; width: 3px; }
+.rdp-rail__spacer { flex: 1 1 auto; }
 .rdp-railbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 1px; }
 
 /* ── Service lists ── */
@@ -3546,6 +3550,11 @@ h2.eyebrow,
   font: var(--rd-body-sm);
   color: var(--rdp-on-chrome-alt);
   font-variant-numeric: tabular-nums;
+  /* One line. Wrapped, the seated rows' "5:30 pm · 1h 5m" pushes the name onto
+     a third line and the row stops matching its neighbours. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .rdp-resv__name {
   display: block;
@@ -3593,6 +3602,36 @@ h2.eyebrow,
 /* Trailing column: the table number, then the status control under it. The
    status is the affordance — its fill and glyph come from the same 22-state
    taxonomy the status-dropdown demo edits, so the two cannot drift. */
+/* The utility dock — the other half of navigation, with sign-out set apart. */
+.rdp-dock {
+  position: relative;
+  flex: none;
+  display: flex;
+  background: var(--rdp-chrome);
+  border-top: 1px solid var(--rdp-chrome-alt);
+  box-shadow: 0 -10px 18px -12px rgba(0, 0, 0, 0.9);
+}
+.rdp-dockbtn {
+  position: relative;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border: 0;
+  background: none;
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+/* Sign-out is not a tool; it gets the rail's width and its own gutter. */
+.rdp-dockbtn--lead { flex: none; width: 40px; margin-right: 6px; }
+.rdp-dockbtn:not(.rdp-dockbtn--lead) + .rdp-dockbtn { box-shadow: inset 1px 0 0 var(--rdp-chrome-alt); }
+.rdp-dockbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: -2px; }
+/* The dock has no gutter above it to hang badges in, so they sit inside. */
+.rdp-dockbtn .rdp-badge { top: 6px; right: 50%; margin-right: -18px; }
+.rdp-dockbtn .rdp-newdot { margin: -13px 0 0 4px; }
+
 /* Trailing control: one button, full row height, table number stacked over the
    status glyph inside it. */
 .rdp-trail { flex: none; display: flex; }

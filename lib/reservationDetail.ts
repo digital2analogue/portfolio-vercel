@@ -397,6 +397,11 @@ export const IPAD = {
     { icon: "menu", label: "Menus" },
     { icon: "bell", label: "Alerts" },
   ] as { icon: string; label: string; active?: boolean }[],
+  /** Utility glyphs pinned to the foot of the rail. */
+  railFooter: [
+    { icon: "gear", label: "Settings" },
+    { icon: "info", label: "About" },
+  ] as { icon: string; label: string }[],
   /**
    * Side panel — the reservation's actions, as full-width rows with a leading
    * glyph. Two carry a second line (what the action would actually send), and
@@ -416,6 +421,16 @@ export const IPAD = {
     qty: "1 x",
     items: ["1 x Aloha Maid Juice", "1 x Side of hot sauce"],
   },
+  /** Utility dock under the service lists. The sign-out sits apart from the
+   *  tools, as in the comp. */
+  dockLead: { icon: "exit", label: "Sign out" },
+  dock: [
+    { icon: "receipt", label: "Reports", dot: true },
+    { icon: "bell", label: "Alerts", badge: 2 },
+    { icon: "menu", label: "Menus" },
+    { icon: "presentation", label: "Shift notes" },
+    { icon: "contact-card", label: "Guestbook" },
+  ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
   /** The record’s own status, same taxonomy as the list rows. */
   status: { id: "confirmed", table: "Table 24", tableState: "Assigned" },
 } as const;

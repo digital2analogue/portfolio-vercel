@@ -188,6 +188,13 @@ export default function ReservationDetailIPad() {
                   <span className="rd-sr">{r.label}</span>
                 </button>
               ))}
+              <span className="rdp-rail__spacer" />
+              {IPAD.railFooter.map((r) => (
+                <button key={r.label} type="button" className="rdp-railbtn">
+                  <Icon name={r.icon} size={20} />
+                  <span className="rd-sr">{r.label}</span>
+                </button>
+              ))}
             </nav>
 
             <aside className="rdp-sidebar" aria-label="Service lists">
@@ -263,14 +270,20 @@ export default function ReservationDetailIPad() {
                             <span
                               className="rdp-statebtn"
                               data-filled={filled}
-                              style={
-                                filled
-                                  ? { background: st.fill, color: st.on, boxShadow: "none" }
-                                  : { color: st.fill }
-                              }
+                              /* Unseated, this button is about the TABLE — the
+                                 status is the leading marker — so the glyph
+                                 stays neutral. Tinting it here put the same
+                                 signal in two places and made the colour column
+                                 stop meaning anything. */
+                              style={filled ? { background: st.fill, color: st.on, boxShadow: "none" } : undefined}
                             >
                               {r.table && <span className="rdp-statebtn__table">{r.table}</span>}
-                              <Icon name={st.icon} size={20} />
+                              {/* Unseated, the button is about the TABLE and the
+                                  status lives in the leading marker; once the
+                                  party is seated the status moves here and the
+                                  button fills with its colour. Same control, and
+                                  the accessible name states both either way. */}
+                              <Icon name={filled ? st.icon : "seat"} size={20} />
                               <span className="rd-sr">
                                 {st.label}
                                 {r.table ? `, table ${r.table}` : ", no table assigned"}
@@ -284,6 +297,23 @@ export default function ReservationDetailIPad() {
                 ))}
               </div>
 
+              <div className="rdp-dock" role="group" aria-label="Service tools">
+                <button type="button" className="rdp-dockbtn rdp-dockbtn--lead" aria-label={IPAD.dockLead.label}>
+                  <Icon name={IPAD.dockLead.icon} size={20} />
+                </button>
+                {IPAD.dock.map((d) => (
+                  <button key={d.icon} type="button" className="rdp-dockbtn" aria-label={d.label}>
+                    <Icon name={d.icon} size={20} />
+                    {d.badge ? (
+                      <span className="rdp-badge">
+                        {d.badge}
+                        <span className="rd-sr"> unread</span>
+                      </span>
+                    ) : null}
+                    {d.dot ? <span className="rdp-newdot" aria-hidden="true" /> : null}
+                  </button>
+                ))}
+              </div>
             </aside>
 
             {/* The record. Same zones and the same classes as the phone. */}
