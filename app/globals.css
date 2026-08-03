@@ -2431,6 +2431,21 @@ h2.eyebrow,
   --rd-dur-emph: var(--motion-duration-emphasized, 350ms);
 
   --rd-r: 8px;
+
+  /* Component type. One declaration per OTKit step, so a rule names the step it
+     wants instead of restating four properties — which is how eight rules ended
+     up inheriting line-height 1.6 (28.8/22.4/19.2px) instead of the scale's.
+     The family is carried in the shorthand because `font:` requires it. */
+  --rd-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rd-title-sm:     700 18px/24px var(--rd-font); /* Title/Small/Bold      */
+  --rd-body-lg-bold: 700 16px/24px var(--rd-font); /* Body/Large/Bold       */
+  --rd-body-md:      400 14px/20px var(--rd-font); /* Body/Medium/Regular   */
+  --rd-body-md-semi: 600 14px/20px var(--rd-font); /* Body/Medium/Semibold  */
+  --rd-body-md-bold: 700 14px/20px var(--rd-font); /* Body/Medium/Bold      */
+  --rd-body-sm:      400 12px/16px var(--rd-font); /* Body/Small/Regular    */
+  --rd-label-md:     600 14px/14px var(--rd-font); /* Label/Medium/Semibold */
+  --rd-label-sm:     600 12px/12px var(--rd-font); /* Label/Small/Semibold  */
+
   --rd-hairline: var(--otk-border);
   --rd-hover: var(--otk-surface);
 
@@ -2490,13 +2505,24 @@ h2.eyebrow,
   border-radius: 2px;
   background: linear-gradient(180deg, #3a3e44, #212429);
 }
+/* Left rail: ringer switch + the two volume keys, drawn as gradient stops in a
+   single element. This was three box-shadow copies of one bar, whose offsets
+   overlapped into one continuous line down the side of the phone — stops cannot
+   overlap, so the gaps are guaranteed. */
 .rd-device::before {
   left: -2px;
-  top: 128px;
-  height: 56px;
-  box-shadow: 0 -76px 0 #2c3036, 0 -116px 0 #2c3036;
+  top: 104px;
+  height: 178px;
+  background: linear-gradient(
+    180deg,
+    #2c3036 0 26px,
+    transparent 26px 46px,
+    #2c3036 46px 102px,
+    transparent 102px 122px,
+    #2c3036 122px 178px
+  );
 }
-.rd-device::after { right: -2px; top: 156px; height: 76px; }
+.rd-device::after { right: -2px; top: 152px; height: 76px; }
 
 .rd-screen {
   position: relative;
@@ -2604,15 +2630,12 @@ h2.eyebrow,
   border: 0;
   border-right: 1px solid var(--rd-hairline);
   color: var(--otk-ink);
-  font: inherit;
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: 600;
+  font: var(--rd-label-md);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition: background-color var(--rd-dur) var(--rd-ease);
 }
-.rd-chip--icon { flex: 0 0 48px; font-weight: 400; }
+.rd-chip--icon { flex: 0 0 48px; }
 .rd-chip:last-child { border-right: 0; }
 .rd-chip:hover { background: var(--rd-hover); }
 /* Fast in, slow out — the press reads as immediate, the release as a settle.
@@ -2641,9 +2664,7 @@ h2.eyebrow,
 .rd-titlebar__back:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-titlebar__back:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
 .rd-titlebar__name {
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
+  font: var(--rd-body-lg-bold);
   letter-spacing: -0.01em;
   color: var(--otk-ink);
 }
@@ -2696,7 +2717,7 @@ h2.eyebrow,
 .rd-row > .rd-icon:first-child,
 .rd-event > .rd-icon:first-child { color: var(--rd-glyph); }
 .rd-row .rd-icon { color: var(--otk-ink); }
-.rd-placeholder { flex: 1 1 auto; font-size: 14px; line-height: 20px; color: var(--rd-muted); }
+.rd-placeholder { flex: 1 1 auto; font: var(--rd-body-md); color: var(--rd-muted); }
 
 /* ── Populated rows ──
    The screen is a guest record, so most rows carry content; the "Add a …"
@@ -2729,9 +2750,7 @@ h2.eyebrow,
   box-shadow: inset 0 0 0 1px var(--otk-border);
   gap: 4px;
   color: var(--otk-ink);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
+  font: var(--rd-label-sm);
   white-space: nowrap;
 }
 /* Category glyph tones, from the OTKit accent family. Each clears 3:1 on white
@@ -2747,8 +2766,8 @@ h2.eyebrow,
 .rd-row--note { align-items: flex-start; }
 .rd-row--note .rd-icon { margin-top: 1px; }
 .rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.rd-notetext { flex: 1 1 auto; font-size: 14px; line-height: 20px; color: var(--otk-ink); }
-.rd-noteby { font-size: 12px; line-height: 16px; color: var(--rd-muted); }
+.rd-notetext { flex: 1 1 auto; font: var(--rd-body-md); color: var(--otk-ink); }
+.rd-noteby { font: var(--rd-body-sm); color: var(--rd-muted); }
 
 
 .rd-row--tags { gap: 12px; padding-left: 16px; padding-right: 16px; }
@@ -2763,16 +2782,13 @@ h2.eyebrow,
   border-radius: var(--radius-full);
   background: var(--rd-hover);
   color: var(--otk-ink);
-  font-size: 14px;
-  font-weight: 600;
+  font: var(--rd-label-md);
   letter-spacing: 0.01em;
 }
 .rr-demo.rd .rd-guest {
   flex: 1 1 auto;
   margin: 0;
-  font-size: 18px;
-  line-height: 24px;
-  font-weight: 700;
+  font: var(--rd-title-sm);
   letter-spacing: -0.015em;
   color: var(--otk-ink);
 }
@@ -2876,9 +2892,7 @@ h2.eyebrow,
   gap: 12px;
   margin: 0;
   padding: 16px 20px 8px;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 700;
+  font: var(--rd-body-lg-bold);
   letter-spacing: -0.01em;
   color: var(--otk-ink);
 }
@@ -2908,12 +2922,11 @@ h2.eyebrow,
   border-radius: var(--radius-full);
   background: var(--rd-hover);
   color: var(--otk-ink);
-  font-size: 18px;
-  font-weight: 700;
+  font: var(--rd-title-sm);
   font-variant-numeric: tabular-nums;
 }
-.rd-stat__label { font-size: 12px; font-weight: 600; color: var(--otk-ink); }
-.rd-stat__sub { font-size: 12px; color: var(--rd-muted); font-variant-numeric: tabular-nums; }
+.rd-stat__label { font: var(--rd-label-sm); color: var(--otk-ink); }
+.rd-stat__sub { font: var(--rd-body-sm); color: var(--rd-muted); font-variant-numeric: tabular-nums; }
 
 /* ── Visit scope segmented control ── */
 .rd-seg {
@@ -2951,9 +2964,7 @@ h2.eyebrow,
   border: 0;
   border-radius: calc(var(--rd-r) - 2px);
   color: var(--rd-muted);
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
+  font: var(--rd-label-sm);
   cursor: pointer;
   transition: color var(--rd-dur) var(--rd-ease);
 }
@@ -2979,8 +2990,7 @@ h2.eyebrow,
 .rd-visit + .rd-visit { margin-top: 18px; }
 .rr-demo.rd .rd-visit__heading {
   margin: 0 0 8px;
-  font-size: 14px;
-  font-weight: 700;
+  font: var(--rd-body-md-bold);
   letter-spacing: -0.01em;
   color: var(--otk-ink);
 }
@@ -2988,7 +2998,7 @@ h2.eyebrow,
 .rd-event .rd-icon { margin-top: 1px; color: var(--otk-ink); }
 .rd-event__time {
   flex: none;
-  font-size: 12px;
+  font: var(--rd-body-sm);
   color: var(--rd-muted);
   font-variant-numeric: tabular-nums;
 }
@@ -3004,7 +3014,7 @@ h2.eyebrow,
   align-items: center;
   gap: 6px;
   margin: 3px 0 0;
-  font-size: 12px;
+  font: var(--rd-body-sm);
   color: var(--rd-muted);
 }
 .rd-event__table {
@@ -3012,7 +3022,7 @@ h2.eyebrow,
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 14px;
+  font: var(--rd-body-md);
   color: var(--otk-ink);
   font-variant-numeric: tabular-nums;
 }
@@ -3028,7 +3038,7 @@ h2.eyebrow,
   width: 100%;
   cursor: pointer;
 }
-.rd-switch__label { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--otk-ink); }
+.rd-switch__label { font: var(--rd-body-md-semi); color: var(--otk-ink); }
 .rd-switch input {
   position: absolute;
   width: 1px;
@@ -3067,7 +3077,7 @@ h2.eyebrow,
 }
 
 .rd-row--referral { border-bottom: 0; }
-.rd-referral { flex: 1 1 auto; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--otk-ink); }
+.rd-referral { flex: 1 1 auto; font: var(--rd-body-md-semi); color: var(--otk-ink); }
 .rd-row--referral .rd-chevron { color: var(--rd-muted); }
 
 /* ── Bottom action bar ── */
@@ -3109,7 +3119,7 @@ h2.eyebrow,
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
 }
 .rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
-.rd-action__label { font-size: 14px; line-height: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.rd-action__label { font: var(--rd-label-md); letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
 /* Fill alone is 1.41:1 against the action bar, so the button's own edge is what
    identifies it — ringed to 3.65:1. The primary needs no ring: its teal fill is
@@ -3122,7 +3132,7 @@ h2.eyebrow,
   box-shadow: inset 0 0 0 1px var(--rd-edge);
   color: var(--otk-ink);
 }
-.rd-action__table { font-size: 12px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.rd-action__table { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
 
 /* ── Entrance ──
    One orchestrated reveal on scroll-in: the zones arrive in reading order, so
