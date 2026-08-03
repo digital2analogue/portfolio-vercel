@@ -385,22 +385,18 @@ export const IPAD = {
       ],
     },
   ] as ServiceList[],
-  /** Left icon rail — the app's primary sections. The active one is the
-   *  reservations view the record belongs to. */
+  /** Left icon rail — the app's primary sections, in the comp's order. There is
+   *  no footer group and no dock beneath the list panel: the rail ends at the
+   *  bell and the panel ends at its last row. */
   rail: [
-    { icon: "receipt", label: "Shift overview" },
+    { icon: "bars", label: "Shift overview" },
     { icon: "seat", label: "Reservations", active: true },
-    { icon: "nav", label: "Floor plan" },
-    { icon: "clock", label: "Timeline" },
-    { icon: "person", label: "Guestbook" },
+    { icon: "sliders", label: "Pacing" },
+    { icon: "presentation", label: "Reports" },
+    { icon: "contact-card", label: "Guestbook" },
     { icon: "menu", label: "Menus" },
-    { icon: "message", label: "Alerts" },
+    { icon: "bell", label: "Alerts" },
   ] as { icon: string; label: string; active?: boolean }[],
-  /** Utility glyphs pinned to the foot of the rail. */
-  railFooter: [
-    { icon: "edit", label: "Settings" },
-    { icon: "flag", label: "About" },
-  ] as { icon: string; label: string }[],
   /**
    * Side panel — the reservation's actions, as full-width rows with a leading
    * glyph. Two carry a second line (what the action would actually send), and
@@ -420,14 +416,6 @@ export const IPAD = {
     qty: "1 x",
     items: ["1 x Aloha Maid Juice", "1 x Side of hot sauce"],
   },
-  /** Utility dock pinned under the service lists. */
-  dock: [
-    { icon: "receipt", label: "Reports", dot: true },
-    { icon: "message", label: "Alerts", badge: 2 },
-    { icon: "menu", label: "Menu" },
-    { icon: "bottle", label: "Bar" },
-    { icon: "price", label: "Payments" },
-  ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
   /** The record’s own status, same taxonomy as the list rows. */
   status: { id: "confirmed", table: "Table 24", tableState: "Assigned" },
 } as const;

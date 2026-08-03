@@ -3172,7 +3172,6 @@ h2.eyebrow,
      SELECTION control reads as a second selection. */
   .rdp-icon--bare:hover,
   .rdp-chip:not(.rdp-chip--date):hover,
-  .rdp-dockbtn:hover,
   .rdp-quote:hover { background: var(--rdp-chrome-alt); }
   .rdp-resv:not([data-selected="true"]):hover { background: var(--rdp-chrome-alt); }
   .rdp-status:hover { filter: brightness(0.96); }
@@ -3381,7 +3380,7 @@ h2.eyebrow,
    accent bar at 4.23:1 as well as its fill. The bar is the signal; the fill is
    there to make the row scannable. */
 .rdp-sel { position: relative; }
-.rdp-sel[data-selected="true"] { background: var(--rdp-selected); }
+.rdp-resv.rdp-sel[data-selected="true"] { background: var(--rdp-selected); }
 .rdp-sel[data-selected="true"]::after {
   content: "";
   position: absolute;
@@ -3401,7 +3400,6 @@ h2.eyebrow,
   padding: 6px 0 8px;
   background: var(--rdp-chrome);
 }
-.rdp-rail__spacer { flex: 1 1 auto; }
 .rdp-railbtn {
   position: relative;
   display: inline-flex;
@@ -3416,10 +3414,12 @@ h2.eyebrow,
   cursor: pointer;
   transition: background-color var(--rd-dur) var(--rd-ease), color var(--rd-dur) var(--rd-ease);
 }
-.rdp-railbtn[data-selected="true"] { background: var(--rdp-chrome-alt); color: var(--rdp-on-chrome); }
+.rdp-railbtn[data-selected="true"] { color: var(--rdp-focus); }
 /* Where the bar sits differs per surface: the rail marks its own left edge, the
    list marks the row's leading edge against the panel. */
-.rdp-railbtn::after { inset: 3px auto 3px -6px; width: 3px; }
+/* The rail marks its section with an accent EDGE and a tinted glyph — no
+   raised fill, per the comp. Both are the legacy primary blue at 8:1. */
+.rdp-railbtn::after { inset: 3px auto 3px -6px; width: 3px; background: var(--rdp-focus); }
 .rdp-resv::after { inset: 0 auto -1px 0; width: 3px; }
 .rdp-railbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 1px; }
 
@@ -3608,34 +3608,6 @@ h2.eyebrow,
 }
 .rdp-statebtn[data-filled="true"] .rdp-statebtn__table { color: inherit; }
 
-/* Utility dock — the other half of navigation, and the reason there is no rail. */
-.rdp-dock {
-  position: relative;
-  flex: none;
-  display: flex;
-  background: var(--rdp-chrome);
-  border-top: 1px solid var(--rdp-chrome-alt);
-  /* The lists scroll beneath it, so it casts rather than merely abuts. */
-  box-shadow: 0 -10px 18px -12px rgba(0, 0, 0, 0.9);
-}
-.rdp-dockbtn {
-  position: relative;
-  flex: 1 1 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 46px;
-  border: 0;
-  background: none;
-  color: var(--rdp-on-chrome);
-  cursor: pointer;
-  transition: background-color var(--rd-dur) var(--rd-ease);
-}
-.rdp-dockbtn + .rdp-dockbtn { box-shadow: inset 1px 0 0 var(--rdp-chrome-alt); }
-.rdp-dockbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: -2px; }
-/* The dock's badges sit inside the bar, not proud of it — there is no gutter
-   above a dock button to hang them in. */
-.rdp-dockbtn .rdp-badge { top: 6px; right: 50%; margin-right: -18px; }
 
 
 /* The record. Zones keep their .rd-* classes; only the container is new.

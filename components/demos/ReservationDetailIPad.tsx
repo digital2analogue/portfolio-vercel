@@ -188,13 +188,6 @@ export default function ReservationDetailIPad() {
                   <span className="rd-sr">{r.label}</span>
                 </button>
               ))}
-              <span className="rdp-rail__spacer" />
-              {IPAD.railFooter.map((r) => (
-                <button key={r.label} type="button" className="rdp-railbtn">
-                  <Icon name={r.icon} size={20} />
-                  <span className="rd-sr">{r.label}</span>
-                </button>
-              ))}
             </nav>
 
             <aside className="rdp-sidebar" aria-label="Service lists">
@@ -291,20 +284,6 @@ export default function ReservationDetailIPad() {
                 ))}
               </div>
 
-              <div className="rdp-dock" role="group" aria-label="Service tools">
-                {IPAD.dock.map((d) => (
-                  <button key={d.icon} type="button" className="rdp-dockbtn" aria-label={d.label}>
-                    <Icon name={d.icon} size={20} />
-                    {d.badge ? (
-                      <span className="rdp-badge">
-                        {d.badge}
-                        <span className="rd-sr"> unread</span>
-                      </span>
-                    ) : null}
-                    {d.dot ? <span className="rdp-newdot" aria-hidden="true" /> : null}
-                  </button>
-                ))}
-              </div>
             </aside>
 
             {/* The record. Same zones and the same classes as the phone. */}
