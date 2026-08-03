@@ -240,16 +240,149 @@ export function activeSectionAt(scrollTop: number, offsets: number[]): number {
  * table, pacing + referral) move out to a side panel because there is now room
  * for them to sit beside the record instead of under it.
  */
+/** A glyph shown against a row, in one of the BOH accent tones. */
+export type RowGlyph = { icon: string; tone?: "fuchsia" | "green" | "yellow" | "blue" | "purple" | "teal" };
+
+export type ServiceRow = {
+  id: string;
+  /** Leading state chip — colour-blocked and bled to the panel edge. */
+  state: RowGlyph;
+  size: number;
+  time: string;
+  guest: string;
+  /** Inline attribute marks (tags, notes, media) on the right of the row. */
+  glyphs: RowGlyph[];
+  table?: string;
+  /** Filled table badge, used once a party is seated. */
+  tableTone?: "green" | "blue";
+  selected?: boolean;
+};
+
+export type ServiceList = {
+  id: string;
+  label: string;
+  sort: string;
+  parties: number;
+  covers: number;
+  /** Quoted-wait chips, waitlist only. */
+  quotes?: string[];
+  rows: ServiceRow[];
+};
+
 export const IPAD = {
-  /** Left icon rail — primary sections of the Back of House app. */
-  rail: ["seat", "nav", "menu", "receipt", "message"],
-  railFooter: ["price", "clock"],
-  service: { date: "Fri, Oct 27", shift: "Breakfast", covers: 4 },
-  waitlist: { label: "Waitlist", sort: "by added time", parties: 0, covers: 0 },
-  /** Quoted-wait chips on the waitlist header. */
-  waitTimes: ["1", "2", "3", "4", "5"],
-  reservations: { label: "Reservations", sort: "by scheduled time", parties: 1, covers: 4 },
-  /** Rows in the reservation list. The selected one is the record on screen. */
-  list: [{ id: "r-24", time: "6:45 am", guest: RESERVATION.guest, size: 4, table: "24", selected: true }],
+  /** iOS status bar above the service bar. */
+  statusBar: { time: "4:30 PM", date: "Fri Oct 27", battery: "100%" },
+  service: { covers: 1336, date: "Fri, Oct 27", shift: "Dinner" },
+  /** Right-hand button group in the service bar. `menu` is the RESTAURANT menu
+   *  here — the bound-book glyph is correct in this slot and wrong as a drawer
+   *  affordance, which is what the hamburger on the left is for. */
+  navButtons: [
+    { icon: "message", label: "Messages", badge: 2 },
+    { icon: "edit", label: "Add a shift note", dot: true },
+    { icon: "receipt", label: "Reports" },
+    { icon: "menu", label: "Menu" },
+  ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
+  /** The service lists. The selected reservation is the record on screen. */
+  lists: [
+    {
+      id: "waitlist",
+      label: "Waitlist",
+      sort: "by added time",
+      parties: 4,
+      covers: 24,
+      quotes: ["1", "2", "3", "4", "5"],
+      rows: [],
+    },
+    {
+      id: "reservations",
+      label: "Reservations",
+      sort: "by scheduled time",
+      parties: 4,
+      covers: 10,
+      rows: [
+        {
+          id: "r-24",
+          state: { icon: "tag", tone: "fuchsia" },
+          size: RESERVATION.partySize,
+          time: RESERVATION.time,
+          guest: RESERVATION.guest,
+          glyphs: [
+            { icon: "utensils", tone: "fuchsia" },
+            { icon: "seat", tone: "purple" },
+            { icon: "star", tone: "yellow" },
+          ],
+          table: RESERVATION.table,
+          selected: true,
+        },
+        {
+          id: "r-32",
+          state: { icon: "check" },
+          size: 2,
+          time: "7:00 pm",
+          guest: "Magdalena Rodr…",
+          glyphs: [
+            { icon: "seat", tone: "purple" },
+            { icon: "drinks", tone: "green" },
+            { icon: "price" },
+          ],
+          table: "32",
+        },
+        {
+          id: "r-31",
+          state: { icon: "clock", tone: "yellow" },
+          size: 4,
+          time: "7:00 pm",
+          guest: "Kadin Westervelt",
+          glyphs: [{ icon: "star", tone: "green" }, { icon: "message" }],
+          table: "31",
+        },
+        {
+          id: "r-00",
+          state: { icon: "nav" },
+          size: 2,
+          time: "7:15 pm",
+          guest: "Haylie Culhane",
+          glyphs: [{ icon: "sorbet", tone: "teal" }],
+        },
+      ],
+    },
+    {
+      id: "seated",
+      label: "Seated",
+      sort: "by seated time",
+      parties: 8,
+      covers: 24,
+      rows: [
+        {
+          id: "s-b3",
+          state: { icon: "seated" },
+          size: 3,
+          time: "5:30 pm · 1h 5m",
+          guest: "Kaylynn Stanton",
+          glyphs: [{ icon: "seat", tone: "purple" }, { icon: "price" }],
+          table: "b3",
+          tableTone: "green",
+        },
+        {
+          id: "s-50",
+          state: { icon: "seated" },
+          size: 2,
+          time: "5:56 pm · 39m",
+          guest: "Yoko Calhoun",
+          glyphs: [{ icon: "seat", tone: "purple" }, { icon: "drinks", tone: "green" }],
+          table: "50",
+          tableTone: "blue",
+        },
+      ],
+    },
+  ] as ServiceList[],
+  /** Utility dock pinned under the service lists. */
+  dock: [
+    { icon: "receipt", label: "Reports", dot: true },
+    { icon: "message", label: "Alerts", badge: 2 },
+    { icon: "menu", label: "Menu" },
+    { icon: "bottle", label: "Bar" },
+    { icon: "price", label: "Payments" },
+  ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
   status: { label: "Confirmed", table: "Table 24", tableState: "Assigned" },
 } as const;

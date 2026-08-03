@@ -177,29 +177,33 @@ const PAIRINGS = [
   { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
   // ── iPad / Back of House shell (components/demos/ReservationDetailIPad) ──
-  // The shell adds three surfaces the phone has no use for: two near-black
-  // panels (rail/sidebar #0d0e12, service bar #111114), one raised step inside
-  // them (#252833) and one tinted light panel beside the record (#f6f7f8). All
-  // four are sampled from the source clip. The record column itself is the same
-  // white surface as the phone and reuses every pairing above.
+  // The dark chrome is OTKit's OWN dark-mode token set, read from the source
+  // Figma rather than sampled from a clip: background/default #141A26,
+  // background/elevation #2D333F, border/default #6F737B, ash-lighter #D8D9DB.
+  // The record column is the same white surface as the phone and reuses every
+  // pairing above; the side panel beside it is the one tinted light surface.
   //
   // SC 1.4.3 — text.
-  { text: '#ffffff', bg: '#0d0e12', label: 'Demo/iPad: sidebar + rail text on BOH chrome' },
-  { text: '#a9b0bd', bg: '#0d0e12', label: 'Demo/iPad: sidebar sort/count text on BOH chrome' },
-  { text: '#ffffff', bg: '#111114', label: 'Demo/iPad: service-bar text on the date bar' },
-  { text: '#a9b0bd', bg: '#111114', label: 'Demo/iPad: service-bar secondary text' },
-  { text: '#ffffff', bg: '#252833', label: 'Demo/iPad: selected row + date chips on raised chrome' },
-  { text: '#a9b0bd', bg: '#252833', label: 'Demo/iPad: muted text on raised chrome' },
+  { text: '#ffffff', bg: '#141a26', label: 'Demo/iPad: service bar + list panel text on BOH chrome' },
+  { text: '#d8d9db', bg: '#141a26', label: 'Demo/iPad: sort links, counts and times on BOH chrome' },
+  { text: '#ffffff', bg: '#2d333f', label: 'Demo/iPad: selected reservation + hovered control' },
+  { text: '#d8d9db', bg: '#2d333f', label: 'Demo/iPad: secondary text on the selected reservation' },
+  { text: '#ffffff', bg: '#4a6fde', label: 'Demo/iPad: unread badge count + seated table badge (blue)' },
+  { text: '#ffffff', bg: '#2f864d', label: 'Demo/iPad: seated table badge (green)' },
+  { text: '#141a26', bg: '#fdaf08', label: 'Demo/iPad: running-late state chip glyph on amber' },
+  { text: '#ffffff', bg: '#d82c82', label: 'Demo/iPad: tagged state chip glyph on fuchsia' },
   { text: '#2d333f', bg: '#f6f7f8', label: 'Demo/iPad: side-panel ink (table label, switch, referral)' },
   { text: '#63666d', bg: '#f6f7f8', label: 'Demo/iPad: side-panel muted text (table state)' },
   //
-  // SC 1.4.11 — non-text. The rail glyphs are the ONLY label a rail button
-  // carries, and the focus ring is the only keyboard affordance on a dark panel,
-  // so both are held to 3:1 against every surface they land on.
-  { text: '#a9b0bd', bg: '#0d0e12', min: NON_TEXT, label: 'Demo/iPad: rail glyphs on chrome' },
-  { text: '#247f9e', bg: '#0d0e12', min: NON_TEXT, label: 'Demo/iPad: focus ring on rail + sidebar' },
-  { text: '#247f9e', bg: '#111114', min: NON_TEXT, label: 'Demo/iPad: focus ring on the service bar' },
-  { text: '#247f9e', bg: '#252833', min: NON_TEXT, label: 'Demo/iPad: focus ring on a raised chip / selected row' },
+  // SC 1.4.11 — non-text. Every control in the service bar is OUTLINED, so its
+  // boundary is the whole affordance; and the focus ring is the only keyboard
+  // affordance on a near-black panel. OTKit's action teal is 3.82:1 there —
+  // legal but muddy — so focus rings use the legacy primary blue at 8:1.
+  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: outlined chip + table-badge boundary on chrome' },
+  { text: '#6cb6f5', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: focus ring on chrome' },
+  { text: '#6cb6f5', bg: '#2d333f', min: NON_TEXT, label: 'Demo/iPad: focus ring on the selected reservation' },
+  { text: '#64c987', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: live-service dot (reinforces a named state)' },
+  { text: '#4a6fde', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: unread badge fill on chrome' },
   { text: '#247f9e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: status-button fill on the side panel' },
   { text: '#82868e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: side-panel glyphs + control boundary rings' },
   { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/iPad: side-panel glyph on a hovered row' },

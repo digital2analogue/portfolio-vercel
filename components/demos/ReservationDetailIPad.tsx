@@ -61,112 +61,162 @@ export default function ReservationDetailIPad() {
     <div className="rr-demo rd rdp">
       <div className="rdp-device">
         <div className="rdp-screen" ref={screenRef}>
-          {/* Service bar — the date and shift the whole floor is working. */}
-          <div className="rdp-topbar">
-            <button type="button" className="rdp-icon" aria-label="Open navigation">
-              <Icon name="hamburger" size={16} />
-            </button>
-            <span className="rdp-covers">
-              <Icon name="person" size={16} />
-              {IPAD.service.covers}
+          {/* Service bar. Faithful to OTKit's iPad top navigation: an iOS status
+              row, then a nav row whose date and shift are OUTLINED chips, not
+              filled ones. The fill I had used sat at 1.31:1 against the bar and
+              was doing the border's job badly. */}
+          <div className="rdp-statusbar" aria-hidden="true">
+            <span>
+              {IPAD.statusBar.time} <b>{IPAD.statusBar.date}</b>
             </span>
+            <span className="rdp-battery">
+              {IPAD.statusBar.battery}
+              <span className="rdp-batt" />
+            </span>
+          </div>
+          <div className="rdp-topbar">
+            <button type="button" className="rdp-icon rdp-icon--bare" aria-label="Open navigation">
+              <Icon name="hamburger" size={24} />
+            </button>
             <div className="rdp-datebar">
-              <button type="button" className="rdp-step" aria-label="Previous day">
+              <span className="rdp-covers">
+                <Icon name="person" size={20} />
+                {IPAD.service.covers.toLocaleString("en-US")}
+              </span>
+              <button type="button" className="rdp-chip rdp-chip--step" aria-label="Previous day">
                 <Icon name="chevron-left" size={16} />
               </button>
-              <span className="rdp-date">{IPAD.service.date}</span>
-              <span className="rdp-dot" aria-hidden="true" />
-              <span className="rdp-shift">{IPAD.service.shift}</span>
-              <button type="button" className="rdp-step" aria-label="Next day">
+              <span className="rdp-chip rdp-chip--date">{IPAD.service.date}</span>
+              {/* Service is live. A dot alone would be colour-as-only-channel, so
+                  it carries a text alternative rather than a tooltip. */}
+              <span className="rdp-live" role="img" aria-label="Service is live">
+                <span className="rdp-live__dot" />
+              </span>
+              <span className="rdp-chip rdp-chip--date">{IPAD.service.shift}</span>
+              <button type="button" className="rdp-chip rdp-chip--step" aria-label="Next day">
                 <Icon name="chevron-right" size={16} />
               </button>
             </div>
-            <div className="rdp-views" role="group" aria-label="Change view">
-              {["seat", "receipt", "menu"].map((v, i) => (
-                <button key={v} type="button" className="rdp-icon rdp-sel" data-active={i === 2} aria-label={`View ${i + 1}`}>
-                  <Icon name={v} size={16} />
+            <div className="rdp-views">
+              {IPAD.navButtons.map((btn) => (
+                <button key={btn.icon} type="button" className="rdp-chip rdp-chip--nav" aria-label={btn.label}>
+                  <Icon name={btn.icon} size={20} />
+                  {btn.badge ? (
+                    <span className="rdp-badge">
+                      {btn.badge}
+                      <span className="rd-sr"> unread</span>
+                    </span>
+                  ) : null}
+                  {btn.dot ? <span className="rdp-newdot" aria-hidden="true" /> : null}
                 </button>
               ))}
             </div>
           </div>
 
           <div className="rdp-body">
-            <nav className="rdp-rail" aria-label="Sections">
-              {IPAD.rail.map((g, i) => (
-                <button key={g} type="button" className="rdp-railbtn rdp-sel" data-active={i === 0} aria-label={`Section ${i + 1}`}>
-                  <Icon name={g} size={16} />
-                </button>
-              ))}
-              <span className="rdp-rail__spacer" />
-              {IPAD.railFooter.map((g, i) => (
-                <button key={g} type="button" className="rdp-railbtn" aria-label={`Utility ${i + 1}`}>
-                  <Icon name={g} size={16} />
-                </button>
-              ))}
-            </nav>
-
+            {/* Service lists. There is no vertical icon rail in the real app —
+                navigation is the drawer button above and this panel's own dock
+                below it, which is why the record gets the width instead. */}
             <aside className="rdp-sidebar" aria-label="Service lists">
-              <div className="rdp-listhead">
-                <span>
-                  <b>{IPAD.waitlist.label}</b>
-                  <i>{IPAD.waitlist.sort}</i>
-                </span>
-                <span className="rdp-counts">
-                  <Icon name="person" size={12} />
-                  {IPAD.waitlist.parties}
-                  <Icon name="seat" size={12} />
-                  {IPAD.waitlist.covers}
-                </span>
+              <div className="rdp-lists">
+                {IPAD.lists.map((list) => (
+                  <section key={list.id} aria-labelledby={`${baseId}-${list.id}`}>
+                    <div className="rdp-listhead">
+                      <span className="rdp-listhead__title">
+                        <b id={`${baseId}-${list.id}`}>{list.label}</b>
+                        <i>{list.sort}</i>
+                      </span>
+                      <span className="rdp-counts">
+                        <Icon name="person" size={16} />
+                        {list.parties}
+                        <Icon name="seat" size={16} />
+                        {list.covers}
+                      </span>
+                      <button type="button" className="rdp-chip rdp-chip--step" aria-label={`Collapse ${list.label}`}>
+                        <Icon name="chevron-left" size={16} className="rdp-caret" />
+                      </button>
+                    </div>
+
+                    {list.quotes ? (
+                      <div className="rdp-quotes" role="group" aria-label="Quoted wait times">
+                        {list.quotes.map((t) => (
+                          <button key={t} type="button" className="rdp-quote">
+                            <span className="rdp-quote__unit">3h+</span>
+                            <span className="rdp-quote__n">{t}</span>
+                          </button>
+                        ))}
+                        <button type="button" className="rdp-quote rdp-quote--add" aria-label="Add a quoted wait">
+                          <Icon name="plus" size={20} />
+                        </button>
+                      </div>
+                    ) : null}
+
+                    {list.rows.map((r) => (
+                      <button
+                        key={r.id}
+                        type="button"
+                        className="rdp-resv rdp-sel"
+                        data-selected={r.selected}
+                        aria-current={r.selected ? "true" : undefined}
+                      >
+                        <span className="rdp-state" data-tone={r.state.tone}>
+                          <Icon name={r.state.icon} size={16} />
+                        </span>
+                        <span className="rdp-resv__size">{r.size}</span>
+                        <span className="rdp-resv__body">
+                          <span className="rdp-resv__time">{r.time}</span>
+                          <span className="rdp-resv__name">{r.guest}</span>
+                        </span>
+                        <span className="rdp-marks" aria-hidden="true">
+                          {r.glyphs.map((g, gi) => (
+                            <span key={gi} data-tone={g.tone}>
+                              <Icon name={g.icon} size={16} />
+                            </span>
+                          ))}
+                        </span>
+                        {r.table ? (
+                          <span className="rdp-resv__table" data-tone={r.tableTone}>
+                            {r.table}
+                          </span>
+                        ) : (
+                          <span className="rdp-resv__table rdp-resv__table--empty">
+                            <Icon name="seat" size={16} />
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </section>
+                ))}
               </div>
-              <div className="rdp-quotes" role="group" aria-label="Quoted wait times">
-                {IPAD.waitTimes.map((t) => (
-                  <button key={t} type="button" className="rdp-quote">
-                    <Icon name="seat" size={12} />
-                    <span>{t}</span>
+
+              <div className="rdp-dock" role="group" aria-label="Service tools">
+                {IPAD.dock.map((d) => (
+                  <button key={d.icon} type="button" className="rdp-dockbtn" aria-label={d.label}>
+                    <Icon name={d.icon} size={20} />
+                    {d.badge ? (
+                      <span className="rdp-badge">
+                        {d.badge}
+                        <span className="rd-sr"> unread</span>
+                      </span>
+                    ) : null}
+                    {d.dot ? <span className="rdp-newdot" aria-hidden="true" /> : null}
                   </button>
                 ))}
-                <button type="button" className="rdp-quote rdp-quote--add" aria-label="Add a quoted wait">
-                  <Icon name="plus" size={12} />
-                </button>
               </div>
-
-              <div className="rdp-listhead">
-                <span>
-                  <b>{IPAD.reservations.label}</b>
-                  <i>{IPAD.reservations.sort}</i>
-                </span>
-                <span className="rdp-counts">
-                  <Icon name="person" size={12} />
-                  {IPAD.reservations.parties}
-                  <Icon name="seat" size={12} />
-                  {IPAD.reservations.covers}
-                </span>
-              </div>
-              {IPAD.list.map((r) => (
-                <button key={r.id} type="button" className="rdp-resv rdp-sel" data-selected={r.selected}>
-                  <Icon name="check" size={16} />
-                  <span className="rdp-resv__size">{r.size}</span>
-                  <span className="rdp-resv__body">
-                    <span className="rdp-resv__time">{r.time}</span>
-                    <span className="rdp-resv__name">{r.guest}</span>
-                  </span>
-                  <span className="rdp-resv__table">{r.table}</span>
-                </button>
-              ))}
             </aside>
 
             {/* The record. Same zones and the same classes as the phone. */}
             <main className="rdp-main">
-              <div className="rdp-chips rd-zone" style={zone(0)}>
-                <span className="rdp-chip">
+              <div className="rdp-facts rd-zone" style={zone(0)}>
+                <span className="rdp-fact">
                   <Icon name="clock" size={16} />
                   {RESERVATION.time}
                 </span>
-                <span className="rdp-chip">
+                <span className="rdp-fact">
                   <Icon name="person" size={16} />
                   {RESERVATION.partySize}
                 </span>
-                <span className="rdp-chip">
+                <span className="rdp-fact">
                   <Icon name="seat" size={16} />
                   2h 0m
                 </span>
@@ -342,26 +392,28 @@ export default function ReservationDetailIPad() {
                   <i>{IPAD.status.tableState}</i>
                 </span>
               </button>
-              <div className="rd-row rd-row--switch rdp-sideRow">
-                <label className="rd-switch" htmlFor="rdp-pacing">
-                  <span className="rd-switch__label">Exclude party from pacing limit</span>
-                  <input
-                    id="rdp-pacing"
-                    type="checkbox"
-                    role="switch"
-                    checked={excluded}
-                    onChange={(e) => setExcluded(e.target.checked)}
-                  />
-                  <span className="rd-switch__track" aria-hidden="true">
-                    <span className="rd-switch__thumb" />
-                  </span>
-                </label>
+              <div className="rdp-side__settings">
+                <div className="rd-row rd-row--switch rdp-sideRow">
+                  <label className="rd-switch" htmlFor="rdp-pacing">
+                    <span className="rd-switch__label">Exclude party from pacing limit</span>
+                    <input
+                      id="rdp-pacing"
+                      type="checkbox"
+                      role="switch"
+                      checked={excluded}
+                      onChange={(e) => setExcluded(e.target.checked)}
+                    />
+                    <span className="rd-switch__track" aria-hidden="true">
+                      <span className="rd-switch__thumb" />
+                    </span>
+                  </label>
+                </div>
+                <button type="button" className="rd-row rd-row--action rd-row--referral rdp-sideRow">
+                  <Icon name="plus" size={24} />
+                  <span className="rd-referral">Add a referral</span>
+                  <Icon name="chevron-right" size={24} className="rd-chevron" />
+                </button>
               </div>
-              <button type="button" className="rd-row rd-row--action rd-row--referral rdp-sideRow">
-                <Icon name="plus" size={24} />
-                <span className="rd-referral">Add a referral</span>
-                <Icon name="chevron-right" size={24} className="rd-chevron" />
-              </button>
             </aside>
           </div>
         </div>
