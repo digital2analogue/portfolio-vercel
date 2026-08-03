@@ -2805,20 +2805,28 @@ h2.eyebrow,
   letter-spacing: -0.015em;
   color: var(--otk-ink);
 }
-/* Trailing edit affordances sit at --rd-muted, not ink. They were the darkest
-   marks on the screen after the headings, which is backwards for a secondary
-   action sitting beside the guest's name and their tags — the content should
-   win. 5.75:1 keeps them unambiguously a control (they clear TEXT contrast, let
-   alone 1.4.11's 3:1) while giving the row back to what it holds. Size stays 24:
-   they are still something you touch, and the glyph scale is 16/24. */
+/* Trailing edit affordances are the quietest marks on the screen, by three
+   levers at once: --rd-glyph rather than ink, a thinner pencil silhouette, and
+   16px rather than 24. They sit beside the guest's name and their tags, and the
+   content should win every time.
+
+   That reclassifies them on the glyph scale — 24 is now PRIMARY affordances (nav
+   chips, note tabs, row leads, bottom actions) and 16 is SECONDARY and inline
+   (tags, metadata, trailing edits). Still a two-tier rule, just drawn in the
+   right place.
+
+   3.65:1 on white, 3.26 hovered, 3.06 pressed — the lightest grey that holds
+   SC 1.4.11 in every state a row reaches. Usability is untouched: the 44px hit
+   area comes from padding, not from the glyph, and pressing darkens to ink. */
 .rd-iconbtn {
   flex: none;
-  color: var(--rd-muted);
+  color: var(--rd-glyph);
   display: inline-flex;
-  /* 20px glyph + 12px each side = a 44px target. The negative margin gives the
-     hit area back to the row, so the target grows without the layout moving. */
-  padding: 12px;
-  margin: -12px;
+  /* 16px glyph + 14px each side = a 44px target. The negative margin gives the
+     hit area back to the row, so the target grows without the layout moving —
+     shrinking the glyph must not shrink the thing you tap. */
+  padding: 14px;
+  margin: -14px;
   background: none;
   border: 0;
   border-radius: var(--rd-r);

@@ -369,7 +369,7 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
               )}
               <h3 className="rd-reset rd-guest">{RESERVATION.guest}</h3>
               <button type="button" className="rd-iconbtn">
-                <Icon name="edit" size={24} />
+                <Icon name="edit" size={16} />
                 <span className="rd-sr">Edit guest</span>
               </button>
             </div>
@@ -387,7 +387,7 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
                   );
                 })}
               </span>
-              <Icon name="edit" size={24} />
+              <Icon name="edit" size={16} />
               <span className="rd-sr">Edit tags</span>
             </button>
 
