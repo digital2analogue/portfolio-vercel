@@ -4040,15 +4040,88 @@ h2.eyebrow,
    beside it. No opacity on it: --rd-glyph is already the lightest tone that
    holds SC 1.4.11's 3:1, and fading it would put it under. */
 .rd--editorial .rd-seclabel { gap: 7px; }
-.rd--editorial .rd-seclabel /* Block, not inline: an inline SVG sits on the text baseline and carries a
-   descender gap, which is why glyph rows drift a pixel or two off centre from
-   each other. flex: none stops a crowded row shrinking one glyph and not its
-   neighbour. */
-.rd-icon { display: block; flex: none; }
+.rd--editorial .rd-seclabel .rd-icon { flex: none; }
 
 /* A little air, bought from chrome rather than from content. */
 .rd--editorial .rd-select--sticky .rd-select__item { padding: 16px 10px; }
 .rd--editorial .rd-actionbar { padding: 14px 20px 22px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Editorial variant, tablet (.rdp--editorial)
+   ───────────────────────────────────────────────────────────────────
+   The tablet's deltas ON TOP of the shared .rd--editorial layer, which
+   this variant also carries — the serif display name, the wide-tracked
+   micro-labels, the hairline tag rings and the extra air on the note
+   strip are the same rules the phone's exploration uses, so the two
+   cannot drift into two different ideas of "editorial".
+
+   Four moves, and nothing else:
+     1. Chrome recedes — the iOS status row goes, the bezel quiets.
+     2. One display moment — the serif name is the only weight at the
+        top of the record, so the quick facts lose their boxes.
+     3. One micro-label device runs across BOTH panels — the service
+        lists' section titles take the same wide-tracked caps as the
+        record's note-section labels. That is the structural join.
+     4. The status control stops shouting.
+
+   What deliberately does NOT change: the accent (this is range within
+   OTKit, not a pastiche of a competitor), the service-list density
+   (Back of House earns its density), and the rail.
+   ═══════════════════════════════════════════════════════════════════ */
+/* 1. Chrome recedes. The exploration is about the surface, not about
+      establishing "this is an iPad" a second time. */
+.rdp--editorial .rdp-statusbar { display: none; }
+.rdp--editorial .rdp-device {
+  padding: 12px;
+  border-radius: 26px;
+  background: #1b1d20;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 44px -20px rgba(10, 13, 10, 0.55);
+}
+.rdp--editorial .rdp-screen { border-radius: 16px; }
+
+/* 2. One display moment. The serif name comes from .rd--editorial; the facts
+      give up their boxes so nothing competes with it above the fold. */
+.rdp--editorial .rdp-fact {
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+  color: var(--rd-muted);
+}
+.rdp--editorial .rdp-facts { gap: 18px; padding: 12px 20px 10px; }
+.rdp--editorial .rd-row--guest { min-height: 72px; }
+
+/* 3. One micro-label device, both panels. The service lists' titles were 14/700
+      sans — the same weight as a guest name — which made the panel read as a
+      stack of equal headings. Wide-tracked caps demote them to structure and
+      match the record's section labels exactly. */
+.rdp--editorial .rdp-listhead b {
+  font: 500 11px/11px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rdp-on-chrome-alt);
+}
+.rdp--editorial .rdp-listhead i { text-decoration: none; opacity: 0.75; }
+
+/* 4. The status stops shouting. On the shipped screen this is a saturated bar
+      at the top of the side panel, so the eye lands on it before the guest
+      whose record is open. Here it is a ruled row carrying a state mark: the
+      colour still identifies the state, it just no longer owns the composition.
+      The glyph keeps the state's own tone — every one of the eleven clears 3:1
+      on white — and the label stays ink, so the state is never colour alone. */
+.rdp--editorial .rdp-status {
+  background: none;
+  border-bottom: 1px solid var(--rd-hairline);
+  min-height: 52px;
+}
+.rdp--editorial .rdp-status__label {
+  font: 500 11px/11px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--otk-ink);
+}
+.rdp--editorial .rdp-status__chev { color: var(--rd-glyph); }
+.rdp--editorial .rdp-status:focus-visible { box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rdp--editorial .rdp-act__body b { font: var(--rd-label-md); }
 
 /* ── Entrance ──
    One orchestrated reveal on scroll-in: the zones arrive in reading order, so
