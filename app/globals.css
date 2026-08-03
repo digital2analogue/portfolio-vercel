@@ -2370,14 +2370,41 @@ h2.eyebrow,
 
 /* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
    A device frame around the redesigned reservation-detail screen. Same OTKit
-   light palette as the other demos (--otk-*); the device chrome is neutral
-   hardware, not OTKit. Everything text-bearing sits on --otk-bg (white) —
-   muted --otk-alt on the grey --otk-surface is only 4.25:1, so grey surfaces
-   here carry ink or nothing. */
+   light palette as the other demos (--otk-*); the bezel is neutral hardware,
+   not OTKit.
+
+   Held constant across this surface so nothing reads as accidental:
+     · ONE motion language — --rd-ease everywhere, durations off the parsimony
+       motion tokens so `prefers-reduced-motion` zeroes them at the source.
+     · ONE control radius (--rd-r), plus the pill for switches and the bezel
+       radii, which are hardware, not UI.
+     · ONE shadow idea — elevation appears only when content is actually
+       scrolled beneath a fixed edge. The device drop shadow is separate: it is
+       the object, not the interface.
+     · 4pt spacing grid; type held to 11/12/13/15/17/20.
+
+   Contrast: muted text is --rd-muted #63666d, not --otk-alt #6f737b, because
+   rows tint on hover/press — #6f737b clears AA on white (4.76:1) but fails on
+   the tint (4.25:1). #63666d holds on white, hover and press alike. */
 .rd {
   display: block;
-  --rd-hairline: #e4e6e8;
+
+  --rd-ease: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-family decelerate */
+  --rd-dur-micro: var(--motion-duration-instant, 120ms);
+  --rd-dur: var(--motion-duration-standard, 200ms);
+  --rd-dur-emph: var(--motion-duration-emphasized, 350ms);
+
+  --rd-r: 8px;
+  --rd-hairline: #e6e8ea;
+  --rd-hover: #f1f2f4;
+  --rd-press: #e9ebee;
+  --rd-muted: #63666d;
+  /* Darkened from the OTKit danger fill #cc3b48, which is built to sit BEHIND
+     white text; as text it needs to clear AA on white and on both row tints —
+     6.54 / 5.84 / 5.47. */
+  --rd-flag: #b3261e;
 }
+
 /* The demo renders inside .blocks, whose case-body typography styles bare
    h3/h4/p/ul (serif body, light titles, ::before bullets) — foreign to this
    product surface. Every heading/paragraph/list below therefore carries a class
@@ -2393,19 +2420,51 @@ h2.eyebrow,
   list-style: none;
 }
 .rr-demo.rd .rd-reset::before { content: none; }
+
+/* ── Hardware ──
+   Bezel and screen are separate boxes so the screen can clip its own content
+   while the side rails sit outside the frame. */
 .rd-device {
+  position: relative;
   width: 100%;
-  max-width: 348px;
+  max-width: 356px;
   margin: 0 auto;
+  padding: 11px;
+  border-radius: 52px;
+  background: linear-gradient(163deg, #33373d 0%, #17191c 34%, #0d0e10 68%, #26292e 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 1px 2px rgba(10, 13, 10, 0.4),
+    0 24px 56px -12px rgba(10, 13, 10, 0.5);
+}
+/* Side rails — volume pair left, power right. Decorative, and the only reason
+   the bezel reads as an object rather than a rounded rectangle. */
+.rd-device::before,
+.rd-device::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #3a3e44, #212429);
+}
+.rd-device::before {
+  left: -2px;
+  top: 128px;
+  height: 56px;
+  box-shadow: 0 -76px 0 #2c3036, 0 -116px 0 #2c3036;
+}
+.rd-device::after { right: -2px; top: 156px; height: 76px; }
+
+.rd-screen {
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 660px;
+  height: 712px;
+  border-radius: 42px;
   background: var(--otk-bg);
-  border: 1px solid #23262b;
-  border-radius: 34px;
-  box-shadow: 0 0 0 5px #101215, 0 18px 44px rgba(10, 13, 10, 0.42);
   overflow: hidden;
 }
+
 .rd-icon { flex: none; }
 .rd-sr {
   position: absolute;
@@ -2419,45 +2478,56 @@ h2.eyebrow,
   border: 0;
 }
 
-/* ── Device chrome ── */
+/* ── Status bar + notch ── */
 .rd-status {
   position: relative;
+  z-index: 3;
   flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 40px;
-  padding: 0 20px 0 24px;
+  height: 44px;
+  padding: 0 24px 0 28px;
   color: var(--otk-ink);
   font-size: 13px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
 }
 .rd-notch {
   position: absolute;
-  top: 0;
+  top: -1px;
   left: 50%;
   transform: translateX(-50%);
-  width: 116px;
-  height: 24px;
-  background: #101215;
-  border-radius: 0 0 14px 14px;
+  width: 132px;
+  height: 27px;
+  background: #0a0b0c;
+  border-radius: 0 0 18px 18px;
 }
-.rd-status__right { display: inline-flex; align-items: center; gap: 5px; }
+.rd-status__right { display: inline-flex; align-items: center; gap: 6px; }
 .rd-homebar {
   flex: none;
-  width: 118px;
-  height: 4px;
-  margin: 6px auto 8px;
+  width: 132px;
+  height: 5px;
+  margin: 8px auto 9px;
   border-radius: var(--radius-full);
-  background: #c2c5c9;
+  background: #1c1f24;
+  opacity: 0.32;
 }
 
 /* ── Header: chip row ⇄ compact title ── */
 .rd-header {
   position: relative;
+  z-index: 2;
   flex: none;
-  border-bottom: 1px solid var(--rd-hairline);
   height: 52px;
+  background: var(--otk-bg);
+  /* Hairline at rest; it deepens into elevation once content passes under. */
+  box-shadow: 0 1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+.rd-header[data-scrolled="true"] {
+  box-shadow: 0 1px 0 var(--rd-hairline), 0 6px 16px -8px rgba(20, 26, 38, 0.28);
 }
 .rd-chiprow,
 .rd-titlebar {
@@ -2466,23 +2536,25 @@ h2.eyebrow,
   display: flex;
   align-items: center;
   transition:
-    opacity var(--motion-duration-standard, 200ms) var(--otk-ease),
-    transform var(--motion-duration-standard, 200ms) var(--otk-ease);
+    opacity var(--rd-dur) var(--rd-ease),
+    transform var(--rd-dur) var(--rd-ease);
 }
 .rd-header[data-collapsed="false"] .rd-titlebar,
 .rd-header[data-collapsed="true"] .rd-chiprow {
   opacity: 0;
   pointer-events: none;
 }
-.rd-header[data-collapsed="false"] .rd-titlebar { transform: translateY(4px); }
-.rd-header[data-collapsed="true"] .rd-chiprow { transform: translateY(-4px); }
+/* The two halves pass through each other rather than cross-fading in place —
+   the chips lift away as the title settles down into their space. */
+.rd-header[data-collapsed="false"] .rd-titlebar { transform: translateY(6px); }
+.rd-header[data-collapsed="true"] .rd-chiprow { transform: translateY(-6px); }
 
 .rd-chip {
   flex: 1 1 auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   height: 100%;
   padding: 0 8px;
   background: var(--otk-bg);
@@ -2490,13 +2562,18 @@ h2.eyebrow,
   border-right: 1px solid var(--rd-hairline);
   color: var(--otk-ink);
   font: inherit;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
-.rd-chip--icon { flex: 0 0 44px; font-weight: 400; }
+.rd-chip--icon { flex: 0 0 48px; font-weight: 400; }
 .rd-chip:last-child { border-right: 0; }
-.rd-chip:hover { background: var(--otk-surface); }
+.rd-chip:hover { background: var(--rd-hover); }
+/* Fast in, slow out — the press reads as immediate, the release as a settle.
+   Same asymmetry on every pressable surface below. */
+.rd-chip:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-chip:focus-visible {
   outline: none;
   box-shadow: inset 0 0 0 2px var(--otk-focus);
@@ -2509,15 +2586,22 @@ h2.eyebrow,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
+  width: 48px;
   height: 100%;
   background: none;
   border: 0;
   color: var(--otk-ink);
   cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
+.rd-titlebar__back:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-titlebar__back:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
-.rd-titlebar__name { font-size: 16px; font-weight: 600; color: var(--otk-ink); }
+.rd-titlebar__name {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--otk-ink);
+}
 
 /* ── Scroll body ── */
 .rd-scroll {
@@ -2529,7 +2613,9 @@ h2.eyebrow,
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--otk-bg);
+  scrollbar-width: none;
 }
+.rd-scroll::-webkit-scrollbar { display: none; }
 .rd-scroll:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
 
 /* The repeating zone: one row = icon + label (+ trailing affordance). Every
@@ -2537,10 +2623,10 @@ h2.eyebrow,
 .rd-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
-  min-height: 52px;
-  padding: 12px 16px;
+  min-height: 56px;
+  padding: 12px 20px;
   background: var(--otk-bg);
   border: 0;
   border-bottom: 1px solid var(--rd-hairline);
@@ -2548,35 +2634,94 @@ h2.eyebrow,
   font: inherit;
   text-align: left;
 }
-.rd-row--action { cursor: pointer; }
-.rd-row--action:hover { background: var(--otk-surface); }
+.rd-row--action {
+  cursor: pointer;
+  transition: background-color var(--rd-dur-emph) var(--rd-ease);
+}
+.rd-row--action:hover { background: var(--rd-hover); }
+.rd-row--action:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-row--action:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
 .rd-row .rd-icon { color: var(--otk-ink); }
-.rd-placeholder { flex: 1 1 auto; font-size: 15px; color: var(--otk-alt); }
+.rd-placeholder { flex: 1 1 auto; font-size: 15px; color: var(--rd-muted); }
 
-.rd-row--guest { min-height: 64px; }
+/* ── Populated rows ──
+   The screen is a guest record, so most rows carry content; the "Add a …"
+   placeholder is the empty state, not the resting state. */
+.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.rd-tag {
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--rd-hover);
+  /* Inset rather than a border so the chip stays legible against the row's own
+     hover and press tints, which are in the same neighbourhood as its fill. */
+  box-shadow: inset 0 0 0 1px var(--rd-hairline);
+  color: var(--otk-ink);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rd-row--note { align-items: flex-start; }
+.rd-row--note .rd-icon { margin-top: 1px; }
+.rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.rd-notetext { flex: 1 1 auto; font-size: 15px; line-height: 1.4; color: var(--otk-ink); }
+.rd-noteby { font-size: 12px; color: var(--rd-muted); }
+
+/* Flagged notes — allergies, comp instructions. The only place this screen
+   raises its voice, and the one accent besides the action teal. Colour is never
+   the sole channel: the glyph changes to a warning triangle and the text takes
+   weight, so the flag survives greyscale and colour-blindness alike. */
+.rd-row--note[data-flag="true"] {
+  box-shadow: inset 3px 0 0 var(--rd-flag);
+}
+/* Focus must not erase the flag — a single box-shadow property would, so the
+   focused flagged row draws both the ring and the rail. */
+.rd-row--note[data-flag="true"]:focus-visible {
+  box-shadow: inset 3px 0 0 var(--rd-flag), inset 0 0 0 2px var(--otk-focus);
+}
+.rd-row--note[data-flag="true"] .rd-notetext { font-weight: 600; }
+.rd-flagicon { color: var(--rd-flag); }
+
+.rd-row--guest { min-height: 72px; gap: 14px; }
 .rd-avatar {
   flex: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-full);
-  background: var(--otk-surface);
+  background: var(--rd-hover);
+  color: var(--otk-ink);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.rr-demo.rd .rd-guest {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: var(--otk-ink);
 }
-.rr-demo.rd .rd-guest { flex: 1 1 auto; margin: 0; font-size: 19px; font-weight: 700; color: var(--otk-ink); }
 .rd-iconbtn {
   flex: none;
   display: inline-flex;
-  padding: 4px;
+  padding: 8px;
+  margin: -8px;
   background: none;
   border: 0;
+  border-radius: var(--rd-r);
   color: var(--otk-ink);
   cursor: pointer;
+  transition:
+    background-color var(--rd-dur-emph) var(--rd-ease),
+    transform var(--rd-dur-micro) var(--rd-ease);
 }
-.rd-iconbtn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); border-radius: var(--otk-radius); }
+.rd-iconbtn:hover { background: var(--rd-hover); }
+.rd-iconbtn:active { background: var(--rd-press); transform: scale(0.92); transition-duration: 40ms; }
+.rd-iconbtn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); }
 
 /* ── Note strip: sticky scroll anchors over the sections below ── */
 .rd-strip {
@@ -2585,40 +2730,70 @@ h2.eyebrow,
   z-index: 2;
   display: flex;
   background: var(--otk-bg);
-  border-bottom: 1px solid var(--rd-hairline);
+  box-shadow: 0 1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+.rd-strip[data-stuck="true"] {
+  box-shadow: 0 1px 0 var(--rd-hairline), 0 8px 18px -10px rgba(20, 26, 38, 0.3);
 }
 .rd-strip__tab {
+  position: relative;
   flex: 1 1 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 46px;
+  height: 52px;
   background: none;
   border: 0;
-  border-bottom: 2px solid transparent;
-  color: var(--otk-ink);
+  color: var(--rd-muted);
   cursor: pointer;
   transition:
-    border-color var(--motion-duration-instant, 120ms) var(--otk-ease),
-    color var(--motion-duration-instant, 120ms) var(--otk-ease);
+    color var(--rd-dur) var(--rd-ease),
+    background-color var(--rd-dur-emph) var(--rd-ease);
 }
-.rd-strip__tab:hover { background: var(--otk-surface); }
-.rd-strip__tab[data-active="true"] { border-bottom-color: var(--otk-action); color: var(--otk-action); }
+.rd-strip__tab .rd-icon {
+  transition: transform var(--rd-dur) var(--rd-ease);
+}
+.rd-strip__tab:hover { background: var(--rd-hover); }
+.rd-strip__tab:active { background: var(--rd-press); transition-duration: 40ms; }
+.rd-strip__tab[data-active="true"] { color: var(--otk-action); }
+/* The active icon sits a hair larger — enough to feel selected, not enough to
+   shift the row. Pairs with the indicator rather than duplicating its job. */
+.rd-strip__tab[data-active="true"] .rd-icon { transform: scale(1.08); }
 .rd-strip__tab:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
 
-.rd-section { scroll-margin-top: 46px; }
-/* Reserve a screenful under the last section so its anchor can actually reach
-   the strip — otherwise the History tab never becomes active by scrolling. */
-.rd-section--history { padding-bottom: 96px; }
+/* One indicator that travels, instead of five that blink on and off. Position
+   and width are measured from the active tab and driven as a transform. */
+.rd-strip__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 1px;
+  transform-origin: left center;
+  background: var(--otk-action);
+  border-radius: 2px 2px 0 0;
+  transition: transform var(--rd-dur-emph) var(--rd-ease);
+  will-change: transform;
+}
+.rd-strip[data-ready="false"] .rd-strip__indicator { opacity: 0; }
+
+.rd-section { scroll-margin-top: 52px; }
+/* The last section still has to be able to scroll its top up to the strip, or
+   the History tab could never become active by scrolling. Sized to the SHORTER
+   scope (Current visit) with ~30px to spare — any more and the screen ends on a
+   slab of dead white at max scroll. */
+.rd-section--history { padding-bottom: 88px; }
 
 .rr-demo.rd .rd-heading {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: 0;
-  padding: 18px 16px 10px;
+  padding: 24px 20px 12px;
   font-size: 17px;
   font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--otk-ink);
 }
 
@@ -2628,74 +2803,113 @@ h2.eyebrow,
   grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   margin: 0;
-  padding: 6px 12px 18px;
+  padding: 4px 12px 20px;
   list-style: none;
 }
-.rr-demo.rd .rd-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
+.rr-demo.rd .rd-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
 .rd-stat__value {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-full);
-  background: var(--otk-surface);
+  background: var(--rd-hover);
   color: var(--otk-ink);
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
-.rd-stat__label { font-size: 12px; font-weight: 500; color: var(--otk-ink); }
-.rd-stat__sub { font-size: 11px; color: var(--otk-alt); }
+.rd-stat__label { font-size: 12px; font-weight: 600; color: var(--otk-ink); }
+.rd-stat__sub { font-size: 11px; color: var(--rd-muted); font-variant-numeric: tabular-nums; }
 
 /* ── Visit scope segmented control ── */
 .rd-seg {
+  position: relative;
   display: flex;
-  margin: 0 16px;
-  padding: 2px;
-  background: var(--otk-surface);
-  border-radius: var(--otk-radius);
+  margin: 0 20px;
+  padding: 3px;
+  background: var(--rd-hover);
+  border-radius: var(--rd-r);
+}
+/* A thumb that slides, matching the strip indicator's language. */
+.rd-seg__thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  background: var(--otk-bg);
+  border-radius: calc(var(--rd-r) - 2px);
+  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.16);
+  transition: transform var(--rd-dur) var(--rd-ease);
 }
 .rd-seg__btn {
+  position: relative;
+  z-index: 1;
   flex: 1 1 0;
-  padding: 8px 10px;
+  padding: 9px 10px;
   background: none;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: var(--otk-ink);
+  border: 0;
+  border-radius: calc(var(--rd-r) - 2px);
+  color: var(--rd-muted);
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color var(--motion-duration-instant, 120ms) var(--otk-ease);
+  transition: color var(--rd-dur) var(--rd-ease);
 }
-.rd-seg__btn[data-active="true"] { background: var(--otk-bg); border-color: var(--otk-border); }
+.rd-seg__btn[data-active="true"] { color: var(--otk-ink); }
 .rd-seg__btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); }
 
 /* ── Visit log ── */
-.rd-visits { padding: 16px; }
+.rd-visits { padding: 20px; }
 .rd-visits:focus { outline: none; }
-.rd-visit + .rd-visit { margin-top: 20px; }
-.rr-demo.rd .rd-visit__heading { margin: 0 0 8px; font-size: 15px; font-weight: 700; color: var(--otk-ink); }
-.rd-event { display: flex; align-items: flex-start; gap: 8px; }
+.rd-visit + .rd-visit { margin-top: 24px; }
+.rr-demo.rd .rd-visit__heading {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--otk-ink);
+}
+.rd-event { display: flex; align-items: flex-start; gap: 10px; }
 .rd-event .rd-icon { margin-top: 1px; color: var(--otk-ink); }
-.rd-event__time { flex: none; font-size: 13px; color: var(--otk-alt); }
+.rd-event__time {
+  flex: none;
+  font-size: 13px;
+  color: var(--rd-muted);
+  font-variant-numeric: tabular-nums;
+}
 .rd-event__body { flex: 1 1 auto; min-width: 0; }
-.rr-demo.rd .rd-event__text { margin: 0; font-size: 14px; line-height: 1.4; color: var(--otk-ink); }
+.rr-demo.rd .rd-event__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--otk-ink);
+}
 .rr-demo.rd .rd-event__meta {
   display: flex;
   align-items: center;
-  gap: 5px;
-  margin: 3px 0 0;
+  gap: 6px;
+  margin: 4px 0 0;
   font-size: 13px;
-  color: var(--otk-alt);
+  color: var(--rd-muted);
 }
 .rd-event__table {
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--otk-ink);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Pacing switch ── */
@@ -2705,7 +2919,7 @@ h2.eyebrow,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
   cursor: pointer;
 }
@@ -2720,20 +2934,20 @@ h2.eyebrow,
   flex: none;
   display: inline-flex;
   align-items: center;
-  width: 50px;
-  height: 30px;
+  width: 51px;
+  height: 31px;
   padding: 2px;
   border-radius: var(--radius-full);
-  background: var(--otk-border);
-  transition: background-color var(--motion-duration-standard, 200ms) var(--otk-ease);
+  background: #d3d5d8;
+  transition: background-color var(--rd-dur) var(--rd-ease);
 }
 .rd-switch__thumb {
-  width: 26px;
-  height: 26px;
+  width: 27px;
+  height: 27px;
   border-radius: var(--radius-full);
   background: var(--otk-bg);
-  box-shadow: 0 1px 3px rgba(20, 26, 38, 0.28);
-  transition: transform var(--motion-duration-standard, 200ms) var(--otk-ease);
+  box-shadow: 0 2px 4px rgba(20, 26, 38, 0.24), 0 0 0 0.5px rgba(20, 26, 38, 0.06);
+  transition: transform var(--rd-dur) var(--rd-ease);
 }
 .rd-switch input:checked ~ .rd-switch__track { background: var(--otk-action); }
 .rd-switch input:checked ~ .rd-switch__track .rd-switch__thumb { transform: translateX(20px); }
@@ -2743,53 +2957,100 @@ h2.eyebrow,
 
 .rd-row--referral { border-bottom: 0; }
 .rd-referral { flex: 1 1 auto; font-size: 15px; font-weight: 600; color: var(--otk-ink); }
+.rd-row--referral .rd-chevron { color: var(--rd-muted); }
 
 /* ── Bottom action bar ── */
 .rd-actionbar {
+  position: relative;
+  z-index: 2;
   flex: none;
   display: flex;
   gap: 8px;
-  padding: 8px 12px 4px;
-  border-top: 1px solid var(--rd-hairline);
+  padding: 10px 12px 4px;
   background: var(--otk-bg);
+  box-shadow: 0 -1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+/* Elevation only while there is still content to scroll past it. */
+.rd-actionbar[data-floating="true"] {
+  box-shadow: 0 -1px 0 var(--rd-hairline), 0 -8px 18px -10px rgba(20, 26, 38, 0.3);
 }
 .rd-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  height: 44px;
+  gap: 2px;
+  height: 48px;
   border: 0;
-  border-radius: var(--otk-radius);
+  border-radius: var(--rd-r);
   font: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: filter var(--motion-duration-instant, 120ms) var(--otk-ease);
+  transition:
+    filter var(--rd-dur-emph) var(--rd-ease),
+    transform var(--rd-dur-micro) var(--rd-ease);
 }
-.rd-action:hover { filter: brightness(0.94); }
+.rd-action:hover { filter: brightness(0.96); }
+.rd-action:active { filter: brightness(0.9); transform: scale(0.985); transition-duration: 40ms; }
 .rd-action:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
 }
 .rd-action--primary { flex: 1 1 58%; background: var(--otk-action); color: var(--otk-bg); }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
-.rd-action--secondary { flex: 1 1 42%; flex-direction: column; gap: 0; background: var(--otk-border); color: var(--otk-ink); }
-.rd-action__table { font-size: 11px; line-height: 1.1; }
+.rd-action--secondary {
+  flex: 1 1 42%;
+  flex-direction: column;
+  gap: 0;
+  background: var(--otk-border);
+  color: var(--otk-ink);
+}
+.rd-action__table { font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+
+/* ── Entrance ──
+   One orchestrated reveal on scroll-in: the zones arrive in reading order, so
+   the eye is walked down the screen's structure once. Not repeated on scroll. */
+@keyframes rd-zone-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.rd-screen[data-entered="true"] .rd-zone {
+  animation: rd-zone-in var(--rd-dur-emph) var(--rd-ease) backwards;
+  animation-delay: calc(var(--rd-i, 0) * 55ms);
+}
+.rd-screen[data-entered="false"] .rd-zone { opacity: 0; }
 
 @media (max-width: 420px) {
-  .rd-device { height: 600px; border-radius: 28px; }
+  .rd-screen { height: 640px; }
+  .rd-device::before, .rd-device::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rd-scroll { scroll-behavior: auto; }
   .rd-chiprow,
   .rd-titlebar,
+  .rd-strip__indicator,
   .rd-strip__tab,
+  .rd-strip__tab .rd-icon,
+  .rd-seg__thumb,
   .rd-seg__btn,
   .rd-switch__track,
   .rd-switch__thumb,
-  .rd-action {
+  .rd-iconbtn,
+  .rd-action,
+  .rd-row--action,
+  .rd-chip,
+  .rd-header,
+  .rd-strip,
+  .rd-actionbar {
     transition: none;
+  }
+  /* Zones render finished — the reveal is ambient, so it is dropped entirely
+     rather than sped up. */
+  .rd-screen[data-entered] .rd-zone,
+  .rd-screen[data-entered="false"] .rd-zone {
+    animation: none;
+    opacity: 1;
   }
 }
 

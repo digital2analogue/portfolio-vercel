@@ -17,6 +17,9 @@
  * Sample guest data is fictional and matches the demo footage.
  */
 
+/** One recorded guestbook note. `flag` marks the ones service has to act on. */
+export type Note = { id: string; text: string; author: string; date: string; flag?: boolean };
+
 /** A note section: one tab in the strip, one anchored block in the scroll body. */
 export type NoteSection = {
   id: string;
@@ -24,8 +27,10 @@ export type NoteSection = {
   label: string;
   /** Icon key resolved in the demo component (OTKit set, or supplementary). */
   icon: string;
-  /** The empty-state row rendered inside the section. */
+  /** Empty-state row, rendered when the section has no notes. */
   placeholder: string;
+  /** Recorded notes, newest first. Omitted on `history`, which renders its own. */
+  notes?: Note[];
 };
 
 export const NOTE_SECTIONS: NoteSection[] = [
@@ -34,24 +39,63 @@ export const NOTE_SECTIONS: NoteSection[] = [
     label: "General notes",
     icon: "receipt",
     placeholder: "Add a general note",
+    notes: [
+      {
+        id: "gen-1",
+        text: "Celebrating a 10th anniversary. Wife’s name is Dana — greet by name at the door.",
+        author: "Priya N.",
+        date: "Oct 24",
+      },
+    ],
   },
   {
     id: "special",
     label: "Special relationship",
     icon: "star",
     placeholder: "Add a special relationship note",
+    notes: [
+      {
+        id: "sp-1",
+        text: "Friend of the owner. Comp the first round; do not present a check for dessert.",
+        author: "M. Alvarez",
+        date: "Aug 12",
+      },
+    ],
   },
   {
     id: "food",
     label: "Food & drink preferences",
     icon: "utensils",
     placeholder: "Add a food & drink note",
+    notes: [
+      {
+        id: "food-1",
+        text: "Severe shellfish allergy — no cross-contact. Kitchen must be told on seating.",
+        author: "Priya N.",
+        date: "Oct 24",
+        flag: true,
+      },
+      {
+        id: "food-2",
+        text: "Drinks Sancerre by the glass. Usually starts with the oysters — offer the crudo instead.",
+        author: "Dev R.",
+        date: "May 4",
+      },
+    ],
   },
   {
     id: "seating",
     label: "Seating preferences",
     icon: "seat",
     placeholder: "Add a seating note",
+    notes: [
+      {
+        id: "seat-1",
+        text: "Prefers a banquette away from the kitchen pass. Has declined table 6 twice.",
+        author: "Dev R.",
+        date: "May 4",
+      },
+    ],
   },
   {
     id: "history",
@@ -142,9 +186,14 @@ export const ALL_VISITS: Visit[] = [
 /** The guest + reservation the screen is showing. */
 export const RESERVATION = {
   guest: "Mark Schroeder",
+  initials: "MS",
   time: "6:45 am",
   partySize: 4,
   table: "24",
+  /** Guest tags, shown as chips on the tag row. */
+  tags: ["VIP", "Anniversary", "Wine club"],
+  /** Note attached to this visit specifically, not the guest's guestbook. */
+  visitNote: "Requested the corner banquette when booking. Confirmed by phone.",
   tagPlaceholder: "Add a tag…",
   visitNotePlaceholder: "Add a visit note",
 } as const;

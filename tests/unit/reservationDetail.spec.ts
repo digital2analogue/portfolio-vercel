@@ -63,9 +63,30 @@ describe('reservation-detail data', () => {
   })
 
   it('gives every non-history section an empty-state placeholder', () => {
+    // Notes are populated, but the placeholder is the section's empty state and
+    // has to survive a section whose notes are later emptied out.
     for (const section of NOTE_SECTIONS.filter((s) => s.id !== 'history')) {
       expect(section.placeholder).not.toBe('')
     }
+  })
+
+  it('attributes every note, so a server knows who logged it and when', () => {
+    const notes = NOTE_SECTIONS.flatMap((s) => s.notes ?? [])
+    expect(notes.length).toBeGreaterThan(0)
+    for (const note of notes) {
+      expect(note.text.trim()).not.toBe('')
+      expect(note.author.trim()).not.toBe('')
+      expect(note.date.trim()).not.toBe('')
+    }
+  })
+
+  it('keeps note ids unique across sections', () => {
+    const ids = NOTE_SECTIONS.flatMap((s) => (s.notes ?? []).map((n) => n.id))
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('never puts notes on the history section — it renders its own content', () => {
+    expect(NOTE_SECTIONS.find((s) => s.id === 'history')?.notes).toBeUndefined()
   })
 
   it('keeps the four history counters non-negative and labelled', () => {
