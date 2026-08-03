@@ -3221,6 +3221,11 @@ h2.eyebrow,
      non-text indicator but muddy against near-black; the legacy primary blue is
      8:1 and is what the product actually rings with. */
   --rdp-focus: #6cb6f5;
+  /* The list panel's square controls — the section collapse caret and the row's
+     status button — are one shape at one size. They sit in the same right-hand
+     column, so any difference between them reads as a misalignment. */
+  --rdp-btn-w: 40px;
+  --rdp-btn-h: 44px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
@@ -3329,6 +3334,8 @@ h2.eyebrow,
   transition: background-color var(--rd-dur) var(--rd-ease);
 }
 .rdp-chip--step { width: 38px; padding: 0; }
+/* In the list panel the same chip takes the panel button size. */
+.rdp-listhead .rdp-chip--step { width: var(--rdp-btn-w); min-height: var(--rdp-btn-h); }
 .rdp-chip--date { min-width: 116px; cursor: default; }
 .rdp-chip--nav { width: 38px; padding: 0; }
 .rdp-chip--live { width: 38px; padding: 0; cursor: default; }
@@ -3506,7 +3513,7 @@ h2.eyebrow,
   align-items: center;
   gap: 6px;
   width: 100%;
-  padding: 8px 6px 8px 0;
+  padding: 8px 8px 8px 0;
   border: 0;
   border-top: 1px solid var(--rdp-chrome-alt);
   background: none;
@@ -3554,7 +3561,23 @@ h2.eyebrow,
    24×24 artwork but they fill their box differently (a star is edge-to-edge, a
    voicemail is wide and short), so laying them out on their intrinsic width
    spaces them unevenly and lands them on different vertical centres. */
-.rdp-marks { flex: none; display: inline-flex; align-items: center; gap: 2px; }
+.rdp-marks {
+  flex: none;
+  align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-content: flex-start;
+  gap: 2px;
+  /* Four cells per line. Bounded so the cluster wraps INTO the row's second
+     line, as in the comp, instead of drifting free between the name and the
+     status button wherever the count happens to leave room. */
+  max-width: 82px;
+  /* The first line of marks sits on the RESERVATION TIME's line, not at the top
+     of the row: the 18px cell is taller than the time's 16px line box, so it
+     needs the difference plus the line box's own offset to share its centre. */
+  padding-top: 6px;
+}
 .rdp-marks > span {
   display: inline-flex;
   align-items: center;
@@ -3572,12 +3595,7 @@ h2.eyebrow,
    taxonomy the status-dropdown demo edits, so the two cannot drift. */
 /* Trailing control: one button, full row height, table number stacked over the
    status glyph inside it. */
-.rdp-trail {
-  flex: none;
-  align-self: stretch;
-  display: flex;
-  min-width: 38px;
-}
+.rdp-trail { flex: none; display: flex; }
 /* Two treatments, chosen by the state's service phase (see the comp):
      pre-dining   → OUTLINED, the status carried by the glyph's colour
      during-service → FILLED with the status colour, glyph in its `on` tone
@@ -3586,14 +3604,14 @@ h2.eyebrow,
    (accent-teal) falls to 1.48:1 — the status becomes unreadable on exactly the
    row whose record is open. Against the panel all eleven tones clear 3:1. */
 .rdp-statebtn {
-  flex: 1 1 auto;
+  flex: none;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1px;
-  width: 38px;
-  min-height: 44px;
+  width: var(--rdp-btn-w);
+  height: var(--rdp-btn-h);
   padding: 3px 0;
   border-radius: var(--otk-radius);
   background: var(--rdp-chrome);
