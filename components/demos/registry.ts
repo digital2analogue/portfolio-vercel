@@ -3,6 +3,8 @@ import ReservationStatusDemo from "./ReservationStatusDemo";
 import TableStatusDemo from "./TableStatusDemo";
 import CheckUsageDemo from "./CheckUsageDemo";
 import RuleCellDemo from "./RuleCellDemo";
+import ReservationDetailDemo, { ReservationDetailEditorial } from "./ReservationDetailDemo";
+import ReservationDetailIPad, { ReservationDetailIPadEditorial } from "./ReservationDetailIPad";
 
 /**
  * Registry of embeddable case-study demos, keyed by the string used in a
@@ -11,11 +13,23 @@ import RuleCellDemo from "./RuleCellDemo";
  * closed union keeps caseContent.ts a pure data file and lets TypeScript
  * verify every referenced demo exists.
  */
-export type DemoKey = "reservation-status" | "table-status" | "check-usage" | "rule-cell";
+export type DemoKey =
+  | "reservation-status"
+  | "table-status"
+  | "check-usage"
+  | "rule-cell"
+  | "reservation-detail"
+  | "reservation-detail-editorial"
+  | "reservation-detail-ipad"
+  | "reservation-detail-ipad-editorial";
 
 export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "reservation-status": ReservationStatusDemo,
   "table-status": TableStatusDemo,
   "check-usage": CheckUsageDemo,
   "rule-cell": RuleCellDemo,
+  "reservation-detail": ReservationDetailDemo,
+  "reservation-detail-editorial": ReservationDetailEditorial,
+  "reservation-detail-ipad": ReservationDetailIPad,
+  "reservation-detail-ipad-editorial": ReservationDetailIPadEditorial,
 };

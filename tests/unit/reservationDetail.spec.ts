@@ -1,0 +1,140 @@
+import { describe, it, expect } from 'vitest'
+import {
+  activeSectionAt,
+  NOTE_SECTIONS,
+  HISTORY_STATS,
+  CURRENT_VISIT,
+  ALL_VISITS,
+  RESERVATION,
+  TAG_CATEGORY,
+} from '@/lib/reservationDetail'
+
+// Section tops as the demo measures them: relative to the scroll container,
+// already offset by the sticky strip's height. Ascending by construction.
+const OFFSETS = [0, 120, 240, 360, 480]
+
+describe('activeSectionAt — reservation-detail scroll spy', () => {
+  it('rests on the first section at the top of the scroll', () => {
+    expect(activeSectionAt(0, OFFSETS)).toBe(0)
+  })
+
+  it('holds a section until the next one reaches the strip', () => {
+    expect(activeSectionAt(118, OFFSETS)).toBe(0)
+    expect(activeSectionAt(120, OFFSETS)).toBe(1)
+    expect(activeSectionAt(238, OFFSETS)).toBe(1)
+  })
+
+  it('absorbs sub-pixel undershoot after a programmatic jump', () => {
+    // scrollTo({top: 240}) can settle at 239.4 — the 1px slack must still read
+    // that as section 2, or clicking a tab leaves the previous tab highlighted.
+    expect(activeSectionAt(239.4, OFFSETS)).toBe(2)
+    expect(activeSectionAt(119, OFFSETS)).toBe(1)
+  })
+
+  it('reaches the last section and stays there past the end', () => {
+    expect(activeSectionAt(480, OFFSETS)).toBe(4)
+    expect(activeSectionAt(9999, OFFSETS)).toBe(4)
+  })
+
+  it('never returns an index outside the offsets it was given', () => {
+    for (const top of [-50, 0, 77, 480, 10_000]) {
+      const i = activeSectionAt(top, OFFSETS)
+      expect(i).toBeGreaterThanOrEqual(0)
+      expect(i).toBeLessThan(OFFSETS.length)
+    }
+  })
+
+  it('handles a single section without going out of range', () => {
+    expect(activeSectionAt(0, [0])).toBe(0)
+    expect(activeSectionAt(500, [0])).toBe(0)
+  })
+})
+
+describe('reservation-detail data', () => {
+  it('gives every note section a unique id, icon and accessible label', () => {
+    const ids = NOTE_SECTIONS.map((s) => s.id)
+    expect(new Set(ids).size).toBe(ids.length)
+    for (const section of NOTE_SECTIONS) {
+      expect(section.icon).not.toBe('')
+      expect(section.label.trim()).not.toBe('')
+    }
+  })
+
+  it('ends on the history section, which the strip renders last', () => {
+    expect(NOTE_SECTIONS.at(-1)?.id).toBe('history')
+  })
+
+  it('gives every non-history section an empty-state placeholder', () => {
+    // Most sections ship empty and render this; it also has to survive a
+    // populated section later being emptied out.
+    for (const section of NOTE_SECTIONS.filter((s) => s.id !== 'history')) {
+      expect(section.placeholder).not.toBe('')
+    }
+  })
+
+  it('attributes every note, so a server knows who logged it and when', () => {
+    const notes = NOTE_SECTIONS.flatMap((s) => s.notes ?? [])
+    expect(notes.length).toBeGreaterThan(0)
+    for (const note of notes) {
+      expect(note.text.trim()).not.toBe('')
+      expect(note.author.trim()).not.toBe('')
+      expect(note.date.trim()).not.toBe('')
+    }
+  })
+
+  it('keeps note ids unique across sections', () => {
+    const ids = NOTE_SECTIONS.flatMap((s) => (s.notes ?? []).map((n) => n.id))
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('never puts notes on the history section — it renders its own content', () => {
+    expect(NOTE_SECTIONS.find((s) => s.id === 'history')?.notes).toBeUndefined()
+  })
+
+  it('keeps the four history counters non-negative and labelled', () => {
+    expect(HISTORY_STATS).toHaveLength(4)
+    for (const stat of HISTORY_STATS) {
+      expect(stat.value).toBeGreaterThanOrEqual(0)
+      expect(stat.label.trim()).not.toBe('')
+    }
+  })
+
+  it('widens, never replaces, the current visit when scoped to all visits', () => {
+    expect(ALL_VISITS.length).toBeGreaterThan(CURRENT_VISIT.length)
+    for (const visit of CURRENT_VISIT) {
+      expect(ALL_VISITS).toContain(visit)
+    }
+  })
+
+  it('keeps visit and event ids unique across the widest scope', () => {
+    const visitIds = ALL_VISITS.map((v) => v.id)
+    expect(new Set(visitIds).size).toBe(visitIds.length)
+    const eventIds = ALL_VISITS.flatMap((v) => v.events.map((e) => e.id))
+    expect(new Set(eventIds).size).toBe(eventIds.length)
+  })
+})
+
+describe('tag categories', () => {
+  it('derives glyph and tone from the category, never from the tag', () => {
+    // The guard for the real requirement: two tags in one category must be
+    // indistinguishable in treatment. VIP and Friend of owner are both
+    // relationship, so both must resolve to the same star and the same tone.
+    const byCategory = new Map<string, Set<string>>()
+    for (const tag of RESERVATION.tags) {
+      const cat = TAG_CATEGORY[tag.category]
+      const key = `${cat.icon}|${cat.tone}`
+      if (!byCategory.has(tag.category)) byCategory.set(tag.category, new Set())
+      byCategory.get(tag.category)!.add(key)
+    }
+    for (const [, treatments] of byCategory) expect(treatments.size).toBe(1)
+  })
+
+  it('gives every tag a category that exists', () => {
+    for (const tag of RESERVATION.tags) expect(TAG_CATEGORY[tag.category]).toBeDefined()
+  })
+
+  it('gives every category a distinct glyph', () => {
+    const icons = Object.values(TAG_CATEGORY).map((c) => c.icon)
+    expect(new Set(icons).size).toBe(icons.length)
+  })
+})

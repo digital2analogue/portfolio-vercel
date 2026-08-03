@@ -1,10 +1,24 @@
 /**
  * scripts/check-contrast.mjs
  *
- * Validates every text/background color pairing in the UI against WCAG AA (4.5:1).
+ * Validates every colour pairing in the UI against WCAG AA. Two criteria, because
+ * AA has two:
+ *
+ *   • 1.4.3 Contrast (Minimum) — TEXT needs 4.5:1. The default here.
+ *   • 1.4.11 Non-text Contrast — the visual information required to identify a
+ *     UI COMPONENT or its STATE needs 3:1. A button's fill, a switch's track, a
+ *     selected-segment indicator: without these at 3:1 the control is invisible
+ *     to low-vision users even when its label passes 1.4.3.
+ *
  * Wired into `npm run build` — the build fails if any pair fails.
  *
- * To add a new check: add an entry to PAIRINGS at the bottom of this file.
+ * To add a new check: add an entry to PAIRINGS at the bottom of this file. Pass
+ * `min: NON_TEXT` for anything that is not text; leave it off for text.
+ *
+ * Exempt, deliberately: decorative edges that are NOT required to identify a
+ * control — row hairlines, card frames, the header chip dividers. Each chip is
+ * identified by its own label and icon, both of which clear 1.4.3; the rule
+ * between them is separation, not identification.
  */
 
 import fs from 'fs'
@@ -85,6 +99,9 @@ const BG_ACTION  = tok('--color-background-action')   // #4ADE6E
 // Add a new entry here whenever you introduce a new text/background combination.
 // Format: { text, bg, label }
 
+// SC 1.4.11 — UI component boundaries and state indicators.
+const NON_TEXT = 3.0
+
 const PAIRINGS = [
   // Default surface
   { text: '--color-foreground-default', bg: BG,        label: 'Body text / headings on page canvas' },
@@ -128,6 +145,91 @@ const PAIRINGS = [
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
+
+  // ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
+  // Reuses the OTKit palette above; only the pairings unique to this screen are
+  // listed. Note the constraint that shapes it: rows TINT on hover and press, so
+  // every foreground has to clear AA on white and on both tints. Muted #6f737b
+  // fails that test (4.25:1 on #f1f2f4), which is why this screen's muted text is
+  // #63666d — 5.75 / 5.13 / 4.81 across white, hover and press.
+  { text: '#63666d', bg: '#e9ebee', label: 'Demo/detail: muted row text on pressed row tint' },
+  { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: ink row text on pressed row tint' },
+  { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: secondary action label on its pressed fill' },
+  { text: '#ffffff', bg: '#247f9e', label: 'Demo/detail: Completed label on primary action' },
+  // Interactive text in every state a row actually reaches.
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo/detail: chip + row label on hovered row' },
+  { text: '#63666d', bg: '#ffffff', label: 'Demo/detail: note byline / inactive segment on white' },
+  //
+  // ── SC 1.4.11, non-text (3:1) ──
+  // Controls whose fill or indicator IS the affordance. Each of the first three
+  // measured 1.1–1.5:1 before the boundary ring was added: the switch was
+  // invisible until turned on, the secondary action had no edge, and neither the
+  // segmented track nor its selected thumb could be made out.
+  { text: '#82868e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: control boundary ring on white (switch, action, segment)' },
+  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: visit-scope underline (same token as the strip)' },
+  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: focus ring + tab indicator + switch-on fill' },
+  { text: '#247f9e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/detail: active tab glyph on hovered tab' },
+  // Leading row glyphs — orientation marks, held to 3:1 in every row state.
+  { text: '#82868e', bg: '#e9ebee', min: NON_TEXT, label: 'Demo/detail: leading row glyph on pressed row' },
+  // Tag category glyphs. accent-yellow #FDAF08 is 1.86:1 and is darkened here.
+  { text: '#a97405', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — relationship (accent-yellow darkened for 1.4.11)' },
+  { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — food & drink' },
+  { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
+
+  // ── iPad / Back of House shell (components/demos/ReservationDetailIPad) ──
+  // The dark chrome is OTKit's OWN dark-mode token set, read from the source
+  // Figma rather than sampled from a clip: background/default #141A26,
+  // background/elevation #2D333F, border/default #6F737B, ash-lighter #D8D9DB.
+  // The record column is the same white surface as the phone and reuses every
+  // pairing above; the side panel beside it is the one tinted light surface.
+  //
+  // SC 1.4.3 — text.
+  { text: '#ffffff', bg: '#141a26', label: 'Demo/iPad: service bar + list panel text on BOH chrome' },
+  { text: '#d8d9db', bg: '#141a26', label: 'Demo/iPad: sort links, counts and times on BOH chrome' },
+  { text: '#ffffff', bg: '#2d333f', label: 'Demo/iPad: selected reservation + hovered control' },
+  { text: '#d8d9db', bg: '#2d333f', label: 'Demo/iPad: secondary text on the selected reservation' },
+  { text: '#ffffff', bg: '#4a6fde', label: 'Demo/iPad: unread badge count + seated table badge (blue)' },
+  { text: '#ffffff', bg: '#2f864d', label: 'Demo/iPad: seated table badge (green)' },
+  { text: '#141a26', bg: '#fdaf08', label: 'Demo/iPad: running-late state chip glyph on amber' },
+  { text: '#ffffff', bg: '#d82c82', label: 'Demo/iPad: tagged state chip glyph on fuchsia' },
+  { text: '#2d333f', bg: '#f6f7f8', label: 'Demo/iPad: side-panel ink (table label, switch, referral)' },
+  { text: '#63666d', bg: '#f6f7f8', label: 'Demo/iPad: side-panel muted text (table state)' },
+  //
+  // SC 1.4.11 — non-text. Every control in the service bar is OUTLINED, so its
+  // boundary is the whole affordance; and the focus ring is the only keyboard
+  // affordance on a near-black panel. OTKit's action teal is 3.82:1 there —
+  // legal but muddy — so focus rings use the legacy primary blue at 8:1.
+  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: outlined chip + table-badge boundary on chrome' },
+  { text: '#6cb6f5', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: focus ring on chrome' },
+  { text: '#6cb6f5', bg: '#2d333f', min: NON_TEXT, label: 'Demo/iPad: focus ring on the selected reservation' },
+  { text: '#64c987', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: live-service dot (reinforces a named state)' },
+  { text: '#4a6fde', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: unread badge fill on chrome' },
+  { text: '#247f9e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: status-button fill on the side panel' },
+  { text: '#82868e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: side-panel glyphs + control boundary rings' },
+  { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/iPad: side-panel glyph on a hovered row' },
+  //
+  // The trailing control on every list row is the reservation STATUS, resolved
+  // through lib/reservationStates — the same 22-state taxonomy the status
+  // dropdown on /work/ot-design-system edits. Here it is an OUTLINED icon
+  // button: no fill, the status carried by the GLYPH's colour. So each of the
+  // eleven token colours has to clear 3:1 as a glyph, and the button keeps the
+  // panel as its own surface rather than inheriting the row's — on the selected
+  // row (#4a5162) the weakest (accent-teal) would fall to 1.48:1 and the status
+  // would be unreadable on exactly the row whose record is open.
+  { text: '#20738f', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — weakest tone (accent-teal) on chrome' },
+  { text: '#cc3b48', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — danger on chrome' },
+  { text: '#2f864d', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — success on chrome' },
+  { text: '#ad4cc3', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — accent-purple on chrome' },
+  { text: '#247f9e', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — action (Booked) on chrome' },
+  { text: '#fdaf08', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — warning (Running late) on chrome' },
+  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-button outline on chrome' },
+  { text: '#d8d9db', bg: '#4a5162', label: 'Demo/iPad: table number + time on the selected row' },
+  //
+  // Editorial variant (.rdp--editorial). The status control gives up its fill,
+  // so the state mark now sits on the panel's white rather than carrying white
+  // on its own colour. Registered at the weakest tone the record can take.
+  { text: '#2f864d', bg: '#ffffff', min: NON_TEXT, label: 'Demo/iPad editorial: status mark on the ruled row' },
+  { text: '#2d333f', bg: '#ffffff', label: 'Demo/iPad editorial: status label (ink, never colour alone)' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
@@ -189,11 +291,11 @@ const PAIRINGS = [
 const MIN_RATIO = 4.5
 let failed = 0
 
-console.log('\n  Contrast check — WCAG AA (4.5:1 minimum)\n')
-console.log(`  ${'Pair'.padEnd(52)} ${'Ratio'.padStart(7)}  Status`)
+console.log('\n  Contrast check — WCAG AA (1.4.3 text 4.5:1 · 1.4.11 non-text 3:1)\n')
+console.log(`  ${'Pair'.padEnd(52)} ${'Ratio'.padStart(7)} ${'Min'.padStart(4)}  Status`)
 console.log(`  ${'─'.repeat(72)}`)
 
-for (const { text, bg, label } of PAIRINGS) {
+for (const { text, bg, label, min } of PAIRINGS) {
   const textHex = typeof text === 'string' && text.startsWith('--') ? tok(text) : text
   const bgHex   = typeof bg   === 'string' && bg.startsWith('--')   ? tok(bg)   : bg
 
@@ -203,9 +305,11 @@ for (const { text, bg, label } of PAIRINGS) {
   }
 
   const ratio = contrastRatio(textHex, bgHex)
-  const pass  = ratio >= MIN_RATIO
+  const floor = min ?? MIN_RATIO
+  const pass  = ratio >= floor
   if (!pass) failed++
-  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1  ${pass ? '✅' : '❌ FAIL'}`)
+  const need = floor === MIN_RATIO ? '    ' : ` ${floor.toFixed(1)}`
+  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1 ${need}  ${pass ? '✅' : '❌ FAIL'}`)
 }
 
 console.log()
@@ -214,5 +318,6 @@ if (failed > 0) {
   console.error(`  ❌ ${failed} contrast failure(s). Fix token values or pairing CSS before shipping.\n`)
   process.exit(1)
 } else {
-  console.log(`  ✅ All ${PAIRINGS.length} pairs pass WCAG AA\n`)
+  const nonText = PAIRINGS.filter(p => p.min).length
+  console.log(`  ✅ All ${PAIRINGS.length} pairs pass WCAG AA (${PAIRINGS.length - nonText} text · ${nonText} non-text)\n`)
 }

@@ -2368,6 +2368,1811 @@ h2.eyebrow,
   .rr-tile:hover { transform: none; }
 }
 
+/* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
+   A device frame around the redesigned reservation-detail screen. Same OTKit
+   light palette as the other demos (--otk-*); the bezel is neutral hardware,
+   not OTKit.
+
+   Held constant across this surface so nothing reads as accidental:
+     · ONE motion language — --rd-ease everywhere, durations off the parsimony
+       motion tokens so `prefers-reduced-motion` zeroes them at the source.
+     · ONE control radius (--rd-r), plus the pill for switches and the bezel
+       radii, which are hardware, not UI.
+     · ONE shadow idea — elevation appears only when content is actually
+       scrolled beneath a fixed edge. The device drop shadow is separate: it is
+       the object, not the interface.
+     · 4pt spacing grid; type held to 11/12/13/15/17/20.
+
+   Contrast: muted text is --rd-muted #63666d, not --otk-alt #6f737b, because
+   rows tint on hover/press — #6f737b clears AA on white (4.76:1) but fails on
+   the tint (4.25:1). #63666d holds on white, hover and press alike. */
+.rd {
+  display: block;
+
+  /* ── OTKit token map ──
+     Values read from the OTKit Rest iOS library via the Figma MCP (file
+     fRZiDUihnfQ51VTdtU0C1V). Straight token uses resolve through --otk-* in the
+     shared demo palette above; the three derived values below are recorded with
+     the token they come from and the reason they could not be used as-is.
+
+       background/default   #FFFFFF   → --otk-bg
+       background/alt       #F1F2F4   → --otk-surface   (hover, tracks, circles)
+       foreground/default   #2D333F   → --otk-ink
+       foreground/alt       #6F737B   → --otk-alt
+       foreground/action    #247F9E   → --otk-action    (indicator, focus, switch-on)
+       border/default       #D8D9DB   → --otk-border    (hairlines, switch-off track)
+       border/action        #247F9E   → --otk-focus
+       foreground/accent-yellow #FDAF08 → tag glyph, darkened (see below)
+     TYPE — the full OTKit scale, from the typography file
+     (FafCOBM6da0G6VUXEpiyvJ, node 306:78). That file documents the scale in
+     Brandon Text for mobile WEB; the iOS library renders the same steps in
+     SF Pro, which is what the system font stack on .rr-demo resolves to here.
+     Sizes and leading are the system's; only the family differs by platform.
+
+       Title/Small/Bold      18 / 24  -> guest name, history stat figures
+       Body/Large/Bold       16 / 24  -> section heading, compact nav title
+       Body/Medium/Regular   14 / 20  -> note body, placeholders
+       Body/Medium/Semibold  14 / 20  -> switch + referral row labels
+       Body/Small/Regular    12 / 16  -> bylines, event times, stat sub-counts
+       Label/Medium/Semibold 14 / 14  -> chips, primary action, avatar initials
+       Label/Small/Semibold  12 / 12  -> segment, tag labels, stat labels
+
+     Every step above is on the scale — nothing sits at 11, 13, 15, 17 or 20px
+     any more, and Label styles carry single-line leading (lh == size) while
+     Body styles carry their own. Device chrome (status bar 13px) is hardware,
+     not OTKit.
+
+     DERIVED — each is an OTKit token that fails a WCAG AA criterion in the
+     context this screen actually renders it in. Recorded rather than hidden:
+     the same failures exist in the shipped product. */
+  --rd-ease: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-family decelerate */
+  /* "A selected thing is moving." Overshoots a few percent and settles — the
+     difference between moved and arrived. Was a literal in two rules. */
+  --rd-ease-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+  --rd-indicator-h: 2px;
+  --rd-dur-micro: var(--motion-duration-instant, 120ms);
+  --rd-dur: var(--motion-duration-standard, 200ms);
+  --rd-dur-emph: var(--motion-duration-emphasized, 350ms);
+
+  --rd-r: 8px;
+
+  /* Component type. One declaration per OTKit step, so a rule names the step it
+     wants instead of restating four properties — which is how eight rules ended
+     up inheriting line-height 1.6 (28.8/22.4/19.2px) instead of the scale's.
+     The family is carried in the shorthand because `font:` requires it. */
+  --rd-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rd-title-sm:     700 18px/24px var(--rd-font); /* Title/Small/Bold      */
+  --rd-body-lg-bold: 700 16px/24px var(--rd-font); /* Body/Large/Bold       */
+  --rd-body-md:      400 14px/20px var(--rd-font); /* Body/Medium/Regular   */
+  --rd-body-md-semi: 600 14px/20px var(--rd-font); /* Body/Medium/Semibold  */
+  --rd-body-md-bold: 700 14px/20px var(--rd-font); /* Body/Medium/Bold      */
+  --rd-body-sm:      400 12px/16px var(--rd-font); /* Body/Small/Regular    */
+  --rd-label-md:     600 14px/14px var(--rd-font); /* Label/Medium/Semibold */
+  --rd-label-sm:     600 12px/12px var(--rd-font); /* Label/Small/Semibold  */
+  --rd-label-xs:     600 11px/11px var(--rd-font); /* badge counts only     */
+
+  --rd-hairline: var(--otk-border);
+  --rd-hover: var(--otk-surface);
+
+  /* foreground/alt #6F737B darkened. Rows tint on hover/press, and the token is
+     only 4.25:1 on background/alt — it clears 1.4.3 on white and nowhere else. */
+  --rd-muted: #63666d;
+  /* foreground/disabled #91949A darkened. Leading glyphs must hold 1.4.11's 3:1
+     in every row state; the token manages 3.04 on white but 2.55 when pressed. */
+  --rd-glyph: #82868e;
+  /* border/default #D8D9DB darkened. As a hairline it is fine; as the ONLY edge
+     of a control it is 1.41:1 and fails 1.4.11 outright. */
+  --rd-edge: #82868e;
+  /* background/alt #F1F2F4 darkened one step for the pressed state. OTKit's own
+     pressed token is not in the set this file exposes. */
+  --rd-press: #e9ebee;
+  /* One elevation recipe, two directions. Every "content passes under this
+     edge" shadow on both shells uses it — the sticky note strip and the tablet's
+     dock had separately-invented values, which is how an interface ends up with
+     three shadow languages and no one able to say what any of them means. */
+  --rd-edge-down: 0 8px 18px -10px rgba(20, 26, 38, 0.34);
+  --rd-edge-up: 0 -8px 18px -10px rgba(0, 0, 0, 0.72);
+}
+
+/* The demo renders inside .blocks, whose case-body typography styles bare
+   h3/h4/p/ul (serif body, light titles, ::before bullets) — foreign to this
+   product surface. Every heading/paragraph/list below therefore carries a class
+   AND is selected at .rr-demo.rd level (0,3,0), which outranks `.blocks h3`
+   (0,1,1) without depending on source order. Deliberately no blanket
+   `.rd h3 {}` reset: a type-selector reset would outrank these same classes. */
+.rr-demo.rd .rd-reset {
+  font: inherit;
+  letter-spacing: normal;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rr-demo.rd .rd-reset::before { content: none; }
+
+/* ── Hardware ──
+   Bezel and screen are separate boxes so the screen can clip its own content
+   while the side rails sit outside the frame. */
+.rd-device {
+  position: relative;
+  width: 100%;
+  max-width: 356px;
+  margin: 0 auto;
+  padding: 11px;
+  border-radius: 52px;
+  background: linear-gradient(163deg, #33373d 0%, #17191c 34%, #0d0e10 68%, #26292e 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+    0 1px 2px rgba(10, 13, 10, 0.4),
+    0 24px 56px -12px rgba(10, 13, 10, 0.5);
+}
+/* Side rails — volume pair left, power right. Decorative, and the only reason
+   the bezel reads as an object rather than a rounded rectangle. */
+.rd-device::before,
+.rd-device::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #3a3e44, #212429);
+}
+/* Left rail: ringer switch + the two volume keys, drawn as gradient stops in a
+   single element. This was three box-shadow copies of one bar, whose offsets
+   overlapped into one continuous line down the side of the phone — stops cannot
+   overlap, so the gaps are guaranteed. */
+.rd-device::before {
+  left: -2px;
+  top: 104px;
+  height: 178px;
+  background: linear-gradient(
+    180deg,
+    #2c3036 0 26px,
+    transparent 26px 46px,
+    #2c3036 46px 102px,
+    transparent 102px 122px,
+    #2c3036 122px 178px
+  );
+}
+.rd-device::after { right: -2px; top: 152px; height: 76px; }
+
+.rd-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 712px;
+  border-radius: 42px;
+  background: var(--otk-bg);
+  overflow: hidden;
+}
+
+/* Block, not inline: an inline SVG sits on the text baseline and carries a
+   descender gap, which is why glyph rows drift a pixel or two off centre from
+   each other. flex: none stops a crowded row shrinking one glyph and not its
+   neighbour. */
+.rd-icon { display: block; flex: none; }
+.rd-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Status bar + notch ── */
+.rd-status {
+  position: relative;
+  z-index: 3;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding: 0 24px 0 28px;
+  color: var(--otk-ink);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+.rd-notch {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 132px;
+  height: 27px;
+  background: #0a0b0c;
+  border-radius: 0 0 18px 18px;
+}
+.rd-status__right { display: inline-flex; align-items: center; gap: 6px; }
+.rd-homebar {
+  flex: none;
+  width: 132px;
+  height: 5px;
+  /* Home-indicator zone. Together with the action bar's bottom padding this
+     leaves ~30px under the buttons — the iOS safe area, not a stray gap. */
+  margin: 10px auto 10px;
+  border-radius: var(--radius-full);
+  background: #1c1f24;
+  opacity: 0.32;
+}
+
+/* ── Header: chip row ⇄ compact title ── */
+.rd-header {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  height: 52px;
+  background: var(--otk-bg);
+  /* Hairline at rest; it deepens into elevation once content passes under. */
+  box-shadow: 0 1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+.rd-header[data-scrolled="true"] {
+  box-shadow: 0 1px 0 var(--rd-hairline), 0 6px 16px -8px rgba(20, 26, 38, 0.28);
+}
+.rd-chiprow,
+.rd-titlebar {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  transition:
+    opacity var(--rd-dur) var(--rd-ease),
+    transform var(--rd-dur) var(--rd-ease);
+}
+.rd-header[data-collapsed="false"] .rd-titlebar,
+.rd-header[data-collapsed="true"] .rd-chiprow {
+  opacity: 0;
+  pointer-events: none;
+}
+/* The two halves pass through each other rather than cross-fading in place —
+   the chips lift away as the title settles down into their space. */
+.rd-header[data-collapsed="false"] .rd-titlebar { transform: translateY(6px); }
+.rd-header[data-collapsed="true"] .rd-chiprow { transform: translateY(-6px); }
+
+.rd-chip {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 100%;
+  padding: 0 8px;
+  background: var(--otk-bg);
+  border: 0;
+  border-right: 1px solid var(--rd-hairline);
+  color: var(--otk-ink);
+  font: var(--rd-label-md);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+.rd-chip--icon { flex: 0 0 48px; }
+.rd-chip:last-child { border-right: 0; }
+
+/* Fast in, slow out — the press reads as immediate, the release as a settle.
+   Same asymmetry on every pressable surface below. */
+.rd-chip:active { background: var(--rd-press); transition-duration: 40ms; }
+.rd-chip:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--otk-focus);
+}
+
+.rd-titlebar { justify-content: center; }
+.rd-titlebar__back {
+  position: absolute;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 100%;
+  background: none;
+  border: 0;
+  color: var(--otk-ink);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+.rd-titlebar__back:active { background: var(--rd-press); transition-duration: 40ms; }
+.rd-titlebar__back:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rd-titlebar__name {
+  font: var(--rd-body-lg-bold);
+  letter-spacing: -0.01em;
+  color: var(--otk-ink);
+}
+
+/* ── Scroll body ── */
+.rd-scroll {
+  /* Positioned so section offsetTop is measured from THIS box — the scroll spy
+     and the tab jumps both read offsetTop, and an unpositioned scroller would
+     hand them page-level coordinates and clamp every jump to max scroll. */
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--otk-bg);
+  scrollbar-width: none;
+}
+.rd-scroll::-webkit-scrollbar { display: none; }
+.rd-scroll:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
+
+/* The repeating zone: one row = icon + label (+ trailing affordance). Every
+   pattern on this screen is a variation of it — that IS the modularity claim. */
+.rd-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 20px;
+  background: var(--otk-bg);
+  border: 0;
+  border-bottom: 1px solid var(--rd-hairline);
+  color: var(--otk-ink);
+  font: inherit;
+  text-align: left;
+}
+.rd-row--action {
+  cursor: pointer;
+  transition: background-color var(--rd-dur-emph) var(--rd-ease);
+}
+
+.rd-row--action:active { background: var(--rd-press); transition-duration: 40ms; }
+.rd-row--action:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+/* Leading row glyphs recede — they orient, they don't inform; the label beside
+   each one carries the meaning. --rd-glyph is the LIGHTEST grey that still holds
+   SC 1.4.11's 3:1 non-text minimum in all three row states (3.65 white / 3.26
+   hover / 3.06 pressed), so it sinks toward the background without ever becoming
+   decoration. Trailing glyphs are actions, not orientation, and stay at ink.
+   Not in the contrast gate by design: that gate asserts a single 4.5:1 text
+   threshold and would reject a correctly-specified non-text mark. */
+.rd-row > .rd-icon:first-child,
+.rd-event > .rd-icon:first-child { color: var(--rd-glyph); }
+.rd-row .rd-icon { color: var(--otk-ink); }
+.rd-iconbtn .rd-icon { color: inherit; }
+.rd-iconbtn:active { color: var(--otk-ink); }
+.rd-placeholder { flex: 1 1 auto; font: var(--rd-body-md); color: var(--rd-muted); }
+
+/* ── Populated rows ──
+   The screen is a guest record, so most rows carry content; the "Add a …"
+   placeholder is the empty state, not the resting state. */
+/* Tag chips match OTKit's `iOS-tags` component (Rest iOS library, node
+   10085:29238) rather than being invented: an OUTLINED pill on white, not a
+   filled grey one. Values read from the component's own variables —
+   background/default #FFFFFF, border/default #D8D9DB (= --otk-border),
+   foreground/default #2D333F (= --otk-ink), radius full. Uses the component's
+   SMALL variant — Label/Small/Semibold at 12px — because these labels are real
+   category names ("Shellfish allergy") and at the 14px medium size four of them
+   stack one per line and swallow the screen. This row wants density, so the box
+   is tightened (26px tall, 8px sides, 6px gaps) and the row's own padding pulls
+   in with it. 12px is the floor and stays the floor: below it a category label
+   stops being readable at arm's length on a host stand. The component
+   also offers a leading star and a
+   trailing ×; both are omitted here — the × belongs to an edit mode this screen
+   isn't in, and the star's #FDAF08 on white is under 3:1, so it would need a
+   repair to carry meaning it isn't carrying. */
+.rd-tags { flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 6px; min-width: 0; }
+.rd-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: var(--radius-full);
+  background: var(--otk-bg);
+  /* Inset so the ring never adds to the chip's box — the component is spec'd at
+     exactly 32px tall, border included. */
+  box-shadow: inset 0 0 0 1px var(--otk-border);
+  gap: 4px;
+  color: var(--otk-ink);
+  font: var(--rd-label-sm);
+  white-space: nowrap;
+}
+/* Tones are keyed by CATEGORY, not by tag, so two tags in one category cannot
+   drift apart — VIP and Friend of owner are both relationship and therefore both
+   the gold star. Each clears 3:1 on white so the glyph is a UI mark rather than
+   decoration; OTKit's accent-yellow #FDAF08 is 1.86:1 and is darkened to #A97405
+   (4.05:1). General takes the neutral glyph tone: it is the absence of a special
+   category, so it should not compete with the ones that mean something. */
+.rd-tag .rd-icon { opacity: 0.95; }
+.rd-tag[data-tone="relationship"] .rd-icon { color: #a97405; }
+.rd-tag[data-tone="food"] .rd-icon { color: #cc3b48; }
+.rd-tag[data-tone="seating"] .rd-icon { color: #4a6fde; }
+.rd-tag[data-tone="general"] .rd-icon { color: var(--rd-glyph); }
+
+.rd-row--note {
+  align-items: flex-start;
+  min-height: 0;
+  padding: 6px 20px 12px;
+}
+.rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.rd-notetext { flex: 1 1 auto; font: var(--rd-body-md); color: var(--otk-ink); }
+.rd-noteby { font: var(--rd-body-sm); color: var(--rd-muted); }
+
+
+.rd-row--tags { gap: 12px; padding-left: 16px; padding-right: 16px; }
+.rd-row--guest { min-height: 64px; gap: 12px; }
+.rd-avatar {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--rd-hover);
+  color: var(--otk-ink);
+  font: var(--rd-label-md);
+  letter-spacing: 0.01em;
+}
+.rr-demo.rd .rd-guest {
+  flex: 1 1 auto;
+  margin: 0;
+  font: var(--rd-title-sm);
+  letter-spacing: -0.015em;
+  color: var(--otk-ink);
+}
+/* Trailing edit affordances are the quietest marks on the screen, by three
+   levers at once: --rd-glyph rather than ink, a thinner pencil silhouette, and
+   16px rather than 24. They sit beside the guest's name and their tags, and the
+   content should win every time.
+
+   That reclassifies them on the glyph scale — 24 is now PRIMARY affordances (nav
+   chips, note tabs, row leads, bottom actions) and 16 is SECONDARY and inline
+   (tags, metadata, trailing edits). Still a two-tier rule, just drawn in the
+   right place.
+
+   3.65:1 on white, 3.26 hovered, 3.06 pressed — the lightest grey that holds
+   SC 1.4.11 in every state a row reaches. Usability is untouched: the 44px hit
+   area comes from padding, not from the glyph, and pressing darkens to ink. */
+.rd-iconbtn {
+  flex: none;
+  color: var(--rd-glyph);
+  display: inline-flex;
+  /* 16px glyph + 14px each side = a 44px target. The negative margin gives the
+     hit area back to the row, so the target grows without the layout moving —
+     shrinking the glyph must not shrink the thing you tap. */
+  padding: 14px;
+  margin: -14px;
+  background: none;
+  border: 0;
+  border-radius: var(--rd-r);
+  cursor: pointer;
+  transition:
+    background-color var(--rd-dur-emph) var(--rd-ease),
+    transform var(--rd-dur-micro) var(--rd-ease);
+}
+
+.rd-iconbtn:active { background: var(--rd-press); transform: scale(0.92); transition-duration: 40ms; }
+.rd-iconbtn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-focus); }
+
+/* ── Selection strip ──
+   ONE control, used twice: the note strip (sticky, glyphs, scroll anchors) and
+   the visit scope (inline, words, panel swap). These were two blocks describing
+   the same pattern, which is how their active colours drifted apart and how the
+   scope indicator ended up hardcoding "exactly two, equal width" while the note
+   strip measured itself. Consistency that isn't shared implementation decays on
+   the first edit.
+
+   The rule for selection, stated once: the selected item takes
+   foreground/action — glyph and label alike — and carries a border/action
+   underline. Unselected is muted. Press tints only the UNSELECTED items:
+   pressing the current selection is a no-op, so there is nothing to acknowledge,
+   and it keeps the selected label off the press tint, where teal would fall to
+   4.07:1 and miss text AA. */
+.rd-select {
+  position: relative;
+  display: flex;
+  background: var(--otk-bg);
+  box-shadow: 0 1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+.rd-select--sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+.rd-select--sticky[data-stuck="true"] {
+  box-shadow: 0 1px 0 var(--rd-hairline), var(--rd-edge-down);
+}
+.rd-select__item {
+  position: relative;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 12px 10px;
+  background: none;
+  border: 0;
+  color: var(--rd-muted);
+  font: var(--rd-label-sm);
+  cursor: pointer;
+  transition:
+    color var(--rd-dur) var(--rd-ease),
+    background-color var(--rd-dur-emph) var(--rd-ease);
+}
+.rd-select--sticky .rd-select__item { padding: 14px 10px; }
+.rd-select__item[data-active="true"] { color: var(--otk-action); }
+.rd-select__item:not([data-active="true"]):active {
+  background: var(--otk-surface);
+  transition-duration: 40ms;
+}
+.rd-select__item:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+
+/* The active glyph pops once as the indicator arrives under it, then settles
+   back to exactly 24px — it used to rest at scale(1.08), which rendered at ~26px
+   and off the 16/24 glyph scale. */
+.rd-select__item .rd-icon { transition: transform var(--rd-dur) var(--rd-ease); }
+@keyframes rd-icon-pop {
+  0% { transform: scale(1); }
+  55% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+.rd-select__item[data-active="true"] .rd-icon {
+  animation: rd-icon-pop var(--rd-dur-emph) var(--rd-ease);
+}
+
+/* One indicator that travels, instead of N that blink on and off. Width is 1px
+   and scaled, so position and size both come from the measured active item —
+   which generalises to any count and to unequal widths. */
+.rd-select__indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: var(--rd-indicator-h);
+  transform-origin: left center;
+  background: var(--otk-action);
+  border-radius: var(--rd-indicator-h) var(--rd-indicator-h) 0 0;
+  transition: transform var(--rd-dur-emph) var(--rd-ease-spring);
+  will-change: transform;
+}
+.rd-select[data-ready="false"] .rd-select__indicator { opacity: 0; }
+
+.rd-section { scroll-margin-top: 52px; }
+/* The last section still has to be able to scroll its top up to the strip, or
+   the History tab could never become active by scrolling. Sized to the SHORTER
+   scope (Current visit) with ~30px to spare — any more and the screen ends on a
+   slab of dead white at max scroll. */
+.rd-section--history { padding-bottom: 88px; }
+
+/* Every section opens with the same small label — glyph + category, once. It
+   replaces the glyph that used to repeat on every note row: the strip already
+   names the section, so restating it per row was redundant, cost ~34px of
+   horizontal on each note, and rendered one category two ways (coloured in a tag
+   chip, grey in a row). Stating it once also answers a question the old design
+   could not: which category am I reading, when scrolled into the middle of one. */
+.rr-demo.rd .rd-seclabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  /* Tight to the notes it introduces, looser above — the gap belongs BETWEEN
+     sections, not between a label and the thing it labels. */
+  padding: 14px 20px 2px;
+  font: var(--rd-label-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--rd-muted);
+}
+.rd-seclabel .rd-icon { color: var(--rd-glyph); }
+
+/* ── History stats ── */
+.rr-demo.rd .rd-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  margin: 0;
+  padding: 2px 12px 14px;
+  list-style: none;
+}
+.rr-demo.rd .rd-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.rd-stat__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: var(--rd-hover);
+  color: var(--otk-ink);
+  font: var(--rd-title-sm);
+  font-variant-numeric: tabular-nums;
+}
+.rd-stat__label { font: var(--rd-label-sm); color: var(--otk-ink); }
+.rd-stat__sub { font: var(--rd-body-sm); color: var(--rd-muted); font-variant-numeric: tabular-nums; }
+
+/* ── Visit log ── */
+/* Switching scope is a lateral move, so the panel says so: it enters from the
+   direction of travel instead of fading in place. Keyed on scope in the
+   component, which remounts the panel and replays this on every switch. */
+@keyframes rd-panel-fwd {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rd-panel-back {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: none; }
+}
+.rd-visits { padding: 16px 20px; }
+.rd-visits[data-dir="1"] { animation: rd-panel-fwd var(--rd-dur) var(--rd-ease); }
+.rd-visits[data-dir="-1"] { animation: rd-panel-back var(--rd-dur) var(--rd-ease); }
+.rd-visits:focus { outline: none; }
+.rd-visit + .rd-visit { margin-top: 18px; }
+.rr-demo.rd .rd-visit__heading {
+  margin: 0 0 8px;
+  font: var(--rd-body-md-bold);
+  letter-spacing: -0.01em;
+  color: var(--otk-ink);
+}
+.rd-event { display: flex; align-items: flex-start; gap: 10px; }
+.rd-event .rd-icon { margin-top: 1px; color: var(--otk-ink); }
+.rd-event__time {
+  flex: none;
+  font: var(--rd-body-sm);
+  color: var(--rd-muted);
+  font-variant-numeric: tabular-nums;
+}
+.rd-event__body { flex: 1 1 auto; min-width: 0; }
+.rr-demo.rd .rd-event__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--otk-ink);
+}
+.rr-demo.rd .rd-event__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  font: var(--rd-body-sm);
+  color: var(--rd-muted);
+}
+.rd-event__table {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--rd-body-md);
+  color: var(--otk-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Pacing switch ── */
+.rd-row--switch { border-top: 1px solid var(--rd-hairline); }
+.rd-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+.rd-switch__label { font: var(--rd-body-md-semi); color: var(--otk-ink); }
+.rd-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.rd-switch__track {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  width: 51px;
+  height: 31px;
+  padding: 2px;
+  border-radius: var(--radius-full);
+  background: var(--otk-border);
+  /* Off, the fill alone is 1.47:1 on the row — the switch would be invisible to
+     low vision until turned on. The ring gives it a 3.65:1 boundary; the on
+     state carries its own (teal fill, 4.56:1) and drops the ring. */
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  transition:
+    background-color var(--rd-dur) var(--rd-ease),
+    box-shadow var(--rd-dur) var(--rd-ease);
+}
+.rd-switch__thumb {
+  width: 27px;
+  height: 27px;
+  border-radius: var(--radius-full);
+  background: var(--otk-bg);
+  box-shadow: 0 2px 4px rgba(20, 26, 38, 0.24), 0 0 0 0.5px rgba(20, 26, 38, 0.06);
+  transition: transform var(--rd-dur) var(--rd-ease);
+}
+.rd-switch input:checked ~ .rd-switch__track { background: var(--otk-action); box-shadow: none; }
+.rd-switch input:checked ~ .rd-switch__track .rd-switch__thumb { transform: translateX(20px); }
+.rd-switch input:focus-visible ~ .rd-switch__track {
+  box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
+}
+
+.rd-row--referral { border-bottom: 0; }
+.rd-referral { flex: 1 1 auto; font: var(--rd-body-md-semi); color: var(--otk-ink); }
+.rd-row--referral .rd-chevron { color: var(--rd-muted); }
+
+/* ── Bottom action bar ── */
+.rd-actionbar {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px 20px;
+  background: var(--otk-bg);
+  box-shadow: 0 -1px 0 var(--rd-hairline);
+  transition: box-shadow var(--rd-dur) var(--rd-ease);
+}
+/* Elevation only while there is still content to scroll past it. */
+.rd-actionbar[data-floating="true"] {
+  box-shadow: 0 -1px 0 var(--rd-hairline), 0 -8px 18px -10px rgba(20, 26, 38, 0.3);
+}
+.rd-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 48px;
+  border: 0;
+  border-radius: var(--rd-r);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    filter var(--rd-dur-emph) var(--rd-ease),
+    transform var(--rd-dur-micro) var(--rd-ease);
+}
+
+.rd-action:active { filter: brightness(0.9); transform: scale(0.985); transition-duration: 40ms; }
+.rd-action:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
+}
+.rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
+.rd-action__label { font: var(--rd-label-md); letter-spacing: -0.01em; }
+/* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
+/* Secondary is an OUTLINED button: background/default fill, so the edge is the
+   only thing that identifies it and has to carry SC 1.4.11 on its own. OTKit's
+   border/default #D8D9DB is 1.41:1 on white and cannot, so this uses --rd-edge
+   (3.65:1) — the same repair the switch and segment make. The tag chips keep the
+   plain #D8D9DB ring on purpose: they are content, not controls, so their edge
+   is decorative and the criterion does not apply. The primary needs no ring at
+   all — its teal fill is already 4.56:1. */
+.rd-action--secondary {
+  flex: 1 1 42%;
+  flex-direction: column;
+  gap: 0;
+  background: var(--otk-bg);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  color: var(--otk-ink);
+}
+
+.rd-action--secondary:active { background: var(--rd-press); filter: none; }
+.rd-action__table { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
+
+/* ── Hover ──
+   Gated behind a real pointer. On touch, :hover latches on tap and never
+   clears, so a tapped row or button stays tinted for the rest of the session —
+   which on a phone recreation reads as a broken default state, and did. */
+@media (hover: hover) and (pointer: fine) {
+  .rd-chip:hover { background: var(--rd-hover); }
+  .rd-row--action:hover { background: var(--rd-hover); }
+  .rd-iconbtn:hover { background: var(--rd-hover); }
+  .rd-select__item:not([data-active="true"]):hover { background: var(--otk-surface); }
+  .rd-action:hover { filter: brightness(0.96); }
+  .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
+  /* Back-of-House chrome. Gated with everything else: on touch, hover latches
+     after a tap and leaves a rail button or a list row stuck lit — which on a
+     SELECTION control reads as a second selection. */
+  .rdp-icon--bare:hover,
+  .rdp-chip:not(.rdp-chip--date):hover,
+  .rdp-dockbtn:hover,
+  .rdp-quote:hover { background: var(--rdp-chrome-alt); }
+  .rdp-resv:not([data-selected="true"]):hover { background: var(--rdp-chrome-alt); }
+  .rdp-status:hover { filter: brightness(0.96); }
+  .rdp-table:hover { background: var(--otk-surface); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   iPad / Back of House shell (.rdp-*)
+   ───────────────────────────────────────────────────────────────────
+   Only the CHROME the tablet adds: the service bar, the service-list
+   panel and the side panel. Every zone of the guest record itself keeps
+   its `.rd-*` classes, so the record is not restyled for tablet — it is
+   re-composed. That is the case study's claim, enforced by the
+   stylesheet rather than asserted in a caption.
+
+   The dark values are OTKit's OWN dark-mode tokens, read from the source
+   file, not sampled or invented — background/default #141A26,
+   background/elevation #2D333F, border/default #6F737B, and the accent
+   set the service lists colour-block with. An earlier pass guessed at
+   these from a clip and produced a chrome that was plausible and wrong.
+
+   Two structural corrections came with them. There is no vertical icon
+   rail in the real app — navigation is the drawer button in the service
+   bar plus this panel's own dock — so the record gets that width back.
+   And the date/shift/nav controls are OUTLINED, not filled: the fill
+   they had was 1.31:1 against the bar, doing a border's job badly.
+
+   The tablet does NOT get a squashed phone. Below ~860px the shell keeps
+   its true proportions and scrolls sideways instead of collapsing three
+   columns into slivers — a 114px-wide "record" column is not evidence of
+   anything.
+   ═══════════════════════════════════════════════════════════════════ */
+.rdp {
+  --rdp-chrome: #141a26;          /* background/default */
+  --rdp-chrome-alt: #2d333f;      /* background/elevation */
+  --rdp-edge: #6f737b;            /* border/default — 3.66:1 on the panel */
+  /* Selected surface. Only 2.19:1 against the panel — deliberately, because the
+     accent bar beside it is what SC 1.4.11 is satisfied by; the fill is there to
+     make the row scannable, and it keeps white at 7.94:1 and the secondary tone
+     at 5.62:1, which a lighter step would not. */
+  --rdp-selected: #4a5162;
+  --rdp-on-chrome: #ffffff;
+  --rdp-on-chrome-alt: #d8d9db;   /* ash-lighter */
+  --rdp-live: #64c987;
+  --rdp-badge: #4a6fde;
+  /* Focus on the dark panels. OTKit's action teal is 3.82:1 there — legal for a
+     non-text indicator but muddy against near-black; the legacy primary blue is
+     8:1 and is what the product actually rings with. */
+  --rdp-focus: #6cb6f5;
+  /* The list panel's square controls — the section collapse caret and the row's
+     status button — are one shape at one size. They sit in the same right-hand
+     column, so any difference between them reads as a misalignment. */
+  --rdp-btn-w: 40px;
+  --rdp-btn-h: 44px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+.rdp-device {
+  width: 100%;
+  /* Sized so the shell fits the case column exactly at desktop — 854px of
+     content, 848 of shell — and only pans on narrow viewports. */
+  min-width: 848px;
+  margin: 0 auto;
+  padding: 8px;
+  border-radius: 22px;
+  background: linear-gradient(158deg, #33373d 0%, #17191c 38%, #0d0e10 70%, #26292e 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 48px -14px rgba(10, 13, 10, 0.5);
+}
+.rdp-screen {
+  display: flex;
+  flex-direction: column;
+  height: 580px;
+  border-radius: 13px;
+  overflow: hidden;
+  background: var(--rdp-chrome);
+}
+
+/* ── Service bar ── */
+.rdp-statusbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 22px;
+  padding: 0 14px;
+  background: var(--rdp-chrome);
+  color: var(--rdp-on-chrome);
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+}
+.rdp-statusbar b { font-weight: 600; }
+.rdp-battery { display: inline-flex; align-items: center; gap: 5px; }
+.rdp-batt {
+  width: 22px;
+  height: 11px;
+  border-radius: 3px;
+  background: currentColor;
+  box-shadow: 0 0 0 1px var(--rdp-chrome), 0 0 0 2px currentColor;
+}
+.rdp-topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 12px;
+  background: var(--rdp-chrome);
+  color: var(--rdp-on-chrome);
+  font: var(--rd-label-sm);
+}
+.rdp-icon--bare {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+.rdp-icon--bare:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 1px; }
+.rdp-covers {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 6px;
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+}
+.rdp-datebar {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* The one control shape the bar is built from: an outlined chip. Steps, the
+   date and shift readouts, and the nav buttons are all the same box at three
+   widths — which is why they line up without any of them being special-cased. */
+.rdp-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
+  color: var(--rdp-on-chrome);
+  font: var(--rd-label-sm);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+.rdp-chip--step { width: 38px; padding: 0; }
+/* In the list panel the same chip takes the panel button size. */
+.rdp-listhead .rdp-chip--step { width: var(--rdp-btn-w); min-height: var(--rdp-btn-h); }
+.rdp-chip--date { min-width: 116px; cursor: default; }
+.rdp-chip--nav { width: 38px; padding: 0; }
+.rdp-chip--live { width: 38px; padding: 0; cursor: default; }
+.rdp-chip:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 2px; }
+.rdp-views { display: inline-flex; gap: 6px; }
+.rdp-caret { transform: rotate(90deg); }
+
+/* Live-service mark. Green is reinforcement — the element carries its own
+   accessible name, so the colour is never the only channel. */
+.rdp-live__dot {
+  width: 13px;
+  height: 13px;
+  border-radius: var(--radius-full);
+  background: var(--rdp-live);
+}
+.rdp-badge {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-full);
+  background: var(--rdp-badge);
+  color: #ffffff;
+  font: var(--rd-label-xs);
+  line-height: 17px;
+  text-align: center;
+}
+.rdp-newdot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Anchored to the 20px glyph's top-right corner, not the button's — a dot in
+     the corner of a 46px hit area reads as a stray pixel. */
+  margin: -13px 0 0 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  background: var(--rdp-badge);
+  box-shadow: 0 0 0 2px var(--rdp-chrome);
+}
+
+/* Selection on the dark panels, stated once.
+   A raised fill alone is 1.31:1 against the panel beside it, which means the
+   only difference between the current section — or the current reservation —
+   and its neighbours would be invisible to low vision. SC 1.4.11 covers a state
+   indicator, not just a boundary, so every selected control here carries an
+   accent bar at 4.23:1 as well as its fill. The bar is the signal; the fill is
+   there to make the row scannable. */
+.rdp-sel { position: relative; }
+.rdp-resv.rdp-sel[data-selected="true"] { background: var(--rdp-selected); }
+.rdp-sel[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  background: var(--otk-action);
+  border-radius: 0 var(--otk-radius) var(--otk-radius) 0;
+}
+
+/* ── Sections rail ── */
+.rdp-body { flex: 1 1 auto; display: flex; min-height: 0; }
+.rdp-rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 40px;
+  padding: 6px 0 8px;
+  background: var(--rdp-chrome);
+}
+.rdp-railbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome-alt);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease), color var(--rd-dur) var(--rd-ease);
+}
+.rdp-railbtn[data-selected="true"] { color: var(--rdp-focus); }
+/* Where the bar sits differs per surface: the rail marks its own left edge, the
+   list marks the row's leading edge against the panel. */
+/* The rail marks its section with an accent EDGE and a tinted glyph — no
+   raised fill, per the comp. Both are the legacy primary blue at 8:1. */
+.rdp-railbtn::after { inset: 3px auto 3px -6px; width: 3px; background: var(--rdp-focus); }
+.rdp-resv::after { inset: 0 auto -1px 0; width: 3px; }
+.rdp-rail__spacer { flex: 1 1 auto; }
+.rdp-railbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 1px; }
+
+/* ── Service lists ── */
+.rdp-sidebar {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  width: 232px;
+  min-height: 0;
+  background: var(--rdp-chrome);
+  color: var(--rdp-on-chrome);
+}
+.rdp-lists {
+  flex: 1 1 auto;
+  /* Room for one more row to clear the dock. Without it the last row is sliced
+     mid-height at max scroll, which reads as a rendering fault rather than as
+     "there is more below". */
+  padding-bottom: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.rdp-lists::-webkit-scrollbar { display: none; }
+.rdp-listhead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  padding: 8px 8px 8px 12px;
+  border-top: 1px solid var(--rdp-chrome-alt);
+}
+.rdp-lists > section:first-child .rdp-listhead { border-top: 0; }
+.rdp-listhead__title { flex: 1 1 auto; min-width: 0; }
+.rdp-listhead b { display: block; font: var(--rd-label-md); font-weight: 700; }
+.rdp-listhead i {
+  display: block;
+  font: var(--rd-body-sm);
+  font-style: normal;
+  color: var(--rdp-on-chrome-alt);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  /* One line, always. Wrapped, it pushes the counts off the header's baseline
+     and the row stops reading as a header at all. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rdp-listhead b { white-space: nowrap; }
+.rdp-counts {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1;
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+}
+.rdp-counts .rd-icon { color: var(--rdp-on-chrome-alt); }
+.rdp-quotes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; padding: 0 8px 10px 12px; }
+.rdp-quote {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-height: 44px;
+  padding: 4px 0;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+.rdp-quote__unit { font: var(--rd-label-sm); }
+.rdp-quote__n { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
+.rdp-quote--add { justify-content: center; }
+.rdp-quote:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 2px; }
+
+.rdp-resv {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 8px 8px 0;
+  border: 0;
+  border-top: 1px solid var(--rdp-chrome-alt);
+  background: none;
+  color: var(--rdp-on-chrome);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+/* The leading marker. It bleeds to the panel edge only when it is TONED — per
+   the comp, that is reserved for attention states, so the colour column down the
+   left means "these need you" rather than merely "these exist". */
+.rdp-state {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  align-self: stretch;
+  min-height: 42px;
+  color: var(--rdp-on-chrome);
+}
+.rdp-state[data-tone] { border-radius: 0 var(--otk-radius) var(--otk-radius) 0; }
+.rdp-state[data-tone="fuchsia"] { background: #d82c82; }
+.rdp-state[data-tone="yellow"] { background: #fdaf08; color: #141a26; }
+.rdp-state[data-tone="green"] { background: #2f864d; }
+.rdp-resv__size { flex: none; font: var(--rd-label-md); font-variant-numeric: tabular-nums; }
+.rdp-resv__body { flex: 1 1 auto; min-width: 0; }
+.rdp-resv__time {
+  display: block;
+  font: var(--rd-body-sm);
+  color: var(--rdp-on-chrome-alt);
+  font-variant-numeric: tabular-nums;
+  /* One line. Wrapped, the seated rows' "5:30 pm · 1h 5m" pushes the name onto
+     a third line and the row stops matching its neighbours. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rdp-resv__name {
+  display: block;
+  font: var(--rd-label-md);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Attribute marks. Tone is reinforcement only — each mark repeats something the
+   record states in words, so a monochrome reading loses nothing.
+   Every mark gets the SAME square cell and is centred in it. The glyphs are all
+   24×24 artwork but they fill their box differently (a star is edge-to-edge, a
+   voicemail is wide and short), so laying them out on their intrinsic width
+   spaces them unevenly and lands them on different vertical centres. */
+.rdp-marks {
+  flex: none;
+  align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-content: flex-start;
+  gap: 2px;
+  /* Four cells per line. Bounded so the cluster wraps INTO the row's second
+     line, as in the comp, instead of drifting free between the name and the
+     status button wherever the count happens to leave room. */
+  max-width: 82px;
+  /* The first line of marks sits on the RESERVATION TIME's line, not at the top
+     of the row: the 18px cell is taller than the time's 16px line box, so it
+     needs the difference plus the line box's own offset to share its centre. */
+  padding-top: 6px;
+}
+.rdp-marks > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+.rdp-marks [data-tone="fuchsia"] { color: #f472b6; }
+.rdp-marks [data-tone="purple"] { color: #bb6acd; }
+.rdp-marks [data-tone="green"] { color: #64c987; }
+.rdp-marks [data-tone="yellow"] { color: #fdaf08; }
+.rdp-marks [data-tone="teal"] { color: #61bddb; }
+/* Trailing column: the table number, then the status control under it. The
+   status is the affordance — its fill and glyph come from the same 22-state
+   taxonomy the status-dropdown demo edits, so the two cannot drift. */
+/* The utility dock — the other half of navigation, with sign-out set apart. */
+.rdp-dock {
+  position: relative;
+  flex: none;
+  display: flex;
+  background: var(--rdp-chrome);
+  box-shadow: var(--rd-edge-up);
+}
+.rdp-dockbtn {
+  position: relative;
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border: 0;
+  background: none;
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease);
+}
+/* Raised tiles with a hairline between, as in the comp — not a flat strip. */
+.rdp-dockbtn { background: var(--rdp-chrome-alt); }
+.rdp-dockbtn + .rdp-dockbtn { box-shadow: inset 1px 0 0 var(--rdp-chrome); }
+.rdp-dockbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: -2px; }
+/* The dock has no gutter above it to hang badges in, so they sit inside. */
+.rdp-dockbtn .rdp-badge { top: 6px; right: 50%; margin-right: -18px; }
+.rdp-dockbtn .rdp-newdot { margin: -13px 0 0 4px; }
+
+/* Trailing control: one button, full row height, table number stacked over the
+   status glyph inside it. */
+.rdp-trail { flex: none; display: flex; }
+/* Two treatments, chosen by the state's service phase (see the comp):
+     pre-dining   → OUTLINED, the status carried by the glyph's colour
+     during-service → FILLED with the status colour, glyph in its `on` tone
+   The outlined form keeps the PANEL as its own surface rather than inheriting
+   the row's, because on the selected row (#4a5162) the weakest glyph
+   (accent-teal) falls to 1.48:1 — the status becomes unreadable on exactly the
+   row whose record is open. Against the panel all eleven tones clear 3:1. */
+.rdp-statebtn {
+  flex: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: var(--rdp-btn-w);
+  height: var(--rdp-btn-h);
+  padding: 3px 0;
+  border-radius: var(--otk-radius);
+  background: var(--rdp-chrome);
+  box-shadow: inset 0 0 0 1px var(--rdp-edge);
+}
+/* The number is the guest-facing fact; the glyph is the state. Both live in the
+   control, so "table 31, running late" is one object rather than two. */
+.rdp-statebtn__table {
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--rdp-on-chrome);
+}
+.rdp-statebtn[data-filled="true"] .rdp-statebtn__table { color: inherit; }
+
+
+
+/* The record. Zones keep their .rd-* classes; only the container is new.
+   The column splits: identity zones are FIXED at the top and only the notes
+   scroll. That is the one thing the tablet can do that the phone cannot — the
+   guest you are annotating stays on screen the whole way down the guestbook. */
+.rdp-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--otk-bg);
+}
+.rdp-main > .rdp-facts,
+.rdp-main > .rd-row { flex: none; }
+.rdp-notes {
+  /* Positioned for the same reason .rd-scroll is: the strip and the spy both
+     read section offsetTop, and an unpositioned scroller hands them page-level
+     coordinates and clamps every jump to max scroll. */
+  position: relative;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.rdp-notes::-webkit-scrollbar { display: none; }
+.rdp-notes:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
+/* Sized to the shorter scope so History can still scroll its top up to the
+   strip — same rule as the phone, different scroller height. */
+.rdp .rd-section--history { padding-bottom: 40px; }
+.rdp-facts { display: flex; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rd-hairline); }
+.rdp-fact {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: var(--otk-radius);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--otk-ink);
+}
+.rdp-fact .rd-icon { color: var(--rd-glyph); }
+
+/* Zones that sit UNDER the record on the phone sit BESIDE it here. */
+.rdp-side {
+  flex: none;
+  width: 192px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  border-left: 1px solid var(--rd-hairline);
+  background: var(--otk-bg);
+}
+.rdp-side::-webkit-scrollbar { display: none; }
+.rdp-side .rd-row { background: transparent; }
+.rdp-actions { display: flex; flex-direction: column; }
+/* Reservation status — the panel's one filled control, and the only one, so
+   "what state is this booking in" is answerable before anything else is read. */
+.rdp-status {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  background: var(--otk-action);
+  color: var(--otk-bg);
+  cursor: pointer;
+  transition: filter var(--rd-dur) var(--rd-ease);
+}
+.rdp-status__label { flex: 1 1 auto; font: var(--rd-label-md); text-align: left; }
+.rdp-status__chev { transform: rotate(90deg); }
+.rdp-status:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--otk-bg); }
+
+/* Action rows. One shape, a leading glyph and an optional second line — the
+   second line is not decoration: "Send" and "Re-send" are indistinguishable
+   without naming what each would actually send. */
+.rdp-act {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--rd-hairline);
+  background: var(--otk-bg);
+  color: var(--otk-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--rd-dur-emph) var(--rd-ease);
+}
+.rdp-act:active { background: var(--rd-press); transition-duration: 40ms; }
+.rdp-act:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rdp-act > .rd-icon:first-child { color: var(--rd-glyph); }
+.rdp-act__body { flex: 1 1 auto; min-width: 0; }
+.rdp-act__body b { display: block; font: var(--rd-label-md); }
+.rdp-act__body i { display: block; font: var(--rd-body-sm); font-style: normal; color: var(--rd-muted); }
+.rdp-act__chev { color: var(--rd-glyph); transform: rotate(90deg); }
+/* The balance is a readout, so the tone repeats what the label already says. */
+.rdp-act--danger { color: #931b23; }
+.rdp-act--danger > .rd-icon:first-child { color: #931b23; }
+.rdp-act--order { border-bottom: 0; }
+.rdp-order { border-bottom: 1px solid var(--rd-hairline); }
+.rr-demo.rd .rdp-order__items {
+  margin: 0;
+  padding: 0 12px 10px 42px;
+  list-style: none;
+}
+.rr-demo.rd .rdp-order__items li {
+  margin: 0;
+  padding: 0;
+  font: var(--rd-body-sm);
+  color: var(--rd-muted);
+}
+.rr-demo.rd .rdp-order__items li + li { margin-top: 3px; }
+.rdp-table {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: var(--otk-bg);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  color: var(--otk-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.rdp-table .rd-icon { color: var(--rd-glyph); }
+.rdp-table__body b { display: block; font: var(--rd-label-sm); }
+.rdp-table__body i { display: block; font: var(--rd-body-sm); font-style: normal; color: var(--rd-muted); }
+.rdp-table:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--rd-edge), 0 0 0 2px var(--otk-focus); }
+/* These two are lifted straight from the phone, so they arrive with its row
+   padding, borders and 24px glyphs — none of which belongs in a 196px panel.
+   The zone is reused; its scale is the panel's business. */
+/* The panel reads top-down as state → settings, so the settings sit AT the
+   bottom rather than stacking under the state and leaving a void below. */
+.rdp-side__settings { margin-top: auto; }
+.rdp-sideRow { padding: 8px 6px; border: 0; gap: 8px; }
+/* The phone's switch is a 51x31 thumb-sized control. In a 180px properties
+   panel that is the loudest thing on screen for the least important setting. */
+.rdp .rd-switch__track { width: 42px; height: 26px; }
+.rdp .rd-switch__thumb { width: 22px; height: 22px; }
+.rdp .rd-switch input:checked ~ .rd-switch__track .rd-switch__thumb { transform: translateX(16px); }
+.rdp-sideRow .rd-icon { width: 16px; height: 16px; }
+.rdp .rd-referral { font: var(--rd-body-sm); font-weight: 600; }
+.rdp .rd-row--switch { border-top: 0; }
+.rdp .rd-switch__label { font: var(--rd-body-sm); }
+
+/* ── Phone: teaser, then full-screen ──
+   The columns never collapse — the composition IS the artefact and a collapsed
+   one shows nothing. So below 700px the shell rests scaled and inert behind a
+   tap target, and opens to a full-screen stage where it pans at its true size. */
+.rdp-tap, .rdp-close { display: none; }
+@media (max-width: 700px) {
+  /* .rr-demo carries a 470px min-height at this width — a layout-stability guard
+     for the other demos, which would otherwise leave 240px of dead scrim under
+     the teaser and put the CTA nowhere near the thing it opens. */
+  .rdp { overflow: hidden; min-height: 0; }
+  .rdp-tap {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(to bottom, rgba(10, 13, 10, 0.1) 40%, rgba(10, 13, 10, 0.66));
+    cursor: pointer;
+  }
+  .rdp-tap__cta {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--color-background-action);
+    color: var(--color-foreground-on-action);
+    font: var(--font-label-medium);
+  }
+  .rdp-tap__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-foreground-on-action);
+  }
+  .rdp-stage {
+    position: relative;
+    /* Both the factor and this height come from the measured shell width (see
+       useLayoutEffect in ReservationDetailIPad) — the whole composition shows at
+       every phone width, with no dead band under it and nothing cropped. */
+    height: var(--rdp-fit-h, 232px);
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
+  .rdp-stage .rdp-device {
+    transform: scale(var(--rdp-fit, 0.38));
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  .rdp { position: relative; }
+
+  /* Opened — a lightbox, not a void. The shell keeps its true 848px width and
+     pans horizontally, which is what you do with a tablet screenshot anyway;
+     what it must NOT do is float in a black field with no edge and no hint that
+     there is more to the right of it. */
+  .rdp[data-expanded="true"] { overflow: visible; }
+  .rdp[data-expanded="true"] .rdp-tap { display: none; }
+  .rdp[data-expanded="true"] .rdp-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    overflow-x: auto;
+    overscroll-behavior: contain;
+    /* Opaque. At 94% the page bled through top and bottom and the stage read
+       as a rendering fault rather than as a layer over the page. */
+    background: #060806;
+    border-radius: 0;
+    /* Edge fades, painted on the viewport rather than the scrolling content, so
+       they mark "there is more this way" at both ends. */
+    box-shadow:
+      inset 26px 0 22px -22px #060806,
+      inset -26px 0 22px -22px #060806;
+  }
+  .rdp[data-expanded="true"] .rdp-device {
+    transform: none;
+    pointer-events: auto;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+      0 24px 60px -18px rgba(0, 0, 0, 0.85);
+  }
+  .rdp[data-expanded="true"] .rdp-close {
+    position: fixed;
+    top: max(10px, env(safe-area-inset-top));
+    right: 10px;
+    z-index: 61;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-full);
+    background: var(--color-background-alt);
+    color: var(--color-foreground-default);
+  }
+  /* The glyph is a plus; a close is the same mark turned. */
+  .rdp[data-expanded="true"] .rdp-close .rd-icon { transform: rotate(45deg); }
+  /* The shell is wider than the phone, and nothing else says so. */
+  .rdp[data-expanded="true"] .rdp-pan {
+    position: fixed;
+    left: 50%;
+    bottom: max(14px, env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 61;
+    display: block;
+    padding: 7px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--color-background-alt);
+    border: 1px solid var(--color-border-alt);
+    color: var(--color-foreground-muted);
+    font: var(--font-label-small);
+    white-space: nowrap;
+  }
+  /* Taller here than at desktop: the phone has the height to spend, and a
+     460px shell left two thirds of the viewport empty. */
+  .rdp[data-expanded="true"] .rdp-screen { height: min(660px, 82dvh); }
+  .rdp-screen { height: 460px; }
+}
+.rdp-pan { display: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Editorial variant (.rd--editorial)
+   ───────────────────────────────────────────────────────────────────
+   The same component and data with a different type and surface
+   treatment. Everything the variant changes lives here, so the two
+   cannot drift apart and a fix to the base is a fix to both.
+
+   The exploration is "what if OTKit had more editorial craft", not
+   "what if this were Resy" — so the action teal STAYS. Swapping the
+   accent would make it a pastiche of a competitor; keeping it makes it
+   range within the brand.
+
+   Three moves, all of which raise craft without spending density:
+     1. Real display/body contrast. The guest name was 18px semibold in
+        the same family as everything else — bigger, not different. As a
+        serif at 26px it stops being a label and becomes the subject.
+     2. Hairlines instead of fills. The stat discs, the avatar disc and
+        the chip fills were the most product-UI things on screen. Figures
+        sitting directly on white under a tracked label read as more
+        considered AND take less room.
+     3. Micro-labels pushed further — wider tracking, lighter weight.
+   Plus: the device bezel goes. A notch and side rails say "mockup";
+   a clean card says "product".
+   ═══════════════════════════════════════════════════════════════════ */
+.rd--editorial {
+  --rd-hairline: #e8e9ea;
+}
+/* Bezel → card. */
+.rd--editorial .rd-device {
+  padding: 0;
+  border-radius: 26px;
+  background: none;
+  box-shadow: 0 1px 2px rgba(20, 26, 38, 0.06), 0 24px 60px -20px rgba(20, 26, 38, 0.22);
+}
+.rd--editorial .rd-device::before,
+.rd--editorial .rd-device::after,
+.rd--editorial .rd-notch { display: none; }
+.rd--editorial .rd-screen { border-radius: 26px; }
+
+/* 1. The name is the subject of the page, so it gets the one display moment. */
+.rr-demo.rd--editorial .rd-guest {
+  font: 400 26px/30px var(--primitive-font-family-serif), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+.rd--editorial .rd-row--guest { min-height: 76px; padding-top: 18px; padding-bottom: 14px; }
+
+/* 2. Fills out, hairlines in. */
+.rr-demo.rd--editorial .rd-stats { padding: 6px 20px 18px; gap: 12px; }
+.rd--editorial .rd-stat__value {
+  width: auto;
+  height: auto;
+  background: none;
+  font: 400 26px/30px var(--primitive-font-family-serif), Georgia, serif;
+}
+.rr-demo.rd--editorial .rd-stat { align-items: flex-start; text-align: left; }
+.rd--editorial .rd-tag { box-shadow: inset 0 0 0 1px var(--rd-hairline); }
+
+/* 3. Micro-labels: wider, lighter, quieter. SECTION labels only — the wide
+   tracking is a structural device. Applying it to the stat labels overflowed the
+   four-column grid ("NO-SHOWS" wrapped and pushed its sub-count onto a third
+   line), which is the reminder that a treatment belongs to a ROLE, not to
+   everything that happens to be small. */
+.rr-demo.rd--editorial .rd-seclabel {
+  font: 500 12px/12px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rd-glyph);
+}
+.rd--editorial .rd-stat__label {
+  font: var(--rd-body-sm);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--otk-ink);
+}
+.rr-demo.rd--editorial .rd-seclabel { padding: 22px 20px 6px; }
+.rd--editorial .rd-stat__label { margin-top: 2px; }
+/* The category glyph STAYS in the editorial variant. It was dropped once, on the
+   argument that wide-tracked caps are structure enough — but the glyph is the
+   only channel shared with the tag chips above and the strip below, so removing
+   it left the editorial screen naming its categories in one place and drawing
+   them in another. It reads at the label's weight, not the strip's: 16px on the
+   glyph tone, with the gap tightened so it sits inside the label rather than
+   beside it. No opacity on it: --rd-glyph is already the lightest tone that
+   holds SC 1.4.11's 3:1, and fading it would put it under. */
+.rd--editorial .rd-seclabel { gap: 7px; }
+.rd--editorial .rd-seclabel .rd-icon { flex: none; }
+
+/* A little air, bought from chrome rather than from content. */
+.rd--editorial .rd-select--sticky .rd-select__item { padding: 16px 10px; }
+.rd--editorial .rd-actionbar { padding: 14px 20px 22px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Editorial variant, tablet (.rdp--editorial)
+   ───────────────────────────────────────────────────────────────────
+   The tablet's deltas ON TOP of the shared .rd--editorial layer, which
+   this variant also carries — the serif display name, the wide-tracked
+   micro-labels, the hairline tag rings and the extra air on the note
+   strip are the same rules the phone's exploration uses, so the two
+   cannot drift into two different ideas of "editorial".
+
+   Four moves, and nothing else:
+     1. Chrome recedes — the iOS status row goes, the bezel quiets.
+     2. One display moment — the serif name is the only weight at the
+        top of the record, so the quick facts lose their boxes.
+     3. One micro-label device runs across BOTH panels — the service
+        lists' section titles take the same wide-tracked caps as the
+        record's note-section labels. That is the structural join.
+     4. The status control stops shouting.
+
+   What deliberately does NOT change: the accent (this is range within
+   OTKit, not a pastiche of a competitor), the service-list density
+   (Back of House earns its density), and the rail.
+   ═══════════════════════════════════════════════════════════════════ */
+/* 1. Chrome recedes. The exploration is about the surface, not about
+      establishing "this is an iPad" a second time. */
+.rdp--editorial .rdp-statusbar { display: none; }
+.rdp--editorial .rdp-device {
+  padding: 12px;
+  border-radius: 26px;
+  background: #1b1d20;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06), 0 18px 44px -20px rgba(10, 13, 10, 0.55);
+}
+.rdp--editorial .rdp-screen { border-radius: 16px; }
+
+/* 2. One display moment. The serif name comes from .rd--editorial; the facts
+      give up their boxes so nothing competes with it above the fold. */
+.rdp--editorial .rdp-fact {
+  box-shadow: none;
+  padding: 0;
+  min-height: 0;
+  color: var(--rd-muted);
+}
+.rdp--editorial .rdp-facts { gap: 18px; padding: 12px 20px 10px; }
+.rdp--editorial .rd-row--guest { min-height: 72px; }
+
+/* 3. One micro-label device, both panels. The service lists' titles were 14/700
+      sans — the same weight as a guest name — which made the panel read as a
+      stack of equal headings. Wide-tracked caps demote them to structure and
+      match the record's section labels exactly. */
+.rdp--editorial .rdp-listhead b {
+  font: 500 11px/11px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rdp-on-chrome-alt);
+}
+.rdp--editorial .rdp-listhead i { text-decoration: none; opacity: 0.75; }
+
+/* 4. The status stops shouting. On the shipped screen this is a saturated bar
+      at the top of the side panel, so the eye lands on it before the guest
+      whose record is open. Here it is a ruled row carrying a state mark: the
+      colour still identifies the state, it just no longer owns the composition.
+      The glyph keeps the state's own tone — every one of the eleven clears 3:1
+      on white — and the label stays ink, so the state is never colour alone. */
+.rdp--editorial .rdp-status {
+  background: none;
+  border-bottom: 1px solid var(--rd-hairline);
+  min-height: 52px;
+}
+.rdp--editorial .rdp-status__label {
+  font: 500 11px/11px var(--rd-font);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--otk-ink);
+}
+.rdp--editorial .rdp-status__chev { color: var(--rd-glyph); }
+.rdp--editorial .rdp-status:focus-visible { box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rdp--editorial .rdp-act__body b { font: var(--rd-label-md); }
+
+/* ── Entrance ──
+   One orchestrated reveal on scroll-in: the zones arrive in reading order, so
+   the eye is walked down the screen's structure once. Not repeated on scroll. */
+@keyframes rd-zone-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+.rd-screen[data-entered="true"] .rd-zone,
+.rdp-screen[data-entered="true"] .rd-zone {
+  animation: rd-zone-in var(--rd-dur-emph) var(--rd-ease) backwards;
+  animation-delay: calc(var(--rd-i, 0) * 55ms);
+}
+.rd-screen[data-entered="false"] .rd-zone,
+.rdp-screen[data-entered="false"] .rd-zone { opacity: 0; }
+
+@media (max-width: 420px) {
+  .rd-screen { height: 640px; }
+  .rd-device::before, .rd-device::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rd-scroll { scroll-behavior: auto; }
+  .rd-chiprow,
+  .rd-titlebar,
+  .rd-switch__track,
+  .rd-switch__thumb,
+  .rd-iconbtn,
+  .rd-action,
+  .rd-row--action,
+  .rd-chip,
+  .rd-header,
+  .rd-actionbar {
+    transition: none;
+  }
+  /* Zones render finished — the reveal is ambient, so it is dropped entirely
+     rather than sped up. Same for the icon pop and the panel slide: the state
+     change still lands, it just doesn't travel to get there. */
+  .rd-screen[data-entered] .rd-zone,
+  .rd-screen[data-entered="false"] .rd-zone,
+  .rdp-screen[data-entered] .rd-zone,
+  .rdp-screen[data-entered="false"] .rd-zone {
+    animation: none;
+    opacity: 1;
+  }
+  .rd-select__item[data-active="true"] .rd-icon,
+  .rd-visits[data-dir="1"],
+  .rd-visits[data-dir="-1"] {
+    animation: none;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════
    Case-detail page (/work/[slug])
    ═══════════════════════════════════════════════════════════════════ */
