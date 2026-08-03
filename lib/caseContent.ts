@@ -792,12 +792,18 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         naturalSize: true,
       },
       {
-        type: "image",
-        alt: "Animation of the updated iOS Restaurant app showing modular layout and design system components",
+        type: "demo",
+        demo: "reservation-detail",
+        frameLabel: "OTKit · iOS Restaurant — as shipped",
         caption:
-          "The modular card architecture in action: each zone behaves predictably and scales responsively across screen sizes.",
-        src: "/projects/images/ot-reservations-ios-modular-layout.gif",
-        naturalSize: true,
+          "The modular architecture in action, live rather than filmed: every zone is a repeatable pattern, and the note strip is a scroll anchor over sections that all stay mounted. Drive it — the strip moves the scroll and the scroll moves the strip.",
+      },
+      {
+        type: "demo",
+        demo: "reservation-detail-editorial",
+        frameLabel: "OTKit · Editorial variant — exploration",
+        caption:
+          "An exploration, not the shipped screen: the same component and data with a different type and surface treatment — one display moment, hairlines instead of fills, no device chrome. Built as a variant rather than a fork, so both stay in sync. The action teal stays deliberately; this is range within OTKit, not a different brand.",
       },
       { type: "hr" },
       { type: "h2", text: "System Alignment" },
