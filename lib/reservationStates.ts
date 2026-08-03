@@ -125,3 +125,15 @@ export const SEMANTIC_PALETTE: SemanticToken[] = (() => {
 
 export const STATE_COUNT = ALL_STATES.length; // 22
 export const TOKEN_COUNT = SEMANTIC_PALETTE.length; // 11
+
+/**
+ * Look a state up by id. The tablet's reservation list and the record's status
+ * control both resolve their fill and glyph through here, so the status a row
+ * shows is the same object the status dropdown demo edits — one taxonomy, not a
+ * second hand-maintained copy of the same eleven tokens.
+ */
+export function stateById(id: string): ReservationState {
+  const found = ALL_STATES.find((s) => s.id === id);
+  if (!found) throw new Error(`Unknown reservation state: ${id}`);
+  return found;
+}

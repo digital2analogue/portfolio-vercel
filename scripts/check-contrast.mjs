@@ -207,6 +207,21 @@ const PAIRINGS = [
   { text: '#247f9e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: status-button fill on the side panel' },
   { text: '#82868e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: side-panel glyphs + control boundary rings' },
   { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/iPad: side-panel glyph on a hovered row' },
+  //
+  // The trailing control on every list row is the reservation STATUS, resolved
+  // through lib/reservationStates — the same 22-state taxonomy the status
+  // dropdown on /work/ot-design-system edits. Its glyph-on-fill pairings are
+  // already registered above (that demo renders them); what is new here is each
+  // fill against the DARK panel it now sits on, and the ring that keeps the chip
+  // bounded on the selected row, where the row fill drops the weakest chip
+  // (accent-teal) to 1.48:1.
+  { text: '#20738f', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — weakest fill (accent-teal) on chrome' },
+  { text: '#cc3b48', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — danger fill on chrome' },
+  { text: '#2f864d', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — success fill on chrome' },
+  { text: '#ad4cc3', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status chip — accent-purple fill on chrome' },
+  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-chip ring on chrome' },
+  { text: '#ffffff', bg: '#4a5162', min: NON_TEXT, label: 'Demo/iPad: status-chip ring on the selected row' },
+  { text: '#d8d9db', bg: '#4a5162', label: 'Demo/iPad: table number + time on the selected row' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair

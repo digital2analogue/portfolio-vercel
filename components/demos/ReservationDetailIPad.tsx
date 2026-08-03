@@ -20,7 +20,7 @@
  * rearranged everything, which is a worse abstraction than two compositions.
  */
 
-import { useCallback, useId, useState } from "react";
+import { useCallback, useId, useLayoutEffect, useRef, useState } from "react";
 import { Icon, SelectStrip, useEntrance, useSectionSpy } from "./ReservationDetailDemo";
 import {
   NOTE_SECTIONS,
@@ -32,6 +32,12 @@ import {
   IPAD,
   type Visit,
 } from "@/lib/reservationDetail";
+import { stateById } from "@/lib/reservationStates";
+
+/** Shell width in px — kept in step with .rdp-device min-width in globals.css. */
+const SHELL_WIDTH = 848;
+/** Shell height in px (screen + device padding), for the teaser's stage box. */
+const SHELL_HEIGHT = 596;
 
 const SCOPES: { id: string; label: string; visits: Visit[] }[] = [
   { id: "current", label: "Current visit", visits: CURRENT_VISIT },
@@ -42,6 +48,9 @@ export default function ReservationDetailIPad() {
   const [scope, setScope] = useState(0);
   const [excluded, setExcluded] = useState(false);
   const [stuck, setStuck] = useState(false);
+  /** Phone-width only: the shell is 848px, so it rests as a tappable teaser and
+   *  opens full-screen rather than rendering as an illegible sliver. */
+  const [expanded, setExpanded] = useState(false);
   const baseId = useId();
   const screenRef = useEntrance<HTMLDivElement>();
   const { active, scrollRef, sectionRefs, stripRef, tabRefs, spy, goToSection, onStripKeyDown } =
@@ -55,10 +64,58 @@ export default function ReservationDetailIPad() {
     spy(top);
   }, [scrollRef, stripRef, spy]);
 
+  /**
+   * Teaser scale, MEASURED rather than declared. There is no CSS unit that turns
+   * a container width into a unitless scale factor (calc(100cqw / 848) resolves
+   * to a length, which scale() rejects), and a hardcoded factor is wrong at
+   * every viewport but one. So the shell's own width sets it, and the stage's
+   * height follows from the same number — no dead band, no crop.
+   */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [fit, setFit] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const measure = () => setFit(Math.min(1, el.clientWidth / SHELL_WIDTH));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const zone = (i: number) => ({ "--rd-i": i }) as React.CSSProperties;
+  const recordState = stateById(IPAD.status.id);
 
   return (
-    <div className="rr-demo rd rdp">
+    <div
+      className="rr-demo rd rdp"
+      data-expanded={expanded}
+      ref={rootRef}
+      style={fit === null ? undefined : ({ "--rdp-fit": fit } as React.CSSProperties)}
+    >
+      {/* Phone-width affordance. The shell is 848px wide and panning it inside a
+          vertically-scrolling page is a poor trade, so below 700px it rests as a
+          scaled, inert teaser and opens full-screen on tap — the same bargain the
+          decision-engine embed makes, minus the round trip, because this
+          prototype is live in the page rather than in an iframe. */}
+      <button type="button" className="rdp-tap" onClick={() => setExpanded(true)}>
+        <span className="rdp-tap__cta">
+          <span className="rdp-tap__dot" aria-hidden="true" />
+          Tap to view prototype
+        </span>
+      </button>
+      <div
+        className="rdp-stage"
+        style={fit === null ? undefined : ({ "--rdp-fit-h": `${Math.round(SHELL_HEIGHT * fit)}px` } as React.CSSProperties)}
+      >
+        <button
+          type="button"
+          className="rdp-close"
+          onClick={() => setExpanded(false)}
+          aria-label="Close the prototype"
+        >
+          <Icon name="plus" size={20} />
+        </button>
       <div className="rdp-device">
         <div className="rdp-screen" ref={screenRef}>
           {/* Service bar. Faithful to OTKit's iPad top navigation: an iOS status
@@ -114,9 +171,32 @@ export default function ReservationDetailIPad() {
           </div>
 
           <div className="rdp-body">
-            {/* Service lists. There is no vertical icon rail in the real app —
-                navigation is the drawer button above and this panel's own dock
-                below it, which is why the record gets the width instead. */}
+            {/* Primary sections. The rail is 40px and glyph-only, so the active
+                section is marked by an accent edge rather than a fill: a raised
+                fill on this panel is 1.31:1 and would be the only difference
+                between the current section and its neighbours. */}
+            <nav className="rdp-rail" aria-label="Sections">
+              {IPAD.rail.map((r) => (
+                <button
+                  key={r.label}
+                  type="button"
+                  className="rdp-railbtn rdp-sel"
+                  data-selected={r.active}
+                  aria-current={r.active ? "page" : undefined}
+                >
+                  <Icon name={r.icon} size={20} />
+                  <span className="rd-sr">{r.label}</span>
+                </button>
+              ))}
+              <span className="rdp-rail__spacer" />
+              {IPAD.railFooter.map((r) => (
+                <button key={r.label} type="button" className="rdp-railbtn">
+                  <Icon name={r.icon} size={20} />
+                  <span className="rd-sr">{r.label}</span>
+                </button>
+              ))}
+            </nav>
+
             <aside className="rdp-sidebar" aria-label="Service lists">
               <div className="rdp-lists">
                 {IPAD.lists.map((list) => (
@@ -174,15 +254,22 @@ export default function ReservationDetailIPad() {
                             </span>
                           ))}
                         </span>
-                        {r.table ? (
-                          <span className="rdp-resv__table" data-tone={r.tableTone}>
-                            {r.table}
+                        {/* The trailing control is the reservation STATUS, not
+                            the table — same taxonomy as the status-dropdown demo
+                            on the sibling case study, resolved through
+                            stateById so there is one source for the eleven
+                            tokens the 22 states collapse onto. The table number
+                            rides above it, as it does in the source panel. */}
+                        <span className="rdp-trail">
+                          {r.table && <span className="rdp-trail__table">{r.table}</span>}
+                          <span
+                            className="rdp-statechip"
+                            style={{ background: stateById(r.status).fill, color: stateById(r.status).on }}
+                          >
+                            <Icon name={stateById(r.status).icon} size={16} />
+                            <span className="rd-sr">{stateById(r.status).label}</span>
                           </span>
-                        ) : (
-                          <span className="rdp-resv__table rdp-resv__table--empty">
-                            <Icon name="seat" size={16} />
-                          </span>
-                        )}
+                        </span>
                       </button>
                     ))}
                   </section>
@@ -378,23 +465,65 @@ export default function ReservationDetailIPad() {
               </div>
             </main>
 
-            {/* Zones that sit UNDER the record on the phone sit beside it here. */}
-            <aside className="rdp-side" aria-label="Reservation status">
-              {/* Reservation status. Icon-only, as it ships — the glyph and the
-                  fill carry the state, and the accessible name carries the word
-                  so it is never colour-alone. */}
-              <button type="button" className="rdp-status">
-                <Icon name="check" size={24} />
-                <span className="rd-sr">{IPAD.status.label} — change reservation status</span>
+            {/* Zones that sit UNDER the record on the phone sit beside it here,
+                as a properties rail: one status control, then the reservation's
+                actions as full-width rows with a leading glyph. Two carry the
+                thing they would actually send on a second line, because "Send"
+                and "Re-send" are not distinguishable without it. */}
+            <aside className="rdp-side" aria-label="Reservation actions">
+              <button
+                type="button"
+                className="rdp-status"
+                style={{ background: recordState.fill, color: recordState.on }}
+              >
+                <Icon name={recordState.icon} size={20} />
+                <span className="rdp-status__label">{recordState.label}</span>
+                <Icon name="chevron-right" size={20} className="rdp-status__chev" />
               </button>
-              <button type="button" className="rdp-table">
-                <Icon name="seat" size={16} />
-                <span className="rdp-table__body">
-                  <b>{IPAD.status.table}</b>
-                  <i>{IPAD.status.tableState}</i>
-                </span>
-              </button>
-              <div className="rdp-side__settings">
+
+              <div className="rdp-actions">
+                {IPAD.actions.map((act) => (
+                  <button key={act.id} type="button" className="rdp-act">
+                    <Icon name={act.icon} size={20} />
+                    <span className="rdp-act__body">
+                      <b>{act.label}</b>
+                      {act.sub && <i>{act.sub}</i>}
+                    </span>
+                  </button>
+                ))}
+
+                {/* A readout, not an action — it discloses the bill rather than
+                    performing anything, so it is styled apart from the rows
+                    above and carries the amount in the label, never in colour. */}
+                <button type="button" className="rdp-act rdp-act--danger">
+                  <Icon name="price" size={20} />
+                  <span className="rdp-act__body">
+                    <b>
+                      {IPAD.balance.label} · {IPAD.balance.amount}
+                    </b>
+                  </span>
+                  <Icon name="chevron-right" size={20} className="rdp-act__chev" />
+                </button>
+
+                <div className="rdp-order">
+                  <button type="button" className="rdp-act rdp-act--order">
+                    <Icon name="utensils" size={20} />
+                    <span className="rdp-act__body">
+                      <b>
+                        {IPAD.order.qty} {IPAD.order.label}
+                      </b>
+                    </span>
+                    <Icon name="chevron-right" size={20} className="rdp-act__chev" />
+                  </button>
+                  <ul className="rd-reset rdp-order__items">
+                    {IPAD.order.items.map((it) => (
+                      <li key={it} className="rd-reset">
+                        {it}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <div className="rd-row rd-row--switch rdp-sideRow">
                   <label className="rd-switch" htmlFor="rdp-pacing">
                     <span className="rd-switch__label">Exclude party from pacing limit</span>
@@ -410,15 +539,17 @@ export default function ReservationDetailIPad() {
                     </span>
                   </label>
                 </div>
+
                 <button type="button" className="rd-row rd-row--action rd-row--referral rdp-sideRow">
-                  <Icon name="plus" size={24} />
+                  <Icon name="plus" size={20} />
                   <span className="rd-referral">Add a referral</span>
-                  <Icon name="chevron-right" size={24} className="rd-chevron" />
+                  <Icon name="chevron-right" size={20} className="rd-chevron" />
                 </button>
               </div>
             </aside>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

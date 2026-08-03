@@ -247,14 +247,16 @@ export type ServiceRow = {
   id: string;
   /** Leading state chip — colour-blocked and bled to the panel edge. */
   state: RowGlyph;
+  /** Reservation status, resolved through lib/reservationStates. The trailing
+   *  square on every row IS this control, so the tablet and the status-dropdown
+   *  demo share one taxonomy rather than two copies of the same eleven tokens. */
+  status: string;
   size: number;
   time: string;
   guest: string;
   /** Inline attribute marks (tags, notes, media) on the right of the row. */
   glyphs: RowGlyph[];
   table?: string;
-  /** Filled table badge, used once a party is seated. */
-  tableTone?: "green" | "blue";
   selected?: boolean;
 };
 
@@ -302,6 +304,7 @@ export const IPAD = {
       rows: [
         {
           id: "r-24",
+          status: "confirmed",
           state: { icon: "tag", tone: "fuchsia" },
           size: RESERVATION.partySize,
           time: RESERVATION.time,
@@ -316,6 +319,7 @@ export const IPAD = {
         },
         {
           id: "r-32",
+          status: "booked",
           state: { icon: "check" },
           size: 2,
           time: "7:00 pm",
@@ -329,6 +333,7 @@ export const IPAD = {
         },
         {
           id: "r-31",
+          status: "running-late",
           state: { icon: "clock", tone: "yellow" },
           size: 4,
           time: "7:00 pm",
@@ -338,6 +343,7 @@ export const IPAD = {
         },
         {
           id: "r-00",
+          status: "guest-on-way",
           state: { icon: "nav" },
           size: 2,
           time: "7:15 pm",
@@ -355,27 +361,62 @@ export const IPAD = {
       rows: [
         {
           id: "s-b3",
+          status: "entree",
           state: { icon: "seated" },
           size: 3,
           time: "5:30 pm · 1h 5m",
           guest: "Kaylynn Stanton",
           glyphs: [{ icon: "seat", tone: "purple" }, { icon: "price" }],
           table: "b3",
-          tableTone: "green",
         },
         {
           id: "s-50",
+          status: "seated",
           state: { icon: "seated" },
           size: 2,
           time: "5:56 pm · 39m",
           guest: "Yoko Calhoun",
           glyphs: [{ icon: "seat", tone: "purple" }, { icon: "drinks", tone: "green" }],
           table: "50",
-          tableTone: "blue",
         },
       ],
     },
   ] as ServiceList[],
+  /** Left icon rail — the app's primary sections. The active one is the
+   *  reservations view the record belongs to. */
+  rail: [
+    { icon: "receipt", label: "Shift overview" },
+    { icon: "seat", label: "Reservations", active: true },
+    { icon: "nav", label: "Floor plan" },
+    { icon: "clock", label: "Timeline" },
+    { icon: "person", label: "Guestbook" },
+    { icon: "menu", label: "Menus" },
+    { icon: "message", label: "Alerts" },
+  ] as { icon: string; label: string; active?: boolean }[],
+  /** Utility glyphs pinned to the foot of the rail. */
+  railFooter: [
+    { icon: "edit", label: "Settings" },
+    { icon: "flag", label: "About" },
+  ] as { icon: string; label: string }[],
+  /**
+   * Side panel — the reservation's actions, as full-width rows with a leading
+   * glyph. Two carry a second line (what the action would actually send), and
+   * one is a danger readout rather than an action.
+   */
+  actions: [
+    { id: "assign", icon: "seat", label: "Assign table" },
+    { id: "send", icon: "message", label: "Send", sub: "Payment request" },
+    { id: "resend", icon: "receipt", label: "Re-send", sub: "Booking confirmation" },
+    { id: "message", icon: "message", label: "Message guest" },
+  ] as { id: string; icon: string; label: string; sub?: string }[],
+  /** Unpaid balance readout — a disclosure, not a button. */
+  balance: { label: "Not paid", amount: "$6.00" },
+  /** Pre-ordered items, collapsed under their parent. */
+  order: {
+    label: "Mel’s Mediterranean Meal",
+    qty: "1 x",
+    items: ["1 x Aloha Maid Juice", "1 x Side of hot sauce"],
+  },
   /** Utility dock pinned under the service lists. */
   dock: [
     { icon: "receipt", label: "Reports", dot: true },
@@ -384,5 +425,6 @@ export const IPAD = {
     { icon: "bottle", label: "Bar" },
     { icon: "price", label: "Payments" },
   ] as { icon: string; label: string; badge?: number; dot?: boolean }[],
-  status: { label: "Confirmed", table: "Table 24", tableState: "Assigned" },
+  /** The record’s own status, same taxonomy as the list rows. */
+  status: { id: "confirmed", table: "Table 24", tableState: "Assigned" },
 } as const;

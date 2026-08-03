@@ -3205,6 +3205,11 @@ h2.eyebrow,
   --rdp-chrome: #141a26;          /* background/default */
   --rdp-chrome-alt: #2d333f;      /* background/elevation */
   --rdp-edge: #6f737b;            /* border/default — 3.66:1 on the panel */
+  /* Selected surface. Only 2.19:1 against the panel — deliberately, because the
+     accent bar beside it is what SC 1.4.11 is satisfied by; the fill is there to
+     make the row scannable, and it keeps white at 7.94:1 and the secondary tone
+     at 5.62:1, which a lighter step would not. */
+  --rdp-selected: #4a5162;
   --rdp-on-chrome: #ffffff;
   --rdp-on-chrome-alt: #d8d9db;   /* ash-lighter */
   --rdp-live: #64c987;
@@ -3364,13 +3369,62 @@ h2.eyebrow,
   box-shadow: 0 0 0 2px var(--rdp-chrome);
 }
 
-/* ── Service lists ── */
+/* Selection on the dark panels, stated once.
+   A raised fill alone is 1.31:1 against the panel beside it, which means the
+   only difference between the current section — or the current reservation —
+   and its neighbours would be invisible to low vision. SC 1.4.11 covers a state
+   indicator, not just a boundary, so every selected control here carries an
+   accent bar at 4.23:1 as well as its fill. The bar is the signal; the fill is
+   there to make the row scannable. */
+.rdp-sel { position: relative; }
+.rdp-sel[data-selected="true"] { background: var(--rdp-selected); }
+.rdp-sel[data-selected="true"]::after {
+  content: "";
+  position: absolute;
+  background: var(--otk-action);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── Sections rail ── */
 .rdp-body { flex: 1 1 auto; display: flex; min-height: 0; }
+.rdp-rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 40px;
+  padding: 6px 0 8px;
+  background: var(--rdp-chrome);
+}
+.rdp-rail__spacer { flex: 1 1 auto; }
+.rdp-railbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome-alt);
+  cursor: pointer;
+  transition: background-color var(--rd-dur) var(--rd-ease), color var(--rd-dur) var(--rd-ease);
+}
+.rdp-railbtn[data-selected="true"] { background: var(--rdp-chrome-alt); color: var(--rdp-on-chrome); }
+/* Where the bar sits differs per surface: the rail marks its own left edge, the
+   list marks the row's leading edge against the panel. */
+.rdp-railbtn::after { inset: 3px auto 3px -6px; width: 3px; }
+.rdp-resv::after { inset: 0 auto -1px 0; width: 3px; }
+.rdp-railbtn:focus-visible { outline: 2px solid var(--rdp-focus); outline-offset: 1px; }
+
+/* ── Service lists ── */
 .rdp-sidebar {
   flex: none;
   display: flex;
   flex-direction: column;
-  width: 280px;
+  width: 232px;
   min-height: 0;
   background: var(--rdp-chrome);
   color: var(--rdp-on-chrome);
@@ -3403,7 +3457,13 @@ h2.eyebrow,
   color: var(--rdp-on-chrome-alt);
   text-decoration: underline;
   text-underline-offset: 2px;
+  /* One line, always. Wrapped, it pushes the counts off the header's baseline
+     and the row stops reading as a header at all. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.rdp-listhead b { white-space: nowrap; }
 .rdp-counts {
   display: inline-flex;
   align-items: center;
@@ -3438,9 +3498,9 @@ h2.eyebrow,
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  padding: 8px 8px 8px 0;
+  padding: 8px 6px 8px 0;
   border: 0;
   border-top: 1px solid var(--rdp-chrome-alt);
   background: none;
@@ -3456,7 +3516,7 @@ h2.eyebrow,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
+  width: 28px;
   align-self: stretch;
   min-height: 42px;
   border-radius: 0 var(--otk-radius) var(--otk-radius) 0;
@@ -3483,29 +3543,42 @@ h2.eyebrow,
 }
 /* Attribute marks. Tone is reinforcement only — each mark repeats something the
    record states in words, so a monochrome reading loses nothing. */
-.rdp-marks { flex: none; display: inline-flex; gap: 3px; }
+.rdp-marks { flex: none; display: inline-flex; gap: 2px; }
 .rdp-marks [data-tone="fuchsia"] { color: #f472b6; }
 .rdp-marks [data-tone="purple"] { color: #bb6acd; }
 .rdp-marks [data-tone="green"] { color: #64c987; }
 .rdp-marks [data-tone="yellow"] { color: #fdaf08; }
 .rdp-marks [data-tone="teal"] { color: #61bddb; }
-.rdp-resv__table {
+/* Trailing column: the table number, then the status control under it. The
+   status is the affordance — its fill and glyph come from the same 22-state
+   taxonomy the status-dropdown demo edits, so the two cannot drift. */
+.rdp-trail {
   flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-width: 34px;
+}
+.rdp-trail__table {
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--rdp-on-chrome-alt);
+}
+.rdp-statechip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 38px;
-  min-height: 38px;
-  padding: 0 6px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--otk-radius);
-  box-shadow: inset 0 0 0 1px var(--rdp-edge);
-  font: var(--rd-label-md);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
+  /* Every state fill clears 3:1 against the panel, but on the SELECTED row the
+     row's own fill sits behind it and the weakest chip (accent-teal) falls to
+     1.48:1 — the chip stops reading as a control on exactly the row whose
+     record is open. A ring restores the boundary on both surfaces. */
+  box-shadow: 0 0 0 1px var(--rdp-edge);
 }
-.rdp-resv__table[data-tone="green"] { background: #2f864d; box-shadow: none; }
-.rdp-resv__table[data-tone="blue"] { background: #4a6fde; box-shadow: none; }
-.rdp-resv__table--empty .rd-icon { color: var(--rdp-on-chrome-alt); }
+.rdp-resv[data-selected="true"] .rdp-statechip { box-shadow: 0 0 0 1px #ffffff; }
 
 /* Utility dock — the other half of navigation, and the reason there is no rail. */
 .rdp-dock {
@@ -3565,11 +3638,17 @@ h2.eyebrow,
 /* Sized to the shorter scope so History can still scroll its top up to the
    strip — same rule as the phone, different scroller height. */
 .rdp .rd-section--history { padding-bottom: 40px; }
-.rdp-facts { display: flex; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--rd-hairline); }
+.rdp-facts { display: flex; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--rd-hairline); }
 .rdp-fact {
+  flex: 1 1 0;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  min-height: 34px;
+  padding: 0 8px;
+  border-radius: var(--otk-radius);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
   font: var(--rd-label-sm);
   font-variant-numeric: tabular-nums;
   color: var(--otk-ink);
@@ -3579,34 +3658,79 @@ h2.eyebrow,
 /* Zones that sit UNDER the record on the phone sit BESIDE it here. */
 .rdp-side {
   flex: none;
-  width: 180px;
-  padding: 10px;
+  width: 192px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
   border-left: 1px solid var(--rd-hairline);
-  background: #f6f7f8;
+  background: var(--otk-bg);
 }
+.rdp-side::-webkit-scrollbar { display: none; }
 .rdp-side .rd-row { background: transparent; }
-/* Square, glyph-only. The label used to be set beside the check, which made a
-   180px panel's loudest element a word the record states again two rows down.
-   The state survives on three channels without it: the check, the action fill,
-   and the button's accessible name. */
+.rdp-actions { display: flex; flex-direction: column; }
+/* Reservation status — the panel's one filled control, and the only one, so
+   "what state is this booking in" is answerable before anything else is read. */
 .rdp-status {
-  align-self: flex-start;
-  display: inline-flex;
+  flex: none;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
   border: 0;
-  border-radius: var(--otk-radius);
   background: var(--otk-action);
   color: var(--otk-bg);
   cursor: pointer;
   transition: filter var(--rd-dur) var(--rd-ease);
 }
-.rdp-status:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
+.rdp-status__label { flex: 1 1 auto; font: var(--rd-label-md); text-align: left; }
+.rdp-status__chev { transform: rotate(90deg); }
+.rdp-status:focus-visible { outline: none; box-shadow: inset 0 0 0 3px var(--otk-bg); }
+
+/* Action rows. One shape, a leading glyph and an optional second line — the
+   second line is not decoration: "Send" and "Re-send" are indistinguishable
+   without naming what each would actually send. */
+.rdp-act {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--rd-hairline);
+  background: var(--otk-bg);
+  color: var(--otk-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--rd-dur-emph) var(--rd-ease);
+}
+.rdp-act:active { background: var(--rd-press); transition-duration: 40ms; }
+.rdp-act:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+.rdp-act > .rd-icon:first-child { color: var(--rd-glyph); }
+.rdp-act__body { flex: 1 1 auto; min-width: 0; }
+.rdp-act__body b { display: block; font: var(--rd-label-md); }
+.rdp-act__body i { display: block; font: var(--rd-body-sm); font-style: normal; color: var(--rd-muted); }
+.rdp-act__chev { color: var(--rd-glyph); transform: rotate(90deg); }
+/* The balance is a readout, so the tone repeats what the label already says. */
+.rdp-act--danger { color: #931b23; }
+.rdp-act--danger > .rd-icon:first-child { color: #931b23; }
+.rdp-act--order { border-bottom: 0; }
+.rdp-order { border-bottom: 1px solid var(--rd-hairline); }
+.rr-demo.rd .rdp-order__items {
+  margin: 0;
+  padding: 0 12px 10px 42px;
+  list-style: none;
+}
+.rr-demo.rd .rdp-order__items li {
+  margin: 0;
+  padding: 0;
+  font: var(--rd-body-sm);
+  color: var(--rd-muted);
+}
+.rr-demo.rd .rdp-order__items li + li { margin-top: 3px; }
 .rdp-table {
   display: flex;
   align-items: center;
@@ -3641,10 +3765,100 @@ h2.eyebrow,
 .rdp .rd-row--switch { border-top: 0; }
 .rdp .rd-switch__label { font: var(--rd-body-sm); }
 
-/* Only the HEIGHT flexes on small viewports. The columns do not: the shell
-   scrolls sideways at its true width (see .rdp above), because the composition
-   IS the artefact and a collapsed one shows nothing. */
-@media (max-width: 720px) {
+/* ── Phone: teaser, then full-screen ──
+   The columns never collapse — the composition IS the artefact and a collapsed
+   one shows nothing. So below 700px the shell rests scaled and inert behind a
+   tap target, and opens to a full-screen stage where it pans at its true size. */
+.rdp-tap, .rdp-close { display: none; }
+@media (max-width: 700px) {
+  /* .rr-demo carries a 470px min-height at this width — a layout-stability guard
+     for the other demos, which would otherwise leave 240px of dead scrim under
+     the teaser and put the CTA nowhere near the thing it opens. */
+  .rdp { overflow: hidden; min-height: 0; }
+  .rdp-tap {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(to bottom, rgba(10, 13, 10, 0.1) 40%, rgba(10, 13, 10, 0.66));
+    cursor: pointer;
+  }
+  .rdp-tap__cta {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--color-background-action);
+    color: var(--color-foreground-on-action);
+    font: var(--font-label-medium);
+  }
+  .rdp-tap__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+    background: var(--color-foreground-on-action);
+  }
+  .rdp-stage {
+    position: relative;
+    /* Both the factor and this height come from the measured shell width (see
+       useLayoutEffect in ReservationDetailIPad) — the whole composition shows at
+       every phone width, with no dead band under it and nothing cropped. */
+    height: var(--rdp-fit-h, 232px);
+    overflow: hidden;
+    border-radius: var(--radius-sm);
+  }
+  .rdp-stage .rdp-device {
+    transform: scale(var(--rdp-fit, 0.38));
+    transform-origin: top left;
+    pointer-events: none;
+  }
+  .rdp { position: relative; }
+
+  /* Opened. The stage takes the viewport, the shell returns to full size, and
+     panning is horizontal within it — which is what you do with a tablet
+     screenshot anyway. */
+  .rdp[data-expanded="true"] { overflow: visible; }
+  .rdp[data-expanded="true"] .rdp-tap { display: none; }
+  .rdp[data-expanded="true"] .rdp-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 44px 0 0;
+    overflow-x: auto;
+    overscroll-behavior: contain;
+    background: var(--color-background-default);
+    border-radius: 0;
+  }
+  .rdp[data-expanded="true"] .rdp-device { transform: none; pointer-events: auto; }
+  .rdp[data-expanded="true"] .rdp-close {
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    z-index: 61;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-full);
+    background: var(--color-background-alt);
+    color: var(--color-foreground-default);
+  }
+  /* The glyph is a plus; a close is the same mark turned. */
+  .rdp[data-expanded="true"] .rdp-close .rd-icon { transform: rotate(45deg); }
   .rdp-screen { height: 460px; }
 }
 
