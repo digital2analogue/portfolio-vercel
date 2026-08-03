@@ -3165,6 +3165,255 @@ h2.eyebrow,
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   iPad / Back of House shell (.rdp-*)
+   ───────────────────────────────────────────────────────────────────
+   Only the CHROME the tablet adds: rail, service sidebar, date bar, and
+   the side panel. Every zone of the guest record itself keeps its `.rd-*`
+   classes, so the record is not restyled for tablet — it is re-composed.
+   That is the case study's claim, enforced by the stylesheet rather than
+   asserted in a caption.
+
+   Two dark surfaces here that the phone has no use for. They are OTKit's
+   own BOH chrome values, and they carry white text at 13.9:1 and 6.8:1.
+   ═══════════════════════════════════════════════════════════════════ */
+.rdp { --rdp-chrome: #1c1f26; --rdp-chrome-alt: #262a33; --rdp-on-chrome: #ffffff; --rdp-on-chrome-alt: #a9b0bd; }
+.rdp-device {
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 22px;
+  background: linear-gradient(158deg, #33373d 0%, #17191c 38%, #0d0e10 70%, #26292e 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08), 0 20px 48px -14px rgba(10, 13, 10, 0.5);
+}
+.rdp-screen {
+  display: flex;
+  flex-direction: column;
+  height: 560px;
+  border-radius: 13px;
+  overflow: hidden;
+  background: var(--otk-bg);
+}
+
+/* Service bar */
+.rdp-topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 40px;
+  padding: 0 10px;
+  background: var(--rdp-chrome);
+  color: var(--rdp-on-chrome);
+  font: var(--rd-label-sm);
+}
+.rdp-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+}
+.rdp-icon[data-active="true"] { background: var(--rdp-chrome-alt); }
+.rdp-icon:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: 1px; }
+.rdp-covers { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
+.rdp-datebar {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.rdp-step {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: var(--rdp-chrome-alt);
+  color: var(--rdp-on-chrome);
+  cursor: pointer;
+}
+.rdp-date, .rdp-shift {
+  padding: 4px 14px;
+  border-radius: var(--otk-radius);
+  background: var(--rdp-chrome-alt);
+}
+.rdp-dot { width: 6px; height: 6px; border-radius: var(--radius-full); background: var(--rdp-on-chrome-alt); }
+.rdp-views { display: inline-flex; gap: 4px; }
+
+/* Rail + sidebar */
+.rdp-body { flex: 1 1 auto; display: flex; min-height: 0; }
+.rdp-rail {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 40px;
+  padding: 8px 0;
+  background: var(--rdp-chrome);
+  align-items: center;
+}
+.rdp-rail__spacer { flex: 1 1 auto; }
+.rdp-railbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome-alt);
+  cursor: pointer;
+}
+.rdp-railbtn[data-active="true"] { background: var(--rdp-chrome-alt); color: var(--rdp-on-chrome); }
+.rdp-railbtn:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: 1px; }
+
+.rdp-sidebar {
+  flex: none;
+  width: 176px;
+  padding: 8px;
+  overflow-y: auto;
+  background: var(--rdp-chrome);
+  color: var(--rdp-on-chrome);
+  scrollbar-width: none;
+}
+.rdp-sidebar::-webkit-scrollbar { display: none; }
+.rdp-listhead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 8px 6px 6px;
+  border-top: 1px solid var(--rdp-chrome-alt);
+}
+.rdp-listhead:first-child { border-top: 0; }
+.rdp-listhead b { display: block; font: var(--rd-label-sm); }
+.rdp-listhead i { display: block; font: var(--rd-body-sm); font-style: normal; color: var(--rdp-on-chrome-alt); }
+.rdp-counts {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font: var(--rd-body-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--rdp-on-chrome-alt);
+}
+.rdp-quotes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; padding: 0 6px 8px; }
+.rdp-quote {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 3px;
+  background: var(--rdp-chrome-alt);
+  color: var(--rdp-on-chrome);
+  font: var(--rd-body-sm);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.rdp-quote:focus-visible { outline: 2px solid var(--otk-focus); }
+.rdp-resv {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: none;
+  color: var(--rdp-on-chrome);
+  text-align: left;
+  cursor: pointer;
+}
+.rdp-resv[data-selected="true"] { background: var(--rdp-chrome-alt); }
+.rdp-resv:focus-visible { outline: 2px solid var(--otk-focus); outline-offset: -2px; }
+.rdp-resv__size { font: var(--rd-body-sm); font-variant-numeric: tabular-nums; color: var(--rdp-on-chrome-alt); }
+.rdp-resv__body { flex: 1 1 auto; min-width: 0; }
+.rdp-resv__time { display: block; font: var(--rd-body-sm); color: var(--rdp-on-chrome-alt); font-variant-numeric: tabular-nums; }
+.rdp-resv__name { display: block; font: var(--rd-label-sm); }
+.rdp-resv__table { font: var(--rd-label-sm); font-variant-numeric: tabular-nums; }
+
+/* The record. Zones keep their .rd-* classes; only the container is new. */
+.rdp-main { flex: 1 1 auto; min-width: 0; overflow-y: auto; background: var(--otk-bg); scrollbar-width: none; }
+.rdp-main::-webkit-scrollbar { display: none; }
+.rdp-chips { display: flex; gap: 16px; padding: 10px 20px; border-bottom: 1px solid var(--rd-hairline); }
+.rdp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: var(--rd-label-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--otk-ink);
+}
+.rdp-chip .rd-icon { color: var(--rd-glyph); }
+.rdp-panelbody { padding-bottom: 16px; }
+
+/* Zones that sit UNDER the record on the phone sit BESIDE it here. */
+.rdp-side {
+  flex: none;
+  width: 196px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 1px solid var(--rd-hairline);
+  background: var(--otk-bg);
+}
+.rdp-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: var(--otk-action);
+  color: var(--otk-bg);
+  font: var(--rd-label-sm);
+  cursor: pointer;
+}
+.rdp-status__chev { margin-left: auto; transform: rotate(90deg); }
+.rdp-status:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
+.rdp-table {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--otk-radius);
+  background: var(--otk-bg);
+  box-shadow: inset 0 0 0 1px var(--rd-edge);
+  color: var(--otk-ink);
+  text-align: left;
+  cursor: pointer;
+}
+.rdp-table .rd-icon { color: var(--rd-glyph); }
+.rdp-table__body b { display: block; font: var(--rd-label-sm); }
+.rdp-table__body i { display: block; font: var(--rd-body-sm); font-style: normal; color: var(--rd-muted); }
+.rdp-table:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--rd-edge), 0 0 0 2px var(--otk-focus); }
+/* These two are lifted straight from the phone, so they arrive with its row
+   padding, borders and 24px glyphs — none of which belongs in a 196px panel.
+   The zone is reused; its scale is the panel's business. */
+.rdp-sideRow { padding: 8px 10px; border: 0; gap: 8px; }
+.rdp-sideRow .rd-icon { width: 16px; height: 16px; }
+.rdp .rd-referral { font: var(--rd-body-sm); font-weight: 600; }
+.rdp .rd-row--switch { border-top: 0; }
+.rdp .rd-switch__label { font: var(--rd-body-sm); }
+
+@media (max-width: 720px) {
+  .rdp-screen { height: 460px; }
+  .rdp-sidebar { display: none; }
+  .rdp-side { width: 150px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    Editorial variant (.rd--editorial)
    ───────────────────────────────────────────────────────────────────
    The same component and data with a different type and surface

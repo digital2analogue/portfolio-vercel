@@ -784,12 +784,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
-        type: "image",
-        alt: "Animation showing the modular card-based breakdown of the reservation details view",
-        caption:
-          "Each section of the reservation view mapped to a discrete system pattern, making the layout predictable for both users and engineers.",
-        src: "/projects/images/zwVjhA3cW2v1jFcL.gif",
-        naturalSize: true,
+        type: "demo",
+        demo: "reservation-detail-ipad",
+        frameLabel: "OTKit · iPad Back of House — as shipped",
+        caption: "Same zones, re-composed. Nothing re-authored for tablet.",
       },
       {
         type: "demo",

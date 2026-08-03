@@ -47,7 +47,7 @@ import {
   type Visit,
 } from "@/lib/reservationDetail";
 
-function Icon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {
+export function Icon({ name, size = 20, className }: { name: string; size?: number; className?: string }) {
   const g = RESERVATION_DETAIL_ICONS[name] ?? RESERVATION_DETAIL_ICONS.receipt;
   return (
     <svg
@@ -90,7 +90,7 @@ const VISIT_SCOPES: { id: string; label: string; visits: Visit[] }[] = [
  * panel (aria-selected) — same control, different meaning, so the roles differ
  * while the behaviour does not.
  */
-function SelectStrip({
+export function SelectStrip({
   items,
   active,
   onSelect,

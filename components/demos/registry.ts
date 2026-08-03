@@ -4,6 +4,7 @@ import TableStatusDemo from "./TableStatusDemo";
 import CheckUsageDemo from "./CheckUsageDemo";
 import RuleCellDemo from "./RuleCellDemo";
 import ReservationDetailDemo, { ReservationDetailEditorial } from "./ReservationDetailDemo";
+import ReservationDetailIPad from "./ReservationDetailIPad";
 
 /**
  * Registry of embeddable case-study demos, keyed by the string used in a
@@ -18,7 +19,8 @@ export type DemoKey =
   | "check-usage"
   | "rule-cell"
   | "reservation-detail"
-  | "reservation-detail-editorial";
+  | "reservation-detail-editorial"
+  | "reservation-detail-ipad";
 
 export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "reservation-status": ReservationStatusDemo,
@@ -27,4 +29,5 @@ export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "rule-cell": RuleCellDemo,
   "reservation-detail": ReservationDetailDemo,
   "reservation-detail-editorial": ReservationDetailEditorial,
+  "reservation-detail-ipad": ReservationDetailIPad,
 };

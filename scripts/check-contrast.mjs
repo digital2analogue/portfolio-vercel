@@ -176,6 +176,14 @@ const PAIRINGS = [
   { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — food & drink' },
   { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
+  // ── iPad / Back of House shell (components/demos/ReservationDetailIPad) ──
+  // Two dark chrome surfaces the phone has no use for — the rail/sidebar and the
+  // raised chips inside them. The record itself reuses the light pairings above.
+  { text: '#ffffff', bg: '#1c1f26', label: 'Demo/iPad: sidebar + rail text on BOH chrome' },
+  { text: '#a9b0bd', bg: '#1c1f26', label: 'Demo/iPad: sidebar sort/count text on BOH chrome' },
+  { text: '#ffffff', bg: '#262a33', label: 'Demo/iPad: selected row + date chips on raised chrome' },
+  { text: '#a9b0bd', bg: '#262a33', label: 'Demo/iPad: muted text on raised chrome' },
+
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
   // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills

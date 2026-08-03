@@ -229,3 +229,27 @@ export function activeSectionAt(scrollTop: number, offsets: number[]): number {
   }
   return active;
 }
+
+/**
+ * iPad (Back of House) shell data — the chrome the tablet layout adds around the
+ * SAME zones the phone shows. The reservation record itself is unchanged: this
+ * is only the rail, the service sidebar and the date bar.
+ *
+ * That is the case study's claim made literal. Nothing about the guest record is
+ * re-authored for tablet; the zones are re-composed and two of them (status +
+ * table, pacing + referral) move out to a side panel because there is now room
+ * for them to sit beside the record instead of under it.
+ */
+export const IPAD = {
+  /** Left icon rail — primary sections of the Back of House app. */
+  rail: ["seat", "nav", "menu", "receipt", "message"],
+  railFooter: ["price", "clock"],
+  service: { date: "Fri, Oct 27", shift: "Breakfast", covers: 4 },
+  waitlist: { label: "Waitlist", sort: "by added time", parties: 0, covers: 0 },
+  /** Quoted-wait chips on the waitlist header. */
+  waitTimes: ["1", "2", "3", "4", "5"],
+  reservations: { label: "Reservations", sort: "by scheduled time", parties: 1, covers: 4 },
+  /** Rows in the reservation list. The selected one is the record on screen. */
+  list: [{ id: "r-24", time: "6:45 am", guest: RESERVATION.guest, size: 4, table: "24", selected: true }],
+  status: { label: "Confirmed", table: "Table 24", tableState: "Assigned" },
+} as const;
