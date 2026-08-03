@@ -165,10 +165,16 @@ export const RESERVATION = {
    *  guest — allergies and relationships are tags, not note types. Each carries
    *  a category glyph + tone so the row is scannable before it is read; the
    *  label always states the category too, so colour is never the only channel. */
+  // Glyphs follow OTKit's note-category semantics, so a tag and its matching
+  // note section read as the same thing: star = relationship (VIP, friend of),
+  // utensils = food & drink incl. allergies, seat = seating, history = previous
+  // visits. VIP and Friend of owner share the star and separate on tone.
+  // Anniversary is an occasion, which the category set doesn't name — cocktail
+  // is the closest available glyph and the one call here that isn't specified.
   tags: [
     { label: "VIP", icon: "star", tone: "vip" },
-    { label: "Shellfish allergy", icon: "flag", tone: "alert" },
-    { label: "Friend of owner", icon: "person", tone: "relationship" },
+    { label: "Shellfish allergy", icon: "utensils", tone: "alert" },
+    { label: "Friend of owner", icon: "star", tone: "relationship" },
     { label: "Anniversary", icon: "cocktail", tone: "occasion" },
   ],
   /** Note attached to this visit specifically, not the guest's guestbook. */

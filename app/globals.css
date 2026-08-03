@@ -2389,20 +2389,56 @@ h2.eyebrow,
 .rd {
   display: block;
 
+  /* ── OTKit token map ──
+     Values read from the OTKit Rest iOS library via the Figma MCP (file
+     fRZiDUihnfQ51VTdtU0C1V). Straight token uses resolve through --otk-* in the
+     shared demo palette above; the three derived values below are recorded with
+     the token they come from and the reason they could not be used as-is.
+
+       background/default   #FFFFFF   → --otk-bg
+       background/alt       #F1F2F4   → --otk-surface   (hover, tracks, circles)
+       foreground/default   #2D333F   → --otk-ink
+       foreground/alt       #6F737B   → --otk-alt
+       foreground/action    #247F9E   → --otk-action    (indicator, focus, switch-on)
+       border/default       #D8D9DB   → --otk-border    (hairlines, switch-off track)
+       border/action        #247F9E   → --otk-focus
+       foreground/accent-yellow #FDAF08 → tag glyph, darkened (see below)
+       Label/Medium/Semibold  SF Pro 14  → row + note body, chips, primary
+                                             action, avatar initials
+       Label/Small/Semibold   SF Pro 12  → metadata, bylines, segment, tag
+                                             labels, stat labels + sub-counts
+
+     The label tier is entirely on those two steps — nothing sits at 11, 13 or
+     15px any more. The title tier (guest name 20px, section + nav title 17px)
+     is NOT on a confirmed OTKit step: this file exposes only the two Label
+     styles above, and 17px is simply the iOS nav-title convention. Those two
+     want a node link to the OTKit type page before they can be called
+     system-accurate. Device chrome (status bar 13px) is hardware, not OTKit.
+
+     DERIVED — each is an OTKit token that fails a WCAG AA criterion in the
+     context this screen actually renders it in. Recorded rather than hidden:
+     the same failures exist in the shipped product. */
   --rd-ease: cubic-bezier(0.32, 0.72, 0, 1); /* iOS-family decelerate */
   --rd-dur-micro: var(--motion-duration-instant, 120ms);
   --rd-dur: var(--motion-duration-standard, 200ms);
   --rd-dur-emph: var(--motion-duration-emphasized, 350ms);
 
   --rd-r: 8px;
-  --rd-hairline: #e6e8ea;
-  --rd-hover: #f1f2f4;
-  --rd-press: #e9ebee;
+  --rd-hairline: var(--otk-border);
+  --rd-hover: var(--otk-surface);
+
+  /* foreground/alt #6F737B darkened. Rows tint on hover/press, and the token is
+     only 4.25:1 on background/alt — it clears 1.4.3 on white and nowhere else. */
   --rd-muted: #63666d;
+  /* foreground/disabled #91949A darkened. Leading glyphs must hold 1.4.11's 3:1
+     in every row state; the token manages 3.04 on white but 2.55 when pressed. */
   --rd-glyph: #82868e;
-  /* Boundary grey for controls whose FILL is their only affordance (SC 1.4.11).
-     Lightest value that clears 3:1 on white — 3.65:1. */
+  /* border/default #D8D9DB darkened. As a hairline it is fine; as the ONLY edge
+     of a control it is 1.41:1 and fails 1.4.11 outright. */
   --rd-edge: #82868e;
+  /* background/alt #F1F2F4 darkened one step for the pressed state. OTKit's own
+     pressed token is not in the set this file exposes. */
+  --rd-press: #e9ebee;
 }
 
 /* The demo renders inside .blocks, whose case-body typography styles bare
@@ -2562,7 +2598,7 @@ h2.eyebrow,
   border-right: 1px solid var(--rd-hairline);
   color: var(--otk-ink);
   font: inherit;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -2703,7 +2739,7 @@ h2.eyebrow,
 .rd-row--note .rd-icon { margin-top: 1px; }
 .rd-note { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .rd-notetext { flex: 1 1 auto; font-size: 14px; line-height: 1.4; color: var(--otk-ink); }
-.rd-noteby { font-size: 11px; color: var(--rd-muted); }
+.rd-noteby { font-size: 12px; color: var(--rd-muted); }
 
 
 .rd-row--tags { gap: 12px; padding-left: 16px; padding-right: 16px; }
@@ -2718,7 +2754,7 @@ h2.eyebrow,
   border-radius: var(--radius-full);
   background: var(--rd-hover);
   color: var(--otk-ink);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -2864,7 +2900,7 @@ h2.eyebrow,
   font-variant-numeric: tabular-nums;
 }
 .rd-stat__label { font-size: 12px; font-weight: 600; color: var(--otk-ink); }
-.rd-stat__sub { font-size: 11px; color: var(--rd-muted); font-variant-numeric: tabular-nums; }
+.rd-stat__sub { font-size: 12px; color: var(--rd-muted); font-variant-numeric: tabular-nums; }
 
 /* ── Visit scope segmented control ── */
 .rd-seg {
@@ -2994,7 +3030,7 @@ h2.eyebrow,
   height: 31px;
   padding: 2px;
   border-radius: var(--radius-full);
-  background: #d3d5d8;
+  background: var(--otk-border);
   /* Off, the fill alone is 1.47:1 on the row — the switch would be invisible to
      low vision until turned on. The ring gives it a 3.65:1 boundary; the on
      state carries its own (teal fill, 4.56:1) and drops the ring. */
@@ -3060,7 +3096,7 @@ h2.eyebrow,
   box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus);
 }
 .rd-action--primary { flex: 1 1 58%; gap: 8px; background: var(--otk-action); color: var(--otk-bg); }
-.rd-action__label { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+.rd-action__label { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
 /* Source screen puts muted grey on this grey fill (~3:1); ink instead → 8.97:1. */
 /* Fill alone is 1.41:1 against the action bar, so the button's own edge is what
    identifies it — ringed to 3.65:1. The primary needs no ring: its teal fill is
@@ -3073,7 +3109,7 @@ h2.eyebrow,
   box-shadow: inset 0 0 0 1px var(--rd-edge);
   color: var(--otk-ink);
 }
-.rd-action__table { font-size: 11px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.rd-action__table { font-size: 12px; line-height: 1.2; font-variant-numeric: tabular-nums; }
 
 /* ── Entrance ──
    One orchestrated reveal on scroll-in: the zones arrive in reading order, so
