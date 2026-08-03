@@ -2399,6 +2399,7 @@ h2.eyebrow,
   --rd-hover: #f1f2f4;
   --rd-press: #e9ebee;
   --rd-muted: #63666d;
+  --rd-glyph: #82868e;
 }
 
 /* The demo renders inside .blocks, whose case-body typography styles bare
@@ -2637,6 +2638,15 @@ h2.eyebrow,
 .rd-row--action:hover { background: var(--rd-hover); }
 .rd-row--action:active { background: var(--rd-press); transition-duration: 40ms; }
 .rd-row--action:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--otk-focus); }
+/* Leading row glyphs recede — they orient, they don't inform; the label beside
+   each one carries the meaning. --rd-glyph is the LIGHTEST grey that still holds
+   SC 1.4.11's 3:1 non-text minimum in all three row states (3.65 white / 3.26
+   hover / 3.06 pressed), so it sinks toward the background without ever becoming
+   decoration. Trailing glyphs are actions, not orientation, and stay at ink.
+   Not in the contrast gate by design: that gate asserts a single 4.5:1 text
+   threshold and would reject a correctly-specified non-text mark. */
+.rd-row > .rd-icon:first-child,
+.rd-event > .rd-icon:first-child { color: var(--rd-glyph); }
 .rd-row .rd-icon { color: var(--otk-ink); }
 .rd-placeholder { flex: 1 1 auto; font-size: 15px; color: var(--rd-muted); }
 
