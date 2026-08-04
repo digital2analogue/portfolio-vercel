@@ -70,7 +70,7 @@ export const CASES: CaseStudy[] = [
     summary:
       "A cross-site design system built to be used by agents as much as by people: one source of truth, from DTCG tokens through framework-agnostic components to an MCP server an agent can read and lint against before it writes any UI.",
     metrics: [
-      "21 components, 4 brands, 1 source",
+      "27 components, 4 brands, 1 source",
       "MCP server: read + lint the system",
       "Code Connect: design ↔ code, two-way",
     ],
