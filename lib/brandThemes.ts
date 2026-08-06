@@ -72,11 +72,20 @@ export const BRANDS: Brand[] = [
   },
 ];
 
-/** Tokens shared across every brand — unchanged by the refresh. */
+/**
+ * Tokens shared across every brand — unchanged by the refresh.
+ *
+ * `alt` is OTKit's base `--color-foreground-alt`, taken from the deck's own
+ * iPad prototype page (bundled inside the published artifact). Slide 13's
+ * readout row labels foreground/alt as #575C66, but that row shows values
+ * with ICONIC already applied and #575C66 is exactly Iconic's brand/hover —
+ * so it is a resolved value, not the shared one. Using it here would have
+ * quietly contradicted the demo's own point about what re-points.
+ */
 export const SHARED = {
   bg: "#FFFFFF",
   ink: "#141A26",
-  alt: "#575C66",
+  alt: "#4A4F59",
   border: "#D8D9DB",
 };
 

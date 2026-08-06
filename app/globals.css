@@ -2378,7 +2378,7 @@ h2.eyebrow,
 .rr-brand {
   --otk-bg: #ffffff;
   --otk-ink: #141a26;
-  --otk-alt: #575c66;
+  --otk-alt: #4a4f59; /* OTKit base foreground/alt, per the deck prototype */
   --otk-border: #d8d9db;
   --otk-surface: #f1f2f4;
   --otk-danger: #931b23;

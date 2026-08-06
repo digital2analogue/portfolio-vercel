@@ -271,9 +271,9 @@ const PAIRINGS = [
   { text: '#141a26', bg: '#fceeef', label: 'Demo/brand: ink on Diner brand/alt-light stage' },
   { text: '#141a26', bg: '#eef8fb', label: 'Demo/brand: ink on Restaurant brand/alt-light stage' },
   { text: '#141a26', bg: '#f2efe6', label: 'Demo/brand: ink on Iconic brand/alt-light stage' },
-  { text: '#575c66', bg: '#ffffff', label: 'Demo/brand: card meta + token hex (alt) on card' },
+  { text: '#4a4f59', bg: '#ffffff', label: 'Demo/brand: card meta + token hex (alt) on card' },
   { text: '#141a26', bg: '#ffffff', label: 'Demo/brand: card name, times, token names on card' },
-  { text: '#575c66', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
+  { text: '#4a4f59', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
   { text: '#236439', bg: '#ffffff', label: 'Demo/brand: AA verdict on the audit list' },
   { text: '#931b23', bg: '#ffffff', label: 'Demo/brand: FAIL verdict on the audit list' },
   // The selected time chip's border is a state indicator, and it sits on the
