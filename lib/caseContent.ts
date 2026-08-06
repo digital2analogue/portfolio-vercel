@@ -585,6 +585,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw** — and **two variable fonts replaced six static cuts**. Haffer carries a real weight axis: 430 for body, 530 for labels, 570 for titles. The one judgement call was the CTA, which sits at **570, not the 600 the old scale implied** — tuned to Haffer's optical weight rather than inherited.",
       },
+      {
+        type: "image",
+        alt: "OTKit type specimen: Nantes set as editorial display reading 'Find your table for any occasion', above Haffer's weight axis showing 430 body, 530 label, 570 title and 600 CTA, with a slider marking 570 as the shipped CTA weight between 400 and 620, and a product-UI row of Haffer buttons",
+        caption:
+          "The pairing as it shipped: Nantes for editorial display, Haffer for product UI. The axis is the argument — the CTA holds at 570 rather than the 600 the old scale implied, because Haffer reads heavier than Brandon did at the same nominal weight.",
+        src: "/projects/images/otkit-type-haffer-nantes.png",
+      },
       { type: "h3", text: '"Black is the new red"' },
       {
         type: "p",
