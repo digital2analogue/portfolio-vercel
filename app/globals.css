@@ -2368,6 +2368,151 @@ h2.eyebrow,
   .rr-tile:hover { transform: none; }
 }
 
+/* ── OTKit brand collections (components/demos/BrandThemeDemo) ──
+   One card, three brand collections. The --brand-* customs are set inline per
+   selected brand; everything else is shared, which is the demo's whole point.
+   The CTA is deliberately a non-interactive <p>: white-on-brand passes AA at
+   the resting fill for all three brands but NOT on the legacy hover fills, so
+   the ramp's hover/pressed states are reported as swatch + ratio rather than
+   rendered as live white text. See lib/brandThemes.ts. */
+.rr-brand {
+  --otk-bg: #ffffff;
+  --otk-ink: #141a26;
+  --otk-alt: #575c66;
+  --otk-border: #d8d9db;
+  --otk-surface: #f1f2f4;
+  --otk-danger: #931b23;
+  --otk-dur: var(--motion-duration-instant, 120ms);
+  --otk-ease: var(--motion-easing-default, cubic-bezier(0.25, 0.1, 0.25, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--otk-ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-md);
+}
+/* `.blocks` styles bare p/ul/li/h4 at (0,1,1), which beats a lone component
+   class. Neutralize at matching specificity (this block is later in the file,
+   so it wins the tie), then scope every component rule below with `.rr-brand `
+   so it lands at (0,2,0) and outranks BOTH. Same trap the reservation-detail
+   demos document with `.rd-reset`. */
+.rr-brand :is(p, ul, li, h4) {
+  font: inherit;
+  letter-spacing: normal;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rr-brand :is(ul, li)::before { content: none; }
+
+.rr-brand .rr-brand-head {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.rr-brand .rr-brand-title { font-size: 15px; font-weight: 600; }
+.rr-brand .rr-brand-switch {
+  display: inline-flex; padding: 2px; gap: 2px;
+  background: var(--otk-surface); border-radius: 999px;
+}
+.rr-brand .rr-brand-switch__btn {
+  border: 0; border-radius: 999px; cursor: pointer;
+  padding: 6px 14px; font: inherit; font-size: 12px; font-weight: 600;
+  background: transparent; color: var(--otk-alt);
+  transition: background var(--otk-dur) var(--otk-ease), color var(--otk-dur) var(--otk-ease);
+}
+.rr-brand .rr-brand-switch__btn[data-active="true"] { background: var(--otk-bg); color: var(--otk-ink); }
+.rr-brand .rr-brand-switch__btn:focus-visible { outline: 2px solid var(--brand-default); outline-offset: 2px; }
+
+/* The tinted page surface is brand/alt-light — one of the four that re-point. */
+.rr-brand .rr-brand-stage {
+  background: var(--brand-alt);
+  border: 1px solid var(--otk-border);
+  border-radius: 8px;
+  padding: 40px 24px;
+  display: flex; justify-content: center;
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rr-brand .rr-brand-card {
+  background: var(--otk-bg);
+  border-radius: 8px;
+  padding: 20px;
+  width: min(340px, 100%);
+  box-shadow: 0 1px 3px rgba(20, 26, 38, 0.1);
+}
+.rr-brand .rr-brand-card__badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 0 0 10px; padding: 4px 10px;
+  border: 1px solid var(--otk-border); border-radius: 999px;
+  font-size: 11px; font-weight: 600; color: var(--otk-ink);
+}
+.rr-brand .rr-brand-card__name { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.2; }
+.rr-brand .rr-brand-card__meta { margin: 4px 0 14px; font-size: 12px; color: var(--otk-alt); }
+.rr-brand .rr-brand-card__times { display: flex; gap: 8px; margin-bottom: 14px; }
+.rr-brand .rr-brand-time {
+  flex: 1; text-align: center; padding: 8px 0;
+  border: 1px solid var(--otk-border); border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+}
+.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--brand-default); border-width: 2px; }
+.rr-brand .rr-brand-card__cta {
+  margin: 0; padding: 12px; border-radius: 6px; text-align: center;
+  background: var(--brand-default); color: #ffffff;
+  font-size: 14px; font-weight: 600;
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+
+.rr-brand .rr-brand-tokens,
+.rr-brand .rr-brand-audit {
+  border: 1px solid var(--otk-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--otk-bg);
+}
+.rr-brand .rr-brand-tokens__list,
+.rr-brand .rr-brand-audit__list { max-width: 520px; }
+.rr-brand .rr-brand-tokens__label,
+.rr-brand .rr-brand-audit__label {
+  margin: 0 0 8px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--otk-alt);
+}
+.rr-brand .rr-brand-tokens__list,
+.rr-brand .rr-brand-audit__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.rr-brand .rr-brand-tokens__row,
+.rr-brand .rr-brand-audit__row { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.rr-brand .rr-brand-tokens__swatch,
+.rr-brand .rr-brand-audit__swatch {
+  width: 28px; height: 20px; border-radius: 4px; flex: none;
+  box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.12);
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rr-brand .rr-brand-tokens__name,
+.rr-brand .rr-brand-audit__state { flex: 1; min-width: 0; }
+.rr-brand .rr-brand-tokens__name,
+.rr-brand .rr-brand-tokens__hex,
+.rr-brand .rr-brand-audit__hex,
+.rr-brand .rr-brand-audit__ratio { font-family: var(--font-family-mono, ui-monospace, monospace); }
+.rr-brand .rr-brand-tokens__hex,
+.rr-brand .rr-brand-audit__hex { color: var(--otk-alt); }
+.rr-brand .rr-brand-tokens__count,
+.rr-brand .rr-brand-audit__verdict-line { margin: 10px 0 0; font-size: 13px; font-weight: 500; }
+.rr-brand .rr-brand-audit__ratio { font-weight: 600; min-width: 56px; text-align: right; }
+.rr-brand .rr-brand-audit__verdict { font-weight: 700; min-width: 36px; text-align: right; }
+.rr-brand .rr-brand-audit__verdict[data-pass="true"] { color: #236439; }
+.rr-brand .rr-brand-audit__verdict[data-pass="false"] { color: var(--otk-danger); }
+.rr-brand .rr-brand-audit__note { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: var(--otk-alt); max-width: 68ch; }
+
+@media (max-width: 600px) {
+  .rr-brand .rr-brand-stage { padding: 24px 12px; }
+  .rr-brand .rr-brand-audit__state { flex: 1 0 100%; order: -1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr-brand .rr-brand-stage,
+  .rr-brand .rr-brand-card__cta,
+  .rr-brand .rr-brand-switch__btn,
+  .rr-brand .rr-brand-tokens__swatch,
+  .rr-brand .rr-brand-audit__swatch { transition: none; }
+}
+
 /* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
    A device frame around the redesigned reservation-detail screen. Same OTKit
    light palette as the other demos (--otk-*); the bezel is neutral hardware,

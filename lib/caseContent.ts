@@ -588,6 +588,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       { type: "h2", text: "Theming in Practice" },
+      {
+        type: "demo",
+        demo: "brand-theme",
+        frameLabel: "OTKit · Brand collections · Diner → Restaurant → Iconic",
+        caption:
+          "One card, three brand collections. Switching brand re-points four variables — the markup, the components, and the other 278 tokens never change. The panel underneath audits the white label against every state of the action ramp: Iconic clears WCAG AA at rest, on hover, and pressed; the legacy Diner and Restaurant ramps only clear it at rest. That is the accessibility half of the argument for black.",
+      },
       { type: "h3", text: "Mass Theme" },
       {
         type: "p",

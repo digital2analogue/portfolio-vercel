@@ -255,6 +255,33 @@ const PAIRINGS = [
   { text: '#236439', bg: '#f1f2f4', label: 'Demo/tile: AA-pass verdict on grey surface' },
   { text: '#931b23', bg: '#f1f2f4', label: 'Demo/tile: fail verdict on grey surface' },
 
+  // OTKit brand-collection demo (.rr-brand). One card under three brand
+  // collections; only the four brand/* variables re-point. Values are OTKit's
+  // own, read from the deck's declared vector fills (see lib/brandThemes.ts).
+  //
+  // NOTE the deliberate omission: white on the legacy HOVER fills is 3.57:1
+  // (Diner #E15B64) and 3.24:1 (Restaurant #2B9ABF) — genuine AA failures, and
+  // the reason the demo reports the hover/pressed ramp as swatch + ratio
+  // instead of rendering white text on it. Only the resting fills below carry
+  // a live white label, and all three pass. Iconic's whole ramp passes, which
+  // is the accessibility argument for the black refresh.
+  { text: '#ffffff', bg: '#da3743', label: 'Demo/brand: CTA label on Diner brand/default' },
+  { text: '#ffffff', bg: '#247f9e', label: 'Demo/brand: CTA label on Restaurant brand/default' },
+  { text: '#ffffff', bg: '#2d333f', label: 'Demo/brand: CTA label on Iconic brand/default' },
+  { text: '#141a26', bg: '#fceeef', label: 'Demo/brand: ink on Diner brand/alt-light stage' },
+  { text: '#141a26', bg: '#eef8fb', label: 'Demo/brand: ink on Restaurant brand/alt-light stage' },
+  { text: '#141a26', bg: '#f2efe6', label: 'Demo/brand: ink on Iconic brand/alt-light stage' },
+  { text: '#575c66', bg: '#ffffff', label: 'Demo/brand: card meta + token hex (alt) on card' },
+  { text: '#141a26', bg: '#ffffff', label: 'Demo/brand: card name, times, token names on card' },
+  { text: '#575c66', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
+  { text: '#236439', bg: '#ffffff', label: 'Demo/brand: AA verdict on the audit list' },
+  { text: '#931b23', bg: '#ffffff', label: 'Demo/brand: FAIL verdict on the audit list' },
+  // The selected time chip's border is a state indicator, and it sits on the
+  // white card surface — not on the tinted stage behind it.
+  { text: '#da3743', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Diner) on card' },
+  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Restaurant) on card' },
+  { text: '#2d333f', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Iconic) on card' },
+
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex
   // values from `.block-outcome-demo__device` in globals.css (not page tokens).
