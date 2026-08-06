@@ -288,6 +288,15 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "p",
         text: "When I took ownership of OTKit (OpenTable's design system across iOS, Android, and web), it existed on paper but lacked cohesion, governance, and trust. The mandate: **turn a drifting system into an operational platform** teams actually relied on.",
       },
+      { type: "h3", text: "Three users, one system" },
+      {
+        type: "ul",
+        items: [
+          "**The diner** books a table in seconds, once a month. Consumer-grade craft, fast by default.",
+          "**The front-of-house host** runs the floor from an iPad, eight hours a shift. Density, and zero tolerance for error.",
+          "**Design and engineering** — six teams consuming tokens, components, and docs. The system succeeds when their work gets faster.",
+        ],
+      },
       { type: "hr" },
       {
         type: "meta",
@@ -301,8 +310,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "stats",
         items: [
           { value: "25%", label: "Less QA time" },
-          { value: "≈$59K/yr", label: "Developer time reclaimed" },
-          { value: "+2.19%", label: "Diner bookings, dynamic type" },
+          { value: "≈$98K/yr", label: "Recovered in visual QA time" },
+          { value: "+2.15%", label: "Diner bookings, dynamic type" },
         ],
       },
       { type: "hr" },
@@ -311,7 +320,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Three competing sources of truth (Figma, Storybook, internal token sites)",
+          "Three sources of truth — Storybook, Figma libraries, inline docs — reconciled by hand, separately, per team",
           "Visual inconsistencies across products and platforms",
           "Late-stage QA bugs tied directly to token and component mismatch",
         ],
@@ -324,7 +333,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "quote",
-        text: "We estimated the cost of drift at ~$237K/year in inefficiency and rework.",
+        text: "We put the cost of drift at ≈$390K a year in visual QA time, across design and engineering.",
       },
       { type: "hr" },
       { type: "h2", text: "User Research" },
@@ -419,10 +428,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Establishing semantic tokens created a single source of truth across platforms and reduced downstream inconsistencies.",
         src: "/projects/images/casestudy-otkit-colormappingtool.png",
       },
-      { type: "h3", text: "System thinking in action: Table Statuses" },
+      { type: "h3", text: "Twenty-two states, eleven tokens" },
       {
         type: "p",
-        text: "Table Statuses validated the color system early: the feature needed color-coded reservation states, and the product team proposed 21+ new colors. We met the requirement with the existing accent palette. Shipped on time, zero new colors, system coherent.",
+        text: "Table Statuses tested the color system early. **22 reservation statuses needed color** — plus data viz, plus white-label theming. Hyper-specific tokens would have read precisely but couldn't scale across two products, so statuses bind to the semantic accent ramps instead: **eleven tokens carry all twenty-two states**. Fewer tokens, broader reach. Shipped on time, zero new colors, system coherent.",
       },
       {
         type: "demo",
@@ -441,7 +450,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         demo: "table-status",
         frameLabel: "OTKit · Floor plan · Table status",
         caption:
-          "Live recreation of the real table-status tiles, the floor-plan counterpart to the reservation button. Each tile's label uses its background's foreground/on-* token, so all 21 clear WCAG AA. Select a tile to inspect its background token, label token, and live contrast ratio.",
+          "Live recreation of the real table-status tiles, the floor-plan counterpart to the reservation button. Each tile's label uses its background's foreground/on-* token, so all 18 clear WCAG AA. Select a tile to inspect its background token, label token, and live contrast ratio.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
@@ -471,7 +480,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Impact" },
       {
         type: "p",
-        text: "A/B testing showed a **+2.19% increase in diner bookings** (+600 weekly net bookers) on pages using dynamic type.",
+        text: "A/B testing showed a **+2.15% increase in diner bookings** (+600 weekly net bookers) on pages using dynamic type.",
       },
       {
         type: "video",
@@ -479,6 +488,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption: "Animation of dynamic text sizing implemented on iOS",
         src: "/projects/images/casestudy-otkit-dynamic-text.mp4",
         poster: "/projects/images/casestudy-otkit-dynamic-text-poster.jpg",
+      },
+      {
+        type: "p",
+        text: "Dynamic Type came with the rest of the native contract: **44px minimum touch targets system-wide**, platform-aware scales, and the same tokens as web so nothing drifted per platform.",
       },
       {
         type: "image",
@@ -496,8 +509,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Introduced shape-based icon grids",
+          "Introduced shape-based icon grids — one optical size, equal optical area across keyshapes",
           "Unified keyshapes for indicators",
+          "Set the drawing rules explicitly: 1.5px stroke replacing the deprecated 2.0, 2dp corners outside and square inside",
+          "Made detail a function of size — 24px earns tick marks, 16px loses them",
           "Centralized icon repositories across platforms",
           "Added SF Symbol parity for accessibility",
         ],
@@ -553,14 +568,23 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "Two new font families",
+          "Two new families — **Nantes** for editorial display, **Haffer** for labels, body, and product UI. Brandon retired.",
           "A refreshed color palette",
           "Visual distinction for Iconic restaurants",
         ],
       },
       {
         type: "p",
-        text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components.",
+        text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw**. The one judgement call was weight: Haffer's CTA sits at 570, not 600, tuned to its optical weight rather than inherited from the old scale.",
+      },
+      { type: "h3", text: '"Black is the new red"' },
+      {
+        type: "p",
+        text: "Red meant error — and it was also our primary action color. The same hue was carrying two contradictory jobs. Black solved both at once: elegance for Iconic, and red freed to mean danger again. Action moved to sand; every black-button state was checked against WCAG AA, not just the default.",
+      },
+      {
+        type: "p",
+        text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components. **Six variables re-point per brand. The other 278 are shared.**",
       },
       { type: "hr" },
       { type: "h2", text: "Theming in Practice" },
@@ -597,7 +621,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "ul",
         items: [
           "25% reduction in QA time",
-          "≈ $59K/year reclaimed in developer time",
+          "≈$98K/year recovered in visual QA time",
           "50% fewer Figma libraries",
           "Unified design language across 6 teams",
           "Supported a full OpenTable brand refresh",
@@ -611,7 +635,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "What Made This Work" },
       {
         type: "p",
-        text: "Adoption came through advocacy, not enforcement: **design ambassadors** embedded in product teams championed the system locally and surfaced friction back to the core team.",
+        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — but a **designer–engineer pair per platform** could. One ambassador pair each for Diner web, iOS, and Android and Restaurant web, iOS, and Android, plus the core OTKit pair: a two-way loop that championed the system locally and carried friction back. Contribution ran the same path every time — propose, review, merge.",
       },
       {
         type: "image",
@@ -652,7 +676,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Challenge: Scaling myself" },
       {
         type: "p",
-        text: "System work kept getting pulled into feature support, and without clear boundaries it was easy to become a bottleneck. The ambassador model helped; drawing that line earlier would have protected more foundational time.",
+        text: "System work kept getting pulled into feature support, and without clear boundaries it was easy to become a bottleneck. The ambassador model helped, but it wasn't free — ambassador hours were a real cost against product delivery. Running them formally worked at first; what actually drove adoption was loosening them into jam sessions. Drawing that line earlier would have protected more foundational time.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
