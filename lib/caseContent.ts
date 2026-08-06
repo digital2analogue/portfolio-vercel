@@ -335,6 +335,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "quote",
         text: "We put the cost of drift at ≈$390K a year in visual QA time, across design and engineering.",
       },
+      {
+        type: "p",
+        text: "That number is the survey, costed: engineering at ~5 hours a week across 14 people, design at ~3 hours across 10, billed at $75/hour over a year — **≈$273K on the engineering side and ≈$117K on the design side**. Naming it in dollars is what made the work fundable.",
+      },
       { type: "hr" },
       { type: "h2", text: "User Research" },
       {
@@ -529,6 +533,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
+        text: "The rules had reasons. The 2dp outer corner echoes the rounding in the OpenTable logo, so the icon set reads as the same family as the brand mark; the detail budget answers a five-second recognition test, which is why a 24px glyph earns tick marks a 16px one cannot afford.",
+      },
+      {
+        type: "p",
         text: "The result: a **searchable, themeable SVG system** shared across native and web teams. Duplication dropped, accessibility parity improved.",
       },
       {
@@ -575,7 +583,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw**. The one judgement call was weight: Haffer's CTA sits at 570, not 600, tuned to its optical weight rather than inherited from the old scale.",
+        text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw** — and **two variable fonts replaced six static cuts**. Haffer carries a real weight axis: 430 for body, 530 for labels, 570 for titles. The one judgement call was the CTA, which sits at **570, not the 600 the old scale implied** — tuned to Haffer's optical weight rather than inherited.",
       },
       { type: "h3", text: '"Black is the new red"' },
       {
@@ -628,7 +636,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "ul",
         items: [
           "25% reduction in QA time",
-          "≈$98K/year recovered in visual QA time",
+          "≈$98K/year recovered in visual QA time — 25% of the $390K the drift was costing",
           "50% fewer Figma libraries",
           "Unified design language across 6 teams",
           "Supported a full OpenTable brand refresh",
@@ -642,7 +650,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "What Made This Work" },
       {
         type: "p",
-        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — but a **designer–engineer pair per platform** could. One ambassador pair each for Diner web, iOS, and Android and Restaurant web, iOS, and Android, plus the core OTKit pair: a two-way loop that championed the system locally and carried friction back. Contribution ran the same path every time — propose, review, merge.",
+        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — but a **designer–engineer pair per platform** could. One ambassador pair each for Diner web, iOS, and Android and Restaurant web, iOS, and Android, plus the core OTKit pair: a two-way loop that championed the system locally and carried friction back. Contribution ran the same path every time — propose, review, merge. Friction the ambassadors surfaced didn't stop with me either: it fed a quarterly system roadmap that went to the director, so the cost of drift stayed visible to the people funding it.",
       },
       {
         type: "image",
