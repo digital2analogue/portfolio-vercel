@@ -2391,9 +2391,11 @@ h2.eyebrow,
      contrast gate's flat CSS parser read it as a global redefinition, and the
      real "Button label on action background" pairing silently went
      unresolved. Demo palettes stay demo-local. */
-  --otk-background-action: var(--brand-default);
-  --otk-foreground-on-action: #ffffff;
-  --otk-border-action: var(--brand-default);
+  --otkit-background-action: var(--brand-default);
+  --otkit-background-action-hover: var(--brand-hover);
+  --otkit-background-action-pressed: var(--brand-pressed);
+  --otkit-foreground-on-action: #ffffff;
+  --otkit-border-action: var(--brand-default);
 
   --otk-bg: #ffffff;
   --otk-ink: #141a26;
@@ -2478,11 +2480,11 @@ h2.eyebrow,
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
 }
-.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otk-border-action); border-width: 2px; }
+.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otkit-border-action); border-width: 2px; }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
-  background: var(--otk-background-action);
-  color: var(--otk-foreground-on-action);
+  background: var(--otkit-background-action);
+  color: var(--otkit-foreground-on-action);
   font-size: 14px; font-weight: 600;
   transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
 }
@@ -2513,6 +2515,9 @@ h2.eyebrow,
 }
 .rr-brand .rr-brand-tokens__name,
 .rr-brand .rr-brand-audit__state { flex: 1; min-width: 0; }
+.rr-brand .rr-brand-audit__state {
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+}
 .rr-brand .rr-brand-tokens__name,
 .rr-brand .rr-brand-tokens__hex,
 .rr-brand .rr-brand-audit__ratio { font-family: var(--font-family-mono, ui-monospace, monospace); }
@@ -2539,9 +2544,24 @@ h2.eyebrow,
   /* Rows must be allowed to wrap here. Without it, a flex-basis of 100% on the
      state label overflowed the panel by ~210px instead of pushing to a new
      line — the row was nowrap, so nothing could ever wrap onto one. */
-  .rr-brand .rr-brand-tokens__row,
-  .rr-brand .rr-brand-audit__row { flex-wrap: wrap; row-gap: 2px; }
+  .rr-brand .rr-brand-tokens__row { flex-wrap: wrap; row-gap: 2px; }
   .rr-brand .rr-brand-tokens__hex { margin-left: auto; }
+  /* The full token name (otkit/background-action-pressed) cannot share a 290px
+     line with a swatch, a ratio and a verdict. Wrapping flex put the swatch on
+     a line of its own, orphaned above the name it belongs to — so the row
+     becomes an explicit grid: swatch + name, then ratio + verdict beneath. */
+  .rr-brand .rr-brand-audit__row {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    grid-template-areas: "swatch name name" ". ratio verdict";
+    column-gap: 10px;
+    row-gap: 2px;
+    align-items: center;
+  }
+  .rr-brand .rr-brand-audit__swatch { grid-area: swatch; }
+  .rr-brand .rr-brand-audit__state { grid-area: name; }
+  .rr-brand .rr-brand-audit__ratio { grid-area: ratio; text-align: left; min-width: 0; }
+  .rr-brand .rr-brand-audit__verdict { grid-area: verdict; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rr-brand .rr-brand-stage,

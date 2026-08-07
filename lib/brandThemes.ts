@@ -14,16 +14,23 @@
  *
  * TWO TIERS, and the distinction is the whole point. `brand/*` below is the
  * brand-collection tier — the thing that re-points. Components never reference
- * it. A button asks for the SEMANTIC tokens (`background/action`,
- * `foreground/on-action`) and the collection decides what those resolve to.
+ * it. A button asks for the semantic token and the collection decides what it
+ * resolves to:
  *
- * Evidence for the alias rather than assumption: OTKit's own prototype ships
- * `--color-background-action: #247F9E`, which is exactly Restaurant's
- * `brand/default`. `--color-foreground-on-action` is `#FFFFFF` and shared.
+ *   otkit/background-action          → brand/default
+ *   otkit/background-action-hover    → brand/hover
+ *   otkit/background-action-pressed  → brand/pressed
+ *   otkit/foreground-on-action       → shared, never re-points
  *
- * The deck names no semantic token for the hover/pressed steps, so those are
- * left as `brand/hover` / `brand/pressed` here rather than given an invented
- * `background/action-hover`-style name.
+ * Evidence rather than assumption for the resting step: OTKit's own prototype
+ * ships `background-action` = #247F9E, exactly Restaurant's brand/default, and
+ * `foreground-on-action` = #FFFFFF shared across all three collections.
+ *
+ * Everything is prefixed `otkit/` (and `--otkit-*` in CSS) to hold OTKit's
+ * namespace apart from Parsimony's `--color-*`. Not cosmetic: declaring
+ * `--color-background-action` inside this demo — even scoped to a class — made
+ * the contrast gate's flat parser read it as a global override and silently
+ * drop a real pairing.
  *
  * The refresh was a re-binding, not a redraw.
  */
@@ -149,11 +156,17 @@ export const AA_TEXT = 4.5;
  * default" claim rests on — and it is the legacy brands, not Iconic, that fail
  * it.
  */
+export const ACTION_RAMP = [
+  { state: "default", token: "background-action" },
+  { state: "hover", token: "background-action-hover" },
+  { state: "pressed", token: "background-action-pressed" },
+] as const satisfies ReadonlyArray<{ state: keyof Brand; token: string }>;
+
 export const stateAudit = (brand: Brand) =>
-  (["default", "hover", "pressed"] as const).map((state) => {
-    const fill = brand[state];
+  ACTION_RAMP.map(({ state, token }) => {
+    const fill = brand[state] as string;
     const r = ratio(SHARED.onAction, fill);
-    return { state, fill, ratio: r, passes: r >= AA_TEXT };
+    return { state, token, fill, ratio: r, passes: r >= AA_TEXT };
   });
 
 /** True when every state of the ramp clears AA for its white label. */

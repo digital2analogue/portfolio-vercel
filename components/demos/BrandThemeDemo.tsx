@@ -36,12 +36,6 @@ import {
   type Brand,
 } from "@/lib/brandThemes";
 
-const STATE_LABEL: Record<string, string> = {
-  default: "Resting",
-  hover: "Hover",
-  pressed: "Pressed",
-};
-
 function MichelinMark() {
   return (
     <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
@@ -134,16 +128,14 @@ export default function BrandThemeDemo() {
         </p>
         <p className="rr-brand-tokens__indirect">
           The button never names a brand. It asks for{" "}
-          <code>background/action</code> and <code>foreground/on-action</code>;
+          <code>otkit/background-action</code> and its hover and pressed steps;
           the collection decides what those resolve to.
         </p>
       </div>
 
       {/* The state audit — the argument for black. */}
       <div className="rr-brand-audit">
-        <p className="rr-brand-audit__label">
-          foreground/on-action on background/action
-        </p>
+        <p className="rr-brand-audit__label">otkit/foreground-on-action against</p>
         <ul className="rr-brand-audit__list">
           {audit.map((s) => (
             <li key={s.state} className="rr-brand-audit__row">
@@ -152,7 +144,7 @@ export default function BrandThemeDemo() {
                 style={{ background: s.fill }}
                 aria-hidden="true"
               />
-              <span className="rr-brand-audit__state">{STATE_LABEL[s.state]}</span>
+              <code className="rr-brand-audit__state">otkit/{s.token}</code>
               <span className="rr-brand-audit__ratio">{s.ratio.toFixed(2)}:1</span>
               <span className="rr-brand-audit__verdict" data-pass={s.passes}>
                 {s.passes ? "AA" : "FAIL"}
