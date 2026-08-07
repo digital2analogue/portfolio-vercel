@@ -132,11 +132,18 @@ export default function BrandThemeDemo() {
         <p className="rr-brand-tokens__count">
           {REPOINTED} variables re-point per brand. The other {SHARED_VARIABLES} are shared.
         </p>
+        <p className="rr-brand-tokens__indirect">
+          The button never names a brand. It asks for{" "}
+          <code>background/action</code> and <code>foreground/on-action</code>;
+          the collection decides what those resolve to.
+        </p>
       </div>
 
       {/* The state audit — the argument for black. */}
       <div className="rr-brand-audit">
-        <p className="rr-brand-audit__label">White label · action ramp</p>
+        <p className="rr-brand-audit__label">
+          foreground/on-action on background/action
+        </p>
         <ul className="rr-brand-audit__list">
           {audit.map((s) => (
             <li key={s.state} className="rr-brand-audit__row">

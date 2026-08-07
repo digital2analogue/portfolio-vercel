@@ -12,9 +12,20 @@
  *   • #2B9ABF (Restaurant brand/hover) is accent-teal in lib/tableStatus.ts, and
  *     #141A26 (Iconic brand/pressed) is OTKit's documented dark background/default.
  *
- * The point of the demo: only these four variables re-point per brand. Every
- * other token — and therefore every component — is shared. The refresh was a
- * re-binding, not a redraw.
+ * TWO TIERS, and the distinction is the whole point. `brand/*` below is the
+ * brand-collection tier — the thing that re-points. Components never reference
+ * it. A button asks for the SEMANTIC tokens (`background/action`,
+ * `foreground/on-action`) and the collection decides what those resolve to.
+ *
+ * Evidence for the alias rather than assumption: OTKit's own prototype ships
+ * `--color-background-action: #247F9E`, which is exactly Restaurant's
+ * `brand/default`. `--color-foreground-on-action` is `#FFFFFF` and shared.
+ *
+ * The deck names no semantic token for the hover/pressed steps, so those are
+ * left as `brand/hover` / `brand/pressed` here rather than given an invented
+ * `background/action-hover`-style name.
+ *
+ * The refresh was a re-binding, not a redraw.
  */
 
 export type BrandId = "diner" | "restaurant" | "iconic";
@@ -82,6 +93,13 @@ export const SHARED = {
   ink: "#141A26",
   alt: "#4A4F59",
   border: "#D8D9DB",
+  /**
+   * `foreground/on-action` — the button label. Shared, never re-pointed, which
+   * is why one white works across all three collections and why the audit below
+   * is a single pairing rather than three. Same value as `bg` here, but a
+   * different token doing a different job; don't collapse them.
+   */
+  onAction: "#FFFFFF",
 };
 
 /**
@@ -126,14 +144,15 @@ export const ratio = (a: string, b: string): number => {
 export const AA_TEXT = 4.5;
 
 /**
- * The white label against each state of a brand's action ramp. This is the
- * audit the deck's "every black-button state clears AA, not just default"
- * claim rests on — and it is the legacy brands, not Iconic, that fail it.
+ * `foreground/on-action` measured against each step of a brand's action ramp.
+ * This is the audit the deck's "every black-button state clears AA, not just
+ * default" claim rests on — and it is the legacy brands, not Iconic, that fail
+ * it.
  */
 export const stateAudit = (brand: Brand) =>
   (["default", "hover", "pressed"] as const).map((state) => {
     const fill = brand[state];
-    const r = ratio(SHARED.bg, fill);
+    const r = ratio(SHARED.onAction, fill);
     return { state, fill, ratio: r, passes: r >= AA_TEXT };
   });
 

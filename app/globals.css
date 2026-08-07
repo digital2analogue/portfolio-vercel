@@ -2376,6 +2376,18 @@ h2.eyebrow,
    the ramp's hover/pressed states are reported as swatch + ratio rather than
    rendered as live white text. See lib/brandThemes.ts. */
 .rr-brand {
+  /* The two tiers, kept genuinely separate. The brand collection (--brand-*,
+     set inline per selected brand) is what re-points; the SEMANTIC tokens below
+     are what the component actually asks for. Proof this is the real wiring:
+     OTKit's own prototype ships --color-background-action: #247F9E, which is
+     Restaurant's brand/default. A button never names a brand.
+     Only background/action is evidenced as an alias — the deck names no
+     semantic token for the hover/pressed steps, so those stay brand/* here
+     rather than being given an invented name. */
+  --color-background-action: var(--brand-default);
+  --color-foreground-on-action: #ffffff;
+  --color-border-action: var(--brand-default);
+
   --otk-bg: #ffffff;
   --otk-ink: #141a26;
   --otk-alt: #4a4f59; /* OTKit base foreground/alt, per the deck prototype */
@@ -2459,10 +2471,11 @@ h2.eyebrow,
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
 }
-.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--brand-default); border-width: 2px; }
+.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--color-border-action); border-width: 2px; }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
-  background: var(--brand-default); color: #ffffff;
+  background: var(--color-background-action);
+  color: var(--color-foreground-on-action);
   font-size: 14px; font-weight: 600;
   transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
 }
@@ -2499,6 +2512,15 @@ h2.eyebrow,
 .rr-brand .rr-brand-tokens__hex { color: var(--otk-alt); }
 .rr-brand .rr-brand-tokens__count,
 .rr-brand .rr-brand-audit__verdict-line { margin: 10px 0 0; font-size: 13px; font-weight: 500; }
+.rr-brand .rr-brand-tokens__indirect {
+  margin: 6px 0 0; font-size: 12px; line-height: 1.5;
+  color: var(--otk-alt); max-width: 62ch;
+}
+.rr-brand .rr-brand-tokens__indirect code {
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  color: var(--otk-ink);
+}
+.rr-brand .rr-brand-audit__label { text-transform: none; letter-spacing: 0; font-family: var(--font-family-mono, ui-monospace, monospace); }
 .rr-brand .rr-brand-audit__ratio { font-weight: 600; min-width: 56px; text-align: right; }
 .rr-brand .rr-brand-audit__verdict { font-weight: 700; min-width: 36px; text-align: right; }
 .rr-brand .rr-brand-audit__verdict[data-pass="true"] { color: #236439; }
