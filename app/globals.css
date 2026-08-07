@@ -2545,7 +2545,6 @@ h2.eyebrow,
   font-family: var(--font-family-mono, ui-monospace, monospace);
   color: var(--otk-ink);
 }
-.rr-brand .rr-brand-audit__label { text-transform: none; letter-spacing: 0; font-family: var(--font-family-mono, ui-monospace, monospace); }
 .rr-brand .rr-brand-audit__ratio { font-weight: 600; min-width: 56px; text-align: right; }
 .rr-brand .rr-brand-audit__verdict { font-weight: 700; min-width: 36px; text-align: right; }
 .rr-brand .rr-brand-audit__verdict[data-pass="true"] { color: #236439; }
@@ -2559,22 +2558,11 @@ h2.eyebrow,
      line — the row was nowrap, so nothing could ever wrap onto one. */
   .rr-brand .rr-brand-tokens__row { flex-wrap: wrap; row-gap: 2px; }
   .rr-brand .rr-brand-tokens__hex { margin-left: auto; }
-  /* The full token name (otkit/background-action-pressed) cannot share a 290px
-     line with a swatch, a ratio and a verdict. Wrapping flex put the swatch on
-     a line of its own, orphaned above the name it belongs to — so the row
-     becomes an explicit grid: swatch + name, then ratio + verdict beneath. */
-  .rr-brand .rr-brand-audit__row {
-    display: grid;
-    grid-template-columns: 28px 1fr auto;
-    grid-template-areas: "swatch name name" ". ratio verdict";
-    column-gap: 10px;
-    row-gap: 2px;
-    align-items: center;
-  }
-  .rr-brand .rr-brand-audit__swatch { grid-area: swatch; }
-  .rr-brand .rr-brand-audit__state { grid-area: name; }
-  .rr-brand .rr-brand-audit__ratio { grid-area: ratio; text-align: left; min-width: 0; }
-  .rr-brand .rr-brand-audit__verdict { grid-area: verdict; }
+  /* Short token names (bg-action-pressed) fit a 290px row inline, so these stay
+     a single flex line — no grid needed. They did NOT fit at the previous
+     `otkit/background-action-pressed` length, which is why the two-row grid
+     existed; if the labels ever lengthen again, measure before assuming. */
+  .rr-brand .rr-brand-audit__ratio { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rr-brand .rr-brand-stage,

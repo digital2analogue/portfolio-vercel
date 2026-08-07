@@ -50,12 +50,22 @@ export type Brand = {
   altLight: string;
 };
 
-/** The four variables that re-point per brand. */
+/**
+ * The four variables whose value re-points per brand, named as the SEMANTIC
+ * tokens a component actually asks for rather than as the brand-tier names the
+ * deck's swatch table uses. A button never writes `brand/default`; it writes
+ * `bg-action`, and the collection decides what that resolves to.
+ *
+ * `bg-alt` is the tinted page surface. Slide 13's readout confirms the alias
+ * under Iconic — it lists `background/alt` as #F2EFE6, which is exactly
+ * Iconic's brand/alt-light, alongside `background/action` #2D333F, which is
+ * exactly its brand/default.
+ */
 export const BRAND_TOKENS = [
-  { key: "default", token: "brand/default" },
-  { key: "hover", token: "brand/hover" },
-  { key: "pressed", token: "brand/pressed" },
-  { key: "altLight", token: "brand/alt-light" },
+  { key: "default", token: "bg-action" },
+  { key: "hover", token: "bg-action-hover" },
+  { key: "pressed", token: "bg-action-pressed" },
+  { key: "altLight", token: "bg-alt" },
 ] as const satisfies ReadonlyArray<{ key: keyof Brand; token: string }>;
 
 export const BRANDS: Brand[] = [
@@ -157,9 +167,9 @@ export const AA_TEXT = 4.5;
  * it.
  */
 export const ACTION_RAMP = [
-  { state: "default", token: "background-action" },
-  { state: "hover", token: "background-action-hover" },
-  { state: "pressed", token: "background-action-pressed" },
+  { state: "default", token: "bg-action" },
+  { state: "hover", token: "bg-action-hover" },
+  { state: "pressed", token: "bg-action-pressed" },
 ] as const satisfies ReadonlyArray<{ state: keyof Brand; token: string }>;
 
 export const stateAudit = (brand: Brand) =>

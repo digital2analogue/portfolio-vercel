@@ -127,15 +127,14 @@ export default function BrandThemeDemo() {
           {REPOINTED} variables re-point per brand. The other {SHARED_VARIABLES} are shared.
         </p>
         <p className="rr-brand-tokens__indirect">
-          The button never names a brand. It asks for{" "}
-          <code>otkit/background-action</code> and its hover and pressed steps;
-          the collection decides what those resolve to.
+          The button never names a brand — it asks for these; the collection
+          decides what they resolve to.
         </p>
       </div>
 
       {/* The state audit — the argument for black. */}
       <div className="rr-brand-audit">
-        <p className="rr-brand-audit__label">otkit/foreground-on-action against</p>
+        <p className="rr-brand-audit__label">White label · WCAG AA</p>
         <ul className="rr-brand-audit__list">
           {audit.map((s) => (
             <li key={s.state} className="rr-brand-audit__row">
@@ -144,7 +143,7 @@ export default function BrandThemeDemo() {
                 style={{ background: s.fill }}
                 aria-hidden="true"
               />
-              <code className="rr-brand-audit__state">otkit/{s.token}</code>
+              <code className="rr-brand-audit__state">{s.token}</code>
               <span className="rr-brand-audit__ratio">{s.ratio.toFixed(2)}:1</span>
               <span className="rr-brand-audit__verdict" data-pass={s.passes}>
                 {s.passes ? "AA" : "FAIL"}
