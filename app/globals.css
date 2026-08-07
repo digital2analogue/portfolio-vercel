@@ -921,6 +921,26 @@ h2.eyebrow,
   color: var(--color-foreground-default);
   font-weight: var(--primitive-font-weight-semibold);
 }
+/* The quote body is a <p>, so `.blocks p` (0,1,1) would otherwise reset the
+   blockquote's serif italic back to body copy. Scoped to (0,2,1) to outrank it
+   and simply inherit whatever the blockquote establishes. */
+.blocks blockquote .block-quote__text {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+}
+/* Attribution reads as a different voice from the quote it follows: upright
+   against the italic, label-scale against body, muted against default. */
+.blocks blockquote .block-quote__cite {
+  display: block;
+  margin-top: var(--spacing-tight);
+  font: var(--font-label-small);
+  font-style: normal;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+}
+.blocks blockquote .block-quote__cite::before { content: "— "; }
 .blocks .block-note {
   font: var(--font-code);
   color: var(--color-foreground-muted);
@@ -2265,6 +2285,19 @@ h2.eyebrow,
 }
 
 /* ── OTKit table-status floor grid (contrast audit) ── */
+/* `.blocks` styles bare p/ul/li at (0,1,1) and beats a lone component class,
+   so this demo's prose was rendering in Spectral 16px at --color-foreground-alt
+   (#A0A89A, a DARK-theme token) on its own WHITE surface — 2.45:1. The gate
+   could not see it: it checks declared pairings, and this one was produced by
+   specificity, not by a declaration. Neutralize at matching specificity, then
+   scope every rule below to (0,2,0) so it outranks both. */
+.rr-tiles :is(p, ul, li, h4) {
+  font: inherit; letter-spacing: normal; color: inherit;
+  margin: 0; padding: 0; list-style: none;
+}
+.rr-tiles ul li::before,
+.rr-tiles ul::before,
+.rr-tiles li::before { content: none; }
 .rr-tiles {
   --otk-bg: #ffffff;
   --otk-surface: #f1f2f4;
@@ -2280,12 +2313,12 @@ h2.eyebrow,
   flex-direction: column;
   gap: var(--primitive-space-md);
 }
-.rr-tiles-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.rr-tiles-title { font-size: 15px; font-weight: 600; }
-.rr-tiles-toggle { display: inline-flex; padding: 2px; background: var(--otk-surface); border-radius: 999px; }
+.rr-tiles .rr-tiles-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.rr-tiles .rr-tiles-title { font-size: 15px; font-weight: 600; }
+.rr-tiles .rr-tiles-toggle { display: inline-flex; padding: 2px; background: var(--otk-surface); border-radius: 999px; }
 
-.rr-tiles-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.rr-tile {
+.rr-tiles .rr-tiles-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.rr-tiles .rr-tile {
   --fill: #ffffff;
   --on: #2d333f;
   position: relative;
@@ -2323,14 +2356,14 @@ h2.eyebrow,
   text-align: center;
   box-shadow: 0 0 0 2px var(--otk-bg);
 }
-.rr-tile:hover { transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 2px 6px rgba(20, 26, 38, 0.18); }
-.rr-tile:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
-.rr-tile[data-selected="true"] { box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 0 0 2px var(--otk-focus); }
+.rr-tiles .rr-tile:hover { transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 2px 6px rgba(20, 26, 38, 0.18); }
+.rr-tiles .rr-tile:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
+.rr-tiles .rr-tile[data-selected="true"] { box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 0 0 2px var(--otk-focus); }
 
-.rr-tiles-summary { margin: 0; font-size: 13px; font-weight: 500; }
-.rr-tiles-summary[data-fail="true"] { color: var(--otk-danger); }
+.rr-tiles .rr-tiles-summary { margin: 0; font-size: 13px; font-weight: 500; }
+.rr-tiles .rr-tiles-summary[data-fail="true"] { color: var(--otk-danger); }
 
-.rr-tiles-inspect {
+.rr-tiles .rr-tiles-inspect {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2339,7 +2372,7 @@ h2.eyebrow,
   background: var(--otk-surface);
   border-radius: 8px;
 }
-.rr-tiles-inspect__swatch {
+.rr-tiles .rr-tiles-inspect__swatch {
   flex: none;
   width: 44px;
   height: 40px;
@@ -2351,21 +2384,177 @@ h2.eyebrow,
   font-weight: 600;
   box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08);
 }
-.rr-tiles-inspect__name { font-size: 14px; font-weight: 600; }
-.rr-tiles-inspect__meta { font-size: 12px; color: var(--otk-alt); margin-top: 2px; }
-.rr-tiles-inspect__meta code { font-family: var(--font-family-mono, ui-monospace, monospace); color: var(--otk-ink); }
-.rr-tiles-inspect__verdict { margin-left: 8px; font-weight: 600; }
-.rr-tiles-inspect__verdict[data-pass="true"] { color: #236439; }
-.rr-tiles-inspect__verdict[data-pass="false"] { color: var(--otk-danger); }
-.rr-tiles-inspect__hint { font-size: 13px; color: var(--otk-alt); }
-.rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #6f737b; max-width: 68ch; }
+.rr-tiles .rr-tiles-inspect__name { font-size: 14px; font-weight: 600; }
+.rr-tiles .rr-tiles-inspect__meta { font-size: 12px; color: var(--otk-alt); margin-top: 2px; }
+.rr-tiles .rr-tiles-inspect__meta code { font-family: var(--font-family-mono, ui-monospace, monospace); color: var(--otk-ink); }
+.rr-tiles .rr-tiles-inspect__verdict { margin-left: 8px; font-weight: 600; }
+.rr-tiles .rr-tiles-inspect__verdict[data-pass="true"] { color: #236439; }
+.rr-tiles .rr-tiles-inspect__verdict[data-pass="false"] { color: var(--otk-danger); }
+.rr-tiles .rr-tiles-inspect__hint { font-size: 13px; color: var(--otk-alt); }
+.rr-tiles .rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #6f737b; max-width: 68ch; }
 
 @media (max-width: 600px) {
-  .rr-tile { width: 52px; height: 60px; }
+.rr-tiles .rr-tile { width: 52px; height: 60px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rr-tile { transition: none; }
-  .rr-tile:hover { transform: none; }
+.rr-tiles .rr-tile { transition: none; }
+.rr-tiles .rr-tile:hover { transform: none; }
+}
+
+/* ── OTKit brand collections (components/demos/BrandThemeDemo) ──
+   One card, three brand collections. The --brand-* customs are set inline per
+   selected brand; everything else is shared, which is the demo's whole point.
+   The CTA is deliberately a non-interactive <p>: white-on-brand passes AA at
+   the resting fill for all three brands but NOT on the legacy hover fills, so
+   the ramp's hover/pressed states are reported as swatch + ratio rather than
+   rendered as live white text. See lib/brandThemes.ts. */
+.rr-brand {
+  /* The two tiers, kept genuinely separate. The brand collection (--brand-*,
+     set inline per selected brand) is what re-points; the semantic tokens below
+     are what the component actually asks for. Proof this is the real wiring:
+     OTKit's own prototype ships `background/action` = #247F9E, which is
+     Restaurant's brand/default. A button never names a brand.
+
+     Only background/action is evidenced as an alias — the deck names no
+     semantic token for the hover/pressed steps, so those stay brand/* rather
+     than being given an invented name.
+
+     These carry an --otk- prefix, NOT Parsimony's --color-* names. Redeclaring
+     --color-background-action here — even scoped to this class — made the
+     contrast gate's flat CSS parser read it as a global redefinition, and the
+     real "Button label on action background" pairing silently went
+     unresolved. Demo palettes stay demo-local. */
+  --otkit-background-action: var(--brand-default);
+  --otkit-background-action-hover: var(--brand-hover);
+  --otkit-background-action-pressed: var(--brand-pressed);
+  --otkit-foreground-on-action: #ffffff;
+  --otkit-border-action: var(--brand-default);
+
+  --otk-bg: #ffffff;
+  --otk-ink: #141a26;
+  --otk-alt: #4a4f59; /* OTKit base foreground/alt, per the deck prototype */
+  --otk-border: #d8d9db;
+  --otk-surface: #f1f2f4;
+  --otk-danger: #931b23;
+  --otk-dur: var(--motion-duration-instant, 120ms);
+  --otk-ease: var(--motion-easing-default, cubic-bezier(0.25, 0.1, 0.25, 1));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--otk-ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-space-md);
+}
+/* `.blocks` styles bare p/ul/li/h4 at (0,1,1), which beats a lone component
+   class. Neutralize at matching specificity (this block is later in the file,
+   so it wins the tie), then scope every component rule below with `.rr-brand `
+   so it lands at (0,2,0) and outranks BOTH. Same trap the reservation-detail
+   demos document with `.rd-reset`. */
+.rr-brand :is(p, ul, li, h4) {
+  font: inherit;
+  letter-spacing: normal;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* `.blocks ul li::before` is (0,1,3) — one class, three elements. A
+   `:is()`-based reset only reaches (0,1,2) and silently loses, which is how the
+   green `›` markers came back on this demo. Match the element count exactly;
+   this block is later in the file, so the tie goes here. */
+.rr-brand ul li::before,
+.rr-brand ul::before,
+.rr-brand li::before { content: none; }
+
+.rr-brand .rr-brand-head {
+  display: flex; flex-wrap: wrap; align-items: center;
+  justify-content: space-between; gap: 12px;
+}
+.rr-brand .rr-brand-title { font-size: 15px; font-weight: 600; }
+.rr-brand .rr-brand-switch {
+  display: inline-flex; padding: 2px; gap: 2px;
+  background: var(--otk-surface); border-radius: 999px;
+}
+.rr-brand .rr-brand-switch__btn {
+  border: 0; border-radius: 999px; cursor: pointer;
+  padding: 6px 14px; font: inherit; font-size: 12px; font-weight: 600;
+  background: transparent; color: var(--otk-alt);
+  transition: background var(--otk-dur) var(--otk-ease), color var(--otk-dur) var(--otk-ease);
+}
+.rr-brand .rr-brand-switch__btn[data-active="true"] { background: var(--otk-bg); color: var(--otk-ink); }
+.rr-brand .rr-brand-switch__btn:focus-visible { outline: 2px solid var(--brand-default); outline-offset: 2px; }
+
+/* The tinted page surface is brand/alt-light — one of the four that re-point. */
+.rr-brand .rr-brand-stage {
+  background: var(--brand-alt);
+  border: 1px solid var(--otk-border);
+  border-radius: 8px;
+  padding: 40px 24px;
+  display: flex; justify-content: center;
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rr-brand .rr-brand-card {
+  background: var(--otk-bg);
+  border-radius: 8px;
+  padding: 20px;
+  width: min(340px, 100%);
+  box-shadow: 0 1px 3px rgba(20, 26, 38, 0.1);
+}
+.rr-brand .rr-brand-card__badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 0 0 10px; padding: 4px 10px;
+  border: 1px solid var(--otk-border); border-radius: 999px;
+  font-size: 11px; font-weight: 600; color: var(--otk-ink);
+}
+.rr-brand .rr-brand-card__name { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.2; }
+.rr-brand .rr-brand-card__meta { margin: 4px 0 14px; font-size: 12px; color: var(--otk-alt); }
+.rr-brand .rr-brand-card__times { display: flex; gap: 8px; margin-bottom: 14px; }
+.rr-brand .rr-brand-time {
+  flex: 1; text-align: center; padding: 8px 0;
+  border: 1px solid var(--otk-border); border-radius: 6px;
+  font-size: 13px; font-weight: 500;
+}
+.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otkit-border-action); border-width: 2px; }
+.rr-brand .rr-brand-card__cta {
+  margin: 0; padding: 12px; border-radius: 6px; text-align: center;
+  background: var(--otkit-background-action);
+  color: var(--otkit-foreground-on-action);
+  font-size: 14px; font-weight: 600;
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+
+.rr-brand .rr-brand-tokens,
+.rr-brand .rr-brand-tokens__list,
+.rr-brand .rr-brand-tokens__label,
+.rr-brand .rr-brand-tokens__list,
+.rr-brand .rr-brand-tokens__row,
+.rr-brand .rr-brand-tokens__swatch,
+.rr-brand .rr-brand-tokens__name,
+.rr-brand .rr-brand-tokens__name,
+.rr-brand .rr-brand-tokens__hex,
+.rr-brand .rr-brand-tokens__hex { color: var(--otk-alt); }
+.rr-brand .rr-brand-tokens__count,
+.rr-brand .rr-brand-tokens__indirect {
+  margin: 6px 0 0; font-size: 12px; line-height: 1.5;
+  color: var(--otk-alt); max-width: 62ch;
+}
+.rr-brand .rr-brand-tokens__indirect code {
+  font-family: var(--font-family-mono, ui-monospace, monospace);
+  color: var(--otk-ink);
+}
+
+@media (max-width: 600px) {
+  .rr-brand .rr-brand-stage { padding: 24px 12px; }
+  /* Rows must be allowed to wrap here. Without it, a flex-basis of 100% on the
+     state label overflowed the panel by ~210px instead of pushing to a new
+     line — the row was nowrap, so nothing could ever wrap onto one. */
+  .rr-brand .rr-brand-tokens__row { flex-wrap: wrap; row-gap: 2px; }
+  .rr-brand .rr-brand-tokens__hex { margin-left: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rr-brand .rr-brand-stage,
+  .rr-brand .rr-brand-card__cta,
+  .rr-brand .rr-brand-switch__btn,
+  .rr-brand .rr-brand-tokens__swatch { transition: none; }
 }
 
 /* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
@@ -4605,10 +4794,23 @@ h2.eyebrow,
    via clamp() in :root — these rules handle layout/wrapping only.
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 560px) {
-  /* Nav — single row on mobile. With INDEX removed (the brand handles home),
-     the 5 links (WORK/SYSTEM/BLOG/ABOUT/CONTACT) fit alongside the brand at
-     375px: the short BLOG label and tightened gaps keep them on one row while
-     each still hits the 44px Apple/Google HIG tap-target floor. */
+  /* Nav — single row on mobile: brand left, 5 links (WORK/SYSTEM/BLOG/ABOUT/
+     CONTACT) right, no wrap and no scroll.
+
+     This row is TIGHT and the budget is measured, not estimated. At 14px
+     JetBrains Mono the brand + 5 links + container padding come to exactly
+     356px. An earlier pass claimed they fit at 375px on 8px link padding and
+     4px gaps, but that arrangement needed ~411px — so CONTACT was clipped past
+     the right edge on every route below ~410px. `overflow-x: clip` on
+     html/body hid it: no scrollbar, just a partly unreachable link.
+
+     Measured after the fix: fits at 356px and up (360 ✓ 375 ✓ 390 ✓ 414 ✓
+     560 ✓), overflows at 355px and below — i.e. only 320px-class devices.
+     Spacing alone cannot buy that last tier without breaching the tap-target
+     floor, so it needs a different answer (smaller type, or one fewer link),
+     not tighter padding.
+
+     Do not restore the 8px link padding, and re-measure before adding a link. */
   .topbar {
     align-items: center;
     padding: var(--spacing-tight) var(--spacing-inline) 0;
@@ -4617,18 +4819,21 @@ h2.eyebrow,
     flex-shrink: 0;
   }
   .topbar__links {
-    gap: var(--primitive-space-2xs);
+    gap: var(--primitive-space-3xs);
     flex-wrap: nowrap;
     white-space: nowrap;
     letter-spacing: var(--letter-spacing-body);
   }
+  /* The 44px floors are load-bearing, not decoration: with 4px padding the two
+     short labels (WORK, BLOG) would measure ~42px, and min-width catches them
+     at the HIG minimum instead of letting them shrink. */
   .topbar__links a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 44px;
     min-width: 44px;
-    padding: var(--primitive-space-2xs) var(--primitive-space-xs);
+    padding: var(--primitive-space-2xs);
   }
 
   /* Footer — stay on one line, with iOS home-indicator safe area below. */

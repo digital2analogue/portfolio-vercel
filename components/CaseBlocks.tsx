@@ -69,8 +69,11 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
             );
           case "quote":
             return (
-              <blockquote key={i}>
-                <InlineText text={b.text} />
+              <blockquote key={i} data-cited={b.cite ? true : undefined}>
+                <p className="block-quote__text">
+                  <InlineText text={b.text} />
+                </p>
+                {b.cite ? <cite className="block-quote__cite">{b.cite}</cite> : null}
               </blockquote>
             );
           case "note":
