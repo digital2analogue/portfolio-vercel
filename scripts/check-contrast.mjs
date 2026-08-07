@@ -144,6 +144,15 @@ const PAIRINGS = [
   { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
+  // `.demo-frame__surface` is NOT white — it is a radial gradient bottoming out
+  // at #f4f6f8. Text placed directly on the surface (rather than on a demo's own
+  // white panel) has to clear AA against that darkest stop, which #6f737b does
+  // not (4.39:1). Rendered-DOM measurement found this; a pairing declared
+  // against '#ffffff' cannot, because the declared colour was never the one the
+  // browser composited against.
+  { text: '#63666d', bg: '#f4f6f8', label: 'Demo: muted note on the frame surface gradient (darkest stop)' },
+  { text: '#2d333f', bg: '#f4f6f8', label: 'Demo: ink on the frame surface gradient (darkest stop)' },
+  { text: '#4a4f59', bg: '#f4f6f8', label: 'Demo/brand: OTKit foreground-alt on the frame surface gradient' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 
   // ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
