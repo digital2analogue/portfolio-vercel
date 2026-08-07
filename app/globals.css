@@ -4821,10 +4821,23 @@ h2.eyebrow,
    via clamp() in :root — these rules handle layout/wrapping only.
    ═══════════════════════════════════════════════════════════════════ */
 @media (max-width: 560px) {
-  /* Nav — single row on mobile. With INDEX removed (the brand handles home),
-     the 5 links (WORK/SYSTEM/BLOG/ABOUT/CONTACT) fit alongside the brand at
-     375px: the short BLOG label and tightened gaps keep them on one row while
-     each still hits the 44px Apple/Google HIG tap-target floor. */
+  /* Nav — single row on mobile: brand left, 5 links (WORK/SYSTEM/BLOG/ABOUT/
+     CONTACT) right, no wrap and no scroll.
+
+     This row is TIGHT and the budget is measured, not estimated. At 14px
+     JetBrains Mono the brand + 5 links + container padding come to exactly
+     356px. An earlier pass claimed they fit at 375px on 8px link padding and
+     4px gaps, but that arrangement needed ~411px — so CONTACT was clipped past
+     the right edge on every route below ~410px. `overflow-x: clip` on
+     html/body hid it: no scrollbar, just a partly unreachable link.
+
+     Measured after the fix: fits at 356px and up (360 ✓ 375 ✓ 390 ✓ 414 ✓
+     560 ✓), overflows at 355px and below — i.e. only 320px-class devices.
+     Spacing alone cannot buy that last tier without breaching the tap-target
+     floor, so it needs a different answer (smaller type, or one fewer link),
+     not tighter padding.
+
+     Do not restore the 8px link padding, and re-measure before adding a link. */
   .topbar {
     align-items: center;
     padding: var(--spacing-tight) var(--spacing-inline) 0;
@@ -4833,18 +4846,21 @@ h2.eyebrow,
     flex-shrink: 0;
   }
   .topbar__links {
-    gap: var(--primitive-space-2xs);
+    gap: var(--primitive-space-3xs);
     flex-wrap: nowrap;
     white-space: nowrap;
     letter-spacing: var(--letter-spacing-body);
   }
+  /* The 44px floors are load-bearing, not decoration: with 4px padding the two
+     short labels (WORK, BLOG) would measure ~42px, and min-width catches them
+     at the HIG minimum instead of letting them shrink. */
   .topbar__links a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 44px;
     min-width: 44px;
-    padding: var(--primitive-space-2xs) var(--primitive-space-xs);
+    padding: var(--primitive-space-2xs);
   }
 
   /* Footer — stay on one line, with iOS home-indicator safe area below. */
