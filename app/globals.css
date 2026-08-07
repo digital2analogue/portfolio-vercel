@@ -2377,16 +2377,23 @@ h2.eyebrow,
    rendered as live white text. See lib/brandThemes.ts. */
 .rr-brand {
   /* The two tiers, kept genuinely separate. The brand collection (--brand-*,
-     set inline per selected brand) is what re-points; the SEMANTIC tokens below
+     set inline per selected brand) is what re-points; the semantic tokens below
      are what the component actually asks for. Proof this is the real wiring:
-     OTKit's own prototype ships --color-background-action: #247F9E, which is
+     OTKit's own prototype ships `background/action` = #247F9E, which is
      Restaurant's brand/default. A button never names a brand.
+
      Only background/action is evidenced as an alias — the deck names no
-     semantic token for the hover/pressed steps, so those stay brand/* here
-     rather than being given an invented name. */
-  --color-background-action: var(--brand-default);
-  --color-foreground-on-action: #ffffff;
-  --color-border-action: var(--brand-default);
+     semantic token for the hover/pressed steps, so those stay brand/* rather
+     than being given an invented name.
+
+     These carry an --otk- prefix, NOT Parsimony's --color-* names. Redeclaring
+     --color-background-action here — even scoped to this class — made the
+     contrast gate's flat CSS parser read it as a global redefinition, and the
+     real "Button label on action background" pairing silently went
+     unresolved. Demo palettes stay demo-local. */
+  --otk-background-action: var(--brand-default);
+  --otk-foreground-on-action: #ffffff;
+  --otk-border-action: var(--brand-default);
 
   --otk-bg: #ffffff;
   --otk-ink: #141a26;
@@ -2471,11 +2478,11 @@ h2.eyebrow,
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
 }
-.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--color-border-action); border-width: 2px; }
+.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otk-border-action); border-width: 2px; }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
-  background: var(--color-background-action);
-  color: var(--color-foreground-on-action);
+  background: var(--otk-background-action);
+  color: var(--otk-foreground-on-action);
   font-size: 14px; font-weight: 600;
   transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
 }

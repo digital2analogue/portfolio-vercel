@@ -326,8 +326,14 @@ for (const { text, bg, label, min } of PAIRINGS) {
   const textHex = typeof text === 'string' && text.startsWith('--') ? tok(text) : text
   const bgHex   = typeof bg   === 'string' && bg.startsWith('--')   ? tok(bg)   : bg
 
+  // An unresolved pairing is a FAILURE, not a skip. It used to `continue`,
+  // which meant a renamed token — or a scoped block redeclaring a global token
+  // name, which this flat parser cannot tell apart from a `:root` override —
+  // silently removed a pairing from the gate while it still reported green.
   if (!textHex || !bgHex) {
-    console.log(`  ${'[unresolved] ' + label}`)
+    failed++
+    const which = [!textHex && text, !bgHex && bg].filter(Boolean).join(', ')
+    console.log(`  ${label.padEnd(52)} ${'unresolved'.padStart(10)}  ❌ FAIL  (${which})`)
     continue
   }
 
