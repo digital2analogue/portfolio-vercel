@@ -2265,6 +2265,19 @@ h2.eyebrow,
 }
 
 /* ── OTKit table-status floor grid (contrast audit) ── */
+/* `.blocks` styles bare p/ul/li at (0,1,1) and beats a lone component class,
+   so this demo's prose was rendering in Spectral 16px at --color-foreground-alt
+   (#A0A89A, a DARK-theme token) on its own WHITE surface — 2.45:1. The gate
+   could not see it: it checks declared pairings, and this one was produced by
+   specificity, not by a declaration. Neutralize at matching specificity, then
+   scope every rule below to (0,2,0) so it outranks both. */
+.rr-tiles :is(p, ul, li, h4) {
+  font: inherit; letter-spacing: normal; color: inherit;
+  margin: 0; padding: 0; list-style: none;
+}
+.rr-tiles ul li::before,
+.rr-tiles ul::before,
+.rr-tiles li::before { content: none; }
 .rr-tiles {
   --otk-bg: #ffffff;
   --otk-surface: #f1f2f4;
@@ -2280,12 +2293,12 @@ h2.eyebrow,
   flex-direction: column;
   gap: var(--primitive-space-md);
 }
-.rr-tiles-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.rr-tiles-title { font-size: 15px; font-weight: 600; }
-.rr-tiles-toggle { display: inline-flex; padding: 2px; background: var(--otk-surface); border-radius: 999px; }
+.rr-tiles .rr-tiles-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.rr-tiles .rr-tiles-title { font-size: 15px; font-weight: 600; }
+.rr-tiles .rr-tiles-toggle { display: inline-flex; padding: 2px; background: var(--otk-surface); border-radius: 999px; }
 
-.rr-tiles-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.rr-tile {
+.rr-tiles .rr-tiles-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.rr-tiles .rr-tile {
   --fill: #ffffff;
   --on: #2d333f;
   position: relative;
@@ -2323,14 +2336,14 @@ h2.eyebrow,
   text-align: center;
   box-shadow: 0 0 0 2px var(--otk-bg);
 }
-.rr-tile:hover { transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 2px 6px rgba(20, 26, 38, 0.18); }
-.rr-tile:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
-.rr-tile[data-selected="true"] { box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 0 0 2px var(--otk-focus); }
+.rr-tiles .rr-tile:hover { transform: translateY(-1px); box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 2px 6px rgba(20, 26, 38, 0.18); }
+.rr-tiles .rr-tile:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
+.rr-tiles .rr-tile[data-selected="true"] { box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08), 0 0 0 2px var(--otk-focus); }
 
-.rr-tiles-summary { margin: 0; font-size: 13px; font-weight: 500; }
-.rr-tiles-summary[data-fail="true"] { color: var(--otk-danger); }
+.rr-tiles .rr-tiles-summary { margin: 0; font-size: 13px; font-weight: 500; }
+.rr-tiles .rr-tiles-summary[data-fail="true"] { color: var(--otk-danger); }
 
-.rr-tiles-inspect {
+.rr-tiles .rr-tiles-inspect {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -2339,7 +2352,7 @@ h2.eyebrow,
   background: var(--otk-surface);
   border-radius: 8px;
 }
-.rr-tiles-inspect__swatch {
+.rr-tiles .rr-tiles-inspect__swatch {
   flex: none;
   width: 44px;
   height: 40px;
@@ -2351,21 +2364,21 @@ h2.eyebrow,
   font-weight: 600;
   box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.08);
 }
-.rr-tiles-inspect__name { font-size: 14px; font-weight: 600; }
-.rr-tiles-inspect__meta { font-size: 12px; color: var(--otk-alt); margin-top: 2px; }
-.rr-tiles-inspect__meta code { font-family: var(--font-family-mono, ui-monospace, monospace); color: var(--otk-ink); }
-.rr-tiles-inspect__verdict { margin-left: 8px; font-weight: 600; }
-.rr-tiles-inspect__verdict[data-pass="true"] { color: #236439; }
-.rr-tiles-inspect__verdict[data-pass="false"] { color: var(--otk-danger); }
-.rr-tiles-inspect__hint { font-size: 13px; color: var(--otk-alt); }
-.rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #6f737b; max-width: 68ch; }
+.rr-tiles .rr-tiles-inspect__name { font-size: 14px; font-weight: 600; }
+.rr-tiles .rr-tiles-inspect__meta { font-size: 12px; color: var(--otk-alt); margin-top: 2px; }
+.rr-tiles .rr-tiles-inspect__meta code { font-family: var(--font-family-mono, ui-monospace, monospace); color: var(--otk-ink); }
+.rr-tiles .rr-tiles-inspect__verdict { margin-left: 8px; font-weight: 600; }
+.rr-tiles .rr-tiles-inspect__verdict[data-pass="true"] { color: #236439; }
+.rr-tiles .rr-tiles-inspect__verdict[data-pass="false"] { color: var(--otk-danger); }
+.rr-tiles .rr-tiles-inspect__hint { font-size: 13px; color: var(--otk-alt); }
+.rr-tiles .rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #6f737b; max-width: 68ch; }
 
 @media (max-width: 600px) {
-  .rr-tile { width: 52px; height: 60px; }
+.rr-tiles .rr-tile { width: 52px; height: 60px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .rr-tile { transition: none; }
-  .rr-tile:hover { transform: none; }
+.rr-tiles .rr-tile { transition: none; }
+.rr-tiles .rr-tile:hover { transform: none; }
 }
 
 /* ── OTKit brand collections (components/demos/BrandThemeDemo) ──
