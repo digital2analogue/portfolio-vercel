@@ -337,7 +337,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "That number is the survey, costed: engineering at ~5 hours a week across 14 people, design at ~3 hours across 10, billed at $75/hour over a year — **≈$273K on the engineering side and ≈$117K on the design side**. Naming it in dollars is what made the work fundable.",
+        text: "Costed from the survey: ~5 engineering hours a week across 14 people (**≈$273K**), ~3 design hours across 10 (**≈$117K**), at $75/hour. Naming it in dollars is what made the work fundable.",
       },
       { type: "hr" },
       { type: "h2", text: "User Research" },
@@ -435,7 +435,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Twenty-two states, eleven tokens" },
       {
         type: "p",
-        text: "Table Statuses tested the color system early. **22 reservation statuses needed color** — plus data viz, plus white-label theming. Hyper-specific tokens would have read precisely but couldn't scale across two products, so statuses bind to the semantic accent ramps instead: **eleven tokens carry all twenty-two states**. Fewer tokens, broader reach. Shipped on time, zero new colors, system coherent.",
+        text: "Table Statuses tested the color system early. **22 reservation statuses needed color** — plus data viz, plus white-label theming. Hyper-specific tokens would have read precisely but couldn't scale across two products, so statuses bind to the semantic accent ramps instead: **eleven tokens carry all twenty-two states**. Shipped on time, zero new colors.",
       },
       {
         type: "demo",
@@ -454,7 +454,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         demo: "table-status",
         frameLabel: "OTKit · Floor plan · Table status",
         caption:
-          "Live recreation of the real table-status tiles, the floor-plan counterpart to the reservation button. Each tile's label uses its background's foreground/on-* token, so all 18 clear WCAG AA. Select a tile to inspect its background token, label token, and live contrast ratio.",
+          "The floor-plan counterpart to the reservation button. Select a tile to inspect its tokens and live contrast ratio.",
       },
       { type: "h3", text: "Contextual typography" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
@@ -495,7 +495,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Dynamic Type came with the rest of the native contract: **44px minimum touch targets system-wide**, platform-aware scales, and the same tokens as web so nothing drifted per platform.",
+        text: "It came with the rest of the native contract: **44px minimum touch targets**, platform-aware scales, and the same tokens as web.",
       },
       {
         type: "image",
@@ -533,7 +533,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "The rules had reasons. The 2dp outer corner echoes the rounding in the OpenTable logo, so the icon set reads as the same family as the brand mark; the detail budget answers a five-second recognition test, which is why a 24px glyph earns tick marks a 16px one cannot afford.",
+        text: "The rules had reasons: the 2dp outer corner echoes the OpenTable logo's rounding, and the detail budget answers a five-second recognition test — which is why 24px earns tick marks that 16px cannot afford.",
       },
       {
         type: "p",
@@ -589,7 +589,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "image",
         alt: "OTKit type specimen: Nantes set as editorial display reading 'Find your table for any occasion', above Haffer's weight axis showing 430 body, 530 label, 570 title and 600 CTA, with a slider marking 570 as the shipped CTA weight between 400 and 620, and a product-UI row of Haffer buttons",
         caption:
-          "The pairing as it shipped: Nantes for editorial display, Haffer for product UI. The axis is the argument — the CTA holds at 570 rather than the 600 the old scale implied, because Haffer reads heavier than Brandon did at the same nominal weight.",
+          "Nantes for editorial display, Haffer for product UI.",
         src: "/projects/images/otkit-type-haffer-nantes.png",
       },
       { type: "h3", text: '"Black is the new red"' },
@@ -599,7 +599,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components. **Six variables re-point per brand. The other 278 are shared.**",
+        text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components.",
       },
       { type: "hr" },
       { type: "h2", text: "Theming in Practice" },
@@ -608,7 +608,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         demo: "brand-theme",
         frameLabel: "OTKit · Brand collections · Diner → Restaurant → Iconic",
         caption:
-          "One card, three brand collections. Switching brand re-points four variables — the markup, the components, and the other 278 tokens never change. The panel underneath audits the white label against every state of the action ramp: Iconic clears WCAG AA at rest, on hover, and pressed; the legacy Diner and Restaurant ramps only clear it at rest. That is the accessibility half of the argument for black.",
+          "One card, three brand collections. Switch between them to audit the white label at every ramp state.",
       },
       { type: "h3", text: "Mass Theme" },
       {
@@ -657,7 +657,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "What Made This Work" },
       {
         type: "p",
-        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — but a **designer–engineer pair per platform** could. One ambassador pair each for Diner web, iOS, and Android and Restaurant web, iOS, and Android, plus the core OTKit pair: a two-way loop that championed the system locally and carried friction back. Contribution ran the same path every time — propose, review, merge. Friction the ambassadors surfaced didn't stop with me either: it fed a quarterly system roadmap that went to the director, so the cost of drift stayed visible to the people funding it.",
+        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — a **designer–engineer pair per platform** could. Each pair championed the system locally and carried friction back, and contribution ran one path every time: propose, review, merge. That friction fed a quarterly roadmap to the director, keeping the cost of drift visible to the people funding it.",
       },
       {
         type: "image",

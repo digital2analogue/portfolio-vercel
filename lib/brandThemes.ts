@@ -30,8 +30,6 @@ export type Brand = {
   pressed: string;
   /** Tinted page surface the card sits on. */
   altLight: string;
-  /** What this collection is for, one line. */
-  note: string;
 };
 
 /** The four variables that re-point per brand. */
@@ -50,7 +48,6 @@ export const BRANDS: Brand[] = [
     hover: "#E15B64",
     pressed: "#931B23",
     altLight: "#FCEEEF",
-    note: "The legacy consumer brand. Red carried both the primary action and error.",
   },
   {
     id: "restaurant",
@@ -59,7 +56,6 @@ export const BRANDS: Brand[] = [
     hover: "#2B9ABF",
     pressed: "#154A5B",
     altLight: "#EEF8FB",
-    note: "The operator-facing brand — teal, to hold apart from the diner surface.",
   },
   {
     id: "iconic",
@@ -68,7 +64,6 @@ export const BRANDS: Brand[] = [
     hover: "#575C66",
     pressed: "#141A26",
     altLight: "#F2EFE6",
-    note: "The premium tier. Black took the action role, freeing red to mean danger.",
   },
 ];
 

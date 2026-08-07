@@ -136,9 +136,7 @@ export default function BrandThemeDemo() {
 
       {/* The state audit — the argument for black. */}
       <div className="rr-brand-audit">
-        <p className="rr-brand-audit__label">
-          White label on every state of the action ramp
-        </p>
+        <p className="rr-brand-audit__label">White label · action ramp</p>
         <ul className="rr-brand-audit__list">
           {audit.map((s) => (
             <li key={s.state} className="rr-brand-audit__row">
@@ -148,7 +146,6 @@ export default function BrandThemeDemo() {
                 aria-hidden="true"
               />
               <span className="rr-brand-audit__state">{STATE_LABEL[s.state]}</span>
-              <code className="rr-brand-audit__hex">{s.fill.toUpperCase()}</code>
               <span className="rr-brand-audit__ratio">{s.ratio.toFixed(2)}:1</span>
               <span className="rr-brand-audit__verdict" data-pass={s.passes}>
                 {s.passes ? "AA" : "FAIL"}
@@ -158,10 +155,9 @@ export default function BrandThemeDemo() {
         </ul>
         <p className="rr-brand-audit__verdict-line" aria-live="polite">
           {clearsEveryState(brand)
-            ? `${brand.label} clears WCAG AA in every state, not just resting.`
-            : `${brand.label} clears AA at rest but not on hover — the legacy ramp was only ever checked at its resting value.`}
+            ? `${brand.label} clears AA in every state.`
+            : `${brand.label} clears AA at rest, but not on hover.`}
         </p>
-        <p className="rr-brand-audit__note">{brand.note}</p>
       </div>
     </div>
   );

@@ -2403,7 +2403,13 @@ h2.eyebrow,
   padding: 0;
   list-style: none;
 }
-.rr-brand :is(ul, li)::before { content: none; }
+/* `.blocks ul li::before` is (0,1,3) — one class, three elements. A
+   `:is()`-based reset only reaches (0,1,2) and silently loses, which is how the
+   green `›` markers came back on this demo. Match the element count exactly;
+   this block is later in the file, so the tie goes here. */
+.rr-brand ul li::before,
+.rr-brand ul::before,
+.rr-brand li::before { content: none; }
 
 .rr-brand .rr-brand-head {
   display: flex; flex-wrap: wrap; align-items: center;
@@ -2489,10 +2495,8 @@ h2.eyebrow,
 .rr-brand .rr-brand-audit__state { flex: 1; min-width: 0; }
 .rr-brand .rr-brand-tokens__name,
 .rr-brand .rr-brand-tokens__hex,
-.rr-brand .rr-brand-audit__hex,
 .rr-brand .rr-brand-audit__ratio { font-family: var(--font-family-mono, ui-monospace, monospace); }
-.rr-brand .rr-brand-tokens__hex,
-.rr-brand .rr-brand-audit__hex { color: var(--otk-alt); }
+.rr-brand .rr-brand-tokens__hex { color: var(--otk-alt); }
 .rr-brand .rr-brand-tokens__count,
 .rr-brand .rr-brand-audit__verdict-line { margin: 10px 0 0; font-size: 13px; font-weight: 500; }
 .rr-brand .rr-brand-audit__ratio { font-weight: 600; min-width: 56px; text-align: right; }
@@ -2503,7 +2507,12 @@ h2.eyebrow,
 
 @media (max-width: 600px) {
   .rr-brand .rr-brand-stage { padding: 24px 12px; }
-  .rr-brand .rr-brand-audit__state { flex: 1 0 100%; order: -1; }
+  /* Rows must be allowed to wrap here. Without it, a flex-basis of 100% on the
+     state label overflowed the panel by ~210px instead of pushing to a new
+     line — the row was nowrap, so nothing could ever wrap onto one. */
+  .rr-brand .rr-brand-tokens__row,
+  .rr-brand .rr-brand-audit__row { flex-wrap: wrap; row-gap: 2px; }
+  .rr-brand .rr-brand-tokens__hex { margin-left: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rr-brand .rr-brand-stage,
