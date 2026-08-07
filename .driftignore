@@ -28,3 +28,10 @@ lib/tableStatus.ts
 # Case-study body content — hex appears only in prose/alt-text describing
 # token-resolution diagrams, not as styling.
 lib/caseContent.ts
+
+# The /work/system lint playground ships its own sample snippets as strings:
+# SAMPLE_VIOLATIONS is deliberately-bad CSS the demo detects and highlights, and
+# SAMPLE_CLEAN references a deprecated token on purpose so the "before" state
+# has something to fix. They are rendered text, not styling — correctly flagged
+# by the shared rules, correctly exempt here. (parsimony#174)
+lib/checkUsageRules.ts
