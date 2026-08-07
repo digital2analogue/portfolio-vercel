@@ -283,40 +283,38 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "OTKit Design System hero: overview of the design system River built at OpenTable spanning iOS, Android, and web",
         src: "/projects/images/otkit-ds-hero.png",
       },
-      { type: "h2", text: "Overview" },
-      {
-        type: "p",
-        text: "When I took ownership of OTKit (OpenTable's design system across iOS, Android, and web), it existed on paper but lacked cohesion, governance, and trust. The mandate: **turn a drifting system into an operational platform** teams actually relied on.",
-      },
-      { type: "h3", text: "Three users, one system" },
-      {
-        type: "ul",
-        items: [
-          "**The diner** books a table in seconds, once a month. Consumer-grade craft, fast by default.",
-          "**The front-of-house host** runs the floor from an iPad, eight hours a shift. Density, and zero tolerance for error.",
-          "**Design and engineering** — six teams consuming tokens, components, and docs. The system succeeds when their work gets faster.",
-        ],
-      },
-      { type: "hr" },
-      {
-        type: "meta",
-        rows: [
-          ["Scope", "iOS, Android, Web"],
-          ["Team", "6 product teams"],
-        ],
-      },
-      { type: "hr" },
       {
         type: "stats",
         items: [
           { value: "25%", label: "Less QA time" },
-          { value: "≈$98K/yr", label: "Recovered in visual QA time" },
-          { value: "+2.15%", label: "Diner bookings, dynamic type" },
+          { value: "≈$98K/yr", label: "Recovered" },
+          { value: "+2.15%", label: "Diner bookings" },
+        ],
+      },
+      {
+        type: "meta",
+        rows: [
+          ["Scope", "iOS, Android, Web · 6 product teams"],
+          ["Shipped", "Tokens, type + icon systems, a brand refresh"],
         ],
       },
       { type: "hr" },
-      { type: "h2", text: "The Problem" },
-      { type: "p", text: "Design system drift was expensive and invisible. Surveys and 1:1 interviews revealed:" },
+      { type: "h2", text: "Overview" },
+      {
+        type: "p",
+        text: "OTKit existed on paper but lacked cohesion, governance, and trust. The mandate: **turn a drifting system into an operational platform** teams actually relied on. It served three users at once.",
+      },
+      {
+        type: "ul",
+        items: [
+          "**The diner** books a table in seconds, once a month. Consumer-grade craft, fast by default.",
+          "**The front-of-house host** runs the floor from an iPad, eight hours a shift. Density, zero tolerance for error.",
+          "**Design and engineering** — six teams consuming tokens, components, docs. The system succeeds when their work gets faster.",
+        ],
+      },
+      { type: "hr" },
+      { type: "h2", text: "Three sources of truth, ≈$390K a year" },
+      { type: "p", text: "Drift was expensive and invisible. Surveys and 1:1 interviews found:" },
       {
         type: "ul",
         items: [
@@ -340,12 +338,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Costed from the survey: ~5 engineering hours a week across 14 people (**≈$273K**), ~3 design hours across 10 (**≈$117K**), at $75/hour. Naming it in dollars is what made the work fundable.",
       },
       { type: "hr" },
-      { type: "h2", text: "User Research" },
+      { type: "h2", text: "37 people, one answer" },
       {
         type: "p",
         text: "A 37-person survey across design, product, and engineering put numbers on it:",
       },
-      { type: "h3", text: "One-off component creation" },
+      { type: "h3", text: "Everyone was building one-offs" },
       {
         type: "p",
         text: "**100%** of iOS designers were creating one-off components often or occasionally, vs **60%** on web. Unsurprising, given a mature web library (Buffet) and nothing comparable for native.",
@@ -354,7 +352,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "quote",
         text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us. (Restaurant iOS engineer)",
       },
-      { type: "h3", text: "Time spent clarifying styling during release" },
+      { type: "h3", text: "Four to eight rounds, every release" },
       {
         type: "p",
         text: "**75% of Restaurant web designers** spent **4–8 rounds** per release clarifying styling with engineering; **100% of Diner web designers** needed **0–3**.",
@@ -364,27 +362,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Interviews surfaced the same insight from both sides: unclear documentation, scattered sources of truth, no shared component language; much of the style guide lived in designers' heads.",
       },
       { type: "hr" },
-      { type: "h2", text: "Constraints" },
-      { type: "p", text: "The system had to evolve without stopping product delivery." },
-      {
-        type: "ul",
-        items: [
-          "Six product and platform teams shipping in parallel",
-          "Legacy UI patterns deeply embedded in production",
-          "Cross-platform requirements (iOS, Android, Web)",
-        ],
-      },
-      {
-        type: "image",
-        alt: "Screenshot of Restaurant app showing inconsistent, inaccessible components on web using transparent colors",
-        caption: "Inconsistent and inaccessible components on web.",
-        src: "/projects/images/cs-interface-opacity.png",
-      },
-      { type: "hr" },
-      { type: "h2", text: "Strategy" },
+      { type: "h2", text: "Foundations first, without stopping delivery" },
       {
         type: "p",
-        text: "To stop drift without breaking teams, I focused on **foundations first**, then scaled upward:",
+        text: "Six teams were shipping in parallel, on legacy patterns embedded in production, across three platforms. Nothing could pause. So I went **foundations first** — the layer teams could adopt inside an active codebase, without a rewrite:",
       },
       {
         type: "ul",
@@ -395,7 +376,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       { type: "hr" },
-      { type: "h2", text: "Foundations: Tokens, Type, Icons" },
+      { type: "h2", text: "Tokens, type, icons" },
       {
         type: "p",
         text: "Foundations made consistency possible without rewrites: adoption could happen across active codebases.",
@@ -422,11 +403,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "image",
-        alt: "Screenshot of semantic color token documentation",
-        src: "/projects/images/cs-semantic-color-documentation.png",
-      },
-      {
-        type: "image",
         alt: "Screenshot of semantic color token migration tool",
         caption:
           "Establishing semantic tokens created a single source of truth across platforms and reduced downstream inconsistencies.",
@@ -435,7 +411,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Twenty-two states, eleven tokens" },
       {
         type: "p",
-        text: "Table Statuses tested the color system early. **22 reservation statuses needed color** — plus data viz, plus white-label theming. Hyper-specific tokens would have read precisely but couldn't scale across two products, so statuses bind to the semantic accent ramps instead: **eleven tokens carry all twenty-two states**. Shipped on time, zero new colors.",
+        text: "**22 reservation statuses needed color** — plus data viz, plus white-label theming. Hyper-specific tokens read precisely but couldn't scale across two products, so statuses bind to the semantic accent ramps instead: **eleven tokens carry all twenty-two states**. Shipped on time, zero new colors.",
       },
       {
         type: "demo",
@@ -444,7 +420,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "Live component, rebuilt from the OTKit source. Every state maps to an existing semantic token.",
       },
-      { type: "h3", text: "The same system, denser: table-status tiles" },
+      { type: "h3", text: "The same system, denser" },
       {
         type: "p",
         text: "The **floor plan** is the denser half of the same screen: table tiles color-coded by the same palette. Labels sit *on* the color, so each tile pairs its fill with its own `foreground/on-*` token to stay legible.",
@@ -456,7 +432,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         caption:
           "The floor-plan counterpart to the reservation button. Select a tile to inspect its tokens and live contrast ratio.",
       },
-      { type: "h3", text: "Contextual typography" },
+      { type: "h3", text: "39 fonts, one scale" },
       { type: "p", text: "The existing type system was a one-size-fits-all scale that:" },
       {
         type: "ul",
@@ -467,24 +443,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
-        type: "image",
-        alt: "Diagram showing how contextual typography scales across platforms",
-        caption: "Diagram illustrating how contextual typography scales across platforms",
-        src: "/projects/images/casestudy-otkit-diner-ab-test.png",
-      },
-      { type: "h3", text: "Solution" },
-      {
-        type: "ul",
-        items: [
-          "Introduced a contextual typography scale by platform",
-          "Defined size, weight, and family per context",
-          "Added support for Apple Dynamic Type",
-        ],
-      },
-      { type: "h3", text: "Impact" },
-      {
         type: "p",
-        text: "A/B testing showed a **+2.15% increase in diner bookings** (+600 weekly net bookers) on pages using dynamic type.",
+        text: "The replacement was contextual: size, weight and family defined per platform context, plus Apple Dynamic Type. A/B testing showed a **+2.15% increase in diner bookings** — +600 weekly net bookers — on pages using dynamic type.",
       },
       {
         type: "video",
@@ -509,7 +469,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         alt: "System maturity over time: typography evolution from raw sizes to semantic naming to brand-refresh naming",
         src: "/projects/images/casestudy-otkit-system-maturity.png",
       },
-      { type: "h3", text: "Icon system" },
+      { type: "h3", text: "One grid, every glyph" },
       {
         type: "ul",
         items: [
@@ -527,13 +487,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/icon_grid_animated.gif",
       },
       {
-        type: "image",
-        alt: "Screenshot of icon creation guidelines on documentation site",
-        src: "/projects/images/casestudy-otkit-icons-splash.png",
-      },
-      {
         type: "p",
-        text: "The rules had reasons: the 2dp outer corner echoes the OpenTable logo's rounding, and the detail budget answers a five-second recognition test — which is why 24px earns tick marks that 16px cannot afford.",
+        text: "The rules had reasons. The 2dp outer corner echoes the OpenTable logo; the detail budget answers a five-second recognition test — which is why 24px earns tick marks that 16px cannot afford.",
       },
       {
         type: "p",
@@ -583,7 +538,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw** — and **two variable fonts replaced six static cuts**. Haffer carries a real weight axis: 430 for body, 530 for labels, 570 for titles. The one judgement call was the CTA, which sits at **570, not the 600 the old scale implied** — tuned to Haffer's optical weight rather than inherited.",
+        text: "Every text style already pointed at one family token, so the swap was a **re-binding, not a redraw** — **two variable fonts replaced six static cuts**. The one judgement call was the CTA: **570, not the 600 the old scale implied**, tuned to Haffer's optical weight.",
       },
       {
         type: "image",
@@ -595,14 +550,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: '"Black is the new red"' },
       {
         type: "p",
-        text: "Red meant error — and it was also our primary action color. The same hue was carrying two contradictory jobs. Black solved both at once: elegance for Iconic, and red freed to mean danger again. Action moved to sand; every black-button state was checked against WCAG AA, not just the default.",
+        text: "Red meant error — and it was also our primary action. One hue doing two contradictory jobs. Black solved both: elegance for Iconic, and red freed to mean danger again. Every black-button state was checked against AA, not just the default.",
       },
       {
         type: "p",
         text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components.",
       },
       { type: "hr" },
-      { type: "h2", text: "Theming in Practice" },
+      { type: "h2", text: "One component, three brands" },
       {
         type: "demo",
         demo: "brand-theme",
@@ -637,27 +592,24 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "**See it live:** browse the [Icons collection of premium restaurants](https://www.opentable.com/icons/san-francisco), or open an individual [Iconic restaurant page (Rich Table, San Francisco)](https://www.opentable.com/r/rich-table-san-francisco) to see the theme in production.",
       },
       { type: "hr" },
-      { type: "h2", text: "Outcomes & Impact" },
-      { type: "p", text: "OTKit delivered measurable ROI:" },
+      { type: "h2", text: "What it returned" },
       {
         type: "ul",
         items: [
-          "25% reduction in QA time",
-          "≈$98K/year recovered in visual QA time — 25% of the $390K the drift was costing",
-          "50% fewer Figma libraries",
-          "Unified design language across 6 teams",
-          "Supported a full OpenTable brand refresh",
+          "**50% fewer Figma libraries**",
+          "**27% lift** in clarity around Figma component sources, in the follow-up survey",
+          "One design language across 6 teams — and a full brand refresh absorbed without a rewrite",
         ],
       },
       {
         type: "p",
-        text: "Follow-up surveys also showed a **27% lift in clarity around Figma component sources**.",
+        text: "The ≈$98K a year is that 25% QA reduction, priced against the $390K drift was costing.",
       },
       { type: "hr" },
-      { type: "h2", text: "What Made This Work" },
+      { type: "h2", text: "Adoption came through advocacy, not enforcement" },
       {
         type: "p",
-        text: "Adoption came through advocacy, not enforcement. Two people can't scale to six teams — a **designer–engineer pair per platform** could. Each pair championed the system locally and carried friction back, and contribution ran one path every time: propose, review, merge. That friction fed a quarterly roadmap to the director, keeping the cost of drift visible to the people funding it.",
+        text: "Two people can't scale to six teams — a **designer–engineer pair per platform** could. Each pair championed the system locally and carried friction back; contribution ran one path every time: propose, review, merge. That friction fed a quarterly roadmap to the director, keeping the cost of drift visible to the people funding it.",
       },
       {
         type: "image",
@@ -667,13 +619,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Documentation was a **first-class deliverable**, kept in sync with engineering, backed by office hours, live demos, and a system newsletter.",
+        text: "Slack buried system updates in noise. So every release shipped an email instead — what changed, why, a demo, and how to migrate. **Every other team started one after this.**",
       },
       {
         type: "image",
-        alt: "Screenshot of the OTKit system newsletter",
-        caption: "The OTKit newsletter kept teams aligned on system changes, deprecations, and new patterns.",
-        src: "/projects/images/casestudy-otkit-newsletter.png",
+        alt: "OTKit release-notes email: a Foundation v1.0.1 announcement headed 'Variables are now in Figma', with links to a theming guide and recorded training sessions, and an embedded 38-second demo of theme modes switching live",
+        caption: "One release, explained. A direct line to the system's users.",
+        src: "/projects/images/otkit-newsletter-release-notes.png",
       },
       {
         type: "quote",
@@ -684,21 +636,21 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         text: "Trust came from follow-through: issues answered fast, breaking changes migrated for teams. That turned skeptics into advocates.",
       },
       { type: "hr" },
-      { type: "h2", text: "Learnings" },
-      { type: "h3", text: "Challenge: Lack of native Figma support for design tokens" },
+      { type: "h2", text: "What I'd do differently" },
+      { type: "h3", text: "Tokens before Figma had Variables" },
       {
         type: "p",
         text: "We started before Figma shipped Variables, managing tokens through naming conventions and manual syncing. We migrated fast when Variables arrived, but the gap cost early momentum. Next time: clearer expectations about interim tooling from the start.",
       },
-      { type: "h3", text: "Challenge: Communicating with remote teams" },
+      { type: "h3", text: "Remote teams, lost context" },
       {
         type: "p",
         text: "With teams across North America, Europe, and Asia, updates got lost and context didn't travel. The newsletter became our most effective channel. I'd start it, and the async-first habits, much earlier.",
       },
-      { type: "h3", text: "Challenge: Scaling myself" },
+      { type: "h3", text: "Scaling myself" },
       {
         type: "p",
-        text: "System work kept getting pulled into feature support, and without clear boundaries it was easy to become a bottleneck. The ambassador model helped, but it wasn't free — ambassador hours were a real cost against product delivery. Running them formally worked at first; what actually drove adoption was loosening them into jam sessions. Drawing that line earlier would have protected more foundational time.",
+        text: "System work kept getting pulled into feature support, and without boundaries it was easy to become the bottleneck. Ambassadors helped but weren't free — their hours were a real cost against product delivery. Formal sessions worked at first; what drove adoption was loosening them into jams. I'd draw that line earlier.",
       },
       { type: "hr" },
       { type: "h2", text: "Reflection" },
