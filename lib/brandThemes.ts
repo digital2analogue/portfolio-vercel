@@ -110,13 +110,6 @@ export const SHARED = {
   ink: "#141A26",
   alt: "#4A4F59",
   border: "#D8D9DB",
-  /**
-   * `foreground/on-action` — the button label. Shared, never re-pointed, which
-   * is why one white works across all three collections and why the audit below
-   * is a single pairing rather than three. Same value as `bg` here, but a
-   * different token doing a different job; don't collapse them.
-   */
-  onAction: "#FFFFFF",
 };
 
 /**
@@ -159,26 +152,3 @@ export const ratio = (a: string, b: string): number => {
 };
 
 export const AA_TEXT = 4.5;
-
-/**
- * `foreground/on-action` measured against each step of a brand's action ramp.
- * This is the audit the deck's "every black-button state clears AA, not just
- * default" claim rests on — and it is the legacy brands, not Iconic, that fail
- * it.
- */
-export const ACTION_RAMP = [
-  { state: "default", token: "bg-action" },
-  { state: "hover", token: "bg-action-hover" },
-  { state: "pressed", token: "bg-action-pressed" },
-] as const satisfies ReadonlyArray<{ state: keyof Brand; token: string }>;
-
-export const stateAudit = (brand: Brand) =>
-  ACTION_RAMP.map(({ state, token }) => {
-    const fill = brand[state] as string;
-    const r = ratio(SHARED.onAction, fill);
-    return { state, token, fill, ratio: r, passes: r >= AA_TEXT };
-  });
-
-/** True when every state of the ramp clears AA for its white label. */
-export const clearsEveryState = (brand: Brand) =>
-  stateAudit(brand).every((s) => s.passes);

@@ -921,6 +921,26 @@ h2.eyebrow,
   color: var(--color-foreground-default);
   font-weight: var(--primitive-font-weight-semibold);
 }
+/* The quote body is a <p>, so `.blocks p` (0,1,1) would otherwise reset the
+   blockquote's serif italic back to body copy. Scoped to (0,2,1) to outrank it
+   and simply inherit whatever the blockquote establishes. */
+.blocks blockquote .block-quote__text {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  margin: 0;
+}
+/* Attribution reads as a different voice from the quote it follows: upright
+   against the italic, label-scale against body, muted against default. */
+.blocks blockquote .block-quote__cite {
+  display: block;
+  margin-top: var(--spacing-tight);
+  font: var(--font-label-small);
+  font-style: normal;
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+}
+.blocks blockquote .block-quote__cite::before { content: "— "; }
 .blocks .block-note {
   font: var(--font-code);
   color: var(--color-foreground-muted);
@@ -2503,40 +2523,16 @@ h2.eyebrow,
 }
 
 .rr-brand .rr-brand-tokens,
-.rr-brand .rr-brand-audit {
-  border: 1px solid var(--otk-border);
-  border-radius: 8px;
-  padding: 14px 16px;
-  background: var(--otk-bg);
-}
 .rr-brand .rr-brand-tokens__list,
-.rr-brand .rr-brand-audit__list { max-width: 520px; }
 .rr-brand .rr-brand-tokens__label,
-.rr-brand .rr-brand-audit__label {
-  margin: 0 0 8px; font-size: 11px; font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase; color: var(--otk-alt);
-}
 .rr-brand .rr-brand-tokens__list,
-.rr-brand .rr-brand-audit__list { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
 .rr-brand .rr-brand-tokens__row,
-.rr-brand .rr-brand-audit__row { display: flex; align-items: center; gap: 10px; font-size: 12px; }
 .rr-brand .rr-brand-tokens__swatch,
-.rr-brand .rr-brand-audit__swatch {
-  width: 28px; height: 20px; border-radius: 4px; flex: none;
-  box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.12);
-  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
-}
 .rr-brand .rr-brand-tokens__name,
-.rr-brand .rr-brand-audit__state { flex: 1; min-width: 0; }
-.rr-brand .rr-brand-audit__state {
-  font-family: var(--font-family-mono, ui-monospace, monospace);
-}
 .rr-brand .rr-brand-tokens__name,
 .rr-brand .rr-brand-tokens__hex,
-.rr-brand .rr-brand-audit__ratio { font-family: var(--font-family-mono, ui-monospace, monospace); }
 .rr-brand .rr-brand-tokens__hex { color: var(--otk-alt); }
 .rr-brand .rr-brand-tokens__count,
-.rr-brand .rr-brand-audit__verdict-line { margin: 10px 0 0; font-size: 13px; font-weight: 500; }
 .rr-brand .rr-brand-tokens__indirect {
   margin: 6px 0 0; font-size: 12px; line-height: 1.5;
   color: var(--otk-alt); max-width: 62ch;
@@ -2545,11 +2541,6 @@ h2.eyebrow,
   font-family: var(--font-family-mono, ui-monospace, monospace);
   color: var(--otk-ink);
 }
-.rr-brand .rr-brand-audit__ratio { font-weight: 600; min-width: 56px; text-align: right; }
-.rr-brand .rr-brand-audit__verdict { font-weight: 700; min-width: 36px; text-align: right; }
-.rr-brand .rr-brand-audit__verdict[data-pass="true"] { color: #236439; }
-.rr-brand .rr-brand-audit__verdict[data-pass="false"] { color: var(--otk-danger); }
-.rr-brand .rr-brand-audit__note { margin: 6px 0 0; font-size: 12px; line-height: 1.5; color: var(--otk-alt); max-width: 68ch; }
 
 @media (max-width: 600px) {
   .rr-brand .rr-brand-stage { padding: 24px 12px; }
@@ -2558,18 +2549,12 @@ h2.eyebrow,
      line — the row was nowrap, so nothing could ever wrap onto one. */
   .rr-brand .rr-brand-tokens__row { flex-wrap: wrap; row-gap: 2px; }
   .rr-brand .rr-brand-tokens__hex { margin-left: auto; }
-  /* Short token names (bg-action-pressed) fit a 290px row inline, so these stay
-     a single flex line — no grid needed. They did NOT fit at the previous
-     `otkit/background-action-pressed` length, which is why the two-row grid
-     existed; if the labels ever lengthen again, measure before assuming. */
-  .rr-brand .rr-brand-audit__ratio { min-width: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rr-brand .rr-brand-stage,
   .rr-brand .rr-brand-card__cta,
   .rr-brand .rr-brand-switch__btn,
-  .rr-brand .rr-brand-tokens__swatch,
-  .rr-brand .rr-brand-audit__swatch { transition: none; }
+  .rr-brand .rr-brand-tokens__swatch { transition: none; }
 }
 
 /* ── iOS reservation detail (components/demos/ReservationDetailDemo) ──

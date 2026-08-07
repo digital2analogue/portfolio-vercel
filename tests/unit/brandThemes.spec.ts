@@ -7,12 +7,9 @@ import {
   SHARED,
   SHARED_VARIABLES,
   TOTAL_VARIABLES,
-  clearsEveryState,
   ratio,
-  stateAudit,
 } from '@/lib/brandThemes'
 
-const brand = (id: string) => BRANDS.find((b) => b.id === id)!
 
 describe('ratio — WCAG relative contrast', () => {
   it('is 21:1 for black on white and 1:1 for a colour on itself', () => {
@@ -44,36 +41,6 @@ describe('brand collections', () => {
   })
 })
 
-describe('stateAudit — white label across the action ramp', () => {
-  it('passes AA at the resting fill for every brand', () => {
-    for (const b of BRANDS) {
-      const resting = stateAudit(b).find((s) => s.state === 'default')!
-      expect(resting.ratio).toBeGreaterThanOrEqual(AA_TEXT)
-      expect(resting.passes).toBe(true)
-    }
-  })
-
-  it('clears AA in every state for Iconic — the argument for black', () => {
-    expect(clearsEveryState(brand('iconic'))).toBe(true)
-  })
-
-  it('fails AA on the legacy hover fills, which is why they are not rendered as text', () => {
-    for (const id of ['diner', 'restaurant']) {
-      expect(clearsEveryState(brand(id))).toBe(false)
-      const hover = stateAudit(brand(id)).find((s) => s.state === 'hover')!
-      expect(hover.passes).toBe(false)
-      expect(hover.ratio).toBeLessThan(AA_TEXT)
-    }
-  })
-
-  it('reports one entry per ramp state', () => {
-    expect(stateAudit(brand('iconic')).map((s) => s.state)).toEqual([
-      'default',
-      'hover',
-      'pressed',
-    ])
-  })
-})
 
 describe('shared tokens', () => {
   it('keeps body ink and muted text AA-legible on the shared card surface', () => {

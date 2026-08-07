@@ -14,7 +14,10 @@ export type Block =
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
   | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
   | { type: "outcome-demo"; caption?: string }
-  | { type: "quote"; text: string }
+  /** `cite` marks the quote as someone ELSE's testimony and renders an
+   *  attribution line. Leave it off for River's own pull-quotes — the two
+   *  read differently on purpose. */
+  | { type: "quote"; text: string; cite?: string }
   | { type: "note"; text: string }
   | { type: "hr" }
   | { type: "meta"; rows: [string, string][] }
@@ -350,7 +353,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "quote",
-        text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us. (Restaurant iOS engineer)",
+        text: "I think iOS lacks the rich component system that web has (Buffet), and that poses some challenges for us.",
+        cite: "Restaurant iOS engineer",
       },
       { type: "h3", text: "Four to eight rounds, every release" },
       {
@@ -561,9 +565,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "demo",
         demo: "brand-theme",
-        frameLabel: "OTKit · Brand collections · Diner → Restaurant → Iconic",
+        frameLabel: "OTKit · Brand collections · Switch and compare",
         caption:
-          "One card, three brand collections. Switch between them to audit the white label at every ramp state.",
+          "The same card under all three OTKit brand collections. The markup, the components, and the other 278 tokens never change.",
       },
       { type: "h3", text: "Mass Theme" },
       {
@@ -629,7 +633,8 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "quote",
-        text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team. (Jordon, Restaurant Design Ambassador)",
+        text: "I wanted to mention how helpful it has been having River support me on the design systems front. His depth of knowledge has been invaluable for our team.",
+        cite: "Jordon · Restaurant Design Ambassador",
       },
       {
         type: "p",

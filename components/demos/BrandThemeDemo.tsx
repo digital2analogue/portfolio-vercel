@@ -9,19 +9,14 @@
  * because brand decisions were encoded as token values, a major brand shift
  * cost teams nothing.
  *
- * It doubles as the state audit behind the deck's claim that "every black-button
- * state clears WCAG AA, not just default" — and it is honest about the fact that
- * the legacy brands do NOT: white on Diner hover is 3.57:1 and on Restaurant
- * hover 3.24:1, both under the 4.5:1 text threshold. Iconic clears every state.
- *
- * The ramp states are shown as swatches with their ratio read out beside them
- * (label ink-on-white, outside the swatch), so the demo can report a failing
- * pairing without rendering one. Only the resting fills carry white text, and
- * all three of those pass — every pairing here is registered in
+ * The CTA is a non-interactive <p> on purpose: white-on-brand passes AA at the
+ * resting fill for all three collections but NOT on the legacy hover fills
+ * (Diner 3.57:1, Restaurant 3.24:1), so the demo never renders a hover state it
+ * could not defend. Every pairing it does render is registered in
  * scripts/check-contrast.mjs.
  *
- * Data + WCAG math: lib/brandThemes.ts. Values are OTKit's own, read from the
- * deck's declared vector fills (see that file's header).
+ * Data: lib/brandThemes.ts. Values are OTKit's own, read from the deck's
+ * declared vector fills (see that file's header).
  */
 
 import { useId, useState } from "react";
@@ -31,8 +26,6 @@ import {
   RECORD,
   REPOINTED,
   SHARED_VARIABLES,
-  clearsEveryState,
-  stateAudit,
   type Brand,
 } from "@/lib/brandThemes";
 
@@ -47,7 +40,6 @@ function MichelinMark() {
 export default function BrandThemeDemo() {
   const [brandId, setBrandId] = useState<Brand["id"]>("iconic");
   const brand = BRANDS.find((b) => b.id === brandId) ?? BRANDS[2];
-  const audit = stateAudit(brand);
   const groupId = useId();
 
   return (
@@ -63,7 +55,7 @@ export default function BrandThemeDemo() {
       }
     >
       <div className="rr-brand-head">
-        <div className="rr-brand-title">Restaurant profile · one component</div>
+        <div className="rr-brand-title">Pick a brand — only four variables move</div>
         <div className="rr-brand-switch" role="radiogroup" aria-label="Brand collection">
           {BRANDS.map((b) => (
             <button
@@ -129,32 +121,6 @@ export default function BrandThemeDemo() {
         <p className="rr-brand-tokens__indirect">
           The button never names a brand — it asks for these; the collection
           decides what they resolve to.
-        </p>
-      </div>
-
-      {/* The state audit — the argument for black. */}
-      <div className="rr-brand-audit">
-        <p className="rr-brand-audit__label">White label · WCAG AA</p>
-        <ul className="rr-brand-audit__list">
-          {audit.map((s) => (
-            <li key={s.state} className="rr-brand-audit__row">
-              <span
-                className="rr-brand-audit__swatch"
-                style={{ background: s.fill }}
-                aria-hidden="true"
-              />
-              <code className="rr-brand-audit__state">{s.token}</code>
-              <span className="rr-brand-audit__ratio">{s.ratio.toFixed(2)}:1</span>
-              <span className="rr-brand-audit__verdict" data-pass={s.passes}>
-                {s.passes ? "AA" : "FAIL"}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <p className="rr-brand-audit__verdict-line" aria-live="polite">
-          {clearsEveryState(brand)
-            ? `${brand.label} clears AA in every state.`
-            : `${brand.label} clears AA at rest, but not on hover.`}
         </p>
       </div>
     </div>

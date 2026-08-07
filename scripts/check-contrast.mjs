@@ -274,8 +274,6 @@ const PAIRINGS = [
   { text: '#4a4f59', bg: '#ffffff', label: 'Demo/brand: card meta + token hex (alt) on card' },
   { text: '#141a26', bg: '#ffffff', label: 'Demo/brand: card name, times, token names on card' },
   { text: '#4a4f59', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
-  { text: '#236439', bg: '#ffffff', label: 'Demo/brand: AA verdict on the audit list' },
-  { text: '#931b23', bg: '#ffffff', label: 'Demo/brand: FAIL verdict on the audit list' },
   // The selected time chip's border is a state indicator, and it sits on the
   // white card surface — not on the tinted stage behind it.
   { text: '#da3743', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Diner) on card' },
