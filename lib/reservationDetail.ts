@@ -231,7 +231,7 @@ export function activeSectionAt(scrollTop: number, offsets: number[]): number {
 }
 
 /**
- * iPad (Back of House) shell data — the chrome the tablet layout adds around the
+ * iPad (Front of House) shell data — the chrome the tablet layout adds around the
  * SAME zones the phone shows. The reservation record itself is unchanged: this
  * is only the rail, the service sidebar and the date bar.
  *
@@ -240,7 +240,7 @@ export function activeSectionAt(scrollTop: number, offsets: number[]): number {
  * table, pacing + referral) move out to a side panel because there is now room
  * for them to sit beside the record instead of under it.
  */
-/** A glyph shown against a row, in one of the BOH accent tones. */
+/** A glyph shown against a row, in one of the FOH accent tones. */
 export type RowGlyph = { icon: string; tone?: "fuchsia" | "green" | "yellow" | "blue" | "purple" | "teal" };
 
 export type ServiceRow = {

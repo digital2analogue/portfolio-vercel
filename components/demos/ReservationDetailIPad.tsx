@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ReservationDetailIPad — the Back-of-House tablet layout from
+ * ReservationDetailIPad — the Front-of-House tablet layout from
  * `public/projects/images/zwVjhA3cW2v1jFcL.gif`. Like the phone clip, that one
  * plays a before/after; this is the "after".
  *
