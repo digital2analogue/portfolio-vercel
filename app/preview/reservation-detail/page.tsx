@@ -71,7 +71,7 @@ export default function ReservationDetailPreview() {
         <figure className="demo-frame" data-surface="light">
           <div className="demo-frame__chrome" aria-hidden="true">
             <span className="demo-frame__dot" />
-            <span className="demo-frame__label">OTKit · iPad Back of House</span>
+            <span className="demo-frame__label">OTKit · iPad Front of House</span>
           </div>
           <div className="demo-frame__surface" data-surface="light">
             <IPad />

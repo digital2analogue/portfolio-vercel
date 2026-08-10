@@ -185,7 +185,7 @@ const PAIRINGS = [
   { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — food & drink' },
   { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
-  // ── iPad / Back of House shell (components/demos/ReservationDetailIPad) ──
+  // ── iPad / Front of House shell (components/demos/ReservationDetailIPad) ──
   // The dark chrome is OTKit's OWN dark-mode token set, read from the source
   // Figma rather than sampled from a clip: background/default #141A26,
   // background/elevation #2D333F, border/default #6F737B, ash-lighter #D8D9DB.
@@ -193,8 +193,8 @@ const PAIRINGS = [
   // pairing above; the side panel beside it is the one tinted light surface.
   //
   // SC 1.4.3 — text.
-  { text: '#ffffff', bg: '#141a26', label: 'Demo/iPad: service bar + list panel text on BOH chrome' },
-  { text: '#d8d9db', bg: '#141a26', label: 'Demo/iPad: sort links, counts and times on BOH chrome' },
+  { text: '#ffffff', bg: '#141a26', label: 'Demo/iPad: service bar + list panel text on FOH chrome' },
+  { text: '#d8d9db', bg: '#141a26', label: 'Demo/iPad: sort links, counts and times on FOH chrome' },
   { text: '#ffffff', bg: '#2d333f', label: 'Demo/iPad: selected reservation + hovered control' },
   { text: '#d8d9db', bg: '#2d333f', label: 'Demo/iPad: secondary text on the selected reservation' },
   { text: '#ffffff', bg: '#4a6fde', label: 'Demo/iPad: unread badge count + seated table badge (blue)' },

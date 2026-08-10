@@ -789,7 +789,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "demo",
         demo: "reservation-detail-ipad",
-        frameLabel: "OTKit · iPad Back of House — as shipped",
+        frameLabel: "OTKit · iPad Front of House — as shipped",
         caption: "Same record, re-composed. The tablet adds chrome, not content.",
       },
       {
@@ -997,13 +997,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       { type: "hr" },
       { type: "h2", text: "check_usage: Governance, Moved Upstream" },
-      {
-        type: "diagram",
-        alt: "The check_usage MCP tool: an input panel of agent-proposed CSS containing a hardcoded hex and a primitive-token reference (both flagged red), feeding into an output panel listing the two rule violations returned by the system",
-        caption:
-          "Paste a snippet, get back every violation. Catch the mistake before it ships, not after.",
-        src: "/projects/images/ds-check-usage.svg",
-      },
       {
         type: "p",
         text: "Design-system checks usually happen after the fact. **check_usage moves them earlier**: hand the system a snippet before the code ships, get back every violation.",

@@ -3442,7 +3442,7 @@ h2.eyebrow,
   .rd-select__item:not([data-active="true"]):hover { background: var(--otk-surface); }
   .rd-action:hover { filter: brightness(0.96); }
   .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
-  /* Back-of-House chrome. Gated with everything else: on touch, hover latches
+  /* Front-of-House chrome. Gated with everything else: on touch, hover latches
      after a tap and leaves a rail button or a list row stuck lit — which on a
      SELECTION control reads as a second selection. */
   .rdp-icon--bare:hover,
@@ -3455,7 +3455,7 @@ h2.eyebrow,
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   iPad / Back of House shell (.rdp-*)
+   iPad / Front of House shell (.rdp-*)
    ───────────────────────────────────────────────────────────────────
    Only the CHROME the tablet adds: the service bar, the service-list
    panel and the side panel. Every zone of the guest record itself keeps
@@ -4340,7 +4340,7 @@ h2.eyebrow,
 
    What deliberately does NOT change: the accent (this is range within
    OTKit, not a pastiche of a competitor), the service-list density
-   (Back of House earns its density), and the rail.
+   (the floor view earns its density), and the rail.
    ═══════════════════════════════════════════════════════════════════ */
 /* 1. Chrome recedes. The exploration is about the surface, not about
       establishing "this is an iPad" a second time. */
