@@ -300,6 +300,11 @@ const PAIRINGS = [
   // (Worth knowing regardless: a 1.41:1 boundary is a real SC 1.4.11 soft spot
   // in OTKit's light theme, not something this demo introduced.)
   { text: '#141a26', bg: '#f1f2f4', label: 'Demo/brand: time-slot label on its hover fill (background/alt)' },
+  // Primary button states. Both values are GUESSES — see the note beside
+  // --otk-action-hover in globals.css. Registered so that whatever replaces
+  // them has to clear AA too.
+  { text: '#ffffff', bg: '#227795', label: 'Demo: primary button label on action-hover (guessed value)' },
+  { text: '#ffffff', bg: '#154a5b', label: 'Demo: primary button label on action-pressed (guessed value)' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex

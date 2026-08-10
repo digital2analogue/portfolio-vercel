@@ -2017,6 +2017,17 @@ h2.eyebrow,
   --otk-alt: #6f737b;
   --otk-border: #d8d9db;
   --otk-action: #247f9e;
+  /* GUESS — not source-verified. `background/action-hover` and
+     `background/action-pressed` exist in OTKit Foundation (Variables Library)
+     v1.0.1 under the `Theme` collection, but nothing on that file's single page
+     binds them, so their values can't be read out of Figma and the docs site
+     (otkit.runthedish.com/color/backgrounds#action-states) is unreachable from
+     CI. -hover is pinned to what this button already rendered via
+     `filter: brightness(0.94)`, so the guess changes nothing visually while
+     removing an untokenized filter; -pressed is teal-dark, the pressed step in
+     the deck's ramp. Replace both once the real values are readable. */
+  --otk-action-hover: #227795;
+  --otk-action-pressed: #154a5b;
   --otk-focus: #247f9e;
   --otk-radius: 4px;
   --otk-dur: var(--motion-duration-instant, 120ms);
@@ -2150,7 +2161,10 @@ h2.eyebrow,
   border-color: var(--otk-action);
   color: #ffffff;
 }
-.rr-demo-btn--primary:hover { filter: brightness(0.94); background: var(--otk-action); }
+/* A primary button always takes its states from the action tokens — never a
+   brightness filter, which is not a token and is not themeable. */
+.rr-demo-btn--primary:hover  { background: var(--otk-action-hover); }
+.rr-demo-btn--primary:active { background: var(--otk-action-pressed); border-color: var(--otk-action-pressed); }
 .rr-demo-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
 .rr-demo-btn[disabled]:hover { background: var(--otk-bg); }
 .rr-demo-btn--primary[disabled]:hover { background: var(--otk-action); }
