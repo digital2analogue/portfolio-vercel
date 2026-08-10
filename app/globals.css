@@ -1643,12 +1643,30 @@ h2.eyebrow,
 }
 .cu__out[data-clean="false"] .cu__verdict { color: var(--color-foreground-danger); }
 .cu__verdict-mark { font-size: 1.1em; }
-.cu__list { list-style: none; margin: 0; padding: 0; font: var(--font-code); }
-/* Suppress the case-body's global "›" list bullet inside the playground.
-   Scoped under .blocks so it outranks `.blocks ul li::before`. */
-.blocks .cu__list li { padding-left: 0; }
-.blocks .cu__list li::before { content: none; }
-.cu__item {
+/* `.blocks` styles bare p/ul/li at (0,1,1), which beats a lone component class:
+   the violation list was rendering as 16px Spectral body prose instead of
+   --font-code, indented by `.blocks ul`'s padding-left. An earlier pass patched
+   only the `›` marker, which is why the typography kept leaking. Neutralize at
+   matching specificity (this block is later in the file, so it wins the tie),
+   then scope the component rules below with `.cu ` to reach (0,2,0). Same trap
+   the .rr-brand and reservation-detail demos document. */
+.cu :is(p, ul, ol, li, h3, h4) {
+  font: inherit;
+  letter-spacing: normal;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* `.blocks ul li::before` is (0,1,3) — one class, three elements. A
+   `:is()`-based reset only reaches (0,1,2) and silently loses. Match the
+   element count exactly. */
+.cu ul li::before,
+.cu ul::before,
+.cu li::before { content: none; }
+
+.cu .cu__list { list-style: none; margin: 0; padding: 0; font: var(--font-code); }
+.cu .cu__item {
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: baseline;
@@ -1656,7 +1674,7 @@ h2.eyebrow,
   padding: var(--primitive-space-xs) 0;
   border-bottom: 1px solid var(--color-border-muted);
 }
-.cu__item:last-child { border-bottom: 0; }
+.cu .cu__item:last-child { border-bottom: 0; }
 .cu__loc { color: var(--color-foreground-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .cu__rule {
   color: var(--color-foreground-danger);
@@ -1672,7 +1690,7 @@ h2.eyebrow,
   font: var(--font-body-small);
   line-height: 1.5;
 }
-.cu__hint {
+.cu .cu__hint {
   margin: var(--primitive-space-xs) 0 0;
   color: var(--color-foreground-muted);
   font: var(--font-body-small);
@@ -1999,6 +2017,17 @@ h2.eyebrow,
   --otk-alt: #6f737b;
   --otk-border: #d8d9db;
   --otk-action: #247f9e;
+  /* GUESS — not source-verified. `background/action-hover` and
+     `background/action-pressed` exist in OTKit Foundation (Variables Library)
+     v1.0.1 under the `Theme` collection, but nothing on that file's single page
+     binds them, so their values can't be read out of Figma and the docs site
+     (otkit.runthedish.com/color/backgrounds#action-states) is unreachable from
+     CI. -hover is pinned to what this button already rendered via
+     `filter: brightness(0.94)`, so the guess changes nothing visually while
+     removing an untokenized filter; -pressed is teal-dark, the pressed step in
+     the deck's ramp. Replace both once the real values are readable. */
+  --otk-action-hover: #227795;
+  --otk-action-pressed: #154a5b;
   --otk-focus: #247f9e;
   --otk-radius: 4px;
   --otk-dur: var(--motion-duration-instant, 120ms);
@@ -2132,7 +2161,10 @@ h2.eyebrow,
   border-color: var(--otk-action);
   color: #ffffff;
 }
-.rr-demo-btn--primary:hover { filter: brightness(0.94); background: var(--otk-action); }
+/* A primary button always takes its states from the action tokens — never a
+   brightness filter, which is not a token and is not themeable. */
+.rr-demo-btn--primary:hover  { background: var(--otk-action-hover); }
+.rr-demo-btn--primary:active { background: var(--otk-action-pressed); border-color: var(--otk-action-pressed); }
 .rr-demo-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
 .rr-demo-btn[disabled]:hover { background: var(--otk-bg); }
 .rr-demo-btn--primary[disabled]:hover { background: var(--otk-action); }
@@ -2391,7 +2423,12 @@ h2.eyebrow,
 .rr-tiles .rr-tiles-inspect__verdict[data-pass="true"] { color: #236439; }
 .rr-tiles .rr-tiles-inspect__verdict[data-pass="false"] { color: var(--otk-danger); }
 .rr-tiles .rr-tiles-inspect__hint { font-size: 13px; color: var(--otk-alt); }
-.rr-tiles .rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #6f737b; max-width: 68ch; }
+/* This note sits directly on `.demo-frame__surface`, whose gradient bottoms out
+   at #f4f6f8 — not the #ffffff the contrast gate assumes for demo text. OTKit's
+   foreground/alt #6f737b clears AA on white (4.76:1) but not on that corner
+   (4.39:1). #63666d is the same "text, not glyph" step the reservation demos
+   already use as --rd-muted, and holds 5.31:1 against the darkest stop. */
+.rr-tiles .rr-tiles-note { margin: 0; font-size: 12px; line-height: 1.5; color: #63666d; max-width: 68ch; }
 
 @media (max-width: 600px) {
 .rr-tiles .rr-tile { width: 52px; height: 60px; }
@@ -2428,13 +2465,20 @@ h2.eyebrow,
   --otkit-background-action-hover: var(--brand-hover);
   --otkit-background-action-pressed: var(--brand-pressed);
   --otkit-foreground-on-action: #ffffff;
-  --otkit-border-action: var(--brand-default);
+  /* No --otkit-border-action. A secondary button's edge is `border/default`
+     (--otk-border below) on every collection — it is one of the 278 that stay
+     put. Aliasing a border to brand/default is what put a red outline on
+     Diner's time slots, which OTKit does not have. */
 
-  --otk-bg: #ffffff;
-  --otk-ink: #141a26;
-  --otk-alt: #4a4f59; /* OTKit base foreground/alt, per the deck prototype */
-  --otk-border: #d8d9db;
-  --otk-surface: #f1f2f4;
+  /* Neutrals. Every one of these is SHARED — none re-points per collection.
+     Names and values resolved from the OTKit token block the Claude Design deck
+     ships (light theme; the ash ramp is darker #141A26 · dark #2D333F ·
+     default #6F737B · light #91949A · lighter #D8D9DB · lightest #F1F2F4). */
+  --otk-bg: #ffffff;      /* background/default */
+  --otk-ink: #141a26;     /* ash-darker */
+  --otk-alt: #4a4f59;     /* OTKit base foreground/alt, per the deck prototype */
+  --otk-border: #d8d9db;  /* border/default   → ash-lighter  */
+  --otk-surface: #f1f2f4; /* background/alt   → ash-lightest */
   --otk-danger: #931b23;
   --otk-dur: var(--motion-duration-instant, 120ms);
   --otk-ease: var(--motion-easing-default, cubic-bezier(0.25, 0.1, 0.25, 1));
@@ -2508,12 +2552,29 @@ h2.eyebrow,
 .rr-brand .rr-brand-card__name { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.2; }
 .rr-brand .rr-brand-card__meta { margin: 4px 0 14px; font-size: 12px; color: var(--otk-alt); }
 .rr-brand .rr-brand-card__times { display: flex; gap: 8px; margin-bottom: 14px; }
+/* Time slots are SECONDARY buttons. Per OTKit's own token block they rest on
+   `background/default` (white) with a `border/default` edge, and their only
+   state change is hover → `background/alt` (ash-lightest #F1F2F4). Every one of
+   those is a neutral: the slot row is identical under all three collections,
+   and the single thing that re-points on this card is the CTA.
+   Two wrong turns this rule has already taken, both from reaching for a
+   brand-tier value that a secondary button never asks for:
+     • a 2px `border-action` edge — a red outline on Diner that OTKit has no
+       such thing as;
+     • an ink fill to mark "selected" — secondary buttons do not go black. */
 .rr-brand .rr-brand-time {
   flex: 1; text-align: center; padding: 8px 0;
+  background: var(--otk-bg);
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
+  transition: background var(--otk-dur) var(--otk-ease);
 }
-.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otkit-border-action); border-width: 2px; }
+/* Guarded, per the rule the reservation demos document: on touch, :hover
+   latches after a tap and leaves the slot stuck tinted, which on a row of
+   choices reads as a selection that was never made. */
+@media (hover: hover) and (pointer: fine) {
+  .rr-brand .rr-brand-time:hover { background: var(--otk-surface); }
+}
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
   background: var(--otkit-background-action);
@@ -2522,17 +2583,36 @@ h2.eyebrow,
   transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
 }
 
-.rr-brand .rr-brand-tokens,
-.rr-brand .rr-brand-tokens__list,
-.rr-brand .rr-brand-tokens__label,
-.rr-brand .rr-brand-tokens__list,
-.rr-brand .rr-brand-tokens__row,
-.rr-brand .rr-brand-tokens__swatch,
+/* Every rule here was once a comma pair with a `.rr-brand-audit__*` sibling.
+   Deleting the audit panel by stripping its selector LINES orphaned the tokens
+   halves onto the one surviving declaration block, collapsing the whole readout
+   to a bare `color` — no panel, no swatches, no row layout. Restored as
+   standalone rules: a selector list is not safely edited line-wise. */
+.rr-brand .rr-brand-tokens {
+  border: 1px solid var(--otk-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--otk-bg);
+}
+.rr-brand .rr-brand-tokens__label {
+  margin: 0 0 8px; font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--otk-alt);
+}
+.rr-brand .rr-brand-tokens__list {
+  margin: 0; padding: 0; list-style: none;
+  display: grid; gap: 6px; max-width: 520px;
+}
+.rr-brand .rr-brand-tokens__row { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+.rr-brand .rr-brand-tokens__swatch {
+  width: 28px; height: 20px; border-radius: 4px; flex: none;
+  box-shadow: inset 0 0 0 1px rgba(20, 26, 38, 0.12);
+  transition: background var(--motion-duration-standard, 200ms) var(--otk-ease);
+}
+.rr-brand .rr-brand-tokens__name { flex: 1; min-width: 0; }
 .rr-brand .rr-brand-tokens__name,
-.rr-brand .rr-brand-tokens__name,
-.rr-brand .rr-brand-tokens__hex,
+.rr-brand .rr-brand-tokens__hex { font-family: var(--font-family-mono, ui-monospace, monospace); }
 .rr-brand .rr-brand-tokens__hex { color: var(--otk-alt); }
-.rr-brand .rr-brand-tokens__count,
+.rr-brand .rr-brand-tokens__count { margin: 10px 0 0; font-size: 13px; font-weight: 500; }
 .rr-brand .rr-brand-tokens__indirect {
   margin: 6px 0 0; font-size: 12px; line-height: 1.5;
   color: var(--otk-alt); max-width: 62ch;
@@ -4206,11 +4286,16 @@ h2.eyebrow,
    four-column grid ("NO-SHOWS" wrapped and pushed its sub-count onto a third
    line), which is the reminder that a treatment belongs to a ROLE, not to
    everything that happens to be small. */
+/* --rd-glyph is the lightest tone that holds SC 1.4.11's 3:1 — which is the
+   NON-TEXT threshold. This rule paints the section LABEL, so 1.4.3's 4.5:1
+   applies and #82868e measures 3.65:1 on white. The base variant already uses
+   --rd-muted for exactly this; the editorial pass borrowed the glyph tone for
+   text by mistake. The icon keeps --rd-glyph via `.rd-seclabel .rd-icon`. */
 .rr-demo.rd--editorial .rd-seclabel {
   font: 500 12px/12px var(--rd-font);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--rd-glyph);
+  color: var(--rd-muted);
 }
 .rd--editorial .rd-stat__label {
   font: var(--rd-body-sm);

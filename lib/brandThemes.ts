@@ -56,16 +56,24 @@ export type Brand = {
  * deck's swatch table uses. A button never writes `brand/default`; it writes
  * `bg-action`, and the collection decides what that resolves to.
  *
- * `bg-alt` is the tinted page surface. Slide 13's readout confirms the alias
- * under Iconic — it lists `background/alt` as #F2EFE6, which is exactly
- * Iconic's brand/alt-light, alongside `background/action` #2D333F, which is
- * exactly its brand/default.
+ * All four are the ACTION family, which is the tidier and truer claim: the
+ * action ramp re-points, and nothing else does.
+ *
+ * The tinted stage was labelled `bg-alt` here until the Figma source settled
+ * it. In OTKit Foundation (Variables Library) v1.0.1, `background/alt` reads
+ * #F1F2F4 — a neutral, shared by every collection, and the value a SECONDARY
+ * button hovers to. The brand-tinted surface is `background/action-highlight`
+ * (→ brand/alt-light), which is what these values actually are: Diner
+ * #FCEEEF is red-lightest, Restaurant #EEF8FB is teal-lightest. The library's
+ * own changelog records the rename ("Deprecated -alt accent backgrounds
+ * replaced by -highlight", v1.10.1), so `bg-alt` was not just wrong here — it
+ * was the superseded name.
  */
 export const BRAND_TOKENS = [
   { key: "default", token: "bg-action" },
   { key: "hover", token: "bg-action-hover" },
   { key: "pressed", token: "bg-action-pressed" },
-  { key: "altLight", token: "bg-alt" },
+  { key: "altLight", token: "bg-action-highlight" },
 ] as const satisfies ReadonlyArray<{ key: keyof Brand; token: string }>;
 
 export const BRANDS: Brand[] = [
@@ -108,7 +116,23 @@ export const BRANDS: Brand[] = [
 export const SHARED = {
   bg: "#FFFFFF",
   ink: "#141A26",
+  /**
+   * OTKit's neutral "ash" ramp, read from the OTKit token block the Claude
+   * Design deck ships:
+   *   ash-darker #141A26 · ash-dark #2D333F · ash-default #6F737B
+   *   ash-light  #91949A · ash-lighter #D8D9DB · ash-lightest #F1F2F4
+   */
   alt: "#4A4F59",
+  /**
+   * `border/default` — light theme resolves it to ash-lighter, dark theme to
+   * ash-default #6F737B. SHARED, not brand: a SECONDARY button's edge is the
+   * same on Diner as on Iconic.
+   *
+   * OTKit does ship `border-action → brand/default`, but that is the outlined
+   * PRIMARY action. Reaching for it here is what once put a red outline on
+   * Diner's time slots, which opentable.com does not have — the real secondary
+   * button is a neutral edge, ink label, white fill.
+   */
   border: "#D8D9DB",
 };
 

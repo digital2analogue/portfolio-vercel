@@ -144,6 +144,15 @@ const PAIRINGS = [
   { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
+  // `.demo-frame__surface` is NOT white — it is a radial gradient bottoming out
+  // at #f4f6f8. Text placed directly on the surface (rather than on a demo's own
+  // white panel) has to clear AA against that darkest stop, which #6f737b does
+  // not (4.39:1). Rendered-DOM measurement found this; a pairing declared
+  // against '#ffffff' cannot, because the declared colour was never the one the
+  // browser composited against.
+  { text: '#63666d', bg: '#f4f6f8', label: 'Demo: muted note on the frame surface gradient (darkest stop)' },
+  { text: '#2d333f', bg: '#f4f6f8', label: 'Demo: ink on the frame surface gradient (darkest stop)' },
+  { text: '#4a4f59', bg: '#f4f6f8', label: 'Demo/brand: OTKit foreground-alt on the frame surface gradient' },
   { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 
   // ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
@@ -276,9 +285,26 @@ const PAIRINGS = [
   { text: '#4a4f59', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
   // The selected time chip's border is a state indicator, and it sits on the
   // white card surface — not on the tinted stage behind it.
-  { text: '#da3743', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Diner) on card' },
-  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Restaurant) on card' },
-  { text: '#2d333f', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Iconic) on card' },
+  // Time slots are SECONDARY buttons: their edge is OTKit `border/default` on
+  // every collection (light theme → ash-lighter #D8D9DB), so it does not
+  // re-point per brand and there is no per-brand pairing here. OTKit also ships
+  // a `border-action` → brand/default token, but that is the outlined PRIMARY
+  // action, not a secondary button — aliasing it here is what put a red outline
+  // on Diner's time slots that opentable.com does not have.
+  //
+  // #D8D9DB on white is 1.41:1, and it is deliberately NOT registered as a
+  // NON_TEXT pairing: per the exemption at the top of this file, it is a
+  // decorative edge rather than the information that identifies the control.
+  // What identifies a slot is its own ink label, and what identifies the
+  // SELECTED slot is the ink fill below — both well past their thresholds.
+  // (Worth knowing regardless: a 1.41:1 boundary is a real SC 1.4.11 soft spot
+  // in OTKit's light theme, not something this demo introduced.)
+  { text: '#141a26', bg: '#f1f2f4', label: 'Demo/brand: time-slot label on its hover fill (background/alt)' },
+  // Primary button states. Both values are GUESSES — see the note beside
+  // --otk-action-hover in globals.css. Registered so that whatever replaces
+  // them has to clear AA too.
+  { text: '#ffffff', bg: '#227795', label: 'Demo: primary button label on action-hover (guessed value)' },
+  { text: '#ffffff', bg: '#154a5b', label: 'Demo: primary button label on action-pressed (guessed value)' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex
