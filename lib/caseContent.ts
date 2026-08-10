@@ -12,7 +12,11 @@ export type Block =
    *  time — content authors only set `src` (the .svg under public/). */
   | { type: "diagram"; src: string; alt: string; caption?: string; svg?: string }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
-  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
+  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string;
+      /** Natural width of the embedded document. When the prototype cannot
+       *  reflow below this (a hard min-width), the frame lays the iframe out
+       *  at this width and scales it to fit rather than cropping it. */
+      contentWidth?: number }
   | { type: "outcome-demo"; caption?: string }
   /** `cite` marks the quote as someone ELSE's testimony and renders an
    *  attribution line. Leave it off for River's own pull-quotes — the two
@@ -787,9 +791,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
-        type: "demo",
-        demo: "reservation-detail-ipad",
-        frameLabel: "OTKit · iPad Front of House — as shipped",
+        type: "embed",
+        src: "/projects/prototypes/ot-reservations-ipad-foh.html",
+        title: "Front-of-House reservation detail on iPad — live prototype on OTKit components",
+        // The prototype declares min-width: 1240px, so it is laid out at its own
+        // width and scaled into the case column instead of being cropped.
+        contentWidth: 1240,
+        aspectRatio: "1240 / 900",
         caption: "Same record, re-composed. The tablet adds chrome, not content.",
       },
       {

@@ -4,7 +4,6 @@ import TableStatusDemo from "./TableStatusDemo";
 import CheckUsageDemo from "./CheckUsageDemo";
 import RuleCellDemo from "./RuleCellDemo";
 import ReservationDetailDemo from "./ReservationDetailDemo";
-import ReservationDetailIPad from "./ReservationDetailIPad";
 import BrandThemeDemo from "./BrandThemeDemo";
 
 /**
@@ -20,7 +19,6 @@ export type DemoKey =
   | "check-usage"
   | "rule-cell"
   | "reservation-detail"
-  | "reservation-detail-ipad"
   | "brand-theme";
 
 export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
@@ -29,6 +27,5 @@ export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "check-usage": CheckUsageDemo,
   "rule-cell": RuleCellDemo,
   "reservation-detail": ReservationDetailDemo,
-  "reservation-detail-ipad": ReservationDetailIPad,
   "brand-theme": BrandThemeDemo,
 };

@@ -185,56 +185,7 @@ const PAIRINGS = [
   { text: '#cc3b48', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — food & drink' },
   { text: '#4a6fde', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: tag category — seating' },
 
-  // ── iPad / Front of House shell (components/demos/ReservationDetailIPad) ──
-  // The dark chrome is OTKit's OWN dark-mode token set, read from the source
-  // Figma rather than sampled from a clip: background/default #141A26,
-  // background/elevation #2D333F, border/default #6F737B, ash-lighter #D8D9DB.
-  // The record column is the same white surface as the phone and reuses every
-  // pairing above; the side panel beside it is the one tinted light surface.
-  //
-  // SC 1.4.3 — text.
-  { text: '#ffffff', bg: '#141a26', label: 'Demo/iPad: service bar + list panel text on FOH chrome' },
-  { text: '#d8d9db', bg: '#141a26', label: 'Demo/iPad: sort links, counts and times on FOH chrome' },
-  { text: '#ffffff', bg: '#2d333f', label: 'Demo/iPad: selected reservation + hovered control' },
-  { text: '#d8d9db', bg: '#2d333f', label: 'Demo/iPad: secondary text on the selected reservation' },
-  { text: '#ffffff', bg: '#4a6fde', label: 'Demo/iPad: unread badge count + seated table badge (blue)' },
-  { text: '#ffffff', bg: '#2f864d', label: 'Demo/iPad: seated table badge (green)' },
-  { text: '#141a26', bg: '#fdaf08', label: 'Demo/iPad: running-late state chip glyph on amber' },
-  { text: '#ffffff', bg: '#d82c82', label: 'Demo/iPad: tagged state chip glyph on fuchsia' },
-  { text: '#2d333f', bg: '#f6f7f8', label: 'Demo/iPad: side-panel ink (table label, switch, referral)' },
-  { text: '#63666d', bg: '#f6f7f8', label: 'Demo/iPad: side-panel muted text (table state)' },
-  //
-  // SC 1.4.11 — non-text. Every control in the service bar is OUTLINED, so its
-  // boundary is the whole affordance; and the focus ring is the only keyboard
-  // affordance on a near-black panel. OTKit's action teal is 3.82:1 there —
-  // legal but muddy — so focus rings use the legacy primary blue at 8:1.
-  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: outlined chip + table-badge boundary on chrome' },
-  { text: '#6cb6f5', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: focus ring on chrome' },
-  { text: '#6cb6f5', bg: '#2d333f', min: NON_TEXT, label: 'Demo/iPad: focus ring on the selected reservation' },
-  { text: '#64c987', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: live-service dot (reinforces a named state)' },
-  { text: '#4a6fde', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: unread badge fill on chrome' },
-  { text: '#247f9e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: status-button fill on the side panel' },
-  { text: '#82868e', bg: '#f6f7f8', min: NON_TEXT, label: 'Demo/iPad: side-panel glyphs + control boundary rings' },
-  { text: '#82868e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/iPad: side-panel glyph on a hovered row' },
-  //
-  // The trailing control on every list row is the reservation STATUS, resolved
-  // through lib/reservationStates — the same 22-state taxonomy the status
-  // dropdown on /work/ot-design-system edits. Here it is an OUTLINED icon
-  // button: no fill, the status carried by the GLYPH's colour. So each of the
-  // eleven token colours has to clear 3:1 as a glyph, and the button keeps the
-  // panel as its own surface rather than inheriting the row's — on the selected
-  // row (#4a5162) the weakest (accent-teal) would fall to 1.48:1 and the status
-  // would be unreadable on exactly the row whose record is open.
-  { text: '#20738f', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — weakest tone (accent-teal) on chrome' },
-  { text: '#cc3b48', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — danger on chrome' },
-  { text: '#2f864d', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — success on chrome' },
-  { text: '#ad4cc3', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — accent-purple on chrome' },
-  { text: '#247f9e', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — action (Booked) on chrome' },
-  { text: '#fdaf08', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — warning (Running late) on chrome' },
-  { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-button outline on chrome' },
-  { text: '#d8d9db', bg: '#4a5162', label: 'Demo/iPad: table number + time on the selected row' },
-
-  // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
+  // ── Floor-plan tile audit (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair
   // with ink #141a26 (the token system's on-*-secondary rule); mid-tone fills
   // pair with white (already registered above). These are the AA-REPAIRED

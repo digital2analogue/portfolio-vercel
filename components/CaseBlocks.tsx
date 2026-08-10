@@ -142,6 +142,7 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
                 caption={b.caption}
                 aspectRatio={b.aspectRatio}
                 poster={b.poster}
+                contentWidth={b.contentWidth}
               />
             );
           case "outcome-demo":
@@ -398,18 +399,32 @@ function CaseEmbed({
   caption,
   aspectRatio,
   poster,
+  contentWidth,
 }: {
   src: string;
   title: string;
   caption?: string;
   aspectRatio?: string;
   poster?: string;
+  contentWidth?: number;
 }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
     <figure className="block-embed">
-      <div className="block-embed__frame" style={{ aspectRatio: aspectRatio ?? "16 / 10" }}>
+      {/* A prototype with a hard min-width can't reflow into the case column —
+          it would simply be cropped, losing its outer columns. With
+          `contentWidth` the iframe is laid out at its OWN width and the whole
+          frame is scaled down to fit, so the composition survives. Driven from
+          a custom property in CSS: no measuring pass, nothing to hydrate. */}
+      <div
+        className="block-embed__frame"
+        data-scaled={contentWidth ? true : undefined}
+        style={{
+          aspectRatio: aspectRatio ?? "16 / 10",
+          ...(contentWidth ? { ["--embed-w" as string]: `${contentWidth}px` } : {}),
+        }}
+      >
         {poster && !loaded && (
           // eslint-disable-next-line @next/next/no-img-element
           <img className="block-embed__poster" src={poster} alt="" aria-hidden="true" />

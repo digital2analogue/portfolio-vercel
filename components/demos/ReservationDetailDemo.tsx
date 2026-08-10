@@ -194,7 +194,7 @@ export function SelectStrip({
  * The caller owns the scroll handler (each shell tracks its own extra state off
  * the same scroll event) and calls `spy(scrollTop)` from inside it.
  */
-export function useSectionSpy(count: number) {
+function useSectionSpy(count: number) {
   const [active, setActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -283,7 +283,7 @@ export function useSectionSpy(count: number) {
  * motion) simply renders the finished screen. useLayoutEffect so arming lands
  * before paint and nothing flashes.
  */
-export function useEntrance<T extends HTMLElement>() {
+function useEntrance<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   useLayoutEffect(() => {
     const el = ref.current;
