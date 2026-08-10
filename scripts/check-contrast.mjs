@@ -233,12 +233,6 @@ const PAIRINGS = [
   { text: '#fdaf08', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status glyph — warning (Running late) on chrome' },
   { text: '#6f737b', bg: '#141a26', min: NON_TEXT, label: 'Demo/iPad: status-button outline on chrome' },
   { text: '#d8d9db', bg: '#4a5162', label: 'Demo/iPad: table number + time on the selected row' },
-  //
-  // Editorial variant (.rdp--editorial). The status control gives up its fill,
-  // so the state mark now sits on the panel's white rather than carrying white
-  // on its own colour. Registered at the weakest tone the record can take.
-  { text: '#2f864d', bg: '#ffffff', min: NON_TEXT, label: 'Demo/iPad editorial: status mark on the ruled row' },
-  { text: '#2d333f', bg: '#ffffff', label: 'Demo/iPad editorial: status label (ink, never colour alone)' },
 
   // ── OTKit table-status floor grid (components/demos/TableStatusDemo) ──
   // Tiles show a table number + icon on a semantic fill. Light-tint fills pair

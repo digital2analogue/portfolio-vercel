@@ -46,7 +46,7 @@ const SCOPES: { id: string; label: string; visits: Visit[] }[] = [
   { id: "all", label: "All visits", visits: ALL_VISITS },
 ];
 
-export default function ReservationDetailIPad({ variant }: { variant?: "editorial" } = {}) {
+export default function ReservationDetailIPad() {
   const [scope, setScope] = useState(0);
   const [excluded, setExcluded] = useState(false);
   const [stuck, setStuck] = useState(false);
@@ -101,11 +101,7 @@ export default function ReservationDetailIPad({ variant }: { variant?: "editoria
 
   return (
     <div
-      className={
-        variant === "editorial"
-          ? "rr-demo rd rd--editorial rdp rdp--editorial"
-          : "rr-demo rd rdp"
-      }
+      className="rr-demo rd rdp"
       data-expanded={expanded}
       ref={rootRef}
       style={fit === null ? undefined : ({ "--rdp-fit": fit } as React.CSSProperties)}
@@ -516,11 +512,7 @@ export default function ReservationDetailIPad({ variant }: { variant?: "editoria
               <button
                 type="button"
                 className="rdp-status"
-                style={
-                  variant === "editorial"
-                    ? { color: recordState.fill }
-                    : { background: recordState.fill, color: recordState.on }
-                }
+                style={{ background: recordState.fill, color: recordState.on }}
               >
                 <Icon name={recordState.icon} size={20} />
                 <span className="rdp-status__label">{recordState.label}</span>
@@ -601,21 +593,3 @@ export default function ReservationDetailIPad({ variant }: { variant?: "editoria
   );
 }
 
-/**
- * Editorial variant — the same component, the same data, the same composition,
- * wearing a different type and surface treatment. Not a fork: everything below
- * the `variant` prop is CSS, and it shares the phone's `.rd--editorial` layer so
- * the two explorations cannot argue with each other about what "editorial"
- * means here.
- *
- * The exploration is "what if OTKit had more editorial craft", NOT "what if this
- * were somebody else" — the action teal and the service-list density both stay.
- * The one argument it makes that the shipped screen cannot: the status control
- * does not need to be the loudest object on the screen. On the tablet it is a
- * saturated bar at the top of the side panel, so the eye lands there before it
- * lands on the guest whose record is open. Here it is a ruled row with a state
- * mark, and the serif name is the anchor instead.
- */
-export function ReservationDetailIPadEditorial() {
-  return <ReservationDetailIPad variant="editorial" />;
-}

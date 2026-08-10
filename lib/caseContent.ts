@@ -798,18 +798,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         frameLabel: "OTKit · iOS Restaurant — as shipped",
         caption: "Live, not filmed. Every zone is a repeatable pattern.",
       },
-      {
-        type: "demo",
-        demo: "reservation-detail-editorial",
-        frameLabel: "OTKit · Editorial variant — exploration",
-        caption: "Same component and data. Different type and surface.",
-      },
-      {
-        type: "demo",
-        demo: "reservation-detail-ipad-editorial",
-        frameLabel: "OTKit · Editorial variant, tablet — exploration",
-        caption: "The status stops shouting. The guest becomes the anchor.",
-      },
       { type: "hr" },
       { type: "h2", text: "System Alignment" },
       { type: "p", text: "This work became OTKit's proving ground in real product conditions:" },

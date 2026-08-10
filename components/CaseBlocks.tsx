@@ -192,7 +192,15 @@ function InlineText({ text }: { text: string }) {
     <>
       {parts.map((p, i) => {
         if (p.startsWith("**") && p.endsWith("**")) {
-          return <strong key={i}>{p.slice(2, -2)}</strong>;
+          // Recurse: a link nested inside bold — **see the [catalog](/tokens)** —
+          // otherwise rendered its markdown literally, because the bold branch
+          // used to emit the raw slice. Terminates because the inner text no
+          // longer carries the ** wrapper that matched here.
+          return (
+            <strong key={i}>
+              <InlineText text={p.slice(2, -2)} />
+            </strong>
+          );
         }
         const link = p.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
         if (link) {
