@@ -285,9 +285,21 @@ const PAIRINGS = [
   { text: '#4a4f59', bg: '#f1f2f4', label: 'Demo/brand: inactive brand-switch label on track' },
   // The selected time chip's border is a state indicator, and it sits on the
   // white card surface — not on the tinted stage behind it.
-  { text: '#da3743', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Diner) on card' },
-  { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Restaurant) on card' },
-  { text: '#2d333f', bg: '#ffffff', min: NON_TEXT, label: 'Demo/brand: selected-time border (Iconic) on card' },
+  // Time slots are SECONDARY buttons: their edge is OTKit `border/default` on
+  // every collection (light theme → ash-lighter #D8D9DB), so it does not
+  // re-point per brand and there is no per-brand pairing here. OTKit also ships
+  // a `border-action` → brand/default token, but that is the outlined PRIMARY
+  // action, not a secondary button — aliasing it here is what put a red outline
+  // on Diner's time slots that opentable.com does not have.
+  //
+  // #D8D9DB on white is 1.41:1, and it is deliberately NOT registered as a
+  // NON_TEXT pairing: per the exemption at the top of this file, it is a
+  // decorative edge rather than the information that identifies the control.
+  // What identifies a slot is its own ink label, and what identifies the
+  // SELECTED slot is the ink fill below — both well past their thresholds.
+  // (Worth knowing regardless: a 1.41:1 boundary is a real SC 1.4.11 soft spot
+  // in OTKit's light theme, not something this demo introduced.)
+  { text: '#ffffff', bg: '#141a26', label: 'Demo/brand: selected time-slot label on ink fill' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex

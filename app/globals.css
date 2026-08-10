@@ -2451,7 +2451,10 @@ h2.eyebrow,
   --otkit-background-action-hover: var(--brand-hover);
   --otkit-background-action-pressed: var(--brand-pressed);
   --otkit-foreground-on-action: #ffffff;
-  --otkit-border-action: var(--brand-default);
+  /* No --otkit-border-action. A secondary button's edge is `border/default`
+     (--otk-border below) on every collection — it is one of the 278 that stay
+     put. Aliasing a border to brand/default is what put a red outline on
+     Diner's time slots, which OTKit does not have. */
 
   --otk-bg: #ffffff;
   --otk-ink: #141a26;
@@ -2531,12 +2534,24 @@ h2.eyebrow,
 .rr-brand .rr-brand-card__name { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.2; }
 .rr-brand .rr-brand-card__meta { margin: 4px 0 14px; font-size: 12px; color: var(--otk-alt); }
 .rr-brand .rr-brand-card__times { display: flex; gap: 8px; margin-bottom: 14px; }
+/* Time slots are SECONDARY buttons, and an OTKit secondary button's edge is
+   `border/default` on every brand — it does not re-point. This demo previously
+   gave the selected slot a 2px border in brand/default, which put a red outline
+   on Diner that OTKit does not have (verified against opentable.com's own
+   secondary buttons: neutral edge, ink label, white fill; the brand red is
+   reserved for links and the primary fill). The selected slot is marked by an
+   ink fill instead — a shared value, so the slot row stays identical across all
+   three collections and the only thing that re-points is still the CTA. */
 .rr-brand .rr-brand-time {
   flex: 1; text-align: center; padding: 8px 0;
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
 }
-.rr-brand .rr-brand-time[data-selected="true"] { border-color: var(--otkit-border-action); border-width: 2px; }
+.rr-brand .rr-brand-time[data-selected="true"] {
+  background: var(--otk-ink);
+  color: var(--otk-bg);
+  border-color: var(--otk-ink);
+}
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
   background: var(--otkit-background-action);

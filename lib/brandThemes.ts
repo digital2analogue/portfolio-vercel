@@ -108,7 +108,23 @@ export const BRANDS: Brand[] = [
 export const SHARED = {
   bg: "#FFFFFF",
   ink: "#141A26",
+  /**
+   * OTKit's neutral "ash" ramp, read from the OTKit token block the Claude
+   * Design deck ships:
+   *   ash-darker #141A26 · ash-dark #2D333F · ash-default #6F737B
+   *   ash-light  #91949A · ash-lighter #D8D9DB · ash-lightest #F1F2F4
+   */
   alt: "#4A4F59",
+  /**
+   * `border/default` — light theme resolves it to ash-lighter, dark theme to
+   * ash-default #6F737B. SHARED, not brand: a SECONDARY button's edge is the
+   * same on Diner as on Iconic.
+   *
+   * OTKit does ship `border-action → brand/default`, but that is the outlined
+   * PRIMARY action. Reaching for it here is what once put a red outline on
+   * Diner's time slots, which opentable.com does not have — the real secondary
+   * button is a neutral edge, ink label, white fill.
+   */
   border: "#D8D9DB",
 };
 
