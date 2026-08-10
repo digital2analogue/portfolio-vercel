@@ -299,7 +299,7 @@ const PAIRINGS = [
   // SELECTED slot is the ink fill below — both well past their thresholds.
   // (Worth knowing regardless: a 1.41:1 boundary is a real SC 1.4.11 soft spot
   // in OTKit's light theme, not something this demo introduced.)
-  { text: '#ffffff', bg: '#141a26', label: 'Demo/brand: selected time-slot label on ink fill' },
+  { text: '#141a26', bg: '#f1f2f4', label: 'Demo/brand: time-slot label on its hover fill (background/alt)' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex

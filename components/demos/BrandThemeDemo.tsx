@@ -84,11 +84,7 @@ export default function BrandThemeDemo() {
           <p className="rr-brand-card__meta">{RECORD.meta}</p>
           <div className="rr-brand-card__times">
             {RECORD.times.map((t) => (
-              <span
-                key={t}
-                className="rr-brand-time"
-                data-selected={t === RECORD.selectedTime}
-              >
+              <span key={t} className="rr-brand-time">
                 {t}
               </span>
             ))}

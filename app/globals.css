@@ -2456,11 +2456,15 @@ h2.eyebrow,
      put. Aliasing a border to brand/default is what put a red outline on
      Diner's time slots, which OTKit does not have. */
 
-  --otk-bg: #ffffff;
-  --otk-ink: #141a26;
-  --otk-alt: #4a4f59; /* OTKit base foreground/alt, per the deck prototype */
-  --otk-border: #d8d9db;
-  --otk-surface: #f1f2f4;
+  /* Neutrals. Every one of these is SHARED — none re-points per collection.
+     Names and values resolved from the OTKit token block the Claude Design deck
+     ships (light theme; the ash ramp is darker #141A26 · dark #2D333F ·
+     default #6F737B · light #91949A · lighter #D8D9DB · lightest #F1F2F4). */
+  --otk-bg: #ffffff;      /* background/default */
+  --otk-ink: #141a26;     /* ash-darker */
+  --otk-alt: #4a4f59;     /* OTKit base foreground/alt, per the deck prototype */
+  --otk-border: #d8d9db;  /* border/default   → ash-lighter  */
+  --otk-surface: #f1f2f4; /* background/alt   → ash-lightest */
   --otk-danger: #931b23;
   --otk-dur: var(--motion-duration-instant, 120ms);
   --otk-ease: var(--motion-easing-default, cubic-bezier(0.25, 0.1, 0.25, 1));
@@ -2534,23 +2538,28 @@ h2.eyebrow,
 .rr-brand .rr-brand-card__name { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.2; }
 .rr-brand .rr-brand-card__meta { margin: 4px 0 14px; font-size: 12px; color: var(--otk-alt); }
 .rr-brand .rr-brand-card__times { display: flex; gap: 8px; margin-bottom: 14px; }
-/* Time slots are SECONDARY buttons, and an OTKit secondary button's edge is
-   `border/default` on every brand — it does not re-point. This demo previously
-   gave the selected slot a 2px border in brand/default, which put a red outline
-   on Diner that OTKit does not have (verified against opentable.com's own
-   secondary buttons: neutral edge, ink label, white fill; the brand red is
-   reserved for links and the primary fill). The selected slot is marked by an
-   ink fill instead — a shared value, so the slot row stays identical across all
-   three collections and the only thing that re-points is still the CTA. */
+/* Time slots are SECONDARY buttons. Per OTKit's own token block they rest on
+   `background/default` (white) with a `border/default` edge, and their only
+   state change is hover → `background/alt` (ash-lightest #F1F2F4). Every one of
+   those is a neutral: the slot row is identical under all three collections,
+   and the single thing that re-points on this card is the CTA.
+   Two wrong turns this rule has already taken, both from reaching for a
+   brand-tier value that a secondary button never asks for:
+     • a 2px `border-action` edge — a red outline on Diner that OTKit has no
+       such thing as;
+     • an ink fill to mark "selected" — secondary buttons do not go black. */
 .rr-brand .rr-brand-time {
   flex: 1; text-align: center; padding: 8px 0;
+  background: var(--otk-bg);
   border: 1px solid var(--otk-border); border-radius: 6px;
   font-size: 13px; font-weight: 500;
+  transition: background var(--otk-dur) var(--otk-ease);
 }
-.rr-brand .rr-brand-time[data-selected="true"] {
-  background: var(--otk-ink);
-  color: var(--otk-bg);
-  border-color: var(--otk-ink);
+/* Guarded, per the rule the reservation demos document: on touch, :hover
+   latches after a tap and leaves the slot stuck tinted, which on a row of
+   choices reads as a selection that was never made. */
+@media (hover: hover) and (pointer: fine) {
+  .rr-brand .rr-brand-time:hover { background: var(--otk-surface); }
 }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
