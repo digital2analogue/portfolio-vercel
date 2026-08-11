@@ -18,7 +18,7 @@
 <rect x="120" y="400" width="1060" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4" opacity="1.0"/>
 <text x="146" y="439.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">03</text>
 <text x="184" y="439.6" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Components: 27 Lit web components</text>
-<text x="184" y="463.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">each ships:  .ts   ·   meta.json contract 27/27   ·   Figma Code Connect 22/27</text>
+<text x="184" y="463.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">each ships:  .ts   ·   meta.json contract 27/27   ·   Code Connect authored 22/27</text>
 <ellipse cx="650" cy="559.0" rx="320" ry="120" fill="url(#bloom)"/>
 <text x="146" y="516" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">04</text>
 <text x="184" y="516" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Artifact: one machine-readable file</text>
@@ -32,7 +32,7 @@
 <path d="M835.0,653 L845.0,653 L840.0,662 Z" fill="#4ADE6E"/>
 <rect x="310" y="662" width="300" height="78" rx="11" fill="#11160F" stroke="#2E3A2E" stroke-width="1.5" opacity="1.0"/>
 <text x="328" y="690" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="600" fill="#A0A89A" text-anchor="start" letter-spacing="1.5" opacity="1.0">HUMANS</text>
-<text x="328" y="714" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">Figma (Code Connect)</text>
+<text x="328" y="714" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#C8CFC4" text-anchor="start" opacity="1.0">Figma (mappings authored)</text>
 <text x="328" y="732" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">Component docs (generated)</text>
 <rect x="690" y="662" width="300" height="78" rx="11" fill="#161C16" stroke="#4ADE6E" stroke-width="1.8" opacity="1.0"/>
 <text x="708" y="690" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="600" fill="#4ADE6E" text-anchor="start" letter-spacing="1.5" opacity="1.0">AGENTS</text>
