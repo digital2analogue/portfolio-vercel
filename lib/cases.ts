@@ -53,9 +53,9 @@ export const CASES: CaseStudy[] = [
     summary:
       "Improved the restaurant reservation workflow: better hierarchy and scannability without sacrificing the information density power users depend on.",
     metrics: [
-      "Modular card-based architecture",
-      "Shared components across web + native",
-      "Zero data loss or regressions",
+      "Host time on card −18%",
+      "Time to note 11s → 7s",
+      "Zero regressions in critical workflows",
     ],
     status: "COMPLETE",
   },
