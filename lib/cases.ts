@@ -72,7 +72,7 @@ export const CASES: CaseStudy[] = [
     metrics: [
       "27 components, 4 brands, 1 source",
       "MCP server: read + lint the system",
-      "Code Connect: design ↔ code, two-way",
+      "Code Connect authored 22/27, build-gated",
     ],
     status: "LIVE · EVOLVING",
   },
