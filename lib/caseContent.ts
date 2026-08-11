@@ -857,12 +857,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Support for inline theming was implemented to support mixed legacy theming before full light/dark theme were prioritized",
         src: "/projects/images/ot-reservations-inline-theming.png",
       },
-      {
-        type: "image",
-        alt: "Screenshot of OTKit color token references inside iOS app",
-        caption: "OTKit tokens in SwiftUI",
-        src: "/projects/images/ot-reservations-color-tokens-native.png",
-      },
       { type: "hr" },
 
       { type: "h2", text: "Earning the rollout" },
