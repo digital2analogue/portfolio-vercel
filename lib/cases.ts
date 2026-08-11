@@ -53,9 +53,9 @@ export const CASES: CaseStudy[] = [
     summary:
       "Improved the restaurant reservation workflow: better hierarchy and scannability without sacrificing the information density power users depend on.",
     metrics: [
-      "Modular card-based architecture",
-      "Shared components across web + native",
-      "Zero data loss or regressions",
+      "Host time on card −18%",
+      "Time to note 11s → 7s",
+      "Zero regressions in critical workflows",
     ],
     status: "COMPLETE",
   },
@@ -72,7 +72,7 @@ export const CASES: CaseStudy[] = [
     metrics: [
       "27 components, 4 brands, 1 source",
       "MCP server: read + lint the system",
-      "Code Connect: design ↔ code, two-way",
+      "Code Connect authored 22/27, build-gated",
     ],
     status: "LIVE · EVOLVING",
   },

@@ -679,7 +679,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "OpenTable's reservation details view was the most legacy-styled screen in the product: dense, fragmented, expensive to maintain, and used by operators every shift. I led the redesign: modernize the experience, **keep the density operators depend on**.",
+        text: "OpenTable's reservation details view was the most legacy-styled screen in the product. It was dense, fragmented, expensive to maintain, and operators used it every shift. I led the redesign. The brief was to modernize it without losing the density they rely on.",
       },
       {
         type: "image",
@@ -693,53 +693,104 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         rows: [
           ["Scope", "UX strategy, system alignment, component modeling"],
           ["Team", "3 designers, 6 engineers, 2 PMs"],
+          ["Platforms", "Mobile · tablet · desktop"],
         ],
       },
       { type: "hr" },
       {
         type: "stats",
         items: [
-          { value: "0", label: "Data loss or regressions" },
-          { value: "Web + native", label: "Shared component coverage" },
+          { value: "−18%", label: "Host time on the card, week 6" },
+          { value: "11s → 7s", label: "Time to the right note" },
+          { value: "35", label: "Opt-in restaurant groups, worldwide" },
         ],
       },
       { type: "hr" },
-      { type: "h2", text: "The most legacy screen in the product" },
+
+      { type: "h2", text: "Three contexts, one guest record" },
       {
         type: "p",
-        text: "Years of accumulated features had left the view dense and visually fragmented, hard to scan under time pressure, and inconsistent from one platform to the next. Because several engineering teams owned different parts of the flow, every fix had to be made more than once — which is what turned a cosmetic problem into an expensive one.",
+        text: "The same reservation gets read by three people working at three different speeds. **The host** at the door has seconds per guest and reads the record standing up, on an iPad. **Front of house** runs the floor all shift on iPhone and iPad, watching live statuses, allergies and notes, with no room for error. **Back of house** comes back to the same record between shifts on the web, at a slower pace and in more depth.",
+      },
+      {
+        type: "p",
+        text: "It is one record serving three different tempos, and most of the redesign follows from that.",
+      },
+      { type: "hr" },
+
+      { type: "h2", text: "A dumping ground by accumulation" },
+      {
+        type: "p",
+        text: "Years of shipped features had each found somewhere to live, and restaurants run their whole shift on the result. Guest details and visit history sat **hidden behind tabs**, so they were rarely seen. **Booked** and **Assign table** were real actions styled as flat panels, so the controls did not read as controls. Experiences got the worst of it. *4× Friday Whiskey Tasting*, the highest-value thing on the booking, rendered as plain text with no visual weight.",
       },
       {
         type: "image",
-        alt: "Before and after comparison of the reservation card: legacy flat layout on the left, redesigned modular card-based hierarchy on the right",
-        caption: "Before → After. Same information density, restructured for clarity and cross-platform consistency.",
-        src: "/projects/images/ot-reservations-reservation-card-before-after.png",
+        alt: "The legacy reservation detail screen on iPad: guest details behind a tab strip, Booked and Assign table rendered as flat grey panels, and 4 x Friday Whiskey Tasting shown as an unstyled text link",
+        caption: "The screen as it stood. Tabs hiding the record, actions that read as panels, and a high-value experience set as plain text.",
+        src: "/projects/images/ot-reservations-legacy-detail.png",
       },
       { type: "hr" },
-      { type: "h2", text: "A system problem, not a redesign" },
+
+      { type: "h2", text: "Designing inside hard walls" },
       {
         type: "p",
-        text: "The constraints ruled out starting over. Restaurant staff use this screen every shift, so there was **zero tolerance for data loss or behavioral regressions** — and no appetite for relearning it mid-service. Several engineering teams owned different parts of the flow. The density everyone complains about is also the density operators depend on.",
-      },
-      {
-        type: "p",
-        text: "So rather than redesigning the page wholesale, we treated the reservation view as a **modular system problem**: preserve the density and improve the hierarchy, replace bespoke layouts with reusable system components, and design once so the result scales across platforms.",
+        text: "**Zero tolerance for data loss or behavioral regressions.** A missed allergy tag is a real guest at a real table, so every field had to survive the move. **Heavy daily usage.** Operators live here every shift under time pressure, with no retraining budget and no relearning muscle memory. **Multiple engineering teams owning different parts.** The flow spanned distributed teams, so any redesign had to be adoptable piecewise, team by team.",
       },
       { type: "hr" },
-      { type: "h2", text: "Every card is a system pattern" },
+
+      { type: "h2", text: "An architecture before a layout" },
       {
         type: "p",
-        text: "We restructured the reservation details view into a modular, card-based layout that:",
+        text: "Rather than redesigning the page, we modelled it. The reservation card became zones for status, experiences, guest profile, visit notes and tags, and guest history. Each one could absorb new data without another redesign. What drove that bet was everything already queued: multiple guests, Venga and sentiment data, visit counts, takeout and delivery spend, POS spend per occasion, and third-party integrations.",
+      },
+      {
+        type: "quote",
+        text: "We want to think of elements in the reso card as modular — utilized in other areas of OT.",
+        cite: "Stakeholder feedback · FOH modernization review",
+      },
+      {
+        type: "image",
+        alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
+        caption: "Making guest and reservation information modular: components designed to scale across multiple contexts.",
+        src: "/projects/images/ot-reservations-modularity.png",
+      },
+      { type: "hr" },
+
+      { type: "h2", text: "One system, three platforms" },
+      {
+        type: "p",
+        text: "Each zone became a repeatable pattern rather than a one-off layout:",
       },
       {
         type: "ul",
         items: [
-          "Clarified information hierarchy",
-          "Improved scannability under time pressure",
-          "Enabled consistent behavior across mobile, tablet, and desktop",
-          "Reduced one-off UI logic in engineering",
+          "**Guest profile**, identity first and readable in one glance",
+          "**Tags**, structured and scannable service data",
+          "**Guest message**, the guest's own words verbatim",
+          "**Notes tabs**, five categories and one tap",
+          "**Notes as cards**, guestbook with newest first",
         ],
       },
+      { type: "hr" },
+
+      { type: "h2", text: "Options, weighed in the open" },
+      {
+        type: "p",
+        text: "The actions were the contested decision. Where should **Booked**, **Assign table** and the rest actually live? Anchoring them to the foot of the card buried them below the fold as soon as notes ran long. Leading with them crowded the guest header that hosts scan first. In user testing the **right rail** won clearly. Users read it as *where actions live* without being prompted.",
+      },
+      { type: "h3", text: "The rail that earned its keep" },
+      {
+        type: "p",
+        text: "Status and Experiences moved into a rail the floorplan could reuse, the same rail with different CTAs. **The tradeoff** is that related information now spans two panels. One reusable rail beat two bespoke ones.",
+      },
+      { type: "h3", text: "Notes above the fold" },
+      {
+        type: "p",
+        text: "Notes lived down a long scroll. A segmented control puts every category one tap away. **The tradeoff** is that content sits behind a tab. Scanning beat scrolling.",
+      },
+      { type: "hr" },
+
+      { type: "h2", text: "Shipped, in hand" },
       {
         type: "embed",
         src: "/projects/prototypes/ot-reservations-ipad-foh.html",
@@ -752,24 +803,20 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         // width and scaled into the case column instead of being cropped.
         contentWidth: 1240,
         aspectRatio: "1240 / 900",
-        caption: "Same record, re-composed. The tablet adds chrome, not content.",
+        caption: "Front of house, on iPad. The same record, re-composed. The tablet adds chrome, not content.",
       },
       {
         type: "demo",
         demo: "reservation-detail",
-        frameLabel: "OTKit · iOS Restaurant — as shipped",
+        frameLabel: "OTKit · iOS Restaurant, as shipped",
         caption: "Live, not filmed. Every zone is a repeatable pattern.",
       },
+      { type: "hr" },
+
+      { type: "h2", text: "Density in hand, depth at the desk" },
       {
         type: "p",
-        text: "Each card mapped to a system pattern, allowing teams to iterate safely and predictably.",
-      },
-      { type: "h3", text: "Modular ecosystem" },
-      {
-        type: "image",
-        alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
-        caption: "Making guest and reservation information modular: components designed to scale across multiple contexts.",
-        src: "/projects/images/ot-reservations-modularity.png",
+        text: "Front of house gets the glanceable version and taps for depth. Back of house gets the same record on the web, where there is room for richer data and visualization. The card gets built once, and each surface decides how much of it to show.",
       },
       {
         type: "image-pair",
@@ -787,8 +834,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       { type: "hr" },
+
       { type: "h2", text: "OTKit's proving ground" },
-      { type: "p", text: "This was the first time the system met real product conditions at scale:" },
+      {
+        type: "p",
+        text: "This was the first time the system met real product conditions at scale:",
+      },
       {
         type: "ul",
         items: [
@@ -806,23 +857,49 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Support for inline theming was implemented to support mixed legacy theming before full light/dark theme were prioritized",
         src: "/projects/images/ot-reservations-inline-theming.png",
       },
-      {
-        type: "image",
-        alt: "Screenshot of OTKit color token references inside iOS app",
-        caption: "OTKit tokens in SwiftUI",
-        src: "/projects/images/ot-reservations-color-tokens-native.png",
-      },
       { type: "hr" },
-      { type: "h2", text: "Zero regressions, shared across platforms" },
+
+      { type: "h2", text: "Earning the rollout" },
       {
         type: "p",
-        text: "A core operational workflow was modernized without sacrificing the density it runs on, and readability and hierarchy improved in an interface where both are read under time pressure. Replacing bespoke UI with shared system patterns took friction out of QA. And because this screen is high-traffic and visible every shift, its adoption did more for trust in OTKit than any internal advocacy could.",
+        text: "The redesign earned its rollout one dinner rush at a time. We piloted with critical restaurant groups, took feedback from real service, then rolled out with the risk contained. **Zero regressions in critical workflows.**",
+      },
+      {
+        type: "quote",
+        text: "This [design] feels much more intuitive to use. Though at first the change felt a little confusing, once I got the hang of the tabs I was able to find the notes I needed much faster. I also appreciated the reservation status being easy to find outside of the reservation notes.",
+        cite: "Host · large restaurant group, pilot",
       },
       { type: "hr" },
+
+      { type: "h2", text: "Measured after the rollout" },
+      {
+        type: "p",
+        text: "35 opt-in restaurant groups, worldwide, with a net gain by week 6. Host time on the reservation card fell **18%**. Time to the right note went from **11 seconds to 7** on tabs versus the old scroll.",
+      },
+      {
+        type: "p",
+        text: "Asked whether *“the redesign made this faster,”* pilot operators agreed by workflow: **71%** for seating reservations, **68%** for saving time overall, and **64%** for providing hospitality.",
+      },
+      { type: "hr" },
+
+      { type: "h2", text: "From dashboard to the floor" },
+      {
+        type: "p",
+        text: "The work had been requested for a long time, and it stayed tethered to the host stand even though staff work the floor rather than a desk. It turned a manager's dashboard into a full front-of-house tool, with floorplan, reservations, seating and notes in hand. Mobile was designed first and iPad second, so one UX logic carried across both.",
+      },
+      { type: "hr" },
+
+      { type: "h2", text: "What I'd do differently now" },
+      {
+        type: "p",
+        text: "Categorize the IA by **actionability** from day one. Things you *act on*, like reservation and table status and experiences, belong in the rail. Things you *refer to*, like visit notes and tags, guest profile and visit history, belong in the card. That is the call that earned the rail, and it took longer to find than it should have.",
+      },
+      { type: "hr" },
+
       { type: "h2", text: "Clarity under pressure" },
       {
         type: "p",
-        text: "Designing for restaurant operators reinforced that usability is **clarity under pressure**.",
+        text: "Designing for restaurant operators reinforced that usability is **clarity under pressure**. For OpenTable that meant an operator between tables. For a creative tool it is the same discipline: the right control, findable without breaking flow.",
       },
     ],
   },
