@@ -794,6 +794,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         type: "embed",
         src: "/projects/prototypes/ot-reservations-ipad-foh.html",
         title: "Front-of-House reservation detail on iPad — live prototype on OTKit components",
+        // Required at ≤700px: the mobile fallback is a poster-image link whose
+        // CTA is absolutely positioned, so without this the anchor has no
+        // in-flow content and collapses to its borders.
+        poster: "/projects/images/ot-reservations-ipad-foh-poster.png",
         // The prototype declares min-width: 1240px, so it is laid out at its own
         // width and scaled into the case column instead of being cropped.
         contentWidth: 1240,
