@@ -765,6 +765,26 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       {
+        type: "embed",
+        src: "/projects/prototypes/ot-reservations-ipad-foh.html",
+        title: "Front-of-House reservation detail on iPad — live prototype on OTKit components",
+        // Required at ≤700px: the mobile fallback is a poster-image link whose
+        // CTA is absolutely positioned, so without this the anchor has no
+        // in-flow content and collapses to its borders.
+        poster: "/projects/images/ot-reservations-ipad-foh-poster.png",
+        // The prototype declares min-width: 1240px, so it is laid out at its own
+        // width and scaled into the case column instead of being cropped.
+        contentWidth: 1240,
+        aspectRatio: "1240 / 900",
+        caption: "Same record, re-composed. The tablet adds chrome, not content.",
+      },
+      {
+        type: "demo",
+        demo: "reservation-detail",
+        frameLabel: "OTKit · iOS Restaurant — as shipped",
+        caption: "Live, not filmed. Every zone is a repeatable pattern.",
+      },
+      {
         type: "p",
         text: "Each card mapped to a system pattern, allowing teams to iterate safely and predictably.",
       },
@@ -789,26 +809,6 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
             src: "/projects/images/ot-reservations-guest-profile-boh-detail.png",
           },
         ],
-      },
-      {
-        type: "embed",
-        src: "/projects/prototypes/ot-reservations-ipad-foh.html",
-        title: "Front-of-House reservation detail on iPad — live prototype on OTKit components",
-        // Required at ≤700px: the mobile fallback is a poster-image link whose
-        // CTA is absolutely positioned, so without this the anchor has no
-        // in-flow content and collapses to its borders.
-        poster: "/projects/images/ot-reservations-ipad-foh-poster.png",
-        // The prototype declares min-width: 1240px, so it is laid out at its own
-        // width and scaled into the case column instead of being cropped.
-        contentWidth: 1240,
-        aspectRatio: "1240 / 900",
-        caption: "Same record, re-composed. The tablet adds chrome, not content.",
-      },
-      {
-        type: "demo",
-        demo: "reservation-detail",
-        frameLabel: "OTKit · iOS Restaurant — as shipped",
-        caption: "Live, not filmed. Every zone is a repeatable pattern.",
       },
       { type: "hr" },
       { type: "h2", text: "System Alignment" },
