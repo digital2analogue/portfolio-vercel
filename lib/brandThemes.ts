@@ -56,24 +56,28 @@ export type Brand = {
  * deck's swatch table uses. A button never writes `brand/default`; it writes
  * `bg-action`, and the collection decides what that resolves to.
  *
- * All four are the ACTION family, which is the tidier and truer claim: the
- * action ramp re-points, and nothing else does.
+ * The tinted stage is `bg-alt` — NOT `bg-action-highlight`. Owner-confirmed
+ * 2026-08-10, after a round trip that is worth recording so it is not repeated:
  *
- * The tinted stage was labelled `bg-alt` here until the Figma source settled
- * it. In OTKit Foundation (Variables Library) v1.0.1, `background/alt` reads
- * #F1F2F4 — a neutral, shared by every collection, and the value a SECONDARY
- * button hovers to. The brand-tinted surface is `background/action-highlight`
- * (→ brand/alt-light), which is what these values actually are: Diner
- * #FCEEEF is red-lightest, Restaurant #EEF8FB is teal-lightest. The library's
- * own changelog records the rename ("Deprecated -alt accent backgrounds
- * replaced by -highlight", v1.10.1), so `bg-alt` was not just wrong here — it
- * was the superseded name.
+ *   • Reading the Figma library returned `background/alt` = #F1F2F4, so this was
+ *     briefly renamed to `bg-action-highlight` on the reasoning that a neutral
+ *     grey cannot be the brand-tinted surface.
+ *   • That read was of the library in its DEFAULT mode. `background/alt` is a
+ *     themed variable: it re-points per brand collection, which is exactly why
+ *     it belongs in this list. #F1F2F4 is what it resolves to when no brand is
+ *     applied, not a fixed neutral.
+ *   • Slide 13 of the deck agrees — it lists `background/alt` as #F2EFE6 under
+ *     Iconic, which is Iconic's tint, not #F1F2F4.
+ *
+ * So: `background/action-highlight` is a real OTKit token, but it is not this
+ * one. Query a brand-specific node before concluding a themed variable is
+ * neutral — a single-mode read cannot tell the two apart.
  */
 export const BRAND_TOKENS = [
   { key: "default", token: "bg-action" },
   { key: "hover", token: "bg-action-hover" },
   { key: "pressed", token: "bg-action-pressed" },
-  { key: "altLight", token: "bg-action-highlight" },
+  { key: "altLight", token: "bg-alt" },
 ] as const satisfies ReadonlyArray<{ key: keyof Brand; token: string }>;
 
 export const BRANDS: Brand[] = [

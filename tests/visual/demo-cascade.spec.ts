@@ -30,12 +30,6 @@ const ROUTES = [
 /** Verified non-leaks. Each needs a reason; an empty allowlist is the goal. */
 const ALLOW: { match: RegExp; why: string }[] = [
   {
-    // `.rr-demo.rd--editorial .rd-guest` deliberately sets the serif at 26px —
-    // the editorial variant's whole argument is a serif guest name. 12.67:1.
-    match: /\brd-guest\b/,
-    why: 'editorial variant sets the serif deliberately',
-  },
-  {
     // `.rr-demo-sr` is a 1px-clipped aria-live region: never visible, so it
     // inherits the case body harmlessly.
     match: /\brr-demo-sr\b/,

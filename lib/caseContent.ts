@@ -12,7 +12,11 @@ export type Block =
    *  time — content authors only set `src` (the .svg under public/). */
   | { type: "diagram"; src: string; alt: string; caption?: string; svg?: string }
   | { type: "image-pair"; images: Array<{ alt: string; caption?: string; src?: string }> }
-  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string }
+  | { type: "embed"; src: string; title: string; caption?: string; aspectRatio?: string; poster?: string;
+      /** Natural width of the embedded document. When the prototype cannot
+       *  reflow below this (a hard min-width), the frame lays the iframe out
+       *  at this width and scales it to fit rather than cropping it. */
+      contentWidth?: number }
   | { type: "outcome-demo"; caption?: string }
   /** `cite` marks the quote as someone ELSE's testimony and renders an
    *  attribution line. Leave it off for River's own pull-quotes — the two
@@ -700,19 +704,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         ],
       },
       { type: "hr" },
-      { type: "h2", text: "The Problem" },
+      { type: "h2", text: "The most legacy screen in the product" },
       {
         type: "p",
-        text: "Years of accumulated features had made the view:",
-      },
-      {
-        type: "ul",
-        items: [
-          "Dense and visually fragmented",
-          "Difficult to scan under time pressure",
-          "Inconsistent across platforms",
-          "Costly to maintain across distributed engineering teams",
-        ],
+        text: "Years of accumulated features had left the view dense and visually fragmented, hard to scan under time pressure, and inconsistent from one platform to the next. Because several engineering teams owned different parts of the flow, every fix had to be made more than once — which is what turned a cosmetic problem into an expensive one.",
       },
       {
         type: "image",
@@ -721,32 +716,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/ot-reservations-reservation-card-before-after.png",
       },
       { type: "hr" },
-      { type: "h2", text: "Constraints" },
-      {
-        type: "ul",
-        items: [
-          "Zero tolerance for data loss or behavioral regressions",
-          "Heavy daily usage by restaurant staff",
-          "Multiple engineering teams owning different parts of the flow",
-          "Need to preserve information density while improving clarity",
-        ],
-      },
-      { type: "hr" },
-      { type: "h2", text: "Strategy" },
+      { type: "h2", text: "A system problem, not a redesign" },
       {
         type: "p",
-        text: "Rather than redesigning the page wholesale, we treated the reservation view as a **modular system problem**.",
+        text: "The constraints ruled out starting over. Restaurant staff use this screen every shift, so there was **zero tolerance for data loss or behavioral regressions** — and no appetite for relearning it mid-service. Several engineering teams owned different parts of the flow. The density everyone complains about is also the density operators depend on.",
       },
       {
-        type: "ul",
-        items: [
-          "Preserve density, improve hierarchy",
-          "Replace bespoke layouts with reusable system components",
-          "Design once, scale across platforms",
-        ],
+        type: "p",
+        text: "So rather than redesigning the page wholesale, we treated the reservation view as a **modular system problem**: preserve the density and improve the hierarchy, replace bespoke layouts with reusable system components, and design once so the result scales across platforms.",
       },
       { type: "hr" },
-      { type: "h2", text: "Solution: Modular, Card-Based Architecture" },
+      { type: "h2", text: "Every card is a system pattern" },
       {
         type: "p",
         text: "We restructured the reservation details view into a modular, card-based layout that:",
@@ -759,6 +739,26 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "Enabled consistent behavior across mobile, tablet, and desktop",
           "Reduced one-off UI logic in engineering",
         ],
+      },
+      {
+        type: "embed",
+        src: "/projects/prototypes/ot-reservations-ipad-foh.html",
+        title: "Front-of-House reservation detail on iPad — live prototype on OTKit components",
+        // Required at ≤700px: the mobile fallback is a poster-image link whose
+        // CTA is absolutely positioned, so without this the anchor has no
+        // in-flow content and collapses to its borders.
+        poster: "/projects/images/ot-reservations-ipad-foh-poster.png",
+        // The prototype declares min-width: 1240px, so it is laid out at its own
+        // width and scaled into the case column instead of being cropped.
+        contentWidth: 1240,
+        aspectRatio: "1240 / 900",
+        caption: "Same record, re-composed. The tablet adds chrome, not content.",
+      },
+      {
+        type: "demo",
+        demo: "reservation-detail",
+        frameLabel: "OTKit · iOS Restaurant — as shipped",
+        caption: "Live, not filmed. Every zone is a repeatable pattern.",
       },
       {
         type: "p",
@@ -786,33 +786,9 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           },
         ],
       },
-      {
-        type: "demo",
-        demo: "reservation-detail-ipad",
-        frameLabel: "OTKit · iPad Front of House — as shipped",
-        caption: "Same record, re-composed. The tablet adds chrome, not content.",
-      },
-      {
-        type: "demo",
-        demo: "reservation-detail",
-        frameLabel: "OTKit · iOS Restaurant — as shipped",
-        caption: "Live, not filmed. Every zone is a repeatable pattern.",
-      },
-      {
-        type: "demo",
-        demo: "reservation-detail-editorial",
-        frameLabel: "OTKit · Editorial variant — exploration",
-        caption: "Same component and data. Different type and surface.",
-      },
-      {
-        type: "demo",
-        demo: "reservation-detail-ipad-editorial",
-        frameLabel: "OTKit · Editorial variant, tablet — exploration",
-        caption: "The status stops shouting. The guest becomes the anchor.",
-      },
       { type: "hr" },
-      { type: "h2", text: "System Alignment" },
-      { type: "p", text: "This work became OTKit's proving ground in real product conditions:" },
+      { type: "h2", text: "OTKit's proving ground" },
+      { type: "p", text: "This was the first time the system met real product conditions at scale:" },
       {
         type: "ul",
         items: [
@@ -837,18 +813,13 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         src: "/projects/images/ot-reservations-color-tokens-native.png",
       },
       { type: "hr" },
-      { type: "h2", text: "Outcomes & Impact" },
+      { type: "h2", text: "Zero regressions, shared across platforms" },
       {
-        type: "ul",
-        items: [
-          "Modernized a core operational workflow without sacrificing density",
-          "Improved readability and hierarchy in a high-stakes, time-sensitive interface",
-          "Reduced QA friction by replacing bespoke UI with shared system patterns",
-          "Strengthened trust in OTKit through visible, high-traffic product adoption",
-        ],
+        type: "p",
+        text: "A core operational workflow was modernized without sacrificing the density it runs on, and readability and hierarchy improved in an interface where both are read under time pressure. Replacing bespoke UI with shared system patterns took friction out of QA. And because this screen is high-traffic and visible every shift, its adoption did more for trust in OTKit than any internal advocacy could.",
       },
       { type: "hr" },
-      { type: "h2", text: "Reflection" },
+      { type: "h2", text: "Clarity under pressure" },
       {
         type: "p",
         text: "Designing for restaurant operators reinforced that usability is **clarity under pressure**.",

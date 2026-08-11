@@ -26,8 +26,6 @@ export const metadata: Metadata = {
 export default function ReservationDetailPreview() {
   if (IS_PRODUCTION) notFound();
   const Demo = DEMO_REGISTRY["reservation-detail"];
-  const Editorial = DEMO_REGISTRY["reservation-detail-editorial"];
-  const IPad = DEMO_REGISTRY["reservation-detail-ipad"];
 
   return (
     // No <main> here — app/layout.tsx already provides it.
@@ -57,27 +55,7 @@ export default function ReservationDetailPreview() {
           <figcaption>Live, not filmed. Every zone is a repeatable pattern.</figcaption>
         </figure>
 
-        <figure className="demo-frame" data-surface="light">
-          <div className="demo-frame__chrome" aria-hidden="true">
-            <span className="demo-frame__dot" />
-            <span className="demo-frame__label">OTKit · Editorial variant</span>
-          </div>
-          <div className="demo-frame__surface" data-surface="light">
-            <Editorial />
-          </div>
-          <figcaption>Same component and data. Different type and surface.</figcaption>
-        </figure>
 
-        <figure className="demo-frame" data-surface="light">
-          <div className="demo-frame__chrome" aria-hidden="true">
-            <span className="demo-frame__dot" />
-            <span className="demo-frame__label">OTKit · iPad Front of House</span>
-          </div>
-          <div className="demo-frame__surface" data-surface="light">
-            <IPad />
-          </div>
-          <figcaption>Same zones, re-composed. Nothing re-authored for tablet.</figcaption>
-        </figure>
       </div>
     </div>
   );

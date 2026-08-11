@@ -3,8 +3,7 @@ import ReservationStatusDemo from "./ReservationStatusDemo";
 import TableStatusDemo from "./TableStatusDemo";
 import CheckUsageDemo from "./CheckUsageDemo";
 import RuleCellDemo from "./RuleCellDemo";
-import ReservationDetailDemo, { ReservationDetailEditorial } from "./ReservationDetailDemo";
-import ReservationDetailIPad, { ReservationDetailIPadEditorial } from "./ReservationDetailIPad";
+import ReservationDetailDemo from "./ReservationDetailDemo";
 import BrandThemeDemo from "./BrandThemeDemo";
 
 /**
@@ -20,9 +19,6 @@ export type DemoKey =
   | "check-usage"
   | "rule-cell"
   | "reservation-detail"
-  | "reservation-detail-editorial"
-  | "reservation-detail-ipad"
-  | "reservation-detail-ipad-editorial"
   | "brand-theme";
 
 export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
@@ -31,8 +27,5 @@ export const DEMO_REGISTRY: Record<DemoKey, ComponentType> = {
   "check-usage": CheckUsageDemo,
   "rule-cell": RuleCellDemo,
   "reservation-detail": ReservationDetailDemo,
-  "reservation-detail-editorial": ReservationDetailEditorial,
-  "reservation-detail-ipad": ReservationDetailIPad,
-  "reservation-detail-ipad-editorial": ReservationDetailIPadEditorial,
   "brand-theme": BrandThemeDemo,
 };

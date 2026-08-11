@@ -194,7 +194,7 @@ export function SelectStrip({
  * The caller owns the scroll handler (each shell tracks its own extra state off
  * the same scroll event) and calls `spy(scrollTop)` from inside it.
  */
-export function useSectionSpy(count: number) {
+function useSectionSpy(count: number) {
   const [active, setActive] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -283,7 +283,7 @@ export function useSectionSpy(count: number) {
  * motion) simply renders the finished screen. useLayoutEffect so arming lands
  * before paint and nothing flashes.
  */
-export function useEntrance<T extends HTMLElement>() {
+function useEntrance<T extends HTMLElement>() {
   const ref = useRef<T>(null);
   useLayoutEffect(() => {
     const el = ref.current;
@@ -307,7 +307,7 @@ export function useEntrance<T extends HTMLElement>() {
 /** Render order of the zones the entrance reveal walks down. */
 const ZONE = { guest: 0, tag: 1, strip: 2, sections: 3 };
 
-export default function ReservationDetailDemo({ variant }: { variant?: "editorial" } = {}) {
+export default function ReservationDetailDemo() {
   const [collapsed, setCollapsed] = useState(false);
   const [stuck, setStuck] = useState(false);
   const [floating, setFloating] = useState(true);
@@ -342,12 +342,12 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
   const zone = (i: number) => ({ "--rd-i": i }) as React.CSSProperties;
 
   return (
-    <div className={variant === "editorial" ? "rr-demo rd rd--editorial" : "rr-demo rd"}>
+    <div className="rr-demo rd">
       <div className="rd-device">
         <div className="rd-screen" ref={screenRef}>
           {/* Device chrome is decoration: it establishes "this is the iOS app",
               and carries no information the screen doesn't already state. */}
-          <div className="rd-status" aria-hidden="true" hidden={variant === "editorial"}>
+          <div className="rd-status" aria-hidden="true">
             <span className="rd-status__time">12:06</span>
             <span className="rd-notch" />
             <span className="rd-status__right">
@@ -406,7 +406,7 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
             aria-label={`Reservation details for ${RESERVATION.guest}`}
           >
             <div className="rd-row rd-row--guest rd-zone" style={zone(ZONE.guest)}>
-              {variant !== "editorial" && (
+              {(
                 <span className="rd-avatar" aria-hidden="true">
                   {RESERVATION.initials}
                 </span>
@@ -610,23 +610,10 @@ export default function ReservationDetailDemo({ variant }: { variant?: "editoria
             </button>
           </div>
 
-          {variant !== "editorial" && <span className="rd-homebar" aria-hidden="true" />}
+          <span className="rd-homebar" aria-hidden="true" />
         </div>
       </div>
     </div>
   );
 }
 
-/**
- * Editorial variant — the same component and the same data, wearing a different
- * type and surface treatment. Not a fork: everything below the `variant` prop is
- * one CSS layer, so the two cannot drift and a fix to one is a fix to both.
- *
- * The exploration is "what if OTKit had more editorial craft", NOT "what if this
- * were Resy" — which is why the action teal stays. Swapping the accent would make
- * it a pastiche of a competitor; keeping it makes it range within the brand,
- * which is the version that survives an interview.
- */
-export function ReservationDetailEditorial() {
-  return <ReservationDetailDemo variant="editorial" />;
-}
