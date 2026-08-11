@@ -64,16 +64,6 @@ export default function WorkPage() {
               <div className="work-row__body">
                 <p className="work-row__summary">{c.summary}</p>
 
-                {c.metrics.length > 0 && (
-                  <ul className="work-row__metrics">
-                    {c.metrics.map((m) => (
-                      <li key={m} className="work-row__metric">
-                        {m}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
                 <div className="work-row__tags">
                   {c.tags.map((t) => (
                     <span key={t} className="tag">

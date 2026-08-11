@@ -679,7 +679,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Overview" },
       {
         type: "p",
-        text: "OpenTable's reservation details view was the most legacy-styled screen in the product: dense, fragmented, expensive to maintain, and used by operators every shift. I led the redesign: modernize the experience, **keep the density operators depend on**.",
+        text: "OpenTable's reservation details view was the most legacy-styled screen in the product. It was dense, fragmented, expensive to maintain, and operators used it every shift. I led the redesign. The brief was to modernize it without losing the density they rely on.",
       },
       {
         type: "image",
@@ -710,18 +710,18 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Three contexts, one guest record" },
       {
         type: "p",
-        text: "The same reservation is read by three people working at three different speeds. **The host** at the door has seconds per guest and reads the record standing up, on an iPad. **Front of house** runs the floor all shift on iPhone and iPad — live statuses, allergies, notes, no room for error. **Back of house** returns to the same record between shifts on the web, at a slower pace and in more depth.",
+        text: "The same reservation gets read by three people working at three different speeds. **The host** at the door has seconds per guest and reads the record standing up, on an iPad. **Front of house** runs the floor all shift on iPhone and iPad, watching live statuses, allergies and notes, with no room for error. **Back of house** comes back to the same record between shifts on the web, at a slower pace and in more depth.",
       },
       {
         type: "p",
-        text: "One record, three tempos. That is the constraint the whole redesign turns on.",
+        text: "It is one record serving three different tempos, and most of the redesign follows from that.",
       },
       { type: "hr" },
 
       { type: "h2", text: "A dumping ground by accumulation" },
       {
         type: "p",
-        text: "Years of shipped features had each found somewhere to live, and restaurants run their whole shift on the result. Three failures compounded: guest details and visit history sat **hidden behind tabs**, seen rarely. **Booked** and **Assign table** were real actions styled as flat panels, so the controls did not read as controls. And experiences — *4× Friday Whiskey Tasting*, the highest-value thing on the booking — rendered as plain text with no visual weight at all.",
+        text: "Years of shipped features had each found somewhere to live, and restaurants run their whole shift on the result. Guest details and visit history sat **hidden behind tabs**, so they were rarely seen. **Booked** and **Assign table** were real actions styled as flat panels, so the controls did not read as controls. Experiences got the worst of it. *4× Friday Whiskey Tasting*, the highest-value thing on the booking, rendered as plain text with no visual weight.",
       },
       {
         type: "image",
@@ -734,14 +734,14 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Designing inside hard walls" },
       {
         type: "p",
-        text: "**Zero tolerance for data loss or behavioral regressions.** A missed allergy tag is a real guest at a real table; every field had to survive the move. **Heavy daily usage.** Operators live here every shift under time pressure — no retraining budget, no relearning muscle memory. **Multiple engineering teams owning different parts.** The flow spanned distributed teams, so any redesign had to be adoptable piecewise, team by team.",
+        text: "**Zero tolerance for data loss or behavioral regressions.** A missed allergy tag is a real guest at a real table, so every field had to survive the move. **Heavy daily usage.** Operators live here every shift under time pressure, with no retraining budget and no relearning muscle memory. **Multiple engineering teams owning different parts.** The flow spanned distributed teams, so any redesign had to be adoptable piecewise, team by team.",
       },
       { type: "hr" },
 
       { type: "h2", text: "An architecture before a layout" },
       {
         type: "p",
-        text: "Rather than redesigning the page, we modelled it. The reservation card became zones — status, experiences, guest profile, visit notes and tags, guest history — each one able to absorb new data without another redesign. That bet was driven by what was already queued: multiple guests, Venga and sentiment data, visit counts, takeout and delivery spend, POS spend per occasion, third-party integrations.",
+        text: "Rather than redesigning the page, we modelled it. The reservation card became zones for status, experiences, guest profile, visit notes and tags, and guest history. Each one could absorb new data without another redesign. What drove that bet was everything already queued: multiple guests, Venga and sentiment data, visit counts, takeout and delivery spend, POS spend per occasion, and third-party integrations.",
       },
       {
         type: "quote",
@@ -764,11 +764,11 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "ul",
         items: [
-          "**Guest profile** — identity first, readable in one glance",
-          "**Tags** — structured, scannable service data",
-          "**Guest message** — the guest's own words, verbatim",
-          "**Notes tabs** — five categories, one tap",
-          "**Notes as cards** — guestbook, newest first",
+          "**Guest profile**, identity first and readable in one glance",
+          "**Tags**, structured and scannable service data",
+          "**Guest message**, the guest's own words verbatim",
+          "**Notes tabs**, five categories and one tap",
+          "**Notes as cards**, guestbook with newest first",
         ],
       },
       { type: "hr" },
@@ -776,17 +776,17 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Options, weighed in the open" },
       {
         type: "p",
-        text: "The actions were the contested decision: where do **Booked**, **Assign table** and the rest actually live? Anchoring them to the foot of the card buried them below the fold as soon as notes ran long. Leading with them crowded the guest header that hosts scan first. In user testing the **right rail** won outright — users read it as *where actions live* without being prompted.",
+        text: "The actions were the contested decision. Where should **Booked**, **Assign table** and the rest actually live? Anchoring them to the foot of the card buried them below the fold as soon as notes ran long. Leading with them crowded the guest header that hosts scan first. In user testing the **right rail** won clearly. Users read it as *where actions live* without being prompted.",
       },
       { type: "h3", text: "The rail that earned its keep" },
       {
         type: "p",
-        text: "Status and Experiences moved into a rail the floorplan could reuse: same rail, different CTAs. **The tradeoff:** related information now spans two panels. One reusable rail beat two bespoke ones.",
+        text: "Status and Experiences moved into a rail the floorplan could reuse, the same rail with different CTAs. **The tradeoff** is that related information now spans two panels. One reusable rail beat two bespoke ones.",
       },
       { type: "h3", text: "Notes above the fold" },
       {
         type: "p",
-        text: "Notes lived down a long scroll. A segmented control puts every category one tap away. **The tradeoff:** content sits behind a tab. Scanning beat scrolling.",
+        text: "Notes lived down a long scroll. A segmented control puts every category one tap away. **The tradeoff** is that content sits behind a tab. Scanning beat scrolling.",
       },
       { type: "hr" },
 
@@ -803,12 +803,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         // width and scaled into the case column instead of being cropped.
         contentWidth: 1240,
         aspectRatio: "1240 / 900",
-        caption: "Front of house, on iPad. The same record, re-composed — the tablet adds chrome, not content.",
+        caption: "Front of house, on iPad. The same record, re-composed. The tablet adds chrome, not content.",
       },
       {
         type: "demo",
         demo: "reservation-detail",
-        frameLabel: "OTKit · iOS Restaurant — as shipped",
+        frameLabel: "OTKit · iOS Restaurant, as shipped",
         caption: "Live, not filmed. Every zone is a repeatable pattern.",
       },
       { type: "hr" },
@@ -816,7 +816,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Density in hand, depth at the desk" },
       {
         type: "p",
-        text: "Front of house gets the glanceable version and taps for depth. Back of house gets the same record on the web, where there is room for richer data and visualization. Build the card once; let the surface decide how much of it to show.",
+        text: "Front of house gets the glanceable version and taps for depth. Back of house gets the same record on the web, where there is room for richer data and visualization. The card gets built once, and each surface decides how much of it to show.",
       },
       {
         type: "image-pair",
@@ -868,7 +868,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Earning the rollout" },
       {
         type: "p",
-        text: "The redesign earned its rollout one dinner rush at a time: a pilot with critical restaurant groups, feedback from real service, then a rollout with risk contained. **Zero regressions in critical workflows.**",
+        text: "The redesign earned its rollout one dinner rush at a time. We piloted with critical restaurant groups, took feedback from real service, then rolled out with the risk contained. **Zero regressions in critical workflows.**",
       },
       {
         type: "quote",
@@ -880,32 +880,32 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Measured after the rollout" },
       {
         type: "p",
-        text: "35 opt-in restaurant groups, worldwide — a net gain by week 6. Host time on the reservation card fell **18%**, and time to the right note went from **11 seconds to 7** on tabs versus the old scroll.",
+        text: "35 opt-in restaurant groups, worldwide, with a net gain by week 6. Host time on the reservation card fell **18%**. Time to the right note went from **11 seconds to 7** on tabs versus the old scroll.",
       },
       {
         type: "p",
-        text: "Asked whether *“the redesign made this faster,”* pilot operators agreed by workflow: **71%** for seating reservations, **68%** for saving time overall, **64%** for providing hospitality.",
+        text: "Asked whether *“the redesign made this faster,”* pilot operators agreed by workflow: **71%** for seating reservations, **68%** for saving time overall, and **64%** for providing hospitality.",
       },
       { type: "hr" },
 
       { type: "h2", text: "From dashboard to the floor" },
       {
         type: "p",
-        text: "The work was much-requested and long tethered to the host stand — staff work the floor, not a desk. It turned a manager's dashboard into a full front-of-house tool: floorplan, reservations, seating and notes, in hand. Mobile was designed first and iPad second, so one UX logic carried across both.",
+        text: "The work had been requested for a long time, and it stayed tethered to the host stand even though staff work the floor rather than a desk. It turned a manager's dashboard into a full front-of-house tool, with floorplan, reservations, seating and notes in hand. Mobile was designed first and iPad second, so one UX logic carried across both.",
       },
       { type: "hr" },
 
       { type: "h2", text: "What I'd do differently now" },
       {
         type: "p",
-        text: "Categorize the IA by **actionability** from day one. Things you *act on* — reservation and table status, experiences — belong in the rail. Things you *refer to* — visit notes and tags, guest profile, visit history — belong in the card. That is the call that earned the rail, and it took longer to find than it should have.",
+        text: "Categorize the IA by **actionability** from day one. Things you *act on*, like reservation and table status and experiences, belong in the rail. Things you *refer to*, like visit notes and tags, guest profile and visit history, belong in the card. That is the call that earned the rail, and it took longer to find than it should have.",
       },
       { type: "hr" },
 
       { type: "h2", text: "Clarity under pressure" },
       {
         type: "p",
-        text: "Designing for restaurant operators reinforced that usability is **clarity under pressure**. For OpenTable that meant an operator between tables. The discipline is the same anywhere: the right control, findable without breaking flow.",
+        text: "Designing for restaurant operators reinforced that usability is **clarity under pressure**. For OpenTable that meant an operator between tables. For a creative tool it is the same discipline: the right control, findable without breaking flow.",
       },
     ],
   },

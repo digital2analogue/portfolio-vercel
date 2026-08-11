@@ -712,50 +712,6 @@ h2.eyebrow,
   content: "→ ";
   color: var(--color-foreground-muted);
 }
-/* Outcomes, sitting between the summary and the topic tags. They are results,
-   not taxonomy, so they read at foreground-default in mono while the tags below
-   stay muted and boxed — hierarchy from weight and position rather than another
-   box competing with the tags. Accent green is deliberately NOT used: it is
-   reserved for interactivity, never resting text. */
-.work-row__metrics {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 var(--spacing-inline);
-  margin: var(--spacing-inline) 0 0;
-  padding: 0;
-  list-style: none;
-  font: var(--font-mono-label-small);
-  color: var(--color-foreground-default);
-}
-.work-row__metric {
-  margin: 0;
-  white-space: nowrap;
-}
-/* Separator lives on the marker so it never trails the last item or orphans
-   onto its own line when the row wraps. */
-.work-row__metric + .work-row__metric::before {
-  content: "·";
-  margin-right: var(--spacing-inline);
-  color: var(--color-foreground-muted);
-}
-/* Phones: `nowrap` is what keeps a short metric from breaking mid-phrase, but
-   the long ones ("~30% improvement in accessibility compliance") then push the
-   row past the viewport — measured overflow at 390px on two of the four cases.
-   Stack them one per line instead and drop the separator, which reads better
-   as three short data lines anyway. */
-@media (max-width: 700px) {
-  .work-row__metrics {
-    flex-direction: column;
-    gap: var(--primitive-space-3xs);
-  }
-  .work-row__metric {
-    white-space: normal;
-  }
-  .work-row__metric + .work-row__metric::before {
-    content: none;
-  }
-}
 .work-row__tags {
   display: flex;
   flex-wrap: wrap;
