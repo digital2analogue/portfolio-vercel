@@ -11,9 +11,15 @@
  *  - prefers-reduced-motion skips all staging; the diagram renders complete.
  *  - Elements with an authored stroke-dasharray (the amber "planned" paths)
  *    keep their dash pattern — they fade in rather than draw on.
+ *
+ * On narrow viewports the host is a horizontal scroller (globals.css gives the
+ * SVG a floor width rather than letting it shrink to 3px labels). Whether it
+ * actually overflows is *measured*, not assumed from a breakpoint: the keyboard
+ * affordances and the scroll hint only appear when there is really something to
+ * pan, so neither can lie about a diagram that happens to fit.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const STAGGER_MS = 24; // per-element delay in authored order
 const MAX_DELAY_MS = 900; // stagger ceiling so long diagrams don't crawl
@@ -28,6 +34,19 @@ export default function DiagramBlock({
   caption?: string;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const [pannable, setPannable] = useState(false);
+
+  // Kept out of the entrance effect below, which bails early under
+  // reduced motion — overflow has to be measured either way.
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    const measure = () => setPannable(host.scrollWidth - host.clientWidth > 1);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(host);
+    return () => ro.disconnect();
+  }, [svg]);
 
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -112,9 +131,18 @@ export default function DiagramBlock({
       <div
         ref={hostRef}
         className="block-diagram__host"
+        // A scrollable region has to be keyboard-reachable (WCAG 2.1.1). The
+        // inner <svg> already carries role="img" + the full alt, so the group
+        // only needs to announce that it pans.
+        {...(pannable
+          ? { tabIndex: 0, role: "group", "aria-label": "Scrollable diagram" }
+          : {})}
         // Committed, hand-authored repo assets — not user input.
         dangerouslySetInnerHTML={{ __html: svg }}
       />
+      {pannable && (
+        <p className="block-diagram__hint">Scroll sideways to read the diagram</p>
+      )}
       {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="780" viewBox="0 0 1240 780" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<rect width="1240" height="780" fill="#0A0D0A"/>
+
+<rect x="80" y="64" width="1080" height="652" rx="14" fill="none" stroke="#2E3A2E" stroke-width="1.4"/>
+<text x="110" y="102" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13.5" letter-spacing="1.4" fill="#8B9683">RESERVATION CARD</text>
+
+<!-- zone: visit notes & tags -->
+<g>
+  <rect x="110" y="120" width="1020" height="52" rx="8" fill="#141B14" stroke="#2E3A2E" stroke-width="1.2"/>
+  <text x="134" y="152" font-size="17" font-weight="400" fill="#C8CFC4">Visit notes &amp; tags</text>
+</g>
+<g>
+  <rect x="174" y="182" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="214" font-size="16" font-weight="400" fill="#A0A89A">Reservation and table status</text>
+</g>
+<g>
+  <rect x="174" y="244" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="276" font-size="16" font-weight="400" fill="#A0A89A">Experiences</text>
+</g>
+
+<!-- zone: guest profile -->
+<g>
+  <rect x="110" y="316" width="1020" height="52" rx="8" fill="#141B14" stroke="#2E3A2E" stroke-width="1.2"/>
+  <text x="134" y="348" font-size="17" font-weight="400" fill="#C8CFC4">Guest profile</text>
+</g>
+<g>
+  <rect x="174" y="378" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="410" font-size="16" font-weight="400" fill="#A0A89A">Contact card</text>
+</g>
+<g>
+  <rect x="174" y="440" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="472" font-size="16" font-weight="400" fill="#A0A89A">Guestbook notes</text>
+</g>
+<g>
+  <rect x="174" y="502" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="534" font-size="16" font-weight="400" fill="#A0A89A">Guest profile integrations &#8212; 3rd-party guest notes</text>
+</g>
+<g>
+  <rect x="174" y="564" width="956" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="198" y="596" font-size="16" font-weight="400" fill="#A0A89A">Guest history</text>
+</g>
+
+<!-- zone: visit history -->
+<g>
+  <rect x="110" y="636" width="1020" height="52" rx="8" fill="#141B14" stroke="#2E3A2E" stroke-width="1.2"/>
+  <text x="134" y="668" font-size="17" font-weight="400" fill="#C8CFC4">Visit history</text>
+</g>
+</svg>

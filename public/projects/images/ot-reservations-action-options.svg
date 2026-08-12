@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="500" viewBox="0 0 1240 500" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<defs><radialGradient id="optbloom" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4ADE6E" stop-opacity="0.13"/><stop offset="1" stop-color="#4ADE6E" stop-opacity="0"/></radialGradient></defs>
+<rect width="1240" height="500" fill="#0A0D0A"/>
+
+<text x="80" y="56" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13.5" letter-spacing="1.4" fill="#8B9683">THE ACTIONS&#8195;//&#8195;where they live</text>
+
+<!-- 01 — chosen -->
+<ellipse cx="620" cy="140" rx="330" ry="72" fill="url(#optbloom)"/>
+<g>
+  <rect x="80" y="84" width="1080" height="112" rx="12" fill="#101710" stroke="#4ADE6E" stroke-width="1.6"/>
+  <text x="112" y="126" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14.5" letter-spacing="1.2" fill="#4ADE6E">01&#8195;&#183;&#8195;ACTIONS IN A RIGHT RAIL</text>
+  <text x="112" y="163" font-size="16.5" font-weight="400" fill="#C8CFC4">Status and actions get a persistent surface the floorplan could later reuse.</text>
+  <rect x="1000" y="106" width="128" height="26" rx="13" fill="#0F2016" stroke="#2E3A2E" stroke-width="1"/>
+  <text x="1064" y="124" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="12" letter-spacing="1.2" fill="#4ADE6E" text-anchor="middle">CHOSEN</text>
+</g>
+
+<!-- 02 -->
+<g>
+  <rect x="80" y="212" width="1080" height="112" rx="12" fill="#0E120D" stroke="#232D23" stroke-width="1.2"/>
+  <text x="112" y="254" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14.5" letter-spacing="1.2" fill="#8B9683">02&#8195;&#183;&#8195;ACTIONS IN A BOTTOM BAR</text>
+  <text x="112" y="291" font-size="16.5" font-weight="400" fill="#A0A89A">Actions anchor to the card foot, buried below the fold once notes run long.</text>
+</g>
+
+<!-- 03 -->
+<g>
+  <rect x="80" y="340" width="1080" height="112" rx="12" fill="#0E120D" stroke="#232D23" stroke-width="1.2"/>
+  <text x="112" y="382" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14.5" letter-spacing="1.2" fill="#8B9683">03&#8195;&#183;&#8195;ACTIONS ON TOP</text>
+  <text x="112" y="419" font-size="16.5" font-weight="400" fill="#A0A89A">Actions lead the card, but crowd the guest header hosts scan first.</text>
+</g>
+</svg>
