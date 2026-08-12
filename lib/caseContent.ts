@@ -749,10 +749,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         cite: "Stakeholder feedback · FOH modernization review",
       },
       {
-        type: "image",
-        alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
-        caption: "Making guest and reservation information modular: components designed to scale across multiple contexts.",
-        src: "/projects/images/ot-reservations-modularity.png",
+        type: "diagram",
+        src: "/projects/images/ot-reservations-ia-zones.svg",
+        alt: "Zone model of the reservation card. Three top-level zones: visit notes and tags, containing reservation and table status and experiences; guest profile, containing contact card, guestbook notes, guest profile integrations for third-party guest notes, and guest history; and visit history.",
+        caption: "The card as zones, not a layout. Status and Experiences still sat inside the notes zone here, which is the thing the rail later corrected.",
       },
       { type: "hr" },
 
@@ -771,12 +771,24 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
           "**Notes as cards**, guestbook with newest first",
         ],
       },
+      {
+        type: "image",
+        alt: "Annotated diagram showing how guest and reservation information was made modular across Back of House, Front of House, Web, iOS, and Android",
+        caption: "The same patterns annotated against the shipped card: what each one had to carry to work on desktop and on iPad.",
+        src: "/projects/images/ot-reservations-modularity.png",
+      },
       { type: "hr" },
 
       { type: "h2", text: "Options, weighed in the open" },
       {
         type: "p",
         text: "The actions were the contested decision. Where should **Booked**, **Assign table** and the rest actually live? Anchoring them to the foot of the card buried them below the fold as soon as notes ran long. Leading with them crowded the guest header that hosts scan first. In user testing the **right rail** won clearly. Users read it as *where actions live* without being prompted.",
+      },
+      {
+        type: "diagram",
+        src: "/projects/images/ot-reservations-action-options.svg",
+        alt: "The three placements considered for the reservation actions. Option 01, a right rail, was chosen: status and actions get a persistent surface the floorplan could later reuse. Option 02, a bottom bar, anchors actions to the card foot where they are buried below the fold once notes run long. Option 03, actions on top, leads the card but crowds the guest header hosts scan first.",
+        caption: "Three placements, one chosen. Each option is named by what it costs, not by what it looks like.",
       },
       { type: "h3", text: "The rail that earned its keep" },
       {
@@ -893,6 +905,12 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       {
         type: "p",
         text: "Categorize the IA by **actionability** from day one. Things you *act on*, like reservation and table status and experiences, belong in the rail. Things you *refer to*, like visit notes and tags, guest profile and visit history, belong in the card. That is the call that earned the rail, and it took longer to find than it should have.",
+      },
+      {
+        type: "diagram",
+        src: "/projects/images/ot-reservations-actionability.svg",
+        alt: "The same information re-sorted by actionability. Act on it, in the rail: reservation and table status, experiences. Refer to it, in the card: visit notes and tags, guest profile, visit history.",
+        caption: "The same inventory, sorted by what you do with it. This is the cut I would start from next time.",
       },
       { type: "hr" },
 

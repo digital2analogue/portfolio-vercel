@@ -1,10 +1,15 @@
 // Rasterize the hand-authored case-study diagrams to 2× PNG.
 //
-// Each public/projects/images/ds-*.svg is the editable source; caseContent.ts
-// references the .png. This renders every ds-*.svg to a same-basename PNG at
-// 2× (retina) via headless chromium, with the site's three Google fonts loaded
-// so Space Grotesk / JetBrains Mono text rasterizes correctly. Mirrors the
-// approach in scripts/generate-og.mjs.
+// Each diagram .svg in public/projects/images is the editable source; a
+// `diagram` block in caseContent.ts points at it, and the .png is the declared
+// fallback for consumers that skip lib/diagrams.ts. This renders every one to a
+// same-basename PNG at 2× (retina) via headless chromium, with the site's three
+// Google fonts loaded so Space Grotesk / JetBrains Mono text rasterizes
+// correctly. Mirrors the approach in scripts/generate-og.mjs.
+//
+// Sources are identified by prefix (see PREFIXES) rather than "every .svg here"
+// so a stray inline icon or logo dropped in this directory never gets a
+// spurious PNG sibling committed next to it.
 //
 // Run: node scripts/render-diagrams.mjs   (or: npm run render-diagrams)
 // Requires: npx playwright install chromium (one-time)
@@ -34,12 +39,15 @@ function svgSize(svg) {
   throw new Error("could not determine SVG size");
 }
 
+/** Filename prefixes that mark a file as a diagram source. */
+const PREFIXES = ["ds-", "ot-reservations-"];
+
 const files = readdirSync(IMG_DIR)
-  .filter((f) => f.startsWith("ds-") && f.endsWith(".svg"))
+  .filter((f) => f.endsWith(".svg") && PREFIXES.some((p) => f.startsWith(p)))
   .sort();
 
 if (!files.length) {
-  console.error("no ds-*.svg found in", IMG_DIR);
+  console.error(`no diagram .svg (${PREFIXES.join(", ")}) found in`, IMG_DIR);
   process.exit(1);
 }
 

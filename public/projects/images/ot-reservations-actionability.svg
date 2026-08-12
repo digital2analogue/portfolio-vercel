@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="548" viewBox="0 0 1240 548" font-family="'Space Grotesk','Inter',system-ui,sans-serif">
+<rect width="1240" height="548" fill="#0A0D0A"/>
+
+<rect x="80" y="48" width="1080" height="452" rx="14" fill="none" stroke="#2E3A2E" stroke-width="1.4"/>
+
+<text x="112" y="90" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13.5" letter-spacing="1.4" fill="#4ADE6E">ACT ON IT&#8195;//&#8195;<tspan fill="#8B9683">the rail</tspan></text>
+<g>
+  <rect x="112" y="108" width="1016" height="52" rx="8" fill="#141B14" stroke="#2E3A2E" stroke-width="1.2"/>
+  <text x="136" y="140" font-size="16.5" font-weight="400" fill="#C8CFC4">Reservation and table status</text>
+</g>
+<g>
+  <rect x="112" y="170" width="1016" height="52" rx="8" fill="#141B14" stroke="#2E3A2E" stroke-width="1.2"/>
+  <text x="136" y="202" font-size="16.5" font-weight="400" fill="#C8CFC4">Experiences</text>
+</g>
+
+<text x="112" y="278" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13.5" letter-spacing="1.4" fill="#A0A89A">REFER TO IT&#8195;//&#8195;<tspan fill="#8B9683">the card</tspan></text>
+<g>
+  <rect x="112" y="296" width="1016" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="136" y="328" font-size="16.5" font-weight="400" fill="#A0A89A">Visit notes &amp; tags</text>
+</g>
+<g>
+  <rect x="112" y="358" width="1016" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="136" y="390" font-size="16.5" font-weight="400" fill="#A0A89A">Guest profile</text>
+</g>
+<g>
+  <rect x="112" y="420" width="1016" height="52" rx="8" fill="#11160F" stroke="#232D23" stroke-width="1.2"/>
+  <text x="136" y="452" font-size="16.5" font-weight="400" fill="#A0A89A">Visit history</text>
+</g>
+</svg>
