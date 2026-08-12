@@ -1107,6 +1107,54 @@ h2.eyebrow,
   background: var(--color-background-alt);
 }
 
+/* Pan the diagram instead of shrinking it.
+   ------------------------------------------------------------------
+   Every diagram here is authored on a ~1240px canvas. At `width: 100%` in a
+   358px column that is scale 0.29, which rendered the smallest labels at
+   3.0–3.9px on a 390px viewport — measured across all eleven, and unreadable
+   in every one. Shrinking a single canvas would only make that diagram
+   inconsistent while staying unreadable, so the fix is here, once, for the
+   block.
+
+   The floor width is what does the work: a diagram never renders SMALLER
+   than it does in the full desktop case column, so you pan rather than
+   squint. `900px` is just under that column (912px), so on desktop the floor
+   is inert and nothing overflows — no scrollbar, no tab stop, no hint.
+
+   DELIBERATELY NOT IN A MEDIA QUERY. A `max-width: 700px` version of this
+   left a cliff: between 701px and ~1000px the case column is narrower than
+   the floor but the rule had switched off, so a tablet rendered the labels
+   at 5.5px — worse than the phone the rule was written for. Width-driven
+   behaviour belongs in `min-width`, which is continuous, not in a breakpoint,
+   which is not.
+
+   `overscroll-behavior-x: contain` stops the pan chaining into the browser's
+   back-gesture at the end of the scroll. DiagramBlock adds `tabindex`/`role`
+   and the hint only when the host *measurably* overflows (WCAG 2.1.1 — a
+   scrollable region must be keyboard-reachable), so neither can claim a
+   diagram scrolls when it doesn't. */
+.blocks .block-diagram__host {
+  --diagram-floor: 900px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-radius: var(--radius-sm);
+}
+.blocks .block-diagram__host svg {
+  min-width: var(--diagram-floor);
+}
+.blocks .block-diagram__host:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+/* (0,2,0) — `.blocks p` is (0,1,1) and would otherwise paint this in the
+   case body's Spectral prose. See "The .blocks cascade leak" in CLAUDE.md. */
+.blocks .block-diagram__hint {
+  margin: var(--spacing-tight) 0 0;
+  font: var(--font-mono-label-small);
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--color-foreground-muted);
+}
+
 /* Video block — mp4 motion clips styled like the image figures */
 .blocks figure video.block-video {
   width: 100%;
