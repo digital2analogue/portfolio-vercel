@@ -840,6 +840,60 @@ h2.eyebrow,
   align-self: center;
 }
 
+/* "How I work" on /about. Without a photo, this section carries the job a
+   headshot usually does: showing there is a person with positions behind the
+   systems. Each item links to the work that evidences it, so the claims are
+   checkable rather than adjectives. */
+.principles {
+  list-style: none;
+  margin: var(--spacing-component) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-component);
+  counter-reset: none;
+}
+.principle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-element);
+  padding-bottom: var(--spacing-component);
+  border-bottom: 1px solid var(--color-border-muted);
+}
+.principle:last-child { border-bottom: 0; padding-bottom: 0; }
+.principle__n {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-action);
+  letter-spacing: var(--letter-spacing-label);
+  padding-top: 0.35em;
+}
+.principle__title {
+  font: var(--font-title-small);
+  letter-spacing: var(--letter-spacing-title);
+  color: var(--color-foreground-default);
+  margin: 0 0 var(--spacing-tight);
+}
+.principle__body {
+  font: var(--font-body-large);
+  color: var(--color-foreground-alt);
+  margin: 0 0 var(--spacing-tight);
+}
+.principle__body em {
+  color: var(--color-foreground-default);
+  font-style: italic;
+}
+.principle__link {
+  font: var(--font-mono-label-small);
+  letter-spacing: var(--letter-spacing-label);
+  text-decoration: none;
+  color: var(--color-foreground-action);
+}
+.principle__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 560px) {
+  .principle { grid-template-columns: 1fr; gap: var(--spacing-tight); }
+  .principle__n { padding-top: 0; }
+}
+
 /* Next-step nudge at the bottom of /about */
 .about-cta {
   display: inline-flex;

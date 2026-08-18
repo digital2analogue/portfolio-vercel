@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Principal Designer with ten years in design systems infrastructure, decision tooling, and compliance-heavy B2B. Based in San Francisco; taking new work.",
+    "I build the layer other designers build on: design systems infrastructure, decision tooling, and compliance-heavy B2B. Ten years, San Francisco, open to senior IC and staff roles.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About · River Romney",
@@ -26,14 +27,24 @@ const SKILLS = [
 
 const EXPERIENCE = [
   {
+    role: "Designer & Design Engineer",
+    company: "Independent",
+    period: "2026 – present",
+  },
+  {
     role: "Principal UI/UX Designer, Design Systems",
     company: "Capital One",
     period: "2024 – 2025",
   },
   {
-    role: "Lead Product Designer, Design Systems - Product Owner",
+    role: "Lead Product Designer, Design Systems · Product Owner",
     company: "OpenTable",
-    period: "2019 – 2024",
+    period: "2023 – 2024",
+  },
+  {
+    role: "Senior Product Designer",
+    company: "OpenTable",
+    period: "2019 – 2023",
   },
   {
     role: "Product Designer",
@@ -44,6 +55,67 @@ const EXPERIENCE = [
     role: "Interaction Designer",
     company: "ExpertVoice",
     period: "2015 – 2018",
+  },
+];
+
+/* Each principle is evidenced by work on this site, and links to it. This
+   section is the page carrying the "who is this person to work with" load —
+   without a photo, that has to come from stated positions, not adjectives. */
+const PRINCIPLES = [
+  {
+    n: "01",
+    title: "Name the cost in dollars",
+    body: (
+      <>
+        A system nobody funds is a hobby. At OpenTable I surveyed 37 people and
+        costed design-system drift at <em>≈$390K a year</em> in visual QA time.
+        That number is what moved the work from a nice idea to a funded one.
+      </>
+    ),
+    href: "/work/ot-design-system",
+    cta: "OTKit",
+  },
+  {
+    n: "02",
+    title: "Adoption is advocacy, not enforcement",
+    body: (
+      <>
+        You cannot police six teams into using a system, and a mandate buys
+        compliance rather than trust. A designer–engineer pair per platform,
+        one contribution path, and a release email that actually explained
+        itself did what governance memos could not.
+      </>
+    ),
+    href: "/work/ot-design-system",
+    cta: "The ambassadorship program",
+  },
+  {
+    n: "03",
+    title: "Foundations first, because nothing pauses",
+    body: (
+      <>
+        Real teams are always mid-flight. The useful layer is the one that can
+        be adopted inside an active codebase without a rewrite, which is why
+        tokens come before components and accessibility comes before polish.
+      </>
+    ),
+    href: "/work/ot-reservations",
+    cta: "Reservations, shipped without regressions",
+  },
+  {
+    n: "04",
+    title: "Measure the claim, then publish the failure",
+    body: (
+      <>
+        Assertions are cheap. I ran the &ldquo;agents follow a system better
+        when it is data&rdquo; claim as a real eval and got{" "}
+        <em>95% against 70%</em>. The same instinct runs the other way: this
+        site reproduces a genuine WCAG failure in an upstream token rather than
+        substituting a flattering colour, and reports it in the build.
+      </>
+    ),
+    href: "/work/system",
+    cta: "Parsimony",
   },
 ];
 
@@ -70,23 +142,43 @@ export default function AboutPage() {
 
       <div className="about-prose rise d4">
         <p>
-          I&apos;m a Principal Designer with ten years specializing in complex
-          B2B systems: <em>design systems infrastructure, decision tooling,</em>{" "}
-          and the compliance-heavy surfaces enterprise teams rely on daily.
+          I build the layer other designers build on. Ten years of it, mostly in{" "}
+          <em>design systems infrastructure, decision tooling,</em> and the
+          compliance-heavy surfaces enterprise teams live in every shift.
         </p>
         <p>
-          My work lives at the intersection of <em>policy, data, and enterprise
-          UX</em>. I care about making the invisible legible by surfacing the
-          rules, states, and edge cases that software usually buries. The best
-          design systems work looks quiet on the surface and holds up under
-          real pressure.
-        </p>
-        <p>
-          I&apos;m as fluent architecting a component library as I am
-          co-authoring a product brief, running a research sprint, or
-          negotiating token governance with engineering leads.
+          The work I care about is making the invisible legible: the rules,
+          states and edge cases software usually buries. Done well it looks
+          quiet, and it holds under real pressure. I&apos;m as comfortable
+          architecting a component library as co-authoring a product brief,
+          running a research sprint, or negotiating token governance with
+          engineering leads.
         </p>
       </div>
+
+      <div className="section-head rise d5" style={{ marginTop: "var(--spacing-layout)" }}>
+        <h2 className="eyebrow">
+          <span>
+            How I work <span aria-hidden="true">//</span>
+          </span>
+          <span className="eyebrow__italic">four positions, each with receipts</span>
+        </h2>
+      </div>
+
+      <ol className="principles rise d5">
+        {PRINCIPLES.map((p) => (
+          <li key={p.n} className="principle">
+            <span className="principle__n" aria-hidden="true">{p.n}</span>
+            <div>
+              <h3 className="principle__title">{p.title}</h3>
+              <p className="principle__body">{p.body}</p>
+              <Link className="principle__link" href={p.href}>
+                {p.cta} <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </li>
+        ))}
+      </ol>
 
       <div className="section-head rise d5" style={{ marginTop: "var(--spacing-layout)" }}>
         <h2 className="eyebrow">
