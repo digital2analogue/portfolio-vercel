@@ -57,7 +57,12 @@ To change a token value, edit brand-tokens → publish → `npm install @digital
 
 `scripts/check-contrast.mjs` runs before every build. It validates colour pairings against **both** WCAG AA criteria: 1.4.3 (text, 4.5:1) and 1.4.11 (non-text — a control's fill, boundary or state indicator, 3:1). Pass `min: NON_TEXT` on a pairing for the latter; text is the default. The 1.4.11 half was added after three controls in the reservation-detail demo measured 1.1–1.5:1 and were invisible to low vision while every text label passed.
 
-**When you add a new color pairing to the UI, add it to the `PAIRINGS` array in `scripts/check-contrast.mjs`.** The build will not catch it otherwise.
+**Two sources, and which one you add to matters.** The gate's pair list is half generated, half hand-written:
+
+- **System pairs are GENERATED** from `@digital2analogue2/parsimony/pairings.json` — the design system's own intended-pairing map (parsimony#87). Never hand-list one; add it upstream in `tokens/pairings.json` and it arrives on the next `npm install`. 25 pairs today, self-updating on every token bump. A missing map **fails the gate** rather than silently generating an empty list.
+- **App-local pairs are hand-written** in the `PAIRINGS` array: computed values and the OTKit demo palettes (resolved hexes from a different design system, which Parsimony's map can never supply). **When you add a new app-local color pairing to the UI, add it there.** The build will not catch it otherwise.
+
+**Do not delete the base text-hierarchy block** at the top of `PAIRINGS` as "now generated" — it isn't. Upstream derives the base hierarchy (`foreground.default/alt/muted/action` on the base surfaces, and each `on-<role>` against `background.<role>`) **by convention inside `validate_brand`** and never writes it to `pairings.json`, so the exported map cannot supply it. Tracked upstream as parsimony#216.
 
 **`accept: '<reason>'` on a pairing** records a failure that is real, understood and shipped deliberately — currently exactly one: white on OTKit's `background/action-hover` at 3.24:1, a defect in an upstream system this repo reproduces faithfully. It does not fail the build, but it is never reported as a pass: the true ratio prints, the row is marked `⚠️ ACCEPTED FAILURE`, the reason prints beneath it, and the summary reads "87 of 88 pairs pass" plus a separate accepted count. Using it to silence a failure you could actually fix is a misuse.
 

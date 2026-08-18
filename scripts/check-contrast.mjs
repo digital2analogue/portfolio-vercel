@@ -31,6 +31,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const CSS_FILE = path.join(__dirname, '../app/globals.css')
@@ -103,13 +104,76 @@ const BG_ACTION  = tok('--color-background-action')   // #4ADE6E
 
 // ─── Pairings manifest ─────────────────────────────────────────────────────────
 //
-// Add a new entry here whenever you introduce a new text/background combination.
+// TWO SOURCES, and the split is the point:
+//
+//   1. SYSTEM pairs are GENERATED from the design system's own intended-pairing
+//      map (`@digital2analogue2/parsimony/pairings.json`) — see below. Never
+//      hand-list one of these; add it upstream in `tokens/pairings.json` and it
+//      arrives here on the next `npm install`.
+//   2. APP-LOCAL pairs are hand-written in PAIRINGS below: computed values, and
+//      the OTKit demo palettes, which are resolved hexes from a different design
+//      system and cannot come from Parsimony's map.
+//
+// Add a new entry to PAIRINGS whenever you introduce a new app-local combination.
 // Format: { text, bg, label }
 
 // SC 1.4.11 — UI component boundaries and state indicators.
 const NON_TEXT = 3.0
 
+// ─── System pairs, generated from the upstream map ─────────────────────────────
+//
+// parsimony#87 asked for exactly this: one declarative map of intended pairings
+// in the design system, with consumers GENERATING their token-level checks from
+// it instead of each repo hand-maintaining a divergent copy. Before this, the
+// same contract existed three times (here, in decisioning-table, and by
+// convention inside `validate_brand`) with none of them authoritative — which is
+// how the sub-AA pairs in parsimony#66 survived for months.
+//
+// The map ships in the package, so this list self-updates on every token bump. A
+// pair the system adds upstream starts being checked here without anyone
+// remembering to mirror it.
+//
+// KNOWN GAP, stated rather than papered over: the exported map does NOT carry
+// parsimony's *convention-derived* pairs (base text hierarchy on base surfaces,
+// and each `on-<role>` against `background.<role>`). Upstream derives those in
+// code inside `validate_brand` and never writes them to the map, so they cannot
+// be generated here — the base-hierarchy block at the top of PAIRINGS is still
+// hand-written for that reason, and is NOT redundant with this list. Tracked as
+// parsimony#216.
+const BRAND = 'base' // this site renders the base dark theme
+
+function systemPairings() {
+  const req = createRequire(import.meta.url)
+  let map
+  try {
+    map = req('@digital2analogue2/parsimony/pairings.json')
+  } catch {
+    // An install without the map is a FAILURE, not a silent skip — the same
+    // lesson as the unresolved-pairing branch in the runner below. A generated
+    // list that quietly becomes empty reports green while checking nothing.
+    console.error(
+      '\n  ❌ Could not read @digital2analogue2/parsimony/pairings.json.\n' +
+        '     Run `npm install`; the contrast gate needs the upstream map.\n',
+    )
+    process.exit(1)
+  }
+  return map.pairs
+    .filter(p => !(p.excludeBrands ?? []).includes(BRAND))
+    .map(p => ({
+      text: `--${p.fg.replace(/\./g, '-')}`,
+      bg: `--${p.bg.replace(/\./g, '-')}`,
+      label: `System: ${p.context}`,
+      ...(p.kind === 'non-text' ? { min: NON_TEXT } : {}),
+    }))
+}
+
 const PAIRINGS = [
+  ...systemPairings(),
+
+  // ── Base text hierarchy ──
+  // NOT generated: upstream derives these by convention inside validate_brand
+  // and never writes them to pairings.json, so the map cannot supply them.
+  // See the KNOWN GAP note above (parsimony#216) before deleting any of them.
   // Default surface
   { text: '--color-foreground-default', bg: BG,        label: 'Body text / headings on page canvas' },
   { text: '--color-foreground-alt',     bg: BG,        label: 'Secondary text on page canvas' },
@@ -126,11 +190,11 @@ const PAIRINGS = [
   { text: '--color-foreground-on-action', bg: BG_ACTION, label: 'Button label on action background' },
 
   // ── check_usage playground (components/demos/CheckUsageDemo) ──
-  // Dark-system editor (bg-alt) with danger accents for violations. Compliant
-  // verdict + code reuse pairings already registered above (success/default on
-  // bg-alt). New danger pairings:
-  { text: '--color-foreground-danger', bg: BG_ALT,                          label: 'check_usage: violation accents (verdict, gutter, rule) on editor' },
-  { text: '--color-foreground-danger', bg: '--color-background-danger-alt', label: 'check_usage: rule-id chip (danger on danger-alt)' },
+  // Its two danger pairings — danger on bg-alt, and the rule-id chip's danger on
+  // danger-alt — used to be hand-listed here. Both are now GENERATED from the
+  // upstream map (they are system pairs, not app-local ones), so listing them
+  // again would only duplicate a check. Its compliant-verdict and code-reuse
+  // pairings are likewise covered by the base hierarchy above.
 
   // ── OTKit reservation-status demo (components/demos/ReservationStatusDemo) ──
   // Light-mode surface with its own OTKit-local palette (resolved hexes, not
