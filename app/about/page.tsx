@@ -82,10 +82,9 @@ export default function AboutPage() {
           real pressure.
         </p>
         <p>
-          I bring a systems-first mindset to every project. I&apos;m as fluent
-          architecting a component library as I am co-authoring a product
-          brief, running a research sprint, or negotiating token governance
-          with engineering leads.
+          I&apos;m as fluent architecting a component library as I am
+          co-authoring a product brief, running a research sprint, or
+          negotiating token governance with engineering leads.
         </p>
       </div>
 
@@ -135,7 +134,7 @@ export default function AboutPage() {
       <div className="dot-rule rise d7" aria-hidden="true" />
 
       <p className="bio-inline rise d7">
-        Based in San Francisco and taking new work,{" "}
+        Open to senior IC and staff roles, based in San Francisco.{" "}
         <a href="https://linkedin.com/in/riverromney" target="_blank" rel="noopener noreferrer">let's connect on LinkedIn</a>.
       </p>
     </div>
