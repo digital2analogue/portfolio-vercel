@@ -12,14 +12,23 @@
  *  - Elements with an authored stroke-dasharray (the amber "planned" paths)
  *    keep their dash pattern — they fade in rather than draw on.
  *
- * On narrow viewports the host is a horizontal scroller (globals.css gives the
- * SVG a floor width rather than letting it shrink to 3px labels). Whether it
- * actually overflows is *measured*, not assumed from a breakpoint: the keyboard
- * affordances and the scroll hint only appear when there is really something to
- * pan, so neither can lie about a diagram that happens to fit.
+ * Sizing: the diagram FITS its column, and enlarges on tap.
+ *
+ * These are ~1240px canvases. Panning them inline was tried and rejected — it
+ * cut the diagram off mid-sentence and turned every case-study scroll into a
+ * sideways scrub. Fitting alone is no better on a phone (3-4px labels), so the
+ * diagram is also a zoom trigger, exactly like an image block: fit inline to
+ * show the composition, open full-screen to read it. The overlay is the shared
+ * Lightbox, which holds a legibility floor for diagrams instead of shrinking
+ * them to nothing.
+ *
+ * The rasterized 2x PNG sibling is what the overlay shows — it is already
+ * committed as the declared fallback, and an <img> pans and pinch-zooms more
+ * predictably than inline SVG.
  */
 
 import { useEffect, useRef, useState } from "react";
+import Lightbox from "@/components/Lightbox";
 
 const STAGGER_MS = 24; // per-element delay in authored order
 const MAX_DELAY_MS = 900; // stagger ceiling so long diagrams don't crawl
@@ -29,24 +38,24 @@ const DRAW_MS = 700;
 export default function DiagramBlock({
   svg,
   caption,
+  alt,
+  src,
 }: {
   svg: string;
   caption?: string;
+  alt: string;
+  src: string;
 }) {
   const hostRef = useRef<HTMLDivElement>(null);
-  const [pannable, setPannable] = useState(false);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const png = src.replace(/\.svg$/, ".png");
 
-  // Kept out of the entrance effect below, which bails early under
-  // reduced motion — overflow has to be measured either way.
-  useEffect(() => {
-    const host = hostRef.current;
-    if (!host) return;
-    const measure = () => setPannable(host.scrollWidth - host.clientWidth > 1);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(host);
-    return () => ro.disconnect();
-  }, [svg]);
+  const close = () => {
+    setOpen(false);
+    // Hand focus back so keyboard users don't lose their place.
+    setTimeout(() => triggerRef.current?.focus(), 0);
+  };
 
   useEffect(() => {
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
@@ -129,21 +138,33 @@ export default function DiagramBlock({
   return (
     <figure className="block-diagram">
       <div
-        ref={hostRef}
-        className="block-diagram__host"
-        // A scrollable region has to be keyboard-reachable (WCAG 2.1.1). The
-        // inner <svg> already carries role="img" + the full alt, so the group
-        // only needs to announce that it pans.
-        {...(pannable
-          ? { tabIndex: 0, role: "group", "aria-label": "Scrollable diagram" }
-          : {})}
-        // Committed, hand-authored repo assets — not user input.
-        dangerouslySetInnerHTML={{ __html: svg }}
-      />
-      {pannable && (
-        <p className="block-diagram__hint">Scroll sideways to read the diagram</p>
-      )}
+        ref={triggerRef}
+        className="block-diagram__trigger"
+        role="button"
+        tabIndex={0}
+        aria-label={`Enlarge diagram: ${alt}`}
+        onClick={() => setOpen(true)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(true); }
+        }}
+      >
+        <div
+          ref={hostRef}
+          className="block-diagram__host"
+          // Committed, hand-authored repo assets — not user input.
+          dangerouslySetInnerHTML={{ __html: svg }}
+        />
+        <div className="block-image__zoom-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 5V1H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M13 5V1H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M1 9V13H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M13 9V13H9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+      </div>
       {caption && <figcaption>{caption}</figcaption>}
+      {open && <Lightbox src={png} alt={alt} variant="diagram" onClose={close} />}
     </figure>
   );
 }

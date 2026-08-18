@@ -562,6 +562,10 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
+        text: "Checking states instead of defaults is what turns up real problems. `background/action-hover` resolves to the lighter step of the brand ramp, so a white label on a hovered primary button measures **3.24:1** on Restaurant teal and **3.57:1** on Diner red. AA asks for 4.5:1 and makes no exception for hover. Only disabled controls are exempt. The demos on this page render the real token rather than a safer substitute, so that state fails here too, and this site's contrast gate reports it as an accepted failure rather than quietly passing.",
+      },
+      {
+        type: "p",
         text: "Because brand decisions were encoded as token values, the system absorbed a major brand shift without teams rewriting components.",
       },
       { type: "hr" },

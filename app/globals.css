@@ -1107,53 +1107,32 @@ h2.eyebrow,
   background: var(--color-background-alt);
 }
 
-/* Pan the diagram instead of shrinking it.
+/* Diagrams FIT their column and enlarge on tap.
    ------------------------------------------------------------------
-   Every diagram here is authored on a ~1240px canvas. At `width: 100%` in a
-   358px column that is scale 0.29, which rendered the smallest labels at
-   3.0–3.9px on a 390px viewport — measured across all eleven, and unreadable
-   in every one. Shrinking a single canvas would only make that diagram
-   inconsistent while staying unreadable, so the fix is here, once, for the
-   block.
+   These are ~1240px canvases. Two approaches were tried and rejected before
+   this one. Letting them shrink alone put the smallest labels at 3.0-3.9px on
+   a 390px viewport, measured across all eleven — unreadable. Panning them
+   inline (a `min-width` floor on a scrolling host) fixed legibility but cut
+   every diagram off mid-sentence and turned reading the case study into a
+   sideways scrub, which is worse.
 
-   The floor width is what does the work: a diagram never renders SMALLER
-   than it does in the full desktop case column, so you pan rather than
-   squint. `900px` is just under that column (912px), so on desktop the floor
-   is inert and nothing overflows — no scrollbar, no tab stop, no hint.
-
-   DELIBERATELY NOT IN A MEDIA QUERY. A `max-width: 700px` version of this
-   left a cliff: between 701px and ~1000px the case column is narrower than
-   the floor but the rule had switched off, so a tablet rendered the labels
-   at 5.5px — worse than the phone the rule was written for. Width-driven
-   behaviour belongs in `min-width`, which is continuous, not in a breakpoint,
-   which is not.
-
-   `overscroll-behavior-x: contain` stops the pan chaining into the browser's
-   back-gesture at the end of the scroll. DiagramBlock adds `tabindex`/`role`
-   and the hint only when the host *measurably* overflows (WCAG 2.1.1 — a
-   scrollable region must be keyboard-reachable), so neither can claim a
-   diagram scrolls when it doesn't. */
-.blocks .block-diagram__host {
-  --diagram-floor: 900px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
+   So: fit inline, which shows the composition and keeps the page readable,
+   and make the whole diagram a zoom trigger — the same bargain an image
+   block already makes. The overlay (.lightbox--diagram) is where the
+   legibility floor lives now, because panning is expected in a viewer and
+   intolerable in a page. */
+.blocks .block-diagram__trigger {
+  position: relative;
+  display: block;
+  cursor: zoom-in;
   border-radius: var(--radius-sm);
 }
-.blocks .block-diagram__host svg {
-  min-width: var(--diagram-floor);
-}
-.blocks .block-diagram__host:focus-visible {
+.blocks .block-diagram__trigger:focus-visible {
   outline: 2px solid var(--color-border-focus);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
-/* (0,2,0) — `.blocks p` is (0,1,1) and would otherwise paint this in the
-   case body's Spectral prose. See "The .blocks cascade leak" in CLAUDE.md. */
-.blocks .block-diagram__hint {
-  margin: var(--spacing-tight) 0 0;
-  font: var(--font-mono-label-small);
-  letter-spacing: var(--letter-spacing-label);
-  color: var(--color-foreground-muted);
-}
+.blocks .block-diagram__trigger .block-image__zoom-icon { pointer-events: none; }
+
 
 /* Video block — mp4 motion clips styled like the image figures */
 .blocks figure video.block-video {
@@ -1557,6 +1536,39 @@ h2.eyebrow,
   border-color: var(--color-foreground-action);
 }
 .lightbox__close:active { transform: translateY(1px); }
+
+/* Diagram variant. A photo should shrink to fit the viewport; a ~1240px diagram
+   shrunk to fit a 390px phone renders 3px labels, which is the whole problem
+   the overlay exists to solve. So it holds a floor and pans instead.
+   `min-width` beats `max-width` in the CSS cascade, so one declaration block
+   gives both behaviours: 1240px cap on a wide screen, 900px floor on a phone. */
+.lightbox--diagram {
+  display: block;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: default;
+  /* OPAQUE, not the base 90% scrim. Once the overlay pans, the page showing
+     through behind a moving diagram reads as a rendering fault rather than a
+     layer — the same call the iPad prototype's stage made. */
+  background: var(--color-background-default);
+  /* Clear the pinned close button so it never lands on the diagram's title. */
+  padding-top: 68px;
+}
+/* Pinned, not absolute: an absolutely-positioned button is placed against the
+   scroll content, so it slides off-screen as soon as you pan sideways. */
+.lightbox--diagram .lightbox__close {
+  position: fixed;
+  background: var(--color-background-alt);
+}
+.lightbox--diagram img {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  min-width: 900px;
+  max-width: 1240px;
+  max-height: none;
+  height: auto;
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    Embedded interactive demos (.demo-frame + .rr-demo)
@@ -2082,20 +2094,36 @@ h2.eyebrow,
   /* OTKit Foundation (Variables Library) — resolved light-mode values */
   --otk-bg: #ffffff;
   --otk-surface: #f1f2f4;
+  /* background/hover — a LITERAL in the library (no brand alias), Figma-read
+     2026-08-12. This is the hover fill for secondary (outline) buttons and for
+     table/list row hovers. It is NOT background/alt, which is a resting
+     surface. Owner-confirmed 2026-08-18, correcting an earlier instruction
+     that had secondary buttons hovering to background/alt. Deliberately faint:
+     1.06:1 against background/default, where background/alt was 1.12:1. */
+  --otk-hover: #f8f8f9;
   --otk-ink: #2d333f;
   --otk-alt: #6f737b;
   --otk-border: #d8d9db;
   --otk-action: #247f9e;
-  /* GUESS — not source-verified. `background/action-hover` and
-     `background/action-pressed` exist in OTKit Foundation (Variables Library)
-     v1.0.1 under the `Theme` collection, but nothing on that file's single page
-     binds them, so their values can't be read out of Figma and the docs site
-     (otkit.runthedish.com/color/backgrounds#action-states) is unreachable from
-     CI. -hover is pinned to what this button already rendered via
-     `filter: brightness(0.94)`, so the guess changes nothing visually while
-     removing an untokenized filter; -pressed is teal-dark, the pressed step in
-     the deck's ramp. Replace both once the real values are readable. */
-  --otk-action-hover: #227795;
+  /* Both values READ FROM FIGMA 2026-08-12 (see CLAUDE.md → OTKit token source
+     of truth for the method). The alias chain is
+     `background/action-hover` → `Colors/brand/hover` → `Colors/teal/light`.
+
+     Both are the true token values.
+
+     -hover is the *lighter* brand step, which puts white `foreground/on-action`
+     at 3.24:1 (teal) / 3.57:1 (red) — under the 4.5:1 WCAG 1.4.3 requires for
+     the button's own label. 1.4.3 has no state exemption; only *disabled*
+     controls are incidental, and hover is an active state. So this is a real
+     AA failure, and it belongs to OTKit, not to this repo.
+
+     Resolved 2026-08-18: the demo ships the true value. It previously used
+     #227795, a stand-in measuring a safe 5.07:1 — which made the gate green by
+     not reproducing the system. The pairing is now registered in
+     scripts/check-contrast.mjs with `accept:` and a stated reason, so the
+     failure is reported rather than hidden. Do not "fix" this by inventing a
+     passing colour; the fix belongs upstream, in the token's alias. */
+  --otk-action-hover: #2b9abf;
   --otk-action-pressed: #154a5b;
   --otk-focus: #247f9e;
   --otk-radius: 4px;
@@ -2131,7 +2159,18 @@ h2.eyebrow,
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: #813992;                 /* accent-purple-pressed — identity fill */
+  /* A coloured identity avatar takes an accent FILL with its matching on-accent
+     foreground — never an interaction-state step. Figma-verified 2026-08-12:
+     the violet accent fill is #7f5ce8 (already the Appetizer status fill here)
+     and `foreground/accent/on-violet` resolves to white. 4.57:1, AA.
+
+     This previously read `background: #813992`, annotated accent-purple-pressed,
+     which was wrong twice over: a PRESSED step is an interaction state and has
+     no business filling static decoration (this node is aria-hidden), and
+     #813992 is not an OTKit value at all — the real violet-pressed is #5f45ae.
+     For a NEUTRAL identity circle use background/alt + foreground/default
+     instead, as .rd-avatar does. Owner rule, 2026-08-18. */
+  background: #7f5ce8;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -2191,7 +2230,7 @@ h2.eyebrow,
 .rr-status[data-open="true"] .rr-status__chevron { transform: rotate(180deg); }
 
 .rr-status:hover                          { filter: brightness(0.94); box-shadow: 0 1px 3px rgba(20, 26, 38, 0.18); transform: translateY(-1px); }
-.rr-status[data-variant="outline"]:hover  { filter: none; background: var(--otk-surface); transform: translateY(-1px); }
+.rr-status[data-variant="outline"]:hover  { filter: none; background: var(--otk-hover); transform: translateY(-1px); }
 .rr-status:active                         { filter: brightness(0.88); transform: translateY(0); box-shadow: none; }
 .rr-status[data-variant="outline"]:active { filter: none; background: #e7e9ec; }
 .rr-status:focus-visible {
@@ -2223,7 +2262,7 @@ h2.eyebrow,
   cursor: pointer;
   transition: background-color var(--otk-dur) var(--otk-ease), border-color var(--otk-dur) var(--otk-ease);
 }
-.rr-demo-btn:hover { background: var(--otk-surface); }
+.rr-demo-btn:hover { background: var(--otk-hover); }
 .rr-demo-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
 .rr-demo-btn--primary {
   background: var(--otk-action);
@@ -2642,7 +2681,7 @@ h2.eyebrow,
    latches after a tap and leaves the slot stuck tinted, which on a row of
    choices reads as a selection that was never made. */
 @media (hover: hover) and (pointer: fine) {
-  .rr-brand .rr-brand-time:hover { background: var(--otk-surface); }
+  .rr-brand .rr-brand-time:hover { background: var(--otk-hover); }
 }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
@@ -2734,7 +2773,8 @@ h2.eyebrow,
      the token they come from and the reason they could not be used as-is.
 
        background/default   #FFFFFF   → --otk-bg
-       background/alt       #F1F2F4   → --otk-surface   (hover, tracks, circles)
+       background/alt       #F1F2F4   → --otk-surface   (tracks, circles)
+       background/hover     #F8F8F9   → --otk-hover     (row + secondary-button hover)
        foreground/default   #2D333F   → --otk-ink
        foreground/alt       #6F737B   → --otk-alt
        foreground/action    #247F9E   → --otk-action    (indicator, focus, switch-on)
@@ -2790,7 +2830,7 @@ h2.eyebrow,
   --rd-label-xs:     600 11px/11px var(--rd-font); /* badge counts only     */
 
   --rd-hairline: var(--otk-border);
-  --rd-hover: var(--otk-surface);
+  --rd-hover: var(--otk-hover);
 
   /* foreground/alt #6F737B darkened. Rows tint on hover/press, and the token is
      only 4.25:1 on background/alt — it clears 1.4.3 on white and nowhere else. */
@@ -3142,7 +3182,9 @@ h2.eyebrow,
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--rd-hover);
+  /* A filled circle is a resting surface (background/alt), not a hover state —
+     named explicitly so it no longer rides on --rd-hover. */
+  background: var(--otk-surface);
   color: var(--otk-ink);
   font: var(--rd-label-md);
   letter-spacing: 0.01em;
@@ -3323,7 +3365,9 @@ h2.eyebrow,
   width: 44px;
   height: 44px;
   border-radius: var(--radius-full);
-  background: var(--rd-hover);
+  /* A filled circle is a resting surface (background/alt), not a hover state —
+     named explicitly so it no longer rides on --rd-hover. */
+  background: var(--otk-surface);
   color: var(--otk-ink);
   font: var(--rd-title-sm);
   font-variant-numeric: tabular-nums;
@@ -3508,9 +3552,9 @@ h2.eyebrow,
   .rd-chip:hover { background: var(--rd-hover); }
   .rd-row--action:hover { background: var(--rd-hover); }
   .rd-iconbtn:hover { background: var(--rd-hover); }
-  .rd-select__item:not([data-active="true"]):hover { background: var(--otk-surface); }
+  .rd-select__item:not([data-active="true"]):hover { background: var(--otk-hover); }
   .rd-action:hover { filter: brightness(0.96); }
-  .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
+  .rd-action--secondary:hover { background: var(--otk-hover); filter: none; }
 }
 
 
