@@ -57,7 +57,12 @@ To change a token value, edit brand-tokens → publish → `npm install @digital
 
 `scripts/check-contrast.mjs` runs before every build. It validates colour pairings against **both** WCAG AA criteria: 1.4.3 (text, 4.5:1) and 1.4.11 (non-text — a control's fill, boundary or state indicator, 3:1). Pass `min: NON_TEXT` on a pairing for the latter; text is the default. The 1.4.11 half was added after three controls in the reservation-detail demo measured 1.1–1.5:1 and were invisible to low vision while every text label passed.
 
-**When you add a new color pairing to the UI, add it to the `PAIRINGS` array in `scripts/check-contrast.mjs`.** The build will not catch it otherwise.
+**Two sources, and which one you add to matters.** The gate's pair list is half generated, half hand-written:
+
+- **System pairs are GENERATED** from `@digital2analogue2/parsimony/pairings.json` — the design system's own intended-pairing map (parsimony#87). Never hand-list one; add it upstream in `tokens/pairings.json` and it arrives on the next `npm install`. 25 pairs today, self-updating on every token bump. A missing map **fails the gate** rather than silently generating an empty list.
+- **App-local pairs are hand-written** in the `PAIRINGS` array: computed values and the OTKit demo palettes (resolved hexes from a different design system, which Parsimony's map can never supply). **When you add a new app-local color pairing to the UI, add it there.** The build will not catch it otherwise.
+
+**Do not delete the base text-hierarchy block** at the top of `PAIRINGS` as "now generated" — it isn't. Upstream derives the base hierarchy (`foreground.default/alt/muted/action` on the base surfaces, and each `on-<role>` against `background.<role>`) **by convention inside `validate_brand`** and never writes it to `pairings.json`, so the exported map cannot supply it. Tracked upstream as parsimony#216.
 
 **Gate scope / known gaps.** The gate only checks *static token pairings* — it does not see rendered state. Two classes of contrast issue slip past it and have been surfaced by external audits (Vercel/axe/Lighthouse):
 
