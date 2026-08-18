@@ -143,6 +143,11 @@ const PAIRINGS = [
   { text: '#ffffff', bg: '#ad4cc3', label: 'Demo: status label — accent-purple (Arrived/Seated)' },
   { text: '#ffffff', bg: '#d82c82', label: 'Demo: status label — accent-fuchsia (Partially)' },
   { text: '#ffffff', bg: '#7f5ce8', label: 'Demo: status label — accent-violet (Appetizer)' },
+  // Same accent pair, reused for the identity avatar: an accent FILL with its
+  // matching foreground/accent/on-violet (white, Figma-verified). Replaces an
+  // invented #813992 that was labelled accent-purple-pressed — both the wrong
+  // role (a pressed step on aria-hidden decoration) and not a real OTKit value.
+  { text: '#ffffff', bg: '#7f5ce8', label: 'Demo: avatar initials on accent-violet fill' },
   { text: '#ffffff', bg: '#4a6fde', label: 'Demo: status label — accent-blue (Entree)' },
   { text: '#ffffff', bg: '#20738f', label: 'Demo: status label — accent-teal (Dessert, AA-nudged)' },
   { text: '#ffffff', bg: '#c84f29', label: 'Demo: status label — accent-orange (Cleared)' },
@@ -150,7 +155,7 @@ const PAIRINGS = [
   // Split 2026-08-18: outline-button hover moved to background/hover, so it no
   // longer shares a fill with the active segment (still background/alt).
   { text: '#2d333f', bg: '#f8f8f9', label: 'Demo: ink on secondary-button hover (background/hover)' },
-  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (active seg, tracks, circles)' },
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (active seg, tracks, neutral circles)' },
   { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
@@ -163,7 +168,6 @@ const PAIRINGS = [
   { text: '#63666d', bg: '#f4f6f8', label: 'Demo: muted note on the frame surface gradient (darkest stop)' },
   { text: '#2d333f', bg: '#f4f6f8', label: 'Demo: ink on the frame surface gradient (darkest stop)' },
   { text: '#4a4f59', bg: '#f4f6f8', label: 'Demo/brand: OTKit foreground-alt on the frame surface gradient' },
-  { text: '#ffffff', bg: '#813992', label: 'Demo: avatar initials on accent-purple-pressed' },
 
   // ── iOS reservation detail (components/demos/ReservationDetailDemo) ──
   // Reuses the OTKit palette above; only the pairings unique to this screen are

@@ -2147,7 +2147,18 @@ h2.eyebrow,
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: #813992;                 /* accent-purple-pressed — identity fill */
+  /* A coloured identity avatar takes an accent FILL with its matching on-accent
+     foreground — never an interaction-state step. Figma-verified 2026-08-12:
+     the violet accent fill is #7f5ce8 (already the Appetizer status fill here)
+     and `foreground/accent/on-violet` resolves to white. 4.57:1, AA.
+
+     This previously read `background: #813992`, annotated accent-purple-pressed,
+     which was wrong twice over: a PRESSED step is an interaction state and has
+     no business filling static decoration (this node is aria-hidden), and
+     #813992 is not an OTKit value at all — the real violet-pressed is #5f45ae.
+     For a NEUTRAL identity circle use background/alt + foreground/default
+     instead, as .rd-avatar does. Owner rule, 2026-08-18. */
+  background: #7f5ce8;
   color: #ffffff;
   display: flex;
   align-items: center;
