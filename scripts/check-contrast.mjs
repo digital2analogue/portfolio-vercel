@@ -15,6 +15,13 @@
  * To add a new check: add an entry to PAIRINGS at the bottom of this file. Pass
  * `min: NON_TEXT` for anything that is not text; leave it off for text.
  *
+ * `accept: '<reason>'` records a pairing that genuinely FAILS and is shipped
+ * anyway — currently only for a defect in an upstream system we are faithfully
+ * reproducing. It does not fail the build, but it is never reported as a pass:
+ * the real ratio is printed, the row is marked, and the summary counts it
+ * separately. Use it only when the failure is real, understood, and written
+ * down. Silencing a fixable failure with it is a misuse.
+ *
  * Exempt, deliberately: decorative edges that are NOT required to identify a
  * control — row hairlines, card frames, the header chip dividers. Each chip is
  * identified by its own label and icon, both of which clear 1.4.3; the rule
@@ -252,10 +259,14 @@ const PAIRINGS = [
   // Primary button states. Both values are GUESSES — see the note beside
   // --otk-action-hover in globals.css. Registered so that whatever replaces
   // them has to clear AA too.
-  // #227795 is NOT the real token. Figma resolves background/action-hover to
-  // #2b9abf, on which white measures 3.24:1 — a genuine AA failure in OTKit.
-  // See CLAUDE.md; swapping the true value in fails this gate by design.
-  { text: '#ffffff', bg: '#227795', label: 'Demo: primary button label on action-hover (stand-in; true token is #2b9abf at 3.24:1)' },
+  // The real OTKit token, and a real WCAG AA failure. background/action-hover
+  // aliases to the LIGHTER brand step (Colors/teal/light), so white
+  // foreground/on-action on it is 3.24:1 — under the 4.5:1 that 1.4.3 requires.
+  // 1.4.3 has no state exemption: only *disabled* controls are incidental, and
+  // hover is an active state. The demo previously shipped #227795, a stand-in
+  // that measured a safe 5.07:1 — flattering, but not the token. Fidelity wins:
+  // the demo reproduces OTKit, and the gate says out loud what OTKit does.
+  { text: '#ffffff', bg: '#2b9abf', accept: 'Real OTKit token defect, reproduced faithfully. Fixing it upstream means re-pointing background/action-hover off Colors/brand/hover; it cannot be fixed in this repo.', label: 'Demo: primary button label on action-hover (true OTKit token)' },
   { text: '#ffffff', bg: '#154a5b', label: 'Demo: primary button label on action-pressed (Figma-verified)' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
@@ -293,12 +304,13 @@ const PAIRINGS = [
 
 const MIN_RATIO = 4.5
 let failed = 0
+let accepted = 0
 
 console.log('\n  Contrast check — WCAG AA (1.4.3 text 4.5:1 · 1.4.11 non-text 3:1)\n')
 console.log(`  ${'Pair'.padEnd(52)} ${'Ratio'.padStart(7)} ${'Min'.padStart(4)}  Status`)
 console.log(`  ${'─'.repeat(72)}`)
 
-for (const { text, bg, label, min } of PAIRINGS) {
+for (const { text, bg, label, min, accept } of PAIRINGS) {
   const textHex = typeof text === 'string' && text.startsWith('--') ? tok(text) : text
   const bgHex   = typeof bg   === 'string' && bg.startsWith('--')   ? tok(bg)   : bg
 
@@ -316,9 +328,12 @@ for (const { text, bg, label, min } of PAIRINGS) {
   const ratio = contrastRatio(textHex, bgHex)
   const floor = min ?? MIN_RATIO
   const pass  = ratio >= floor
-  if (!pass) failed++
+  if (!pass && accept) accepted++
+  else if (!pass) failed++
   const need = floor === MIN_RATIO ? '    ' : ` ${floor.toFixed(1)}`
-  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1 ${need}  ${pass ? '✅' : '❌ FAIL'}`)
+  const mark = pass ? '✅' : accept ? '⚠️  ACCEPTED FAILURE' : '❌ FAIL'
+  console.log(`  ${label.padEnd(52)} ${ratio.toFixed(2).padStart(7)}:1 ${need}  ${mark}`)
+  if (!pass && accept) console.log(`  ${' '.repeat(52)}            ↳ ${accept}`)
 }
 
 console.log()
@@ -328,5 +343,10 @@ if (failed > 0) {
   process.exit(1)
 } else {
   const nonText = PAIRINGS.filter(p => p.min).length
-  console.log(`  ✅ All ${PAIRINGS.length} pairs pass WCAG AA (${PAIRINGS.length - nonText} text · ${nonText} non-text)\n`)
+  const checked = PAIRINGS.length - accepted
+  console.log(`  ✅ ${checked} of ${PAIRINGS.length} pairs pass WCAG AA (${PAIRINGS.length - nonText} text · ${nonText} non-text)`)
+  if (accepted > 0) {
+    console.log(`  ⚠️  ${accepted} accepted failure(s) — real, documented, shipped deliberately. See the reasons above.`)
+  }
+  console.log()
 }

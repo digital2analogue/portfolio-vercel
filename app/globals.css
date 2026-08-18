@@ -2097,19 +2097,21 @@ h2.eyebrow,
      of truth for the method). The alias chain is
      `background/action-hover` → `Colors/brand/hover` → `Colors/teal/light`.
 
-     -pressed below is the true token value: #154a5b. ✅
+     Both are the true token values.
 
-     -hover is NOT. The true value is #2b9abf — the *lighter* brand step, which
-     puts white `foreground/on-action` at 3.24:1 (teal) / 3.57:1 (red), under
-     the 4.5:1 that WCAG 1.4.3 wants for the button's own label. That is a real
-     property of the OTKit token, not a bug here. #227795 below is the earlier
-     guess, kept deliberately: it measures 5.07:1, so the demo passes the
-     contrast gate but its hover state is NOT faithful to the token.
+     -hover is the *lighter* brand step, which puts white `foreground/on-action`
+     at 3.24:1 (teal) / 3.57:1 (red) — under the 4.5:1 WCAG 1.4.3 requires for
+     the button's own label. 1.4.3 has no state exemption; only *disabled*
+     controls are incidental, and hover is an active state. So this is a real
+     AA failure, and it belongs to OTKit, not to this repo.
 
-     Swapping in #2b9abf makes the demo truthful and fails
-     scripts/check-contrast.mjs on the spot. That trade is unresolved and is
-     the owner's call — don't flip it silently in either direction. */
-  --otk-action-hover: #227795;
+     Resolved 2026-08-18: the demo ships the true value. It previously used
+     #227795, a stand-in measuring a safe 5.07:1 — which made the gate green by
+     not reproducing the system. The pairing is now registered in
+     scripts/check-contrast.mjs with `accept:` and a stated reason, so the
+     failure is reported rather than hidden. Do not "fix" this by inventing a
+     passing colour; the fix belongs upstream, in the token's alias. */
+  --otk-action-hover: #2b9abf;
   --otk-action-pressed: #154a5b;
   --otk-focus: #247f9e;
   --otk-radius: 4px;
