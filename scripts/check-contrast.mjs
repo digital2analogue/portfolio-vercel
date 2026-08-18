@@ -140,7 +140,10 @@ const PAIRINGS = [
   { text: '#ffffff', bg: '#20738f', label: 'Demo: status label — accent-teal (Dessert, AA-nudged)' },
   { text: '#ffffff', bg: '#c84f29', label: 'Demo: status label — accent-orange (Cleared)' },
   { text: '#2d333f', bg: '#ffffff', label: 'Demo: ink on white (Finished/Cancelled, row name, swatch)' },
-  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (outline hover, active seg)' },
+  // Split 2026-08-18: outline-button hover moved to background/hover, so it no
+  // longer shares a fill with the active segment (still background/alt).
+  { text: '#2d333f', bg: '#f8f8f9', label: 'Demo: ink on secondary-button hover (background/hover)' },
+  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo: ink on grey surface (active seg, tracks, circles)' },
   { text: '#6f737b', bg: '#ffffff', label: 'Demo: muted text on white (row sub, field labels, notes)' },
   { text: '#63666d', bg: '#f1f2f4', label: 'Demo: inactive segment label on toggle track' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo: dropdown group labels / option sublabels on white' },
@@ -159,14 +162,15 @@ const PAIRINGS = [
   // Reuses the OTKit palette above; only the pairings unique to this screen are
   // listed. Note the constraint that shapes it: rows TINT on hover and press, so
   // every foreground has to clear AA on white and on both tints. Muted #6f737b
-  // fails that test (4.25:1 on #f1f2f4), which is why this screen's muted text is
-  // #63666d — 5.75 / 5.13 / 4.81 across white, hover and press.
+  // fails that test (4.48:1 even on the lighter background/hover), which is why
+  // this screen's muted text is #63666d — 5.75 / 5.42 / 4.81 across white,
+  // hover and press.
   { text: '#63666d', bg: '#e9ebee', label: 'Demo/detail: muted row text on pressed row tint' },
   { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: ink row text on pressed row tint' },
   { text: '#2d333f', bg: '#e9ebee', label: 'Demo/detail: secondary action label on its pressed fill' },
   { text: '#ffffff', bg: '#247f9e', label: 'Demo/detail: Completed label on primary action' },
   // Interactive text in every state a row actually reaches.
-  { text: '#2d333f', bg: '#f1f2f4', label: 'Demo/detail: chip + row label on hovered row' },
+  { text: '#2d333f', bg: '#f8f8f9', label: 'Demo/detail: chip + row label on hovered row (background/hover)' },
   { text: '#63666d', bg: '#ffffff', label: 'Demo/detail: note byline / inactive segment on white' },
   //
   // ── SC 1.4.11, non-text (3:1) ──
@@ -177,7 +181,7 @@ const PAIRINGS = [
   { text: '#82868e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: control boundary ring on white (switch, action, segment)' },
   { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: visit-scope underline (same token as the strip)' },
   { text: '#247f9e', bg: '#ffffff', min: NON_TEXT, label: 'Demo/detail: focus ring + tab indicator + switch-on fill' },
-  { text: '#247f9e', bg: '#f1f2f4', min: NON_TEXT, label: 'Demo/detail: active tab glyph on hovered tab' },
+  { text: '#247f9e', bg: '#f8f8f9', min: NON_TEXT, label: 'Demo/detail: active tab glyph on hovered tab (background/hover)' },
   // Leading row glyphs — orientation marks, held to 3:1 in every row state.
   { text: '#82868e', bg: '#e9ebee', min: NON_TEXT, label: 'Demo/detail: leading row glyph on pressed row' },
   // Tag category glyphs. accent-yellow #FDAF08 is 1.86:1 and is darkened here.
@@ -244,7 +248,7 @@ const PAIRINGS = [
   // SELECTED slot is the ink fill below — both well past their thresholds.
   // (Worth knowing regardless: a 1.41:1 boundary is a real SC 1.4.11 soft spot
   // in OTKit's light theme, not something this demo introduced.)
-  { text: '#141a26', bg: '#f1f2f4', label: 'Demo/brand: time-slot label on its hover fill (background/alt)' },
+  { text: '#141a26', bg: '#f8f8f9', label: 'Demo/brand: time-slot label on its hover fill (background/hover)' },
   // Primary button states. Both values are GUESSES — see the note beside
   // --otk-action-hover in globals.css. Registered so that whatever replaces
   // them has to clear AA too.

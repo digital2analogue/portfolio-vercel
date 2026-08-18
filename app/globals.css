@@ -2082,6 +2082,13 @@ h2.eyebrow,
   /* OTKit Foundation (Variables Library) — resolved light-mode values */
   --otk-bg: #ffffff;
   --otk-surface: #f1f2f4;
+  /* background/hover — a LITERAL in the library (no brand alias), Figma-read
+     2026-08-12. This is the hover fill for secondary (outline) buttons and for
+     table/list row hovers. It is NOT background/alt, which is a resting
+     surface. Owner-confirmed 2026-08-18, correcting an earlier instruction
+     that had secondary buttons hovering to background/alt. Deliberately faint:
+     1.06:1 against background/default, where background/alt was 1.12:1. */
+  --otk-hover: #f8f8f9;
   --otk-ink: #2d333f;
   --otk-alt: #6f737b;
   --otk-border: #d8d9db;
@@ -2198,7 +2205,7 @@ h2.eyebrow,
 .rr-status[data-open="true"] .rr-status__chevron { transform: rotate(180deg); }
 
 .rr-status:hover                          { filter: brightness(0.94); box-shadow: 0 1px 3px rgba(20, 26, 38, 0.18); transform: translateY(-1px); }
-.rr-status[data-variant="outline"]:hover  { filter: none; background: var(--otk-surface); transform: translateY(-1px); }
+.rr-status[data-variant="outline"]:hover  { filter: none; background: var(--otk-hover); transform: translateY(-1px); }
 .rr-status:active                         { filter: brightness(0.88); transform: translateY(0); box-shadow: none; }
 .rr-status[data-variant="outline"]:active { filter: none; background: #e7e9ec; }
 .rr-status:focus-visible {
@@ -2230,7 +2237,7 @@ h2.eyebrow,
   cursor: pointer;
   transition: background-color var(--otk-dur) var(--otk-ease), border-color var(--otk-dur) var(--otk-ease);
 }
-.rr-demo-btn:hover { background: var(--otk-surface); }
+.rr-demo-btn:hover { background: var(--otk-hover); }
 .rr-demo-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--otk-bg), 0 0 0 4px var(--otk-focus); }
 .rr-demo-btn--primary {
   background: var(--otk-action);
@@ -2649,7 +2656,7 @@ h2.eyebrow,
    latches after a tap and leaves the slot stuck tinted, which on a row of
    choices reads as a selection that was never made. */
 @media (hover: hover) and (pointer: fine) {
-  .rr-brand .rr-brand-time:hover { background: var(--otk-surface); }
+  .rr-brand .rr-brand-time:hover { background: var(--otk-hover); }
 }
 .rr-brand .rr-brand-card__cta {
   margin: 0; padding: 12px; border-radius: 6px; text-align: center;
@@ -2741,7 +2748,8 @@ h2.eyebrow,
      the token they come from and the reason they could not be used as-is.
 
        background/default   #FFFFFF   → --otk-bg
-       background/alt       #F1F2F4   → --otk-surface   (hover, tracks, circles)
+       background/alt       #F1F2F4   → --otk-surface   (tracks, circles)
+       background/hover     #F8F8F9   → --otk-hover     (row + secondary-button hover)
        foreground/default   #2D333F   → --otk-ink
        foreground/alt       #6F737B   → --otk-alt
        foreground/action    #247F9E   → --otk-action    (indicator, focus, switch-on)
@@ -2797,7 +2805,7 @@ h2.eyebrow,
   --rd-label-xs:     600 11px/11px var(--rd-font); /* badge counts only     */
 
   --rd-hairline: var(--otk-border);
-  --rd-hover: var(--otk-surface);
+  --rd-hover: var(--otk-hover);
 
   /* foreground/alt #6F737B darkened. Rows tint on hover/press, and the token is
      only 4.25:1 on background/alt — it clears 1.4.3 on white and nowhere else. */
@@ -3149,7 +3157,9 @@ h2.eyebrow,
   width: 40px;
   height: 40px;
   border-radius: var(--radius-full);
-  background: var(--rd-hover);
+  /* A filled circle is a resting surface (background/alt), not a hover state —
+     named explicitly so it no longer rides on --rd-hover. */
+  background: var(--otk-surface);
   color: var(--otk-ink);
   font: var(--rd-label-md);
   letter-spacing: 0.01em;
@@ -3330,7 +3340,9 @@ h2.eyebrow,
   width: 44px;
   height: 44px;
   border-radius: var(--radius-full);
-  background: var(--rd-hover);
+  /* A filled circle is a resting surface (background/alt), not a hover state —
+     named explicitly so it no longer rides on --rd-hover. */
+  background: var(--otk-surface);
   color: var(--otk-ink);
   font: var(--rd-title-sm);
   font-variant-numeric: tabular-nums;
@@ -3515,9 +3527,9 @@ h2.eyebrow,
   .rd-chip:hover { background: var(--rd-hover); }
   .rd-row--action:hover { background: var(--rd-hover); }
   .rd-iconbtn:hover { background: var(--rd-hover); }
-  .rd-select__item:not([data-active="true"]):hover { background: var(--otk-surface); }
+  .rd-select__item:not([data-active="true"]):hover { background: var(--otk-hover); }
   .rd-action:hover { filter: brightness(0.96); }
-  .rd-action--secondary:hover { background: var(--otk-surface); filter: none; }
+  .rd-action--secondary:hover { background: var(--otk-hover); filter: none; }
 }
 
 
