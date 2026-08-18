@@ -248,8 +248,11 @@ const PAIRINGS = [
   // Primary button states. Both values are GUESSES — see the note beside
   // --otk-action-hover in globals.css. Registered so that whatever replaces
   // them has to clear AA too.
-  { text: '#ffffff', bg: '#227795', label: 'Demo: primary button label on action-hover (guessed value)' },
-  { text: '#ffffff', bg: '#154a5b', label: 'Demo: primary button label on action-pressed (guessed value)' },
+  // #227795 is NOT the real token. Figma resolves background/action-hover to
+  // #2b9abf, on which white measures 3.24:1 — a genuine AA failure in OTKit.
+  // See CLAUDE.md; swapping the true value in fails this gate by design.
+  { text: '#ffffff', bg: '#227795', label: 'Demo: primary button label on action-hover (stand-in; true token is #2b9abf at 3.24:1)' },
+  { text: '#ffffff', bg: '#154a5b', label: 'Demo: primary button label on action-pressed (Figma-verified)' },
 
   // Interactive outcome-toggle demo — a LIGHT (decision-engine arctic) device
   // card embedded on the dark page. These pairings use the scoped arctic hex

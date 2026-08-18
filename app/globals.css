@@ -2086,15 +2086,22 @@ h2.eyebrow,
   --otk-alt: #6f737b;
   --otk-border: #d8d9db;
   --otk-action: #247f9e;
-  /* GUESS — not source-verified. `background/action-hover` and
-     `background/action-pressed` exist in OTKit Foundation (Variables Library)
-     v1.0.1 under the `Theme` collection, but nothing on that file's single page
-     binds them, so their values can't be read out of Figma and the docs site
-     (otkit.runthedish.com/color/backgrounds#action-states) is unreachable from
-     CI. -hover is pinned to what this button already rendered via
-     `filter: brightness(0.94)`, so the guess changes nothing visually while
-     removing an untokenized filter; -pressed is teal-dark, the pressed step in
-     the deck's ramp. Replace both once the real values are readable. */
+  /* Both values READ FROM FIGMA 2026-08-12 (see CLAUDE.md → OTKit token source
+     of truth for the method). The alias chain is
+     `background/action-hover` → `Colors/brand/hover` → `Colors/teal/light`.
+
+     -pressed below is the true token value: #154a5b. ✅
+
+     -hover is NOT. The true value is #2b9abf — the *lighter* brand step, which
+     puts white `foreground/on-action` at 3.24:1 (teal) / 3.57:1 (red), under
+     the 4.5:1 that WCAG 1.4.3 wants for the button's own label. That is a real
+     property of the OTKit token, not a bug here. #227795 below is the earlier
+     guess, kept deliberately: it measures 5.07:1, so the demo passes the
+     contrast gate but its hover state is NOT faithful to the token.
+
+     Swapping in #2b9abf makes the demo truthful and fails
+     scripts/check-contrast.mjs on the spot. That trade is unresolved and is
+     the owner's call — don't flip it silently in either direction. */
   --otk-action-hover: #227795;
   --otk-action-pressed: #154a5b;
   --otk-focus: #247f9e;
