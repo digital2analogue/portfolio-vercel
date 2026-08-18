@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Block } from "@/lib/caseContent";
 import { DEMO_REGISTRY } from "@/components/demos/registry";
 import DiagramBlock from "@/components/DiagramBlock";
+import Lightbox from "@/components/Lightbox";
 
 /**
  * Renders a case-study content stream as typed React blocks.
@@ -90,7 +91,7 @@ export default function CaseBlocks({ blocks, reveal }: { blocks: Block[]; reveal
             // Falls back to the rasterized PNG when the SVG wasn't inlined
             // (e.g. a consumer that skipped lib/diagrams.ts).
             return b.svg ? (
-              <DiagramBlock key={i} svg={b.svg} caption={b.caption} />
+              <DiagramBlock key={i} svg={b.svg} caption={b.caption} alt={b.alt} src={b.src} />
             ) : (
               <CaseImage
                 key={i}
@@ -574,69 +575,3 @@ function OutcomeSegment({
  *   - Escape key closes; focus trap keeps Tab/Shift+Tab inside the dialog
  *   - Body scroll locked while open
  */
-function Lightbox({
-  src,
-  alt,
-  onClose,
-}: {
-  src: string;
-  alt: string;
-  onClose: () => void;
-}) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-
-  // On open: focus the close button, lock body scroll
-  useEffect(() => {
-    closeRef.current?.focus();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = prev; };
-  }, []);
-
-  // Escape key closes
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [onClose]);
-
-  // Focus trap — keep Tab/Shift+Tab inside the dialog
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key !== "Tab") return;
-    const focusable = overlayRef.current?.querySelectorAll<HTMLElement>(
-      'button, [href], input, [tabindex]:not([tabindex="-1"])'
-    );
-    if (!focusable || focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey) {
-      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-    } else {
-      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
-    }
-  };
-
-  return (
-    <div
-      ref={overlayRef}
-      className="lightbox"
-      role="dialog"
-      aria-modal="true"
-      aria-label={alt}
-      onClick={onClose}
-      onKeyDown={handleKeyDown}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={alt} onClick={(e) => e.stopPropagation()} />
-      <button
-        ref={closeRef}
-        className="lightbox__close"
-        onClick={onClose}
-        aria-label="Close image"
-      >
-        ESC / CLOSE
-      </button>
-    </div>
-  );
-}
