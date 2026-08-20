@@ -32,6 +32,12 @@ const EXPERIENCE = [
     period: "2026 – present",
   },
   {
+    role: "Career break",
+    company: "Family bereavement",
+    period: "2025 – 2026",
+    note: "Kept building: design-systems research, and the first version of Parsimony.",
+  },
+  {
     role: "Principal UI/UX Designer, Design Systems",
     company: "Capital One",
     period: "2024 – 2025",
@@ -67,9 +73,8 @@ const PRINCIPLES = [
     title: "Name the cost in dollars",
     body: (
       <>
-        A system nobody funds is a hobby. At OpenTable I surveyed 37 people and
-        costed design-system drift at <em>≈$390K a year</em> in visual QA time.
-        That number is what moved the work from a nice idea to a funded one.
+        A system nobody funds is a hobby. I surveyed 37 people and priced
+        drift at <em>≈$390K a year</em>. That number got the work funded.
       </>
     ),
     href: "/work/ot-design-system",
@@ -80,10 +85,9 @@ const PRINCIPLES = [
     title: "Adoption is advocacy, not enforcement",
     body: (
       <>
-        You cannot police six teams into using a system, and a mandate buys
-        compliance rather than trust. A designer–engineer pair per platform,
-        one contribution path, and a release email that actually explained
-        itself did what governance memos could not.
+        You can&apos;t police six teams into a system. A designer–engineer
+        pair per platform, one contribution path, and a release email people
+        actually read did what mandates couldn&apos;t.
       </>
     ),
     href: "/work/ot-design-system",
@@ -94,9 +98,9 @@ const PRINCIPLES = [
     title: "Foundations first, because nothing pauses",
     body: (
       <>
-        Real teams are always mid-flight. The useful layer is the one that can
-        be adopted inside an active codebase without a rewrite, which is why
-        tokens come before components and accessibility comes before polish.
+        Real teams are always mid-flight. Build the layer they can adopt
+        without a rewrite: tokens before components, accessibility before
+        polish.
       </>
     ),
     href: "/work/ot-reservations",
@@ -107,11 +111,9 @@ const PRINCIPLES = [
     title: "Measure the claim, then publish the failure",
     body: (
       <>
-        Assertions are cheap. I ran the &ldquo;agents follow a system better
-        when it is data&rdquo; claim as a real eval and got{" "}
-        <em>95% against 70%</em>. The same instinct runs the other way: this
-        site reproduces a genuine WCAG failure in an upstream token rather than
-        substituting a flattering colour, and reports it in the build.
+        Assertions are cheap. &ldquo;Agents follow a system better when it&apos;s
+        data&rdquo; became a real eval: <em>95% against 70%</em>. This site also
+        ships a genuine WCAG failure rather than a flattering fake.
       </>
     ),
     href: "/work/system",
@@ -142,17 +144,14 @@ export default function AboutPage() {
 
       <div className="about-prose rise d4">
         <p>
-          I build the layer other designers build on. Ten years of it, mostly in{" "}
-          <em>design systems infrastructure, decision tooling,</em> and the
-          compliance-heavy surfaces enterprise teams live in every shift.
+          I build the layer other designers build on. Ten years in{" "}
+          <em>design systems, decision tooling,</em> and compliance-heavy
+          enterprise UX.
         </p>
         <p>
-          The work I care about is making the invisible legible: the rules,
-          states and edge cases software usually buries. Done well it looks
-          quiet, and it holds under real pressure. I&apos;m as comfortable
-          architecting a component library as co-authoring a product brief,
-          running a research sprint, or negotiating token governance with
-          engineering leads.
+          The work is making the invisible legible: the rules, states and edge
+          cases software buries. Done well it looks quiet and holds under
+          pressure.
         </p>
       </div>
 
@@ -217,6 +216,9 @@ export default function AboutPage() {
             <div>
               <div className="about-experience__role">{e.role}</div>
               <div className="about-experience__company">{e.company}</div>
+              {e.note && (
+                <div className="about-experience__note">{e.note}</div>
+              )}
             </div>
             <div className="about-experience__period">{e.period}</div>
           </div>

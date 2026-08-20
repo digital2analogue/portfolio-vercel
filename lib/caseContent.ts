@@ -193,7 +193,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           { value: "25%", label: "Less QA time" },
           { value: "≈$98K/yr", label: "Recovered" },
-          { value: "+2.15%", label: "Diner bookings" },
+          { value: "+2.19%", label: "Diner bookings" },
         ],
       },
       {
@@ -293,7 +293,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h3", text: "Type: thirty-nine fonts, one scale" },
       {
         type: "p",
-        text: "The old scale was one-size-fits-all: not mobile-optimized, encouraging incorrect font usage in native apps, and ballooned to 39 fonts in the codebase. The replacement was contextual — size, weight and family defined per platform context, plus Apple Dynamic Type, 44px minimum touch targets, and the same tokens as web. A/B testing showed a **+2.15% increase in diner bookings**, about +600 weekly net bookers, on pages using dynamic type.",
+        text: "The old scale was one-size-fits-all: not mobile-optimized, encouraging incorrect font usage in native apps, and ballooned to 39 fonts in the codebase. The replacement was contextual — size, weight and family defined per platform context, plus Apple Dynamic Type, 44px minimum touch targets, and the same tokens as web. A/B testing showed a **+2.19% increase in diner bookings**, about +600 weekly net bookers, on pages using dynamic type.",
       },
       {
         type: "video",

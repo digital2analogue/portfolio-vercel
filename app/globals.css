@@ -833,6 +833,15 @@ h2.eyebrow,
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
 }
+/* Optional one-line gloss on an experience row. Used by the career-break
+   entry: a gap left unexplained invites the reader to guess, and a short
+   factual line closes it without turning the timeline into a story. */
+.about-experience__note {
+  font: var(--font-body-medium);
+  color: var(--color-foreground-muted);
+  margin-top: var(--primitive-space-2xs);
+  max-width: 60ch;
+}
 .about-experience__period {
   font: var(--font-code);
   color: var(--color-foreground-muted);
