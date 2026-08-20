@@ -849,58 +849,65 @@ h2.eyebrow,
   align-self: center;
 }
 
-/* "How I work" on /about. Without a photo, this section carries the job a
-   headshot usually does: showing there is a person with positions behind the
-   systems. Each item links to the work that evidences it, so the claims are
-   checkable rather than adjectives. */
+/* "How I work" on /about. Without a photo this section does the job a headshot
+   usually does — show there is someone with positions behind the systems — but
+   it has to be scannable, not read. One row per position: claim, receipt, link
+   to the work that proves it. An earlier version used title-plus-paragraph
+   blocks and read as a wall. */
 .principles {
   list-style: none;
   margin: var(--spacing-component) 0 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-component);
-  counter-reset: none;
 }
+.principles li + li { border-top: 1px solid var(--color-border-muted); }
 .principle {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: baseline;
   gap: var(--spacing-element);
-  padding-bottom: var(--spacing-component);
-  border-bottom: 1px solid var(--color-border-muted);
+  padding: var(--spacing-inline) 0;
+  text-decoration: none;
 }
-.principle:last-child { border-bottom: 0; padding-bottom: 0; }
 .principle__n {
   font: var(--font-mono-label-small);
   color: var(--color-foreground-action);
   letter-spacing: var(--letter-spacing-label);
-  padding-top: 0.35em;
 }
-.principle__title {
-  font: var(--font-title-small);
-  letter-spacing: var(--letter-spacing-title);
+.principle__claim {
+  font: var(--font-label-large);
   color: var(--color-foreground-default);
-  margin: 0 0 var(--spacing-tight);
 }
-.principle__body {
-  font: var(--font-body-large);
-  color: var(--color-foreground-alt);
-  margin: 0 0 var(--spacing-tight);
-}
-.principle__body em {
-  color: var(--color-foreground-default);
-  font-style: italic;
-}
-.principle__link {
+.principle__receipt {
   font: var(--font-mono-label-small);
+  color: var(--color-foreground-muted);
   letter-spacing: var(--letter-spacing-label);
-  text-decoration: none;
-  color: var(--color-foreground-action);
+  text-align: right;
 }
-.principle__link:hover { text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 560px) {
-  .principle { grid-template-columns: 1fr; gap: var(--spacing-tight); }
-  .principle__n { padding-top: 0; }
+.principle__arrow {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-muted);
+}
+@media (hover: hover) and (pointer: fine) {
+  .principle:hover .principle__claim { color: var(--color-foreground-action); }
+  .principle:hover .principle__arrow { color: var(--color-foreground-action); }
+}
+.principle:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+/* Stack at narrow widths: the receipt cannot share a line with the claim
+   once the claim wraps, and a right-aligned fragment under a wrapped
+   heading reads as a stray. */
+@media (max-width: 700px) {
+  .principle {
+    grid-template-columns: auto 1fr;
+    gap: var(--spacing-tight) var(--spacing-element);
+  }
+  .principle__receipt {
+    grid-column: 2;
+    text-align: left;
+  }
+  .principle__arrow { display: none; }
 }
 
 /* Next-step nudge at the bottom of /about */

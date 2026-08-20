@@ -35,7 +35,7 @@ const EXPERIENCE = [
     role: "Career break",
     company: "Family bereavement",
     period: "2025 – 2026",
-    note: "Kept building: design-systems research, and the first version of Parsimony.",
+    note: "Design-systems research. First version of Parsimony.",
   },
   {
     role: "Principal UI/UX Designer, Design Systems",
@@ -64,60 +64,33 @@ const EXPERIENCE = [
   },
 ];
 
-/* Each principle is evidenced by work on this site, and links to it. This
-   section is the page carrying the "who is this person to work with" load —
-   without a photo, that has to come from stated positions, not adjectives. */
+/* One line each: the position, the receipt, and a link to the work that
+   proves it. Prose paragraphs here were a wall — the page has to be legible
+   at a glance, and a claim plus its number reads faster than a sentence. */
 const PRINCIPLES = [
   {
     n: "01",
-    title: "Name the cost in dollars",
-    body: (
-      <>
-        A system nobody funds is a hobby. I surveyed 37 people and priced
-        drift at <em>≈$390K a year</em>. That number got the work funded.
-      </>
-    ),
+    claim: "Name the cost in dollars",
+    receipt: "≈$390K drift, priced and funded",
     href: "/work/ot-design-system",
-    cta: "OTKit",
   },
   {
     n: "02",
-    title: "Adoption is advocacy, not enforcement",
-    body: (
-      <>
-        You can&apos;t police six teams into a system. A designer–engineer
-        pair per platform, one contribution path, and a release email people
-        actually read did what mandates couldn&apos;t.
-      </>
-    ),
+    claim: "Adoption is advocacy, not enforcement",
+    receipt: "6 teams, no mandate",
     href: "/work/ot-design-system",
-    cta: "The ambassadorship program",
   },
   {
     n: "03",
-    title: "Foundations first, because nothing pauses",
-    body: (
-      <>
-        Real teams are always mid-flight. Build the layer they can adopt
-        without a rewrite: tokens before components, accessibility before
-        polish.
-      </>
-    ),
+    claim: "Foundations first, nothing pauses",
+    receipt: "shipped with zero regressions",
     href: "/work/ot-reservations",
-    cta: "Reservations, shipped without regressions",
   },
   {
     n: "04",
-    title: "Measure the claim, then publish the failure",
-    body: (
-      <>
-        Assertions are cheap. &ldquo;Agents follow a system better when it&apos;s
-        data&rdquo; became a real eval: <em>95% against 70%</em>. This site also
-        ships a genuine WCAG failure rather than a flattering fake.
-      </>
-    ),
+    claim: "Measure the claim, publish the failure",
+    receipt: "95% vs 70%, machine-scored",
     href: "/work/system",
-    cta: "Parsimony",
   },
 ];
 
@@ -146,12 +119,8 @@ export default function AboutPage() {
         <p>
           I build the layer other designers build on. Ten years in{" "}
           <em>design systems, decision tooling,</em> and compliance-heavy
-          enterprise UX.
-        </p>
-        <p>
-          The work is making the invisible legible: the rules, states and edge
-          cases software buries. Done well it looks quiet and holds under
-          pressure.
+          enterprise UX. The work is making the rules, states and edge cases
+          software buries legible.
         </p>
       </div>
 
@@ -160,21 +129,19 @@ export default function AboutPage() {
           <span>
             How I work <span aria-hidden="true">//</span>
           </span>
-          <span className="eyebrow__italic">four positions, each with receipts</span>
+          <span className="eyebrow__italic">with receipts</span>
         </h2>
       </div>
 
       <ol className="principles rise d5">
         {PRINCIPLES.map((p) => (
-          <li key={p.n} className="principle">
-            <span className="principle__n" aria-hidden="true">{p.n}</span>
-            <div>
-              <h3 className="principle__title">{p.title}</h3>
-              <p className="principle__body">{p.body}</p>
-              <Link className="principle__link" href={p.href}>
-                {p.cta} <span aria-hidden="true">→</span>
-              </Link>
-            </div>
+          <li key={p.n}>
+            <Link className="principle" href={p.href}>
+              <span className="principle__n" aria-hidden="true">{p.n}</span>
+              <span className="principle__claim">{p.claim}</span>
+              <span className="principle__receipt">{p.receipt}</span>
+              <span className="principle__arrow" aria-hidden="true">→</span>
+            </Link>
           </li>
         ))}
       </ol>
