@@ -129,7 +129,6 @@ export default function AboutPage() {
           <span>
             How I work <span aria-hidden="true">//</span>
           </span>
-          <span className="eyebrow__italic">with receipts</span>
         </h2>
       </div>
 
