@@ -29,13 +29,8 @@ const EXPERIENCE = [
   {
     role: "Designer & Design Engineer",
     company: "Independent",
-    period: "2026 – present",
-  },
-  {
-    role: "Career break",
-    company: "Family bereavement",
-    period: "2025 – 2026",
-    note: "Design-systems research. First version of Parsimony.",
+    period: "2025 – present",
+    note: "Started during a career break for family bereavement.",
   },
   {
     role: "Principal UI/UX Designer, Design Systems",
