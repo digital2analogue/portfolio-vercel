@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Principal Designer with ten years in design systems infrastructure, decision tooling, and compliance-heavy B2B. Based in San Francisco; taking new work.",
+    "I build the layer other designers build on: design systems infrastructure, decision tooling, and compliance-heavy B2B. Ten years, San Francisco, open to senior IC and staff roles.",
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About · River Romney",
@@ -26,14 +27,25 @@ const SKILLS = [
 
 const EXPERIENCE = [
   {
+    role: "Designer & Design Engineer",
+    company: "Independent",
+    period: "2025 – present",
+    note: "Started during a career break for family bereavement.",
+  },
+  {
     role: "Principal UI/UX Designer, Design Systems",
     company: "Capital One",
     period: "2024 – 2025",
   },
   {
-    role: "Lead Product Designer, Design Systems - Product Owner",
+    role: "Lead Product Designer, Design Systems · Product Owner",
     company: "OpenTable",
-    period: "2019 – 2024",
+    period: "2023 – 2024",
+  },
+  {
+    role: "Senior Product Designer",
+    company: "OpenTable",
+    period: "2019 – 2023",
   },
   {
     role: "Product Designer",
@@ -44,6 +56,36 @@ const EXPERIENCE = [
     role: "Interaction Designer",
     company: "ExpertVoice",
     period: "2015 – 2018",
+  },
+];
+
+/* One line each: the position, the receipt, and a link to the work that
+   proves it. Prose paragraphs here were a wall — the page has to be legible
+   at a glance, and a claim plus its number reads faster than a sentence. */
+const PRINCIPLES = [
+  {
+    n: "01",
+    claim: "Name the cost in dollars",
+    receipt: "≈$390K drift, priced and funded",
+    href: "/work/ot-design-system",
+  },
+  {
+    n: "02",
+    claim: "Adoption is advocacy, not enforcement",
+    receipt: "6 teams, no mandate",
+    href: "/work/ot-design-system",
+  },
+  {
+    n: "03",
+    claim: "Foundations first, nothing pauses",
+    receipt: "shipped with zero regressions",
+    href: "/work/ot-reservations",
+  },
+  {
+    n: "04",
+    claim: "Measure the claim, publish the failure",
+    receipt: "95% vs 70%, machine-scored",
+    href: "/work/system",
   },
 ];
 
@@ -70,24 +112,33 @@ export default function AboutPage() {
 
       <div className="about-prose rise d4">
         <p>
-          I&apos;m a Principal Designer with ten years specializing in complex
-          B2B systems: <em>design systems infrastructure, decision tooling,</em>{" "}
-          and the compliance-heavy surfaces enterprise teams rely on daily.
-        </p>
-        <p>
-          My work lives at the intersection of <em>policy, data, and enterprise
-          UX</em>. I care about making the invisible legible by surfacing the
-          rules, states, and edge cases that software usually buries. The best
-          design systems work looks quiet on the surface and holds up under
-          real pressure.
-        </p>
-        <p>
-          I bring a systems-first mindset to every project. I&apos;m as fluent
-          architecting a component library as I am co-authoring a product
-          brief, running a research sprint, or negotiating token governance
-          with engineering leads.
+          I build the layer other designers build on. Ten years in{" "}
+          <em>design systems, decision tooling,</em> and compliance-heavy
+          enterprise UX. The work is making the rules, states and edge cases
+          software buries legible.
         </p>
       </div>
+
+      <div className="section-head rise d5" style={{ marginTop: "var(--spacing-layout)" }}>
+        <h2 className="eyebrow">
+          <span>
+            How I work <span aria-hidden="true">//</span>
+          </span>
+        </h2>
+      </div>
+
+      <ol className="principles rise d5">
+        {PRINCIPLES.map((p) => (
+          <li key={p.n}>
+            <Link className="principle" href={p.href}>
+              <span className="principle__n" aria-hidden="true">{p.n}</span>
+              <span className="principle__claim">{p.claim}</span>
+              <span className="principle__receipt">{p.receipt}</span>
+              <span className="principle__arrow" aria-hidden="true">→</span>
+            </Link>
+          </li>
+        ))}
+      </ol>
 
       <div className="section-head rise d5" style={{ marginTop: "var(--spacing-layout)" }}>
         <h2 className="eyebrow">
@@ -126,6 +177,9 @@ export default function AboutPage() {
             <div>
               <div className="about-experience__role">{e.role}</div>
               <div className="about-experience__company">{e.company}</div>
+              {e.note && (
+                <div className="about-experience__note">{e.note}</div>
+              )}
             </div>
             <div className="about-experience__period">{e.period}</div>
           </div>
@@ -135,7 +189,7 @@ export default function AboutPage() {
       <div className="dot-rule rise d7" aria-hidden="true" />
 
       <p className="bio-inline rise d7">
-        Based in San Francisco and taking new work,{" "}
+        Open to senior IC and staff roles, based in San Francisco.{" "}
         <a href="https://linkedin.com/in/riverromney" target="_blank" rel="noopener noreferrer">let's connect on LinkedIn</a>.
       </p>
     </div>

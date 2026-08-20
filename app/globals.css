@@ -833,11 +833,81 @@ h2.eyebrow,
   letter-spacing: var(--letter-spacing-all-caps);
   text-transform: uppercase;
 }
+/* Optional one-line gloss on an experience row. Used by the career-break
+   entry: a gap left unexplained invites the reader to guess, and a short
+   factual line closes it without turning the timeline into a story. */
+.about-experience__note {
+  font: var(--font-body-medium);
+  color: var(--color-foreground-muted);
+  margin-top: var(--primitive-space-2xs);
+  max-width: 60ch;
+}
 .about-experience__period {
   font: var(--font-code);
   color: var(--color-foreground-muted);
   letter-spacing: var(--letter-spacing-label);
   align-self: center;
+}
+
+/* "How I work" on /about. Without a photo this section does the job a headshot
+   usually does — show there is someone with positions behind the systems — but
+   it has to be scannable, not read. One row per position: claim, receipt, link
+   to the work that proves it. An earlier version used title-plus-paragraph
+   blocks and read as a wall. */
+.principles {
+  list-style: none;
+  margin: var(--spacing-component) 0 0;
+  padding: 0;
+}
+.principles li + li { border-top: 1px solid var(--color-border-muted); }
+.principle {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: baseline;
+  gap: var(--spacing-element);
+  padding: var(--spacing-inline) 0;
+  text-decoration: none;
+}
+.principle__n {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-action);
+  letter-spacing: var(--letter-spacing-label);
+}
+.principle__claim {
+  font: var(--font-label-large);
+  color: var(--color-foreground-default);
+}
+.principle__receipt {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-muted);
+  letter-spacing: var(--letter-spacing-label);
+  text-align: right;
+}
+.principle__arrow {
+  font: var(--font-mono-label-small);
+  color: var(--color-foreground-muted);
+}
+@media (hover: hover) and (pointer: fine) {
+  .principle:hover .principle__claim { color: var(--color-foreground-action); }
+  .principle:hover .principle__arrow { color: var(--color-foreground-action); }
+}
+.principle:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+/* Stack at narrow widths: the receipt cannot share a line with the claim
+   once the claim wraps, and a right-aligned fragment under a wrapped
+   heading reads as a stray. */
+@media (max-width: 700px) {
+  .principle {
+    grid-template-columns: auto 1fr;
+    gap: var(--spacing-tight) var(--spacing-element);
+  }
+  .principle__receipt {
+    grid-column: 2;
+    text-align: left;
+  }
+  .principle__arrow { display: none; }
 }
 
 /* Next-step nudge at the bottom of /about */

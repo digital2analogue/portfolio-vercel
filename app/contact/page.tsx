@@ -60,15 +60,13 @@ export default function ContactPage() {
         </h1>
 
         <p className="lede rise d3">
-          Open to senior IC and staff roles in design systems, B2B product, or
-          fintech. Also happy to talk about your hard design problem.
+          Open to senior IC and staff roles in design systems, B2B product,
+          or fintech. Also happy to talk about your hard design problem.
         </p>
 
         <div className="single-status rise d4">
           <span className="status-dot" aria-hidden="true">●</span>
-          &nbsp;<span className="single-status__v">
-            Available for new opportunities
-          </span>
+          &nbsp;<span className="single-status__v">Open to work</span>
           <span className="single-status__sep" aria-hidden="true">·</span>
           <span>Response within 24–48h</span>
         </div>

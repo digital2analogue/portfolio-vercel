@@ -39,7 +39,7 @@ export const CASES: CaseStudy[] = [
     tags: ["Design Systems", "Tokens", "Multi-platform"],
     summary:
       "Built and scaled OpenTable's design system: shared tokens, component patterns, and contribution workflows across web and native platforms.",
-    metrics: ["QA time −25%", "Bookings +2.15%", "≈$98K/yr recovered"],
+    metrics: ["QA time −25%", "Bookings +2.19%", "≈$98K/yr recovered"],
     status: "COMPLETE",
   },
   {
