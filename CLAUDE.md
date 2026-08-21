@@ -24,6 +24,8 @@ npm run render-diagrams # Rasterize the diagram SVGs → 2× PNG (headless chrom
 
 **Visual baselines are generated ON the CI runner, never locally** — font rasterization differs across machines, so locally-generated baselines fail in CI. After an intentional visual change, run the "Update visual baselines" workflow from the Actions tab (it regenerates and commits them on the runner). **Workflow quirk:** the workflow's `github-actions[bot]` commit does NOT trigger CI (it lands as `action_required`) — after the regen commit appears, push an empty `ci: re-trigger checks on regenerated baselines` commit to get `checks`/`visual` to run. `main` has branch protection requiring the `checks` and `visual` status checks; Dependabot files weekly grouped bumps and the `dependabot-automerge` workflow merges them once CI passes (major npm bumps stay manual). Baselines capture at 1280px desktop under reduced motion — mobile-only CSS (≤700px media queries) and reduced-motion-suppressed animation never shift them.
 
+**No local guard can catch a stale baseline — dispatch the workflow the moment you touch a snapshotted route (2026-08-20).** A content edit to `/about` and `/work/c1-decision-engine` left CI red for four consecutive pushes and the owner found it by email. `checks` passed every time; only the two screenshots disagreed. This is structural, not an oversight: every local guard in this repo is screenshot-free **by construction** — `demo-cascade` and `diagram-legibility` measure geometry and computed styles specifically so they never need a regen, the unit tests don't render, and the contrast gate reads declared token pairings. Nothing local sees pixels, so a stale baseline is invisible until CI runs. Treat the snapshot list at "Visual-regression note" below as the trigger: edit one of those six routes → dispatch "Update visual baselines" in the same push, don't wait for red.
+
 **Known Dependabot gotcha (2026-07-20):** a grouped `npm-dependencies` bump can quietly fold in a major the Next 16 ecosystem isn't ready for yet, even though most of the group is safe. Two hit at once in PR #40: `typescript ^7` (the native Go-compiler distribution — Next 16's built-in TS integration can't load it, so `next build` fails with *"trying to use TypeScript but do not have the required package(s) installed"*, which is what actually shows up as the **Vercel deploy failure**) and `eslint ^10` (drops `context.getFilename()`, which the `eslint-plugin-react` bundled by `eslint-config-next@16` still calls, so `npm run lint` throws — this only surfaces in CI's `checks` job, never in the Vercel build, since Next 16 doesn't lint at build time). Fix pattern: don't close the whole group — branch off it, pin just the incompatible major(s) back to their current version, keep everything else, and verify locally with the full CI-equivalent sequence (`lint` + `test` + `build`, not just `build`) before opening the replacement PR. See #41.
 
 ### Design Token System
@@ -165,6 +167,22 @@ Conventions:
 ### Case-body typography (review-settled 2026-07-21)
 
 `.blocks h3` is `--font-title-small` (h2 stays `--font-title-medium`) so nested sub-headings visibly step down; figcaptions are **regular (non-italic) `--font-label-small`** via the single shared `.blocks figure figcaption` rule. Both were review decisions — don't revert to same-size h3s or italic label-medium captions.
+
+### Content density (owner-settled 2026-08-20, PR #75)
+
+The owner's standard is **legible at a glance** — *"I don't use so many words."* All four case studies were cut to that standard: **49 → 29 H2 sections, 314 → 202 blocks, 3980 → 3506 prose words.** Every diagram, demo, image and embed was retained; the reductions were headings, `hr`s, and paragraphs restating the heading above them.
+
+**Sections fell 41%, prose only 12% — and that gap is the actual lesson.** The redundancy in this site was *structural*, not verbose writing: sections restating each other and headings announcing a paragraph that then said the same thing. Two case studies (`ot-design-system`, `system`) barely lost prose at all; they lost scroll-stops. So the failure mode to avoid is not "long paragraphs" — it is **adding a section**. Before adding an H2 to a case study, check whether an existing section already covers it.
+
+**`/about` is one line per idea, not paragraphs.** The `.principles` list is four rows of `claim · receipt · link-to-proof`. This took three passes: the first two deleted sentences while keeping the paragraph shape and did **not** fix the problem — the page still had to be *read*. Changing the structure is what made it scannable, so the obvious "improvement" (adding explanatory copy under each claim) undoes it. The CSS carries a comment saying so.
+
+**Owner preferences, stated:** no photo of himself on the site; **no real names on quotes** — role-level attribution only. The four `cite`d quotes stay anonymous by choice, so they are weak social proof by design; the checkable artifacts (the public parsimony repo, the published package, this site running on its own tokens, the Substack) carry that weight instead. When linking Parsimony, **link GitHub, not npm** — npm's page leads with a download count that argues against the claim, while the repo shows the commits, CI, issues and roadmap. The package's realness is a *sentence* (9 published versions, currently `0.7.0`), not a link.
+
+### The bookings metric is 2.19%, and the VSCO deck is wrong
+
+`+2.19%` — diner bookings from the contextual type scale — is correct on the site and the résumé. It appears in three places: `lib/caseContent.ts` (a `stats` block and a body paragraph, **both rendered** on `/work/ot-design-system`) and `lib/cases.ts` `metrics` (dead data, rendered nowhere including `/work`).
+
+This has been broken once already: `9a8de7b` "synced" it to `+2.15%` from the portfolio deck, and PR #75 reverted it. **The deck is not a source of truth for metrics** — when the two disagree, the site wins. `public/projects/images/IMAGE_SHORTLIST.md` also carried `2.19%` throughout the period the site was wrong, which is the tell that should have caught it.
 
 ### Routes
 
