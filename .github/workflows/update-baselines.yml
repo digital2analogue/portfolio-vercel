@@ -14,24 +14,22 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      # Deliberately still on v4 while ci.yml and tokens-freshness.yml moved to
-      # v7. This is the ONE workflow that commits and pushes back, which depends
-      # on checkout persisting credentials — and that path had no verified run
-      # at v7 anywhere in this org: river-intro and decisioning-table run
-      # checkout@v7 here, but every successful run of theirs took the "Baselines
-      # unchanged" early exit (the commit step measures 0s in all of them), so
-      # not one ever reached the push. This repo has 26 runs on v4 that
-      # genuinely committed, which is why it stayed the known-good control.
+      # Was held at v4 while the rest of CI moved up, because this is the one
+      # workflow that commits and pushes back and no run anywhere in this org
+      # had ever actually exercised that push on v7 — every green v7 run took
+      # the "Baselines unchanged" early exit.
       #
-      # The push-credential probe in the commit step below now closes that gap:
-      # every dispatch exercises auth whether or not baselines changed. So this
-      # bump is no longer blind — it is sequenced. This repo (v4) runs the probe
-      # first to prove the probe itself is sound; the v7 repos run it next, and
-      # only a green result there justifies moving this file to v7. Until that
-      # sequence has actually run, v4 stays.
-      - uses: actions/checkout@v4
+      # RESOLVED 2026-09-01. The push-credential probe below made it testable:
+      # dispatched on v4 here first (control, green), then on checkout@v7 +
+      # setup-node@v7 in river-intro and decisioning-table (both green). v7
+      # persists credentials; the push path is sound. Moved up on that evidence.
+      #
+      # The v4 pin was also not a stable resting place: the runner now warns
+      # that checkout@v4 and setup-node@v4 target Node 20 and are being forced
+      # onto Node 24.
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
