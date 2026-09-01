@@ -35,3 +35,20 @@ lib/caseContent.ts
 # has something to fix. They are rendered text, not styling — correctly flagged
 # by the shared rules, correctly exempt here. (parsimony#174)
 lib/checkUsageRules.ts
+
+# The "One component, two brands" demo dataset (components/demos/BrandThemeDemo).
+# Same class as the OTKit files above: these are OTKit's own brand-collection
+# values, read from the declared vector fills in the portfolio deck, and they are
+# namespaced `otkit/` precisely to hold them apart from Parsimony's `--color-*`.
+# Replacing them with Parsimony tokens would destroy what the demo demonstrates.
+lib/brandThemes.ts
+
+# Deployed prototypes: self-contained static HTML served in an `embed` block,
+# each shipping its own complete stylesheet. The iPad FoH prototype is the
+# owner's Claude Design export, and its tokens match the OTKit Figma source
+# exactly (CLAUDE.md, 2026-08-10) — it is documented as living outside the
+# contrast gate and the cascade guard for the same reason it lives outside the
+# rules here: an iframe is not same-document DOM, and none of this is Parsimony
+# component code. Directory-wide because that is what the directory is FOR; if
+# a Parsimony-governed source file is ever added here, narrow this to the file.
+public/projects/prototypes/**
