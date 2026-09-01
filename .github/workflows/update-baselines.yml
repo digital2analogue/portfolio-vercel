@@ -14,6 +14,20 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      # Deliberately still on v4 while ci.yml and tokens-freshness.yml moved to
+      # v7. This is the ONE workflow that commits and pushes back, which depends
+      # on checkout persisting credentials — and that path is unverified at v7
+      # anywhere in this org. river-intro and decisioning-table already run
+      # checkout@v7 here, but every successful run of theirs hit the "Baselines
+      # unchanged — nothing to commit" early exit (the commit step measures 0s
+      # in all of them), so not one ever reached the push. This repo has 26 runs
+      # on v4 that genuinely committed.
+      #
+      # It also cannot be verified on demand: dispatching with no pending visual
+      # change short-circuits the same way. So take this bump as part of a real
+      # baseline regen, where a failure surfaces immediately — not blind. A break
+      # here is latent (workflow_dispatch only) and would land on whoever next
+      # needs a regen, mid visual change.
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4

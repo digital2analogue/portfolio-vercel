@@ -11,6 +11,25 @@ updates:
       npm-dependencies:
         patterns:
           - "*"
+        # Majors stay OUT of the group. Repo policy is that major bumps are
+        # taken by hand, and with `patterns: ["*"]` alone that policy freezes
+        # everything behind the first unapproved one — the group is a single
+        # PR, so it merges whole or not at all. That is exactly what #40 was:
+        # typescript 7 and eslint 10 rode in alongside a batch of safe bumps
+        # and the whole thing had to be unpicked by hand into #41.
+        #
+        # The `ignore` list below and this are complementary, not redundant:
+        # `ignore` suppresses the two majors already known to be unusable, and
+        # this stops any *future* unknown major taking the safe half hostage
+        # the same way. Minors and patches still arrive as one quiet weekly PR
+        # that auto-merges; each major arrives on its own, declinable alone.
+        #
+        # river-intro shipped a WCAG token fix two weeks late learning this
+        # (its #26/#27); decisioning-table has run this shape since its own
+        # typescript-7 incident.
+        update-types:
+          - minor
+          - patch
     ignore:
       # TypeScript 7 (the Go-based compiler) doesn't provide the compiler API
       # Next.js needs — its presence in the weekly group makes every preview
