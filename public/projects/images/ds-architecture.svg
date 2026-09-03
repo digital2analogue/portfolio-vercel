@@ -17,8 +17,8 @@
 <text x="184" y="333.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">one CSS file per brand   ·   published as a versioned npm package</text>
 <rect x="120" y="400" width="1060" height="84" rx="12" fill="#0E120D" stroke="#1A211A" stroke-width="1.4" opacity="1.0"/>
 <text x="146" y="439.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">03</text>
-<text x="184" y="439.6" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Components: 27 Lit web components</text>
-<text x="184" y="463.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">each ships:  .ts   ·   meta.json contract 27/27   ·   Code Connect authored 22/27</text>
+<text x="184" y="439.6" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Components: 29 Lit web components</text>
+<text x="184" y="463.6" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="13" font-weight="400" fill="#8B9683" text-anchor="start" opacity="1.0">each ships:  .ts   ·   meta.json contract 29/29   ·   Code Connect authored 22/29</text>
 <ellipse cx="650" cy="559.0" rx="320" ry="120" fill="url(#bloom)"/>
 <text x="146" y="516" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,Menlo,monospace" font-size="14" font-weight="600" fill="#4ADE6E" text-anchor="start" opacity="1.0">04</text>
 <text x="184" y="516" font-family="'Space Grotesk','Inter',system-ui,sans-serif" font-size="16.5" font-weight="500" fill="#C8CFC4" text-anchor="start" opacity="1.0">Artifact: one machine-readable file</text>

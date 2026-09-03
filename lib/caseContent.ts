@@ -706,7 +706,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
         items: [
           "**Author.** DTCG tokens: primitives → semantic roles. Brands re-point the roles.",
           "**Build.** Style Dictionary compiles every brand to CSS. A gate rejects hex, primitive refs, and dangling aliases — a bad rename fails the build, not production.",
-          "**Components.** 27 framework-agnostic Lit web components. Code Connect mappings are authored for 22 and held to each component's real prop unions by a build gate — unpublished, because Code Connect needs a Figma Enterprise plan.",
+          "**Components.** 29 framework-agnostic Lit web components. Code Connect mappings are authored for 22 and held to each component's real prop unions by a build gate — unpublished, because Code Connect needs a Figma Enterprise plan.",
           "**Artifact.** Hand-authored metadata + generated manifest merge into one design-system.json.",
           "**Interfaces.** Humans read Figma and docs; agents read an MCP server.",
           "**Consumers.** Every site pulls from one source, as an installable package.",
@@ -836,7 +836,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       { type: "h2", text: "Honest Status" },
       {
         type: "p",
-        text: "Part of the work was deciding what to leave unbuilt. Shipped: a two-layer token architecture across four brands; 27 Lit components with build-gated Code Connect bindings; an MCP server with 17 tools; one rule set behind every checker, so the gates can't disagree; weekly automated drift and parity audits; and WCAG AA verified across every intended pairing, in every brand.",
+        text: "Part of the work was deciding what to leave unbuilt. Shipped: a two-layer token architecture across four brands; 29 Lit components with build-gated Code Connect bindings; an MCP server with 17 tools; one rule set behind every checker, so the gates can't disagree; weekly automated drift and parity audits; and WCAG AA verified across every intended pairing, in every brand.",
       },
       {
         type: "p",
