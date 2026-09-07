@@ -30,6 +30,25 @@ updates:
         update-types:
           - minor
           - patch
+        # ...with one exception, because "one major per PR" is wrong for
+        # packages that only work in lockstep. `@vitest/ui` declares an EXACT
+        # peer on its matching `vitest`, so splitting the pair across two PRs
+        # makes each one uninstallable: `npm install` fails ERESOLVE before a
+        # build ever starts. That is what #88 and #89 were — the 4.1.11 -> 5.0.0
+        # bump arriving as two halves, each conflicting with the half still on
+        # main. Excluded here and regrouped below.
+        exclude-patterns:
+          - "vitest"
+          - "@vitest/*"
+      # The vitest family, kept whole. No `update-types` filter, so majors ride
+      # in this group too and the pair moves together in one installable PR.
+      # Majors are still taken by hand — this only ensures the PR offering them
+      # can actually resolve, so CI can report on vitest 5 instead of dying at
+      # install.
+      vitest:
+        patterns:
+          - "vitest"
+          - "@vitest/*"
     ignore:
       # TypeScript 7 (the Go-based compiler) doesn't provide the compiler API
       # Next.js needs — its presence in the weekly group makes every preview
