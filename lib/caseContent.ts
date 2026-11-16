@@ -840,7 +840,7 @@ export const CASE_CONTENT: Record<string, CaseContent> = {
       },
       {
         type: "p",
-        text: "Deferred on purpose: publishing the component library and MCP server to npm (the token package ships today), migrating the remaining sites onto it, auto-fixing drift rather than just filing it, and generating Figma and component code from the contract — the committed end state.",
+        text: "Deferred on purpose: publishing the MCP server to npm (the token and component packages ship today), migrating the remaining sites onto it, auto-fixing drift rather than just filing it, and generating Figma and component code from the contract — the committed end state.",
       },
       {
         type: "p",
