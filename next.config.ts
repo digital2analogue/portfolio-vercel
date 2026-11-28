@@ -4,8 +4,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        // Resume PDF removed 2026-11-28; send old /resume links to contact.
         source: "/resume",
-        destination: "/Romney_River_Resume.pdf",
+        destination: "/contact",
         permanent: false,
       },
       {
