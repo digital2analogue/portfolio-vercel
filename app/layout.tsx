@@ -35,7 +35,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 // Site URL — set NEXT_PUBLIC_SITE_URL in Vercel env to River's production domain.
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://riverromney.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://riverromney.design";
 
 const DESCRIPTION =
   "Principal Designer working at the intersection of design systems, decision tooling, and enterprise UX. Ten years shipping compliance-heavy B2B fintech.";
