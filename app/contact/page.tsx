@@ -17,7 +17,6 @@ type ContactLink = {
   label: string;
   value: string;
   href: string;
-  download?: string;
   external?: boolean;
 };
 
@@ -32,12 +31,6 @@ const LINKS: ContactLink[] = [
     value: "linkedin.com/in/riverromney",
     href: "https://linkedin.com/in/riverromney",
     external: true,
-  },
-  {
-    label: "RESUME",
-    value: "Romney_River_Resume.pdf",
-    href: "/Romney_River_Resume.pdf",
-    download: "Romney_River_Resume.pdf",
   },
 ];
 
@@ -80,7 +73,6 @@ export default function ContactPage() {
             <a
               className="contact-row"
               href={l.href}
-              {...(l.download !== undefined && { download: l.download })}
               {...(l.external && {
                 target: "_blank",
                 rel: "noopener noreferrer",
