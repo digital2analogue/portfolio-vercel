@@ -3,8 +3,10 @@
 // black, JetBrains Mono chrome with Space Grotesk for the name.
 //
 // Run: node scripts/generate-og.mjs
-// Requires: npx playwright install chromium (one-time)
+// Uses the bundled browser at /opt/pw-browsers/chromium (or
+// PLAYWRIGHT_CHROMIUM_PATH), same as render-diagrams.mjs — never `playwright install`.
 
+import { existsSync } from "node:fs";
 import { chromium } from "playwright";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -133,14 +135,17 @@ const html = `<!doctype html>
         <span>enterprise&nbsp;UX</span>
       </div>
       <div class="url">
-        <span class="caret">▸</span>&nbsp;riverromney.com
+        <span class="caret">▸</span>&nbsp;riverromney.design
       </div>
     </div>
   </div>
 </body>
 </html>`;
 
-const browser = await chromium.launch();
+const EXEC = process.env.PLAYWRIGHT_CHROMIUM_PATH || "/opt/pw-browsers/chromium";
+const browser = await chromium.launch(
+  existsSync(EXEC) ? { executablePath: EXEC } : {},
+);
 const context = await browser.newContext({
   viewport: { width: 1200, height: 630 },
   deviceScaleFactor: 1,
